@@ -41,15 +41,6 @@ public class Building extends BaseEntity {
         this.longitude = longitude;
     }
 
-    @Builder
-    private Building(String name, Long number, String abbreviation, BigDecimal latitude, BigDecimal longitude) {
-        this.name = name;
-        this.number = number;
-        this.abbreviation = abbreviation;
-        this.latitude = latitude;
-        this.longitude = longitude;
-    }
-
     public static Building of(String name, Long number, String abbreviation, Long floor, BigDecimal latitude, BigDecimal longitude) {
         return Building.builder()
                 .name(name)
@@ -61,13 +52,4 @@ public class Building extends BaseEntity {
                 .build();
     }
 
-    public static Building of(String name, Long number, String abbreviation,BigDecimal latitude, BigDecimal longitude) {
-        return Building.builder()
-                .name(name)
-                .number(number)
-                .abbreviation(abbreviation)
-                .latitude(latitude)
-                .longitude(longitude)
-                .build();
-    }
 }

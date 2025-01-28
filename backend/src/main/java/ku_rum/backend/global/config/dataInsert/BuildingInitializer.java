@@ -17,6 +17,7 @@ public class BuildingInitializer {
                     BuildingAbbrev.경영.name(),
                     2L,
                     BuildingAbbrev.경영.getOriginalName(),
+                    1L,
                     BigDecimal.valueOf(37.544419),
                     BigDecimal.valueOf(127.076370))
     );
@@ -25,6 +26,7 @@ public class BuildingInitializer {
                     BuildingAbbrev.상허관.name(),
                     3L,
                     BuildingAbbrev.상허관.getOriginalName(),
+                    1L,
                     BigDecimal.valueOf(37.544292),
                     BigDecimal.valueOf(127.076212))
     );
@@ -33,6 +35,7 @@ public class BuildingInitializer {
                     BuildingAbbrev.사.name(),
                     4L,
                     BuildingAbbrev.사.getOriginalName(),
+                    1L,
                     BigDecimal.valueOf(37.544073),
                     BigDecimal.valueOf(127.073994))
     );
@@ -41,6 +44,7 @@ public class BuildingInitializer {
                     BuildingAbbrev.예.name(),
                     5L,
                     BuildingAbbrev.예.getOriginalName(),
+                    1L,
                     BigDecimal.valueOf(37.544419),
                     BigDecimal.valueOf(127.073994))
     );
@@ -49,6 +53,7 @@ public class BuildingInitializer {
                     BuildingAbbrev.언어원.name(),
                     6L,
                     BuildingAbbrev.언어원.getOriginalName(),
+                    1L,
                     BigDecimal.valueOf(37.542497),
                     BigDecimal.valueOf(127.074584))
     );
@@ -57,6 +62,7 @@ public class BuildingInitializer {
                     BuildingAbbrev.종강.name(),
                     8L,
                     BuildingAbbrev.종강.getOriginalName(),
+                    1L,
                     BigDecimal.valueOf(37.542260),
                     BigDecimal.valueOf(127.073637))
     );
@@ -65,6 +71,7 @@ public class BuildingInitializer {
                     BuildingAbbrev.의.name(),
                     10L,
                     BuildingAbbrev.의.getOriginalName(),
+                    1L,
                     BigDecimal.valueOf(37.541443),
                     BigDecimal.valueOf(127.072313))
     );
@@ -73,6 +80,7 @@ public class BuildingInitializer {
                     BuildingAbbrev.생.name(),
                     11L,
                     BuildingAbbrev.생.getOriginalName(),
+                    1L,
                     BigDecimal.valueOf(37.541004),
                     BigDecimal.valueOf(127.074197))
     );
@@ -81,6 +89,7 @@ public class BuildingInitializer {
                     BuildingAbbrev.동.name(),
                     12L,
                     BuildingAbbrev.동.getOriginalName(),
+                    1L,
                     BigDecimal.valueOf(37.540242),
                     BigDecimal.valueOf(127.074289))
     );
@@ -89,6 +98,7 @@ public class BuildingInitializer {
                     BuildingAbbrev.산학.name(),
                     14L,
                     BuildingAbbrev.산학.getOriginalName(),
+                    1L,
                     BigDecimal.valueOf(37.539701),
                     BigDecimal.valueOf(127.073102))
     );
@@ -97,6 +107,7 @@ public class BuildingInitializer {
                     BuildingAbbrev.수.name(),
                     15L,
                     BuildingAbbrev.수.getOriginalName(),
+                    1L,
                     BigDecimal.valueOf(37.539294),
                     BigDecimal.valueOf(127.074676))
     );
@@ -105,6 +116,7 @@ public class BuildingInitializer {
                     BuildingAbbrev.새.name(),
                     16L,
                     BuildingAbbrev.새.getOriginalName(),
+                    1L,
                     BigDecimal.valueOf(37.543549),
                     BigDecimal.valueOf(127.077408))
     );
@@ -113,6 +125,7 @@ public class BuildingInitializer {
                     BuildingAbbrev.건.name(),
                     17L,
                     BuildingAbbrev.건.getOriginalName(),
+                    1L,
                     BigDecimal.valueOf(37.543391),
                     BigDecimal.valueOf(127.078521))
     );
@@ -121,6 +134,7 @@ public class BuildingInitializer {
                     BuildingAbbrev.부.name(),
                     18L,
                     BuildingAbbrev.부.getOriginalName(),
+                    1L,
                     BigDecimal.valueOf(37.543443),
                     BigDecimal.valueOf(127.078225))
     );
@@ -129,6 +143,7 @@ public class BuildingInitializer {
                     BuildingAbbrev.문.name(),
                     19L,
                     BuildingAbbrev.문.getOriginalName(),
+                    1L,
                     BigDecimal.valueOf(37.542422),
                     BigDecimal.valueOf(127.078929))
     );
@@ -137,6 +152,7 @@ public class BuildingInitializer {
                     BuildingAbbrev.공.name(),
                     21L,
                     BuildingAbbrev.공.getOriginalName(),
+                    1L,
                     BigDecimal.valueOf(37.541822),
                     BigDecimal.valueOf(127.078845))
     );
@@ -145,6 +161,7 @@ public class BuildingInitializer {
                     BuildingAbbrev.신공.name(),
                     22L,
                     BuildingAbbrev.신공.getOriginalName(),
+                    1L,
                     BigDecimal.valueOf(37.540579),
                     BigDecimal.valueOf(127.079472))
     );
@@ -153,6 +170,7 @@ public class BuildingInitializer {
                     BuildingAbbrev.이.name(),
                     23L,
                     BuildingAbbrev.이.getOriginalName(),
+                    1L,
                     BigDecimal.valueOf(37.541646),
                     BigDecimal.valueOf(127.080408))
     );
@@ -161,6 +179,7 @@ public class BuildingInitializer {
                     BuildingAbbrev.창.name(),
                     24L,
                     BuildingAbbrev.창.getOriginalName(),
+                    1L,
                     BigDecimal.valueOf(37.540757),
                     BigDecimal.valueOf(127.079368))
     );
