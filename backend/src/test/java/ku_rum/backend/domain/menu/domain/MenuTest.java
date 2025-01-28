@@ -26,4 +26,5 @@ class MenuTest {
         assertThat(menu.getImageUrl()).isEqualTo("naver.com/jjajang.url");
         assertThat(menu.getCategory()).isEqualTo(category);
     }
+
 }
