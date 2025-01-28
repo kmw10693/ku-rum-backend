@@ -1,6 +1,7 @@
 package ku_rum.backend.domain.notice.presentation;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import ku_rum.backend.config.RestDocsTestSupport;
 import ku_rum.backend.domain.notice.application.NoticeService;
 import ku_rum.backend.domain.notice.domain.Notice;
 import ku_rum.backend.domain.notice.domain.NoticeCategory;
@@ -11,6 +12,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
@@ -25,17 +27,12 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@WebMvcTest(controllers = NoticeController.class, excludeAutoConfiguration = SecurityAutoConfiguration.class)
-class NoticeControllerTest {
-
-    @Autowired
-    private MockMvc mockMvc;
+@SpringBootTest
+class NoticeControllerTest extends RestDocsTestSupport {
 
     @MockBean
     private NoticeService noticeService;
 
-    @Autowired
-    private ObjectMapper objectMapper;
 
     @DisplayName("공지사항 크롤링 성공")
     @Test
@@ -100,4 +97,5 @@ class NoticeControllerTest {
                 .andExpect(jsonPath("$.code").value(200))
                 .andExpect(jsonPath("$.data[0].title").value("Notice Search Test"));
     }
+
 }
