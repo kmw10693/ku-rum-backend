@@ -78,6 +78,6 @@ public class BuildingQueryRepository {
             "where m.number =: number";
     return entityManager.createQuery(query, Long.class)
             .setParameter("number", number)
-            .getSingleResult();
+            .getResultList().get(0);
   }
 }
