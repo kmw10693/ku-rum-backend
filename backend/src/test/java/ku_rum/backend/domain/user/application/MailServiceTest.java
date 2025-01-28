@@ -72,7 +72,6 @@ class MailServiceTest {
                 .isEqualTo(false);
     }
 
-
     private String generateKeyByEmail(String email) {
         return MAIL_SEND_INFO.getAUTH_CODE_PREFIX() + email;
     }
