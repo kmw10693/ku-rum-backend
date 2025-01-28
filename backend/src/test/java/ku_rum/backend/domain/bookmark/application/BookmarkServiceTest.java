@@ -90,4 +90,5 @@ class BookmarkServiceTest {
         assertEquals("Notice", bookmarks.get(0).getTitle());
         assertEquals("학사", bookmarks.get(0).getCategory());
     }
+
 }

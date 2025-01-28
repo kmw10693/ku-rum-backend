@@ -1,6 +1,7 @@
 package ku_rum.backend.domain.bookmark.presentation;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import ku_rum.backend.config.RestDocsTestSupport;
 import ku_rum.backend.domain.bookmark.application.BookmarkService;
 import ku_rum.backend.domain.bookmark.dto.request.BookmarkSaveRequest;
 import ku_rum.backend.domain.notice.domain.Notice;
@@ -11,8 +12,10 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.List;
@@ -25,11 +28,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@WebMvcTest(BookmarkController.class)
-class BookmarkControllerTest {
+@SpringBootTest
+class BookmarkControllerTest extends RestDocsTestSupport {
 
-    @Autowired
-    private MockMvc mockMvc;
 
     @MockBean
     private BookmarkService bookmarkService;
@@ -85,4 +86,5 @@ class BookmarkControllerTest {
                 .andExpect(jsonPath("$.data[0].date").value("2024-11-08"))
                 .andExpect(jsonPath("$.data[0].category").value("학사"));
     }
+
 }
