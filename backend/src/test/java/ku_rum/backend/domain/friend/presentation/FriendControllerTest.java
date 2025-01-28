@@ -1,6 +1,7 @@
 package ku_rum.backend.domain.friend.presentation;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import ku_rum.backend.config.RestDocsTestSupport;
 import ku_rum.backend.domain.friend.application.FriendService;
 import ku_rum.backend.domain.friend.dto.request.FriendFindRequest;
 import ku_rum.backend.domain.friend.dto.request.FriendListRequest;
@@ -9,6 +10,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
@@ -19,12 +21,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@WebMvcTest(FriendController.class)
-@Import(SecurityConfig.class)
-class FriendControllerTest {
-
-    @Autowired
-    private MockMvc mockMvc;
+@SpringBootTest
+class FriendControllerTest  extends RestDocsTestSupport {
 
     @Autowired
     private ObjectMapper objectMapper;
