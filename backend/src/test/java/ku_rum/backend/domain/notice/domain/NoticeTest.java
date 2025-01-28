@@ -30,7 +30,6 @@ class NoticeTest {
         //then
         assertThat(notice.getTitle()).isEqualTo("가나다라");
         assertThat(notice.getUrl()).isEqualTo("naver.com/abc123");
-//        assertThat(notice.getUser()).isEqualTo(user);
     }
 
     @DisplayName("공지 생성 시 유저, 공지 상태는 일반이다.")
@@ -57,6 +56,7 @@ class NoticeTest {
     private Building createBuilding() {
         BigDecimal latitude = BigDecimal.valueOf(64.3423423);
         BigDecimal longitude = BigDecimal.valueOf(342.2343434);
-        return (Building.of("신공학관", 3L,"신공", latitude, longitude));
+        return (Building.of("신공학관", 3L,"신공", 1L, latitude, longitude));
     }
+
 }
