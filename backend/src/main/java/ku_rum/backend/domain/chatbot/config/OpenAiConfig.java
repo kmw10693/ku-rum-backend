@@ -1,4 +1,4 @@
-package ku_rum.backend.domain.openai.config;
+package ku_rum.backend.domain.chatbot.config;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;

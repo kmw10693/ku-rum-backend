@@ -1,10 +1,10 @@
-package ku_rum.backend.domain.user.presentation.auth;
+package ku_rum.backend.domain.auth.presentation;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
-import ku_rum.backend.domain.user.application.auth.AuthService;
-import ku_rum.backend.domain.user.dto.request.auth.LoginRequest;
-import ku_rum.backend.domain.user.dto.request.auth.ReissueRequest;
+import ku_rum.backend.domain.auth.application.AuthService;
+import ku_rum.backend.domain.auth.dto.request.LoginRequest;
+import ku_rum.backend.domain.auth.dto.request.ReissueRequest;
 import ku_rum.backend.global.response.BaseResponse;
 import ku_rum.backend.global.security.jwt.TokenResponse;
 import lombok.RequiredArgsConstructor;
