@@ -1,9 +1,9 @@
-package ku_rum.backend.domain.user.application.mail;
+package ku_rum.backend.domain.mail.application;
 
 import ku_rum.backend.domain.user.domain.repository.UserRepository;
-import ku_rum.backend.domain.user.dto.request.mail.MailSendRequest;
-import ku_rum.backend.domain.user.dto.request.mail.MailVerificationRequest;
-import ku_rum.backend.domain.user.dto.response.mail.MailVerificationResponse;
+import ku_rum.backend.domain.mail.dto.request.MailSendRequest;
+import ku_rum.backend.domain.mail.dto.request.MailVerificationRequest;
+import ku_rum.backend.domain.mail.dto.response.MailVerificationResponse;
 import ku_rum.backend.global.exception.user.DuplicateEmailException;
 import ku_rum.backend.global.exception.user.MailSendException;
 import lombok.RequiredArgsConstructor;
@@ -20,7 +20,7 @@ import java.security.SecureRandom;
 import java.time.Duration;
 import java.util.Random;
 
-import static ku_rum.backend.domain.user.domain.MailSendSetting.MAIL_SEND_INFO;
+import static ku_rum.backend.domain.mail.domain.MailSendSetting.MAIL_SEND_INFO;
 import static ku_rum.backend.global.response.status.BaseExceptionResponseStatus.*;
 
 @Slf4j
@@ -50,7 +50,7 @@ public class MailService {
     public void sendCodeToEmail(final MailSendRequest mailSendRequest) {
         validateDuplicateEmail(mailSendRequest.email());
 
-        String title = MAIL_SEND_INFO.getTitle();
+        String title = MAIL_SEND_INFO.getTITLE();
         String authCode = this.createCode();
 
         sendEmail(mailSendRequest.email(), title, authCode);
@@ -71,7 +71,7 @@ public class MailService {
     }
 
     private Duration getAuthCodeExpirationMills() {
-        return Duration.ofMillis(MAIL_SEND_INFO.getAuthCodeExpirationMillis());
+        return Duration.ofMillis(MAIL_SEND_INFO.getAUTH_EXPIRED_MILLS());
     }
 
     private String generateKeyByEmail(String email) {
@@ -95,7 +95,7 @@ public class MailService {
             Random random = SecureRandom.getInstanceStrong();
             StringBuilder builder = new StringBuilder();
 
-            for (int i = 0; i < MAIL_SEND_INFO.getCodeLength(); i++) {
+            for (int i = 0; i < MAIL_SEND_INFO.getCODE_LENGTH(); i++) {
                 builder.append(random.nextInt(10));
             }
             return builder.toString();

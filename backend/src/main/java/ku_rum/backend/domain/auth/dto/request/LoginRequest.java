@@ -1,4 +1,4 @@
-package ku_rum.backend.domain.user.dto.request.auth;
+package ku_rum.backend.domain.auth.dto.request;
 
 import jakarta.validation.constraints.NotBlank;
 
