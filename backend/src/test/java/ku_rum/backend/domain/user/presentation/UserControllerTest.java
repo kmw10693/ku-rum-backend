@@ -1,8 +1,9 @@
 package ku_rum.backend.domain.user.presentation;
 
 import ku_rum.backend.config.RestDocsTestSupport;
+import ku_rum.backend.domain.reservation.dto.request.WeinLoginRequest;
 import ku_rum.backend.domain.user.application.UserService;
-import ku_rum.backend.domain.user.dto.request.mail.EmailValidationRequest;
+import ku_rum.backend.domain.mail.dto.request.EmailValidationRequest;
 import ku_rum.backend.domain.user.dto.request.UserSaveRequest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -13,6 +14,7 @@ import org.springframework.security.test.context.support.WithMockUser;
 
 import static javax.management.openmbean.SimpleType.STRING;
 import static javax.swing.text.html.parser.DTDConstants.NUMBER;
+import static org.awaitility.Awaitility.given;
 import static org.springframework.restdocs.payload.PayloadDocumentation.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -90,7 +92,6 @@ class UserControllerTest extends RestDocsTestSupport {
     void validateEmail() throws Exception {
         //given
         EmailValidationRequest emailValidationRequest = new EmailValidationRequest("kmw106933@naver.com");
-
         //when then
         mockMvc.perform(post("/api/v1/users/validations/email")
                         .content(objectMapper.writeValueAsString(emailValidationRequest))
@@ -122,6 +123,34 @@ class UserControllerTest extends RestDocsTestSupport {
                                 fieldWithPath("data")
                                         .type(STRING)
                                         .description("성공 시 '올바른 이메일 입니다.' 반환")
+                        )));
+    }
+
+    @DisplayName("위인전에 로그인한다.")
+    @Test
+    void loginToWein() throws Exception {
+        //given
+        WeinLoginRequest weinLoginRequest = new WeinLoginRequest("test123", "test123");
+
+        //when then
+
+        mockMvc.perform(post("/api/v1/users/weinlogin")
+                        .content(objectMapper.writeValueAsString(weinLoginRequest))
+                        .contentType(MediaType.APPLICATION_JSON)
+                )
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andDo(restDocs.document(
+                        requestFields(
+                                fieldWithPath("userId")
+                                        .type(STRING)
+                                        .description("위인전 아이디")
+                                        .attributes(constraints("위인전 아이디입니다.")),
+                                fieldWithPath("password")
+                                        .type(STRING)
+                                        .description("위인전 비밀번호")
+                                        .attributes(constraints("위인전 비밀번호입니다."))
+
                         )));
     }
 
