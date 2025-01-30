@@ -32,6 +32,4 @@ public class ReservationController {
         return reservationService.selectDateAndFetchTable(request.getSelectedDate());
     }
 
-
-
 }
