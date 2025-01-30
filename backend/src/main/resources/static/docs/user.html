@@ -449,6 +449,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <ul class="sectlevel1">
 <li><a href="#_member_관련_api">Member 관련 API</a>
 <ul class="sectlevel2">
+<li><a href="#_위인전_회원가입">[위인전 회원가입]</a></li>
 <li><a href="#_회원_가입">[회원 가입]</a></li>
 <li><a href="#_아이디_중복_확인">[아이디 중복 확인]</a></li>
 <li><a href="#_이메일_인증_요청">[이메일 인증 요청]</a></li>
@@ -463,9 +464,69 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <h2 id="_member_관련_api">Member 관련 API</h2>
 <div class="sectionbody">
 <div class="sect2">
-<h3 id="_회원_가입">[회원 가입]</h3>
+<h3 id="_위인전_회원가입">[위인전 회원가입]</h3>
 <div class="sect3">
 <h4 id="_요청">요청</h4>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">POST /api/v1/users/weinlogin HTTP/1.1
+Content-Type: application/json
+
+{
+  "userId" : "test123",
+  "password" : "test123"
+}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_요청_필드">요청 필드</h4>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 20%;">
+<col style="width: 20%;">
+<col style="width: 20%;">
+<col style="width: 20%;">
+<col style="width: 20%;">
+</colgroup>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">필드명</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">타입</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">필수여부</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">제약조건</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">설명</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>userId</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>javax.management.openmbean.SimpleType(name=java.lang.String)</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">O</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">위인전 아이디입니다.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">위인전 아이디</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>password</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>javax.management.openmbean.SimpleType(name=java.lang.String)</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">O</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">위인전 비밀번호입니다.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">위인전 비밀번호</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect3">
+<h4 id="_응답">응답</h4>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">HTTP/1.1 200 OK</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_회원_가입">[회원 가입]</h3>
+<div class="sect3">
+<h4 id="_요청_2">요청</h4>
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">POST /api/v1/users HTTP/1.1
@@ -482,7 +543,7 @@ Content-Type: application/json
 </div>
 </div>
 <div class="sect3">
-<h4 id="_요청_필드">요청 필드</h4>
+<h4 id="_요청_필드_2">요청 필드</h4>
 <table class="tableblock frame-all grid-all stretch">
 <colgroup>
 <col style="width: 20%;">
@@ -538,7 +599,7 @@ Content-Type: application/json
 </table>
 </div>
 <div class="sect3">
-<h4 id="_응답">응답</h4>
+<h4 id="_응답_2">응답</h4>
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">HTTP/1.1 200 OK
@@ -590,7 +651,7 @@ Content-Type: application/json
 <div class="sect2">
 <h3 id="_아이디_중복_확인">[아이디 중복 확인]</h3>
 <div class="sect3">
-<h4 id="_요청_2">요청</h4>
+<h4 id="_요청_3">요청</h4>
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">POST /api/v1/users/validations/email HTTP/1.1
@@ -603,7 +664,7 @@ Content-Type: application/json
 </div>
 </div>
 <div class="sect3">
-<h4 id="_요청_필드_2">요청 필드</h4>
+<h4 id="_요청_필드_3">요청 필드</h4>
 <table class="tableblock frame-all grid-all stretch">
 <colgroup>
 <col style="width: 20%;">
@@ -631,7 +692,7 @@ Content-Type: application/json
 </table>
 </div>
 <div class="sect3">
-<h4 id="_응답_2">응답</h4>
+<h4 id="_응답_3">응답</h4>
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">HTTP/1.1 200 OK
@@ -689,7 +750,7 @@ Content-Type: application/json
 <div class="sect2">
 <h3 id="_이메일_인증_요청">[이메일 인증 요청]</h3>
 <div class="sect3">
-<h4 id="_요청_3">요청</h4>
+<h4 id="_요청_4">요청</h4>
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">POST /api/v1/mails HTTP/1.1
@@ -702,7 +763,7 @@ Content-Type: application/json
 </div>
 </div>
 <div class="sect3">
-<h4 id="_요청_필드_3">요청 필드</h4>
+<h4 id="_요청_필드_4">요청 필드</h4>
 <table class="tableblock frame-all grid-all stretch">
 <colgroup>
 <col style="width: 20%;">
@@ -730,7 +791,7 @@ Content-Type: application/json
 </table>
 </div>
 <div class="sect3">
-<h4 id="_응답_3">응답</h4>
+<h4 id="_응답_4">응답</h4>
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">HTTP/1.1 200 OK
@@ -788,7 +849,7 @@ Content-Type: application/json
 <div class="sect2">
 <h3 id="_인증_코드_성공_확인">[인증 코드 성공 확인]</h3>
 <div class="sect3">
-<h4 id="_요청_4">요청</h4>
+<h4 id="_요청_5">요청</h4>
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">GET /api/v1/mails/mail_verifications HTTP/1.1
@@ -802,7 +863,7 @@ Content-Type: application/json
 </div>
 </div>
 <div class="sect3">
-<h4 id="_요청_필드_4">요청 필드</h4>
+<h4 id="_요청_필드_5">요청 필드</h4>
 <table class="tableblock frame-all grid-all stretch">
 <colgroup>
 <col style="width: 20%;">
@@ -837,7 +898,7 @@ Content-Type: application/json
 </table>
 </div>
 <div class="sect3">
-<h4 id="_응답_4">응답</h4>
+<h4 id="_응답_5">응답</h4>
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">HTTP/1.1 200 OK
@@ -892,7 +953,7 @@ Content-Type: application/json
 <div id="footer">
 <div id="footer-text">
 Version 0.0.1-SNAPSHOT<br>
-Last updated 2025-01-14 00:27:51 +0900
+Last updated 2025-01-31 00:01:22 +0900
 </div>
 </div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.18.3/highlight.min.js"></script>
