@@ -13,7 +13,6 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
 import java.util.List;
-import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
@@ -76,4 +75,5 @@ class NoticeServiceTest {
         assertEquals(1, result.size());
         assertEquals("Notice Search Example", result.get(0).getTitle());
     }
+
 }

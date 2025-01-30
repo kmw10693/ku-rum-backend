@@ -1,6 +1,7 @@
 package ku_rum.backend.domain.reservation.presentation;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import ku_rum.backend.config.RestDocsTestSupport;
 import ku_rum.backend.domain.reservation.application.ReservationService;
 import ku_rum.backend.domain.reservation.dto.request.SelectDateRequest;
 import ku_rum.backend.domain.reservation.dto.request.WeinLoginRequest;
@@ -9,9 +10,11 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 
 import static org.mockito.ArgumentMatchers.*;
@@ -21,11 +24,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 
-@WebMvcTest(ReservationController.class)
-class ReservationControllerTest {
-
-    @Autowired
-    private MockMvc mockMvc;
+@SpringBootTest
+class ReservationControllerTest extends RestDocsTestSupport {
 
     @MockBean
     private ReservationService reservationService;
@@ -35,6 +35,7 @@ class ReservationControllerTest {
 
     @DisplayName("크롤링 시작 요청 성공")
     @Test
+    @WithMockUser
     void crawlReservationPageSuccess() throws Exception {
         // Mock 데이터 설정
         WeinLoginRequest loginRequest = new WeinLoginRequest("mockUser", "mockPassword");
@@ -54,6 +55,7 @@ class ReservationControllerTest {
 
     @DisplayName("날짜 선택 요청 성공")
     @Test
+    @WithMockUser
     void selectDateSuccess() throws Exception {
         // Mock 데이터 설정
         SelectDateRequest selectDateRequest = new SelectDateRequest("2024-12-11");
@@ -70,4 +72,5 @@ class ReservationControllerTest {
                 .andExpect(jsonPath("$.code").value(200))
                 .andExpect(jsonPath("$.message").value("OK"));
     }
+
 }

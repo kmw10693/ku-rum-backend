@@ -125,5 +125,4 @@ class UserControllerTest extends RestDocsTestSupport {
                         )));
     }
 
-
 }
