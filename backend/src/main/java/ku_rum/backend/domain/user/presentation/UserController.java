@@ -3,7 +3,7 @@ package ku_rum.backend.domain.user.presentation;
 import jakarta.validation.Valid;
 import ku_rum.backend.domain.reservation.dto.request.WeinLoginRequest;
 import ku_rum.backend.domain.user.application.UserService;
-import ku_rum.backend.domain.user.dto.request.mail.EmailValidationRequest;
+import ku_rum.backend.domain.mail.dto.request.EmailValidationRequest;
 import ku_rum.backend.domain.user.dto.request.UserSaveRequest;
 import ku_rum.backend.domain.user.dto.response.UserSaveResponse;
 import ku_rum.backend.domain.user.dto.response.WeinLoginResponse;
@@ -29,6 +29,11 @@ public class UserController {
         return BaseResponse.ok(userService.saveUser(userSaveRequest));
     }
 
+    /**
+     * 위인전 로그인 API
+     * @Param WeinLoginRequest
+     * @return WeinLoginResponse
+     */
     @PostMapping("/weinlogin")
     public BaseResponse<WeinLoginResponse> loginToWein(@RequestBody @Valid WeinLoginRequest weinLoginRequest) {
         return userService.loginToWein(weinLoginRequest);
