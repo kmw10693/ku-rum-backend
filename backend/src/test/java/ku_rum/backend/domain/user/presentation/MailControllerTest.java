@@ -6,6 +6,7 @@ import ku_rum.backend.domain.mail.dto.request.MailSendRequest;
 import ku_rum.backend.domain.mail.dto.request.MailVerificationRequest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.openqa.selenium.json.JsonType;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
@@ -48,22 +49,22 @@ class MailControllerTest extends RestDocsTestSupport {
                 .andDo(restDocs.document(
                         requestFields(
                                 fieldWithPath("email")
-                                        .type(STRING)
+                                        .type(JsonType.STRING)
                                         .description("건국대학교 웹메일")
                                         .attributes(constraints("이메일의 끝자리는 @konkuk.ac.kr로 끝나야 합니다."))
                         ),
                         responseFields(
                                 fieldWithPath("code")
-                                        .type(NUMBER)
+                                        .type(JsonType.STRING)
                                         .description("성공시 반환 코드 (200)"),
                                 fieldWithPath("status")
-                                        .type(STRING)
+                                        .type(JsonType.STRING)
                                         .description("성공시 상태 값 (OK)"),
                                 fieldWithPath("message")
-                                        .type(STRING)
+                                        .type(JsonType.STRING)
                                         .description("성공 시 메시지 (OK)"),
                                 fieldWithPath("data")
-                                        .type(STRING)
+                                        .type(JsonType.STRING)
                                         .description("성공 시 '메일이 성공적으로 전송되었습니다.' 반환합니다.")
                         )));
     }
@@ -88,23 +89,23 @@ class MailControllerTest extends RestDocsTestSupport {
                 .andDo(restDocs.document(
                         requestFields(
                                 fieldWithPath("email")
-                                        .type(STRING)
+                                        .type(JsonType.STRING)
                                         .description("건국대학교 웹메일")
                                         .attributes(constraints("이메일의 끝자리는 @konkuk.ac.kr로 끝나야 합니다.")),
                                 fieldWithPath("code")
-                                        .type(STRING)
+                                        .type(JsonType.STRING)
                                         .description("건국대학교 웹메일")
                                         .attributes(constraints("사용자가 받은 인증코드를 입력받습니다."))
                         ),
                         responseFields(
                                 fieldWithPath("code")
-                                        .type(NUMBER)
+                                        .type(JsonType.NUMBER)
                                         .description("성공시 반환 코드 (200)"),
                                 fieldWithPath("status")
-                                        .type(STRING)
+                                        .type(JsonType.STRING)
                                         .description("올바른 인증코드 시 상태 값 (OK)"),
                                 fieldWithPath("message")
-                                        .type(STRING)
+                                        .type(JsonType.STRING)
                                         .description("올바른 인증코드 시 메시지 (OK)")
                         )));
     }

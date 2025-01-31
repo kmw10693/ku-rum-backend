@@ -1,94 +1,206 @@
-= KU:rum API Document
-:doctype: book
-:icons: font
+= KU:rum
 :source-highlighter: highlightjs
 :toc: left
-:toclevels: 2
+:sectlinks:
 
-== Member 관련 API
+[[overview-http-status-codes]]
+=== HTTP status codes
 
-=== [위인전 회원가입]
+|===
+| 상태 코드 | 설명
+
+| `200 OK`
+| 성공
+
+| `201 Created`
+| 리소스 생성
+
+| `204 NO_CONTENT`
+| 성공 후 반환 값 없음
+
+| `400 Bad Request`
+| 잘못된 요청
+
+| `401 Unauthorized`
+| 비인증 상태
+
+| `403 Forbidden`
+| 권한 거부
+
+| `404 Not Found`
+| 존재하지 않는 요청 리소스
+
+| `500 Internal Server Error`
+| 서버 에러
+|===
+
+== Member API
+
+=== 위인전 회원가입 (POST /api/v1/users/weinlogin)
 
 ==== 요청
-
 include::{snippets}/user-controller-test/login-to-wein/http-request.adoc[]
-
-==== 요청 필드
-
 include::{snippets}/user-controller-test/login-to-wein/request-fields.adoc[]
 
 ==== 응답
-
 include::{snippets}/user-controller-test/login-to-wein/http-response.adoc[]
 
-=== [회원 가입]
+=== 회원 가입 (POST /api/v1/users)
 
 ==== 요청
-
 include::{snippets}/user-controller-test/create-user/http-request.adoc[]
-
-==== 요청 필드
-
 include::{snippets}/user-controller-test/create-user/request-fields.adoc[]
 
 ==== 응답
-
 include::{snippets}/user-controller-test/create-user/http-response.adoc[]
-
-==== 응답 필드
-
 include::{snippets}/user-controller-test/create-user/response-fields.adoc[]
 
-=== [아이디 중복 확인]
+=== 아이디 중복 확인 (POST /api/v1/users/validations/email)
 
 ==== 요청
-
 include::{snippets}/user-controller-test/validate-email/http-request.adoc[]
-
-==== 요청 필드
-
 include::{snippets}/user-controller-test/validate-email/request-fields.adoc[]
 
 ==== 응답
-
 include::{snippets}/user-controller-test/validate-email/http-response.adoc[]
-
-==== 응답 필드
-
 include::{snippets}/user-controller-test/validate-email/response-fields.adoc[]
 
-=== [이메일 인증 요청]
+=== 이메일 인증 요청 (POST /api/v1/mails)
 
 ==== 요청
-
 include::{snippets}/mail-controller-test/send-mail/http-request.adoc[]
-
-==== 요청 필드
-
 include::{snippets}/mail-controller-test/send-mail/request-fields.adoc[]
 
 ==== 응답
-
 include::{snippets}/mail-controller-test/send-mail/http-response.adoc[]
-
-==== 응답 필드
-
 include::{snippets}/mail-controller-test/send-mail/response-fields.adoc[]
 
-=== [인증 코드 성공 확인]
+=== 인증 코드 성공 확인 (GET /api/v1/mails/mail_verifications)
 
 ==== 요청
-
 include::{snippets}/mail-controller-test/verification-email/http-request.adoc[]
-
-==== 요청 필드
-
 include::{snippets}/mail-controller-test/verification-email/request-fields.adoc[]
 
 ==== 응답
-
 include::{snippets}/mail-controller-test/verification-email/http-response.adoc[]
-
-==== 응답 필드
-
 include::{snippets}/mail-controller-test/verification-email/response-fields.adoc[]
+
+== Bookmark API
+
+=== 북마크 추가 (POST /api/v1/bookmarks/save)
+
+==== 요청
+include::{snippets}/bookmark-controller-test/add-bookmark-success/http-request.adoc[]
+include::{snippets}/bookmark-controller-test/add-bookmark-success/request-fields.adoc[]
+
+==== 응답
+include::{snippets}/bookmark-controller-test/add-bookmark-success/http-response.adoc[]
+include::{snippets}/bookmark-controller-test/add-bookmark-success/response-fields.adoc[]
+
+=== 북마크 가져오기 (GET /api/v1/bookmarks/find)
+
+==== 요청
+include::{snippets}/bookmark-controller-test/get-bookmarks-success/http-request.adoc[]
+include::{snippets}/bookmark-controller-test/get-bookmarks-success/query-parameters.adoc[]
+
+==== 응답
+include::{snippets}/bookmark-controller-test/get-bookmarks-success/http-response.adoc[]
+include::{snippets}/bookmark-controller-test/get-bookmarks-success/response-fields.adoc[]
+
+== Friend API
+
+=== 내 친구 이름 검색 (GET /api/v1/friends/find)
+
+==== 요청
+include::{snippets}/friend-controller-test/find-by-name-in-friend-lists/http-request.adoc[]
+include::{snippets}/friend-controller-test/find-by-name-in-friend-lists/request-fields.adoc[]
+
+==== 응답
+include::{snippets}/friend-controller-test/find-by-name-in-friend-lists/http-response.adoc[]
+include::{snippets}/friend-controller-test/find-by-name-in-friend-lists/response-fields.adoc[]
+
+=== 친구 목록 가져오기 (GET /api/v1/friends)
+
+==== 요청
+include::{snippets}/friend-controller-test/get-friend-lists/http-request.adoc[]
+include::{snippets}/friend-controller-test/get-friend-lists/request-fields.adoc[]
+
+==== 응답
+include::{snippets}/friend-controller-test/get-friend-lists/http-response.adoc[]
+include::{snippets}/friend-controller-test/get-friend-lists/response-fields.adoc[]
+
+== Mail API
+
+=== 메일 전송 (POST /api/v1/mails)
+
+==== 요청
+include::{snippets}/mail-controller-test/send-mail/http-request.adoc[]
+include::{snippets}/mail-controller-test/send-mail/request-fields.adoc[]
+
+==== 응답
+include::{snippets}/mail-controller-test/send-mail/http-response.adoc[]
+include::{snippets}/mail-controller-test/send-mail/response-fields.adoc[]
+
+=== 메일 인증코드 확인 (GET /api/v1/mails/mail_verifications)
+
+==== 요청
+include::{snippets}/mail-controller-test/verification-email/http-request.adoc[]
+include::{snippets}/mail-controller-test/verification-email/request-fields.adoc[]
+
+==== 응답
+include::{snippets}/mail-controller-test/verification-email/http-response.adoc[]
+include::{snippets}/mail-controller-test/verification-email/response-fields.adoc[]
+
+== Notice API
+
+=== 건국대학교 페이지 크롤링 (POST /api/v1/notices/crawl/konkuk)
+
+==== 요청
+include::{snippets}/notice-controller-test/crawl-notices-success/http-request.adoc[]
+include::{snippets}/notice-controller-test/crawl-notices-success/request-fields.adoc[]
+
+==== 응답
+include::{snippets}/notice-controller-test/crawl-notices-success/http-response.adoc[]
+include::{snippets}/notice-controller-test/crawl-notices-success/response-fields.adoc[]
+
+=== 건국대학교 페이지 카테고리 크롤링 (GET /api/v1/notices?category)
+
+==== 요청
+include::{snippets}/notice-controller-test/get-notices-by-category-success/http-request.adoc[]
+include::{snippets}/notice-controller-test/get-notices-by-category-success/query-parameters.adoc[]
+
+==== 응답
+include::{snippets}/notice-controller-test/get-notices-by-category-success/http-response.adoc[]
+include::{snippets}/notice-controller-test/get-notices-by-category-success/response-fields.adoc[]
+
+=== 페이지 검색어 크롤링 (GET /api/v1/notices/search?searchTerm)
+
+==== 요청
+include::{snippets}/notice-controller-test/search-notices-by-title-success/http-request.adoc[]
+include::{snippets}/notice-controller-test/search-notices-by-title-success/query-parameters.adoc[]
+
+==== 응답
+include::{snippets}/notice-controller-test/search-notices-by-title-success/http-response.adoc[]
+include::{snippets}/notice-controller-test/search-notices-by-title-success/response-fields.adoc[]
+
+== Reservation API
+
+=== 위인전 로그인 (POST /api/v1/reservations/crawl)
+
+==== 요청
+include::{snippets}/reservation-controller-test/crawl-reservation-page-success/http-request.adoc[]
+include::{snippets}/reservation-controller-test/crawl-reservation-page-success/request-fields.adoc[]
+
+==== 응답
+include::{snippets}/reservation-controller-test/crawl-reservation-page-success/http-response.adoc[]
+include::{snippets}/reservation-controller-test/crawl-reservation-page-success/response-fields.adoc[]
+
+=== 예약 날짜 선택 (POST /api/v1/reservations/select_date)
+
+==== 요청
+include::{snippets}/reservation-controller-test/select-date-success/http-request.adoc[]
+include::{snippets}/reservation-controller-test/select-date-success/request-fields.adoc[]
+
+==== 응답
+include::{snippets}/reservation-controller-test/select-date-success/response-body.adoc[]
+include::{snippets}/reservation-controller-test/select-date-success/response-fields.adoc[]
