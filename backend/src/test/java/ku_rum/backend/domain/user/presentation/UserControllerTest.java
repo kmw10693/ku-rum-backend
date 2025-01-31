@@ -7,6 +7,7 @@ import ku_rum.backend.domain.mail.dto.request.EmailValidationRequest;
 import ku_rum.backend.domain.user.dto.request.UserSaveRequest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.openqa.selenium.json.JsonType;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
@@ -15,6 +16,7 @@ import org.springframework.security.test.context.support.WithMockUser;
 import static javax.management.openmbean.SimpleType.STRING;
 import static javax.swing.text.html.parser.DTDConstants.NUMBER;
 import static org.awaitility.Awaitility.given;
+import static org.openqa.selenium.json.JsonType.*;
 import static org.springframework.restdocs.payload.PayloadDocumentation.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -53,35 +55,35 @@ class UserControllerTest extends RestDocsTestSupport {
                 .andDo(restDocs.document(
                         requestFields(
                                 fieldWithPath("email")
-                                        .type(STRING)
+                                        .type(JsonType.STRING)
                                         .description("멤버 아이디")
                                         .attributes(constraints("아이디 입력은 필수입니다. 최소 6자 이상입니다.")),
                                 fieldWithPath("nickname")
-                                        .type(STRING)
+                                        .type(JsonType.STRING)
                                         .description("멤버 닉네임")
                                         .attributes(constraints("닉네임 입력은 필수입니다. 최대 8자 이하입니다.")),
                                 fieldWithPath("password")
-                                        .type(STRING)
+                                        .type(JsonType.STRING)
                                         .description("멤버 패스워드")
                                         .attributes(constraints("비밀번호는 영어와 숫자를 포함해서 8자 이상 20자 이내로 입력해주세요.")),
                                 fieldWithPath("studentId")
-                                        .type(STRING)
+                                        .type(JsonType.STRING)
                                         .description("멤버 학번")
                                         .attributes(constraints("학번은 20으로 시작하고, 9자리여야 합니다.")),
                                 fieldWithPath("department")
-                                        .type(STRING)
+                                        .type(JsonType.STRING)
                                         .description("멤버 학과")
                                         .attributes(constraints("ex) 컴퓨터공학부"))
                         ),
                         responseFields(
                                 fieldWithPath("code")
-                                        .type(NUMBER)
+                                        .type(JsonType.STRING)
                                         .description("성공시 반환 코드 (200)"),
                                 fieldWithPath("status")
-                                        .type(STRING)
+                                        .type(JsonType.STRING)
                                         .description("성공시 상태 값 (OK)"),
                                 fieldWithPath("message")
-                                        .type(STRING)
+                                        .type(JsonType.STRING)
                                         .description("성공 시 메시지 (OK)")
                         )));
     }
@@ -106,22 +108,22 @@ class UserControllerTest extends RestDocsTestSupport {
                 .andDo(restDocs.document(
                         requestFields(
                                 fieldWithPath("email")
-                                        .type(STRING)
+                                        .type(JsonType.STRING)
                                         .description("멤버 아이디")
                                         .attributes(constraints("아이디 입력은 필수입니다. 최소 6자 이상입니다."))
                         ),
                         responseFields(
                                 fieldWithPath("code")
-                                        .type(NUMBER)
+                                        .type(JsonType.NUMBER)
                                         .description("성공시 반환 코드 (200)"),
                                 fieldWithPath("status")
-                                        .type(STRING)
+                                        .type(JsonType.STRING)
                                         .description("성공시 상태 값 (OK)"),
                                 fieldWithPath("message")
-                                        .type(STRING)
+                                        .type(JsonType.STRING)
                                         .description("성공 시 메시지 값 (OK)"),
                                 fieldWithPath("data")
-                                        .type(STRING)
+                                        .type(JsonType.STRING)
                                         .description("성공 시 '올바른 이메일 입니다.' 반환")
                         )));
     }
@@ -143,11 +145,11 @@ class UserControllerTest extends RestDocsTestSupport {
                 .andDo(restDocs.document(
                         requestFields(
                                 fieldWithPath("userId")
-                                        .type(STRING)
+                                        .type(JsonType.STRING)
                                         .description("위인전 아이디")
                                         .attributes(constraints("위인전 아이디입니다.")),
                                 fieldWithPath("password")
-                                        .type(STRING)
+                                        .type(JsonType.STRING)
                                         .description("위인전 비밀번호")
                                         .attributes(constraints("위인전 비밀번호입니다."))
 
