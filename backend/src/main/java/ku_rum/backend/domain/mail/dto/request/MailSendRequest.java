@@ -1,4 +1,4 @@
-package ku_rum.backend.domain.user.dto.request.mail;
+package ku_rum.backend.domain.mail.dto.request;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;

@@ -8,6 +8,7 @@ import ku_rum.backend.domain.reservation.dto.request.WeinLoginRequest;
 import ku_rum.backend.global.response.BaseResponse;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.openqa.selenium.json.JsonType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -17,8 +18,12 @@ import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 
+import static javax.management.openmbean.SimpleType.STRING;
+import static javax.swing.text.html.parser.DTDConstants.NUMBER;
 import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.when;
+import static org.springframework.restdocs.payload.PayloadDocumentation.*;
+import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -50,7 +55,30 @@ class ReservationControllerTest extends RestDocsTestSupport {
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.code").value(200))
-                .andExpect(jsonPath("$.message").value("OK"));
+                .andExpect(jsonPath("$.message").value("OK"))
+                .andDo(restDocs.document(
+                        requestFields(
+                                fieldWithPath("userId")
+                                        .type(STRING)
+                                        .description("건국대학교 위인전 아이디"),
+                                fieldWithPath("password")
+                                        .type(STRING)
+                                        .description("건국대학교 위인전 비밀번호")
+                        ),
+                        responseFields(
+                                fieldWithPath("code")
+                                        .type(NUMBER)
+                                        .description("성공시 반환 코드 (200)"),
+                                fieldWithPath("status")
+                                        .type(STRING)
+                                        .description("성공시 상태 값 (OK)"),
+                                fieldWithPath("message")
+                                        .type(STRING)
+                                        .description("성공 시 메시지 값 (OK)"),
+                                fieldWithPath("data")
+                                        .type(STRING)
+                                        .description("성공 시 '로그인 및 크롤링 작업 성공' 반환")
+                        )));
     }
 
     @DisplayName("날짜 선택 요청 성공")
@@ -70,7 +98,27 @@ class ReservationControllerTest extends RestDocsTestSupport {
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.code").value(200))
-                .andExpect(jsonPath("$.message").value("OK"));
+                .andExpect(jsonPath("$.message").value("OK"))
+                .andDo(restDocs.document(
+                        requestFields(
+                                fieldWithPath("selectedDate")
+                                        .type(JsonType.STRING)
+                                        .description("선택된 날짜")
+                        ),
+                        responseFields(
+                                fieldWithPath("code")
+                                        .type(JsonType.NUMBER)
+                                        .description("성공시 반환 코드 (200)"),
+                                fieldWithPath("status")
+                                        .type(JsonType.STRING)
+                                        .description("성공시 상태 값 (OK)"),
+                                fieldWithPath("message")
+                                        .type(JsonType.STRING)
+                                        .description("성공 시 메시지 값 (OK)"),
+                                fieldWithPath("data")
+                                        .type(JsonType.STRING)
+                                        .description("성공 시 '타임 테이블 데이터' 반환")
+                        )));
     }
 
 }

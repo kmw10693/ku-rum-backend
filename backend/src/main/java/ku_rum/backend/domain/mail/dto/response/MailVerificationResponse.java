@@ -1,4 +1,4 @@
-package ku_rum.backend.domain.user.dto.response.mail;
+package ku_rum.backend.domain.mail.dto.response;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;

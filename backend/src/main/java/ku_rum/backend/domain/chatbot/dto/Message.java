@@ -1,4 +1,4 @@
-package ku_rum.backend.domain.openai.dto;
+package ku_rum.backend.domain.chatbot.dto;
 
 import lombok.*;
 

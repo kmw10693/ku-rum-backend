@@ -1,8 +1,8 @@
-package ku_rum.backend.domain.openai.presentation;
+package ku_rum.backend.domain.chatbot.presentation;
 
 import jakarta.annotation.PostConstruct;
-import ku_rum.backend.domain.openai.dto.GPTRequest;
-import ku_rum.backend.domain.openai.dto.GPTResponse;
+import ku_rum.backend.domain.chatbot.dto.GPTRequest;
+import ku_rum.backend.domain.chatbot.dto.GPTResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;

@@ -1,9 +1,9 @@
-package ku_rum.backend.domain.user.application.auth;
+package ku_rum.backend.domain.auth.application;
 
 import io.jsonwebtoken.JwtException;
 import jakarta.servlet.http.HttpServletRequest;
-import ku_rum.backend.domain.user.dto.request.auth.LoginRequest;
-import ku_rum.backend.domain.user.dto.request.auth.ReissueRequest;
+import ku_rum.backend.domain.auth.dto.request.LoginRequest;
+import ku_rum.backend.domain.auth.dto.request.ReissueRequest;
 import ku_rum.backend.global.config.redis.RedisUtil;
 import ku_rum.backend.global.security.jwt.*;
 import lombok.RequiredArgsConstructor;

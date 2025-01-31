@@ -36,7 +36,8 @@ public class SecurityConfig {
         http.formLogin(AbstractHttpConfigurer::disable);
         http.httpBasic(AbstractHttpConfigurer::disable);
         http.authorizeHttpRequests((auth) -> auth
-                .requestMatchers("/api/v1/auth/login", "/api/v1/users", "/docs/**", "/api/v1/users/validations/email").permitAll()
+                .requestMatchers("/api/v1/auth/login", "/api/v1/users", "/docs/**", "/api/v1/users/validations/email"
+                        , "/api/v1/users/weinlogin").permitAll()
                 .anyRequest().authenticated());
         http.addFilterBefore(new JwtTokenAuthenticationFilter(jwtTokenProvider, redisUtil), UsernamePasswordAuthenticationFilter.class);
         http.sessionManagement((session) -> session
@@ -56,7 +57,7 @@ public class SecurityConfig {
 
     @Bean
     public AuthenticationManager authenticationManager(UserDetailsService userDetailsService,
-                                                       PasswordEncoder passwordEncoder)  {
+                                                       PasswordEncoder passwordEncoder) {
         DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
         provider.setUserDetailsService(userDetailsService);
         provider.setPasswordEncoder(passwordEncoder);
