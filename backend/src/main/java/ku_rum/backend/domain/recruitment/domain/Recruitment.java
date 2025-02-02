@@ -13,8 +13,11 @@ import org.checkerframework.checker.units.qual.C;
 @Table(name = "recruitment")
 public class Recruitment extends BaseEntity {
     @Id
-    @Column(length = 1024, nullable = false)
-    private String url; // 공지사항 URL을 Primary Key로 사용
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @Column(length = 1024, nullable = false, unique = true)
+    private String url;
 
     @Column(nullable = false)
     private String title;

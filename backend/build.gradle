@@ -65,8 +65,8 @@ dependencies {
 	implementation 'org.seleniumhq.selenium:selenium-java:4.12.1'
 
 	// WebDriver Manager (드라이버 자동 관리)
-	implementation 'io.github.bonigarcia:webdrivermanager:5.7.0'
-	implementation 'org.jsoup:jsoup:1.15.3'
+//	implementation 'io.github.bonigarcia:webdrivermanager:5.7.0'
+//	implementation 'org.jsoup:jsoup:1.15.3'
 
 	// JWT
 	implementation 'io.jsonwebtoken:jjwt-api:0.12.3'
