@@ -37,8 +37,6 @@ dependencies {
 	compileOnly 'org.projectlombok:lombok:1.18.22'
 	annotationProcessor 'org.projectlombok:lombok:1.18.22'
 
-	compileOnly 'org.projectlombok:lombok:1.18.22'
-	annotationProcessor 'org.projectlombok:lombok:1.18.22'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	runtimeOnly 'com.h2database:h2'
 	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
@@ -64,7 +62,7 @@ dependencies {
 	implementation 'io.github.bonigarcia:webdrivermanager:5.7.0'
 
 	// Selenium Java
-	implementation 'org.seleniumhq.selenium:selenium-java:4.8.0'
+	implementation 'org.seleniumhq.selenium:selenium-java:4.12.1'
 
 	// WebDriver Manager (드라이버 자동 관리)
 //	implementation 'io.github.bonigarcia:webdrivermanager:5.7.0'
