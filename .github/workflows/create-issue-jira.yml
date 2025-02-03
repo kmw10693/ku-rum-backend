@@ -52,10 +52,3 @@ jobs:
 
       - name: Log created issue
         run: echo "Jira Issue ${{ steps.create.outputs.issue }} was created"
-
-      - name: Update issue title
-        uses: actions-cool/issues-helper@v3
-        with:
-          actions: "update-issue"
-          token: ${{ secrets.GITHUB_TOKEN }}
-          title: "${{ steps.create.outputs.issue }} ${{ github.event.issue.title }}"
