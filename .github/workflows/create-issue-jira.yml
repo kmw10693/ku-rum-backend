@@ -52,3 +52,20 @@ jobs:
 
       - name: Log created issue
         run: echo "Jira Issue ${{ steps.create.outputs.issue }} was created"
+
+      - name: Change Issue Name (Github repository)
+        uses: actions-cool/issues-helper@v3
+        with:
+          actions: 'update-issue'
+          token: ${{ secrets.GITHUB_TOKEN }}
+          title: '[${{ steps.create.outputs.issue }}] ${{ github.event.issue.title }}'
+
+      - name: Comment Jira Branch to issues
+        uses: actions-cool/issues-helper@v3
+        with:
+          actions: 'create-comment'
+          token: ${{ secrets.GITHUB_TOKEN }}
+          issue-number: ${{ github.event.issue.number }}
+          body: |
+            Jira Issue Created: [${{ steps.create.outputs.issue }}](${{ secrets.JIRA_BASE_URL }}/browse/${{ steps.create.outputs.issue }})
+            Branch Name: ${{env.BRANCH_NAME}}
