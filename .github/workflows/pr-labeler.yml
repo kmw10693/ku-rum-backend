@@ -15,6 +15,7 @@ jobs:
     # 리파지토리에 대한 권한 설정
     permissions:
       contents: read
+      issues: write
       pull-requests: write
     steps:
       - name: Check Labels
