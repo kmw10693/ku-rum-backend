@@ -31,10 +31,10 @@ def _calculate_d_day(created_at: datetime.datetime) -> str:
     now = datetime.datetime.now(created_at.tzinfo)
     days_passed = (now - created_at).days
 
-    if days_passed >= 5:
+    if days_passed >= 7:
         return "D-0"
     else:
-        return f"D-{5 - days_passed}"
+        return f"D-{7 - days_passed}"
 
 ### 라벨 태그
 def set_pull_requests_tags():
@@ -73,19 +73,6 @@ def _get_total_pull_requests():
 
     return count,pull_requests_list
 
-### 라벨 감소
-# def _set_label_decrease(pull, before_label) -> str:
-#     if before_label == "D-5":
-#         return _set_label_with_color(pull, "D-4")
-#     elif before_label == "D-4":
-#         return _set_label_with_color(pull, "D-3")
-#     elif before_label == "D-3":
-#         return _set_label_with_color(pull, "D-2")
-#     elif before_label == "D-2":
-#         return _set_label_with_color(pull, "D-1")
-#     else:
-#         return _set_label_with_color(pull, "D-0")
-
 ### 최종 리턴되는 메시지 함수
 def set_pull_requests_tags():
     cnt, pulls = _get_total_pull_requests()
@@ -107,15 +94,9 @@ def set_pull_requests_tags():
         pr_link = _make_pr_link_with_no(pull.number)
 
         if not d_label:
-            # D- 라벨이 없다면 D-7로 설정
-            pull.set_labels("D-7")
-            pr_msg_to_discord += f"[[D-7] {pull.title}]({pr_link})\n"
-        elif d_label.name == "D-0":
-            # D-0 label case
-            pr_msg_to_discord += f"[[D-0] {pull.title}]({pr_link})\n"
+            print("D- 라벨이 없습니다.")
         else:
             label = d_label.name
-
             pr_msg_to_discord += f"[[{label}] {pull.title}]({pr_link})\n"
 
     return pr_msg_to_discord
