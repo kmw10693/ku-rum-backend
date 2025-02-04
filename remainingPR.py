@@ -8,6 +8,7 @@ import os
 private_access_token = os.environ['ACCESS_TOKEN']
 DISCORD_URL = os.environ['DISCORD_WEBHOOK']
 
+
 if not private_access_token:
     raise ValueError("환경 변수 'ACCESS_TOKEN'이 설정되지 않았습니다.")
 
@@ -94,7 +95,7 @@ def set_pull_requests_tags():
         pr_link = _make_pr_link_with_no(pull.number)
 
         if not d_label:
-            print("D- 라벨이 없습니다.")
+            print("라벨이 없습니다.")
         else:
             label = d_label.name
             pr_msg_to_discord += f"[[{label}] {pull.title}]({pr_link})\n"
@@ -106,6 +107,8 @@ def discord_send_message(text):
     value = set_pull_requests_tags()
     print(value)
     now = datetime.datetime.now()
+    now_kst = now + datetime.timedelta(hours=9)  # KST 변환
+
     message = {
         "content": "",  # 메인 메시지는 비워두고
         "embeds": [{
@@ -113,7 +116,7 @@ def discord_send_message(text):
             "description": str(text),
             "color": 5814783,  # 푸른색 계열
             "footer": {
-                "text": f"알림 시각: {now.strftime('%Y-%m-%d %H:%M:%S')}"
+                "text": f"알림 시각: {now_kst.strftime('%Y-%m-%d %H:%M:%S')} (KST)"
             },
             "fields": [
                 {
