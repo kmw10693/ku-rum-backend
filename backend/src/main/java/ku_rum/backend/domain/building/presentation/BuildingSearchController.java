@@ -5,10 +5,15 @@ import jakarta.validation.constraints.NotNull;
 import ku_rum.backend.domain.building.dto.response.BuildingResponse;
 import ku_rum.backend.domain.building.application.BuildingSearchService;
 import ku_rum.backend.domain.category.dto.response.CategoryDetailResponse;
+import ku_rum.backend.domain.user.application.UserService;
+import ku_rum.backend.domain.user.domain.repository.UserRepository;
 import ku_rum.backend.global.response.BaseResponse;
 import ku_rum.backend.global.response.status.BaseExceptionResponseStatus;
+import ku_rum.backend.global.security.jwt.CustomUserDetails;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.antlr.v4.runtime.Token;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -23,6 +28,7 @@ import java.util.Optional;
 public class BuildingSearchController {
 
   private final BuildingSearchService buildingSearchService;
+  private final UserService userService;
 
   /**
    * 전체 강의실의 핀포인트 조회
@@ -30,7 +36,8 @@ public class BuildingSearchController {
    * @return
    */
   @GetMapping
-  public BaseResponse viewAll() {
+  public BaseResponse viewAll(@AuthenticationPrincipal CustomUserDetails userDetails) {
+    userService.validateUserDetails(userDetails);
     List<BuildingResponse> results = buildingSearchService.findAllBuildings();
     return BaseResponse.of(BaseExceptionResponseStatus.SUCCESS.getStatus(),results);
   }
@@ -42,7 +49,8 @@ public class BuildingSearchController {
    * @return
    */
   @GetMapping("/searchNumber")
-  public BaseResponse<BuildingResponse> viewBuildingByNumber(@RequestParam("number")@NotNull @Min(1)  Long number) {
+  public BaseResponse<BuildingResponse> viewBuildingByNumber(@AuthenticationPrincipal CustomUserDetails userDetails, @RequestParam("number")@NotNull @Min(1)  Long number) {
+    userService.validateUserDetails(userDetails);
     BuildingResponse result = buildingSearchService.viewBuildingByNumber(number);
     return BaseResponse.of(BaseExceptionResponseStatus.SUCCESS.getStatus(), result);
   }
@@ -54,7 +62,8 @@ public class BuildingSearchController {
    * @return
    */
   @GetMapping("/searchName")
-  public BaseResponse<BuildingResponse> viewBuildingByName(@RequestParam("name")@NotNull String name){
+  public BaseResponse<BuildingResponse> viewBuildingByName(@AuthenticationPrincipal CustomUserDetails userDetails, @RequestParam("name")@NotNull String name){
+    userService.validateUserDetails(userDetails);
     BuildingResponse result = buildingSearchService.viewBuildingByName(name.trim());
     return BaseResponse.of(BaseExceptionResponseStatus.SUCCESS.getStatus(), result);
   }
@@ -66,23 +75,26 @@ public class BuildingSearchController {
    * @return
    */
   @GetMapping("/{category}")
-  public BaseResponse<List> viewBuildingByCategory(@PathVariable("category") String category){
+  public BaseResponse<List> viewBuildingByCategory(@AuthenticationPrincipal CustomUserDetails userDetails, @PathVariable("category") String category){
+    userService.validateUserDetails(userDetails);
     List<BuildingResponse> categoryList = buildingSearchService.viewBuildingByCategory(category.trim());
     return BaseResponse.of(BaseExceptionResponseStatus.SUCCESS.getStatus(), categoryList);
   }
 
   /**
    * 카테고리에 해당하는 특정 핀포인트 디테일 정보 확인 (학생식당, K-CUBE/K-HUB)
-   * 
+   *
    * @param category
    * @param buildingId
    * @return
    */
   @GetMapping("/{buildingId}/{category}")
-  public BaseResponse<CategoryDetailResponse> viewBuildingByCategory(
+  public BaseResponse<CategoryDetailResponse> viewBuildingByCategoryInBuilding(
+          @AuthenticationPrincipal CustomUserDetails userDetails,
           @PathVariable("category") String category,
           @PathVariable("buildingId") Long buildingId
-          ){
+  ){
+    userService.validateUserDetails(userDetails);
     CategoryDetailResponse categoryDetailResponse = buildingSearchService.viewBuildingDetailByCategory(category,buildingId);
     return BaseResponse.of(BaseExceptionResponseStatus.SUCCESS.getStatus(), categoryDetailResponse);
   }
