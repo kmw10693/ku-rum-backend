@@ -86,7 +86,7 @@ public class BuildingSearchController {
    * 카테고리에 해당하는 특정 핀포인트 디테일 정보 확인 (학생식당, K-CUBE/K-HUB)
    *
    * @param userDetails
-   * @param String
+   * @param request
    * @return
    */
   @PostMapping()

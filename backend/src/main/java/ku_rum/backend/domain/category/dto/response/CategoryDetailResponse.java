@@ -9,6 +9,6 @@ import java.util.Optional;
 public record CategoryDetailResponse<T> (
         String category,
         Long floor,
-        Optional<List<T>> detailList
+        List<T> detailList
 ){
 }

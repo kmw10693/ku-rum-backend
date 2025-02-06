@@ -12,6 +12,8 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 import java.util.Optional;
 
+import static ku_rum.backend.domain.buildingCategory.domain.QBuildingCategory.buildingCategory;
+
 @Repository
 @RequiredArgsConstructor
 @Slf4j
@@ -21,7 +23,7 @@ public class BuildingCategoryQueryRepository {
   EntityManager entityManager;
 
   public List<Long> findBuildingCategoryIds(List<Long> categoryIds) {
-    QBuildingCategory qBuildingCategory = QBuildingCategory.buildingCategory;
+    QBuildingCategory qBuildingCategory = buildingCategory;
 
     // categoryIds에 포함된 category_id에 해당하는 building_id를 조회
     return queryFactory
@@ -41,7 +43,7 @@ public class BuildingCategoryQueryRepository {
   }
 
   public List<Long> findByBuildingIds(List<Long> buildingIds) {
-    QBuildingCategory qBuildingCategory = QBuildingCategory.buildingCategory;
+    QBuildingCategory qBuildingCategory = buildingCategory;
     List<Long> result = queryFactory
             .select(qBuildingCategory.id)
             .from(qBuildingCategory)
@@ -57,5 +59,15 @@ public class BuildingCategoryQueryRepository {
     return Optional.ofNullable(entityManager.createQuery(query, BuildingCategory.class)
             .setParameter("id", id)
             .getSingleResult());
+  }
+
+  public Optional<BuildingCategory> findByBuildingAndCategoryId(Long buildingId, Long categoryId) {
+    return Optional.ofNullable(
+            queryFactory
+                    .selectFrom(buildingCategory)
+                    .where(buildingCategory.building.id.eq(buildingId))
+                    .where(buildingCategory.category.id.eq(categoryId))
+                    .fetchOne()
+    );
   }
 }
