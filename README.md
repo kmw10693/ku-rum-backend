@@ -22,3 +22,4 @@
 #### Deploy - <img src="https://img.shields.io/badge/Github Actions-2088FF?style=for-the-sociak&logo=githubactions&logoColor=white"> <img src="https://img.shields.io/badge/Docker-2496ED?style=for-the-sociak&logo=docker&logoColor=white">
 #### API Docs - <img src ="https://img.shields.io/badge/restdocs-green">
 #### Test - <img src="https://img.shields.io/badge/JUnit5-25A162?style=for-the-sociak&logo=junit5&logoColor=white"> <img src="https://img.shields.io/badge/RestAssured-25A162"> <img src="https://img.shields.io/badge/CodeCov-F01F7A?style=for-the-sociak&logo=codecov&logoColor=white">
+
