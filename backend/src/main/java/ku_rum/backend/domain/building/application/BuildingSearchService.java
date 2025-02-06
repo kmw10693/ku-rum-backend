@@ -128,26 +128,12 @@ public class BuildingSearchService {
     // 필요한 정보들
     Long floor_info = building.getFloor();
     List<MenuSimpleResponse> menuList_info = null;
-    log.info("[category ID : {} , building ID : {}", categoryData.getId(), building.getId());
 
-//    if (!category.equals(CategoryDetail.KCUBE.name())) { //KCUBE 카테고리가 아니면
-//      menuList_info = buildingCategoryQueryRepository.findByBuildingAndCategoryId(building.getId(), categoryData.getId())
-//              .map(buildingCategory -> menuQueryRepository.findAllByCategoryId(categoryData.getId()))
-//              .orElse(Collections.emptyList());
-//
-//    }
-    if (!category.equals(CategoryDetail.KCUBE.name())) { // KCUBE 카테고리가 아니면
-      Optional<BuildingCategory> buildingCategoryOptional = buildingCategoryQueryRepository.findByBuildingAndCategoryId(building.getId(), categoryData.getId());
-
-      log.info("Query result - BuildingCategory: {}", buildingCategoryOptional);
-
-      menuList_info = buildingCategoryOptional
-              .map(buildingCategory -> {
-                List<MenuSimpleResponse> menus = menuQueryRepository.findAllByCategoryId(categoryData.getId());
-                log.info("Query result - MenuSimpleResponse List: {}", menus);
-                return menus;
-              })
+    if (!category.equals(CategoryDetail.KCUBE.name())) { //KCUBE 카테고리가 아니면
+      menuList_info = buildingCategoryQueryRepository.findByBuildingAndCategoryId(building.getId(), categoryData.getId())
+              .map(buildingCategory -> menuQueryRepository.findAllByCategoryId(categoryData.getId()))
               .orElse(Collections.emptyList());
+
     }
 
     return CategoryDetailResponse.<MenuSimpleResponse>builder()

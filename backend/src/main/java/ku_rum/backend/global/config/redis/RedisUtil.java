@@ -2,11 +2,12 @@ package ku_rum.backend.global.config.redis;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.Duration;
 
-@RestController
+@Component
 @RequiredArgsConstructor
 public class RedisUtil {
 
