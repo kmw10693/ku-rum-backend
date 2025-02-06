@@ -436,11 +436,77 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 @media amzn-kf8{#header,#content,#footnotes,#footer{padding:0}}
 </style>
 </head>
-<body class="article">
+<body class="article toc2 toc-left">
 <div id="header">
 <h1>KU:ROOM &gt; Building API</h1>
 <div class="details">
 <span id="revnumber">version 0.0.1-SNAPSHOT</span>
+</div>
+<div id="toc" class="toc2">
+<div id="toctitle">Table of Contents</div>
+<ul class="sectlevel1">
+<li><a href="#_1_api_설명">1. API 설명</a>
+<ul class="sectlevel2">
+<li><a href="#overview-http-status-codes">HTTP status codes</a></li>
+</ul>
+</li>
+<li><a href="#_2_api_상세">2. API 상세</a>
+<ul class="sectlevel2">
+<li><a href="#_2_1_모든_빌딩의_정보를_출력한다_get_apiv1buildingsview">2-1. 모든 빌딩의 정보를 출력한다. (GET /api/v1/buildings/view)</a>
+<ul class="sectlevel3">
+<li><a href="#_요청">요청</a></li>
+<li><a href="#_응답">응답</a></li>
+<li><a href="#_응답_필드">응답 필드</a></li>
+</ul>
+</li>
+<li><a href="#_2_2_특정_건물번호로_해당_건물정보를_출력한다_get_apiv1buildingsviewsearchnumbernumber21">2-2. 특정 건물번호로 해당 건물정보를 출력한다. (GET /api/v1/buildings/view/searchNumber?number=21)</a>
+<ul class="sectlevel3">
+<li><a href="#_요청_2">요청</a></li>
+<li><a href="#_응답_2">응답</a></li>
+<li><a href="#_응답_필드_2">응답 필드</a></li>
+</ul>
+</li>
+<li><a href="#_2_3_특정_건물번호로_해당_건물정보를_출력한다_get_apiv1buildingsviewsearchnumbernumber21">2-3. 특정 건물번호로 해당 건물정보를 출력한다. (GET /api/v1/buildings/view/searchNumber?number=21)</a>
+<ul class="sectlevel3">
+<li><a href="#_요청_3">요청</a></li>
+<li><a href="#_응답_3">응답</a></li>
+<li><a href="#_응답_필드_3">응답 필드</a></li>
+</ul>
+</li>
+<li><a href="#_2_4_특정_카테고리명으로_해당되는_건물정보들을_출력한다_get_apiv1buildingsview레스티오">2-4. 특정 카테고리명으로 해당되는 건물정보들을 출력한다. (GET /api/v1/buildings/view/레스티오)</a>
+<ul class="sectlevel3">
+<li><a href="#_요청_4">요청</a></li>
+<li><a href="#_응답_4">응답</a></li>
+<li><a href="#_응답_필드_4">응답 필드</a></li>
+</ul>
+</li>
+<li><a href="#_2_5_특정_카테고리명과_건물번호로_해당_카테고리의_디테일_정보를_출력한다_post_apiv1buildingsview">2-5. 특정 카테고리명과 건물번호로 해당 카테고리의 디테일 정보를 출력한다. (POST /api/v1/buildings/view)</a>
+<ul class="sectlevel3">
+<li><a href="#_2_5_1_카테고리명이_cafe_1894">2-5-1. 카테고리명이 cafe 1894</a></li>
+<li><a href="#_요청_5">요청</a></li>
+<li><a href="#_응답_5">응답</a></li>
+<li><a href="#_응답_필드_5">응답 필드</a></li>
+<li><a href="#_2_5_2_카테고리명이_씨유">2-5-2. 카테고리명이 씨유</a></li>
+<li><a href="#_요청_6">요청</a></li>
+<li><a href="#_응답_6">응답</a></li>
+<li><a href="#_응답_필드_6">응답 필드</a></li>
+<li><a href="#_2_5_3_카테고리명이_케이큐브">2-5-3. 카테고리명이 케이큐브</a></li>
+<li><a href="#_요청_7">요청</a></li>
+<li><a href="#_응답_7">응답</a></li>
+<li><a href="#_응답_필드_7">응답 필드</a></li>
+<li><a href="#_2_5_4_카테고리명이_레스티오">2-5-4. 카테고리명이 레스티오</a></li>
+<li><a href="#_요청_8">요청</a></li>
+<li><a href="#_응답_8">응답</a></li>
+<li><a href="#_응답_필드_8">응답 필드</a></li>
+<li><a href="#_2_5_5_카테고리명이_학생식당">2-5-5. 카테고리명이 학생식당</a></li>
+<li><a href="#_요청_9">요청</a></li>
+<li><a href="#_응답_9">응답</a></li>
+<li><a href="#_응답_필드_9">응답 필드</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
 </div>
 </div>
 <div id="content">
@@ -509,6 +575,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div class="sect3">
 <h4 id="_요청"><a class="link" href="#_요청">요청</a></h4>
 <div class="listingblock">
+<div class="title">request</div>
 <div class="content">
 <pre class="highlight nowrap"><code class="language-http" data-lang="http">GET /api/v1/buildings/view HTTP/1.1
 Content-Type: application/json</code></pre>
@@ -518,6 +585,7 @@ Content-Type: application/json</code></pre>
 <div class="sect3">
 <h4 id="_응답"><a class="link" href="#_응답">응답</a></h4>
 <div class="listingblock">
+<div class="title">response</div>
 <div class="content">
 <pre class="highlight nowrap"><code class="language-http" data-lang="http">HTTP/1.1 200 OK
 Content-Type: application/json
@@ -615,6 +683,7 @@ Content-Type: application/json
 <div class="sect3">
 <h4 id="_요청_2"><a class="link" href="#_요청_2">요청</a></h4>
 <div class="listingblock">
+<div class="title">request</div>
 <div class="content">
 <pre class="highlight nowrap"><code class="language-http" data-lang="http">GET /api/v1/buildings/view/searchNumber?number=21 HTTP/1.1
 Content-Type: application/json</code></pre>
@@ -624,6 +693,7 @@ Content-Type: application/json</code></pre>
 <div class="sect3">
 <h4 id="_응답_2"><a class="link" href="#_응답_2">응답</a></h4>
 <div class="listingblock">
+<div class="title">response</div>
 <div class="content">
 <pre class="highlight nowrap"><code class="language-http" data-lang="http">HTTP/1.1 200 OK
 Content-Type: application/json
@@ -714,6 +784,7 @@ Content-Type: application/json
 <div class="sect3">
 <h4 id="_요청_3"><a class="link" href="#_요청_3">요청</a></h4>
 <div class="listingblock">
+<div class="title">request</div>
 <div class="content">
 <pre class="highlight nowrap"><code class="language-http" data-lang="http">GET /api/v1/buildings/view/searchName?name=%EA%B3%B5 HTTP/1.1
 Content-Type: application/json</code></pre>
@@ -723,6 +794,7 @@ Content-Type: application/json</code></pre>
 <div class="sect3">
 <h4 id="_응답_3"><a class="link" href="#_응답_3">응답</a></h4>
 <div class="listingblock">
+<div class="title">response</div>
 <div class="content">
 <pre class="highlight nowrap"><code class="language-http" data-lang="http">HTTP/1.1 200 OK
 Content-Type: application/json
@@ -808,13 +880,662 @@ Content-Type: application/json
 </table>
 </div>
 </div>
+<div class="sect2">
+<h3 id="_2_4_특정_카테고리명으로_해당되는_건물정보들을_출력한다_get_apiv1buildingsview레스티오"><a class="link" href="#_2_4_특정_카테고리명으로_해당되는_건물정보들을_출력한다_get_apiv1buildingsview레스티오">2-4. 특정 카테고리명으로 해당되는 건물정보들을 출력한다. (GET /api/v1/buildings/view/레스티오)</a></h3>
+<div class="sect3">
+<h4 id="_요청_4"><a class="link" href="#_요청_4">요청</a></h4>
+<div class="listingblock">
+<div class="title">request</div>
+<div class="content">
+<pre class="highlight nowrap"><code class="language-http" data-lang="http">GET /api/v1/buildings/view/%EB%A0%88%EC%8A%A4%ED%8B%B0%EC%98%A4 HTTP/1.1
+Content-Type: application/json</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_응답_4"><a class="link" href="#_응답_4">응답</a></h4>
+<div class="listingblock">
+<div class="title">response</div>
+<div class="content">
+<pre class="highlight nowrap"><code class="language-http" data-lang="http">HTTP/1.1 200 OK
+Content-Type: application/json
+
+{
+  "code" : 200,
+  "status" : "OK",
+  "message" : "OK",
+  "data" : [ {
+    "buildingId" : 16,
+    "buildingName" : "공학관",
+    "buildingNumber" : 21,
+    "bulidingAbbreviation" : "공",
+    "latitude" : 37.541822,
+    "longtitude" : 127.078845
+  }, {
+    "buildingId" : 1,
+    "buildingName" : "경영관",
+    "buildingNumber" : 2,
+    "bulidingAbbreviation" : "경영",
+    "latitude" : 37.544419,
+    "longtitude" : 127.07637
+  } ]
+}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_응답_필드_4"><a class="link" href="#_응답_필드_4">응답 필드</a></h4>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 33.3333%;">
+<col style="width: 33.3333%;">
+<col style="width: 33.3334%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Path</th>
+<th class="tableblock halign-left valign-top">Type</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>code</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>NUMBER</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">성공시 반환 코드 (200)</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>status</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>STRING</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">올바른 인증코드 시 상태 값 (OK)</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>message</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>STRING</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">올바른 인증코드 시 메시지 (OK)</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data[].buildingId</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>NUMBER</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">빌딩 ID</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data[].buildingName</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>STRING</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">빌딩 이름</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data[].buildingNumber</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>NUMBER</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">빌딩 번호</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data[].bulidingAbbreviation</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>STRING</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">빌딩 약어</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data[].latitude</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>NUMBER</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">위도</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data[].longtitude</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>NUMBER</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">경도</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_2_5_특정_카테고리명과_건물번호로_해당_카테고리의_디테일_정보를_출력한다_post_apiv1buildingsview"><a class="link" href="#_2_5_특정_카테고리명과_건물번호로_해당_카테고리의_디테일_정보를_출력한다_post_apiv1buildingsview">2-5. 특정 카테고리명과 건물번호로 해당 카테고리의 디테일 정보를 출력한다. (POST /api/v1/buildings/view)</a></h3>
+<div class="sect3">
+<h4 id="_2_5_1_카테고리명이_cafe_1894"><a class="link" href="#_2_5_1_카테고리명이_cafe_1894">2-5-1. 카테고리명이 cafe 1894</a></h4>
+
+</div>
+<div class="sect3">
+<h4 id="_요청_5"><a class="link" href="#_요청_5">요청</a></h4>
+<div class="listingblock">
+<div class="title">request</div>
+<div class="content">
+<pre class="highlight nowrap"><code class="language-http" data-lang="http">POST /api/v1/buildings/view HTTP/1.1
+Content-Type: application/json
+
+{
+  "category" : "1894카페",
+  "buildingId" : 5
+}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_응답_5"><a class="link" href="#_응답_5">응답</a></h4>
+<div class="listingblock">
+<div class="title">response</div>
+<div class="content">
+<pre class="highlight nowrap"><code class="language-http" data-lang="http">HTTP/1.1 200 OK
+Content-Type: application/json
+
+{
+  "code" : 200,
+  "status" : "OK",
+  "message" : "OK",
+  "data" : {
+    "category" : "1894카페",
+    "floor" : 1,
+    "detailList" : [ {
+      "name" : "아메리카노",
+      "price" : 3000,
+      "imageUrl" : "아메리카노url"
+    }, {
+      "name" : "카페라떼",
+      "price" : 3500,
+      "imageUrl" : "카페라떼url"
+    }, {
+      "name" : "카푸치노",
+      "price" : 4000,
+      "imageUrl" : "카푸치노url"
+    }, {
+      "name" : "초코라떼",
+      "price" : 4500,
+      "imageUrl" : "초코라떼url"
+    } ]
+  }
+}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_응답_필드_5"><a class="link" href="#_응답_필드_5">응답 필드</a></h4>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 33.3333%;">
+<col style="width: 33.3333%;">
+<col style="width: 33.3334%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Path</th>
+<th class="tableblock halign-left valign-top">Type</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>code</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>NUMBER</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">성공시 반환 코드 (200)</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>status</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>STRING</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">응답 상태</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>message</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>STRING</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">응답 메시지</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.category</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>STRING</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">카테고리명</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.floor</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>NUMBER</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">해당 층</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.detailList[].name</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>STRING</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">메뉴 이름</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.detailList[].price</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>NUMBER</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">메뉴 가격</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.detailList[].imageUrl</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>STRING</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">메뉴 이미지 URL</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect3">
+<h4 id="_2_5_2_카테고리명이_씨유"><a class="link" href="#_2_5_2_카테고리명이_씨유">2-5-2. 카테고리명이 씨유</a></h4>
+
+</div>
+<div class="sect3">
+<h4 id="_요청_6"><a class="link" href="#_요청_6">요청</a></h4>
+<div class="listingblock">
+<div class="title">request</div>
+<div class="content">
+<pre class="highlight nowrap"><code class="language-http" data-lang="http">POST /api/v1/buildings/view HTTP/1.1
+Content-Type: application/json
+
+{
+  "category" : "씨유편의점",
+  "buildingId" : 3
+}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_응답_6"><a class="link" href="#_응답_6">응답</a></h4>
+<div class="listingblock">
+<div class="title">response</div>
+<div class="content">
+<pre class="highlight nowrap"><code class="language-http" data-lang="http">HTTP/1.1 200 OK
+Content-Type: application/json
+
+{
+  "code" : 200,
+  "status" : "OK",
+  "message" : "OK",
+  "data" : {
+    "category" : "씨유편의점",
+    "floor" : 1,
+    "detailList" : [ {
+      "name" : "삼각김밥",
+      "price" : 1200,
+      "imageUrl" : "삼각김밥url"
+    } ]
+  }
+}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_응답_필드_6"><a class="link" href="#_응답_필드_6">응답 필드</a></h4>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 33.3333%;">
+<col style="width: 33.3333%;">
+<col style="width: 33.3334%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Path</th>
+<th class="tableblock halign-left valign-top">Type</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>code</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>NUMBER</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">성공시 반환 코드 (200)</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>status</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>STRING</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">응답 상태</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>message</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>STRING</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">응답 메시지</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.category</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>STRING</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">카테고리명</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.floor</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>NUMBER</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">해당 층</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.detailList[].name</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>STRING</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">상품명</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.detailList[].price</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>NUMBER</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">상품 가격</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.detailList[].imageUrl</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>STRING</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">상품 이미지 URL</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect3">
+<h4 id="_2_5_3_카테고리명이_케이큐브"><a class="link" href="#_2_5_3_카테고리명이_케이큐브">2-5-3. 카테고리명이 케이큐브</a></h4>
+
+</div>
+<div class="sect3">
+<h4 id="_요청_7"><a class="link" href="#_요청_7">요청</a></h4>
+<div class="listingblock">
+<div class="title">request</div>
+<div class="content">
+<pre class="highlight nowrap"><code class="language-http" data-lang="http">POST /api/v1/buildings/view HTTP/1.1
+Content-Type: application/json
+
+{
+  "category" : "케이큐브",
+  "buildingId" : 1
+}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_응답_7"><a class="link" href="#_응답_7">응답</a></h4>
+<div class="listingblock">
+<div class="title">response</div>
+<div class="content">
+<pre class="highlight nowrap"><code class="language-http" data-lang="http">HTTP/1.1 200 OK
+Content-Type: application/json
+
+{
+  "code" : 200,
+  "status" : "OK",
+  "message" : "OK",
+  "data" : {
+    "category" : "케이큐브",
+    "floor" : 1,
+    "detailList" : [ ]
+  }
+}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_응답_필드_7"><a class="link" href="#_응답_필드_7">응답 필드</a></h4>
+<table class="tableblock frame-all grid-all stretch">
+<caption class="title">Table 1. request</caption>
+<colgroup>
+<col style="width: 33.3333%;">
+<col style="width: 33.3333%;">
+<col style="width: 33.3334%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Path</th>
+<th class="tableblock halign-left valign-top">Type</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>code</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>NUMBER</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">성공시 반환 코드 (200)</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>status</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>STRING</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">응답 상태</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>message</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>STRING</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">응답 메시지</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.category</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>STRING</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">카테고리명</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.floor</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>NUMBER</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">해당 층 (지하 -1)</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.detailList</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>NULL</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">해당 카테고리에 대한 상세 정보 (없을 경우 빈 배열</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect3">
+<h4 id="_2_5_4_카테고리명이_레스티오"><a class="link" href="#_2_5_4_카테고리명이_레스티오">2-5-4. 카테고리명이 레스티오</a></h4>
+
+</div>
+<div class="sect3">
+<h4 id="_요청_8"><a class="link" href="#_요청_8">요청</a></h4>
+<div class="listingblock">
+<div class="title">request</div>
+<div class="content">
+<pre class="highlight nowrap"><code class="language-http" data-lang="http">POST /api/v1/buildings/view HTTP/1.1
+Content-Type: application/json
+
+{
+  "category" : "레스티오",
+  "buildingId" : 4
+}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_응답_8"><a class="link" href="#_응답_8">응답</a></h4>
+<div class="listingblock">
+<div class="title">response</div>
+<div class="content">
+<pre class="highlight nowrap"><code class="language-http" data-lang="http">HTTP/1.1 200 OK
+Content-Type: application/json
+
+{
+  "code" : 200,
+  "status" : "OK",
+  "message" : "OK",
+  "data" : {
+    "category" : "레스티오",
+    "floor" : 2,
+    "detailList" : [ {
+      "name" : "파스타",
+      "price" : 9500,
+      "imageUrl" : "파스타url"
+    }, {
+      "name" : "스테이크",
+      "price" : 20000,
+      "imageUrl" : "스테이크url"
+    }, {
+      "name" : "리조또",
+      "price" : 13000,
+      "imageUrl" : "리조또url"
+    }, {
+      "name" : "샐러드",
+      "price" : 8000,
+      "imageUrl" : "샐러드url"
+    } ]
+  }
+}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_응답_필드_8"><a class="link" href="#_응답_필드_8">응답 필드</a></h4>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 33.3333%;">
+<col style="width: 33.3333%;">
+<col style="width: 33.3334%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Path</th>
+<th class="tableblock halign-left valign-top">Type</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>code</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>NUMBER</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">성공시 반환 코드 (200)</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>status</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>STRING</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">응답 상태</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>message</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>STRING</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">응답 메시지</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.category</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>STRING</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">카테고리명</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.floor</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>NUMBER</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">해당 층</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.detailList[].name</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>STRING</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">메뉴 이름</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.detailList[].price</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>NUMBER</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">메뉴 가격</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.detailList[].imageUrl</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>STRING</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">메뉴 이미지 URL</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect3">
+<h4 id="_2_5_5_카테고리명이_학생식당"><a class="link" href="#_2_5_5_카테고리명이_학생식당">2-5-5. 카테고리명이 학생식당</a></h4>
+
+</div>
+<div class="sect3">
+<h4 id="_요청_9"><a class="link" href="#_요청_9">요청</a></h4>
+<div class="listingblock">
+<div class="title">request</div>
+<div class="content">
+<pre class="highlight nowrap"><code class="language-http" data-lang="http">POST /api/v1/buildings/view HTTP/1.1
+Content-Type: application/json
+
+{
+  "category" : "학생 식당",
+  "buildingId" : 21
+}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_응답_9"><a class="link" href="#_응답_9">응답</a></h4>
+<div class="listingblock">
+<div class="title">response</div>
+<div class="content">
+<pre class="highlight nowrap"><code class="language-http" data-lang="http">HTTP/1.1 200 OK
+Content-Type: application/json
+
+{
+  "code" : 200,
+  "status" : "OK",
+  "message" : "OK",
+  "data" : {
+    "category" : "학생 식당",
+    "floor" : -1,
+    "detailList" : [ {
+      "name" : "마라탕",
+      "price" : 4000,
+      "imageUrl" : "마라탕url"
+    }, {
+      "name" : "쌀국수",
+      "price" : 4500,
+      "imageUrl" : "쌀국수url"
+    }, {
+      "name" : "순대",
+      "price" : 3000,
+      "imageUrl" : "순대url"
+    }, {
+      "name" : "소금삼겹",
+      "price" : 2500,
+      "imageUrl" : "소금삼겹url"
+    } ]
+  }
+}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_응답_필드_9"><a class="link" href="#_응답_필드_9">응답 필드</a></h4>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 33.3333%;">
+<col style="width: 33.3333%;">
+<col style="width: 33.3334%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Path</th>
+<th class="tableblock halign-left valign-top">Type</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>code</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>NUMBER</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">성공시 반환 코드 (200)</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>status</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>STRING</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">응답 상태</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>message</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>STRING</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">응답 메시지</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.category</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>STRING</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">카테고리명</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.floor</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>NUMBER</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">해당 층 (지하 -1)</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.detailList[].name</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>STRING</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">메뉴 이름</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.detailList[].price</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>NUMBER</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">메뉴 가격</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.detailList[].imageUrl</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>STRING</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">메뉴 이미지 URL</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 </div>
 </div>
 </div>
 <div id="footer">
 <div id="footer-text">
 Version 0.0.1-SNAPSHOT<br>
-Last updated 2025-02-07 01:50:17 +0900
+Last updated 2025-02-07 04:18:59 +0900
 </div>
 </div>
 </body>

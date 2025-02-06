@@ -320,7 +320,7 @@ class BuildingSearchControllerTest extends RestDocsTestSupport {
 
     @DisplayName("카테고리명에 따라서 분류")
     @Nested
-    class CategoryIsSTUDENT_CAFETERIA {
+    class CategoryIs {
 
       @DisplayName("1) 카테고리명이 '학생 식당'인 경우")
       @Test
