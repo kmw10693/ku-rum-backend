@@ -1,9 +1,12 @@
 package ku_rum.backend.global.config.security;
 
+import lombok.Getter;
+
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
+@Getter
 public enum AuthorizationList {
     LIST(Collections.unmodifiableList(Arrays.asList(
             "/api/v1/auth/login",
@@ -14,18 +17,13 @@ public enum AuthorizationList {
             "/api/v1/users/reset-account"
     )));
 
-    private List<String> authorities;
+    private final List<String> authorities;
 
     AuthorizationList(List<String> authorities) {
         this.authorities = authorities;
     }
 
-    public List<String> getAuthorities() {
-        return authorities;
-    }
-
-    @Override
-    public String toString() {
-        return String.join(", ", authorities);
+    public String[] getAuthorities() {
+        return authorities.toArray(new String[0]);
     }
 }
