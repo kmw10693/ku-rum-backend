@@ -26,7 +26,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@AutoConfigureRestDocs(outputDir = "target/generated-snippets")
+@AutoConfigureRestDocs
 @WebMvcTest(BuildingSearchController.class)
 class BuildingSearchControllerTest extends RestDocsTestSupport {
 
@@ -42,7 +42,7 @@ class BuildingSearchControllerTest extends RestDocsTestSupport {
   @MockBean
   private RedisUtil redisUtil;
 
-  @DisplayName("모든 빌딩의 정보를 출력한다.")
+  @DisplayName("학교의 모든 건물정보를 출력한다.")
   @Test
   @WithMockUser
   void viewAll() throws Exception {
@@ -112,7 +112,7 @@ class BuildingSearchControllerTest extends RestDocsTestSupport {
   }
 
 
-  @DisplayName("모든 빌딩의 정보를 출력한다.")
+  @DisplayName("특정 건물번호로 해당 건물정보를 출력한다.")
   @Test
   @WithMockUser
   void viewBuildingByNumber() throws Exception {
@@ -123,13 +123,56 @@ class BuildingSearchControllerTest extends RestDocsTestSupport {
             new BuildingResponse(1L, "경영관", 2L, "경영",
                     BigDecimal.valueOf(37.5444190000000), BigDecimal.valueOf(127.0763700000000))
     );
-    given(buildingSearchService.findAllBuildings()).willReturn(mockBuildings);
+    given(buildingSearchService.viewBuildingByNumber(21L)).willReturn(mockBuildings.get(0));
 
     //when then
-    mockMvc.perform(get("/api/v1/buildings/view")
+    mockMvc.perform(get("/api/v1/buildings/view/searchNumber?number=21")
             .contentType(MediaType.APPLICATION_JSON)
+            )
+            .andDo(print())
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$.code").value("200"))
+            .andExpect(jsonPath("$.status").value("OK"))
+            .andExpect(jsonPath("$.message").value("OK"))
 
-    )
+            .andExpect(jsonPath("$.data.buildingId").value(16))
+            .andExpect(jsonPath("$.data.buildingName").value("공학관"))
+            .andExpect(jsonPath("$.data.buildingNumber").value(21))
+            .andExpect(jsonPath("$.data.bulidingAbbreviation").value("공"))
+            .andExpect(jsonPath("$.data.latitude").value(37.541822))
+            .andExpect(jsonPath("$.data.longtitude").value(127.078845))
+
+            .andDo(restDocs.document(
+                    responseFields(
+                            fieldWithPath("code")
+                                    .type(JsonType.NUMBER)
+                                    .description("성공시 반환 코드 (200)"),
+                            fieldWithPath("status")
+                                    .type(JsonType.STRING)
+                                    .description("올바른 인증코드 시 상태 값 (OK)"),
+                            fieldWithPath("message")
+                                    .type(JsonType.STRING)
+                                    .description("올바른 인증코드 시 메시지 (OK)"),
+                            fieldWithPath("data.buildingId")
+                                    .type(JsonType.NUMBER).description("빌딩 ID"),
+                            fieldWithPath("data.buildingName")
+                                    .type(JsonType.STRING)
+                                    .description("빌딩 이름"),
+                            fieldWithPath("data.buildingNumber")
+                                    .type(JsonType.NUMBER)
+                                    .description("빌딩 번호"),
+                            fieldWithPath("data.bulidingAbbreviation")
+                                    .type(JsonType.STRING)
+                                    .description("빌딩 약어"),
+                            fieldWithPath("data.latitude")
+                                    .type(JsonType.NUMBER)
+                                    .description("위도"),
+                            fieldWithPath("data.longtitude")
+                                    .type(JsonType.NUMBER)
+                                    .description("경도")
+                    )));
+
+
 
   }
 
