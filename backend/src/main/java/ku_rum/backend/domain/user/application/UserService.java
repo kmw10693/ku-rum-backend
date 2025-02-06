@@ -47,11 +47,11 @@ public class UserService {
     public UserSaveResponse saveUser(final UserSaveRequest userSaveRequest) {
         validateUser(userSaveRequest);
 
-        String password = passwordEncoder.encode(userSaveRequest.password());
+        String encodedPassword = passwordEncoder.encode(userSaveRequest.password());
         Department department = departmentRepository.findByName(userSaveRequest.department())
                .orElseThrow(() -> new NoSuchDepartmentException(NO_SUCH_DEPARTMENT));
 
-        User user = UserSaveRequest.newUser(userSaveRequest, department, password);
+        User user = UserSaveRequest.newUser(userSaveRequest, department, encodedPassword);
         return UserSaveResponse.from(userRepository.save(user));
     }
 
