@@ -1,10 +1,10 @@
-package ku_rum.backend.domain.building.domain.repository;
+package ku_rum.backend.domain.buildingCategory.domain.repository;
 
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
-import ku_rum.backend.domain.building.domain.BuildingCategory;
-import ku_rum.backend.domain.building.domain.QBuildingCategory;
+import ku_rum.backend.domain.buildingCategory.domain.BuildingCategory;
+import ku_rum.backend.domain.buildingCategory.domain.QBuildingCategory;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Repository;

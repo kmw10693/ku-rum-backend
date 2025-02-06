@@ -4,6 +4,7 @@ import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 import ku_rum.backend.domain.building.dto.response.BuildingResponse;
 import ku_rum.backend.domain.building.application.BuildingSearchService;
+import ku_rum.backend.domain.buildingCategory.dto.request.BuildindgCategoryRequest;
 import ku_rum.backend.domain.category.dto.response.CategoryDetailResponse;
 import ku_rum.backend.domain.user.application.UserService;
 import ku_rum.backend.domain.user.domain.repository.UserRepository;
@@ -84,18 +85,17 @@ public class BuildingSearchController {
   /**
    * 카테고리에 해당하는 특정 핀포인트 디테일 정보 확인 (학생식당, K-CUBE/K-HUB)
    *
-   * @param category
-   * @param buildingId
+   * @param userDetails
+   * @param String
    * @return
    */
-  @GetMapping("/{buildingId}/{category}")
+  @PostMapping()
   public BaseResponse<CategoryDetailResponse> viewBuildingByCategoryInBuilding(
           @AuthenticationPrincipal CustomUserDetails userDetails,
-          @PathVariable("category") String category,
-          @PathVariable("buildingId") Long buildingId
+          @RequestBody BuildindgCategoryRequest  request
   ){
     userService.validateUserDetails(userDetails);
-    CategoryDetailResponse categoryDetailResponse = buildingSearchService.viewBuildingDetailByCategory(category,buildingId);
+    CategoryDetailResponse categoryDetailResponse = buildingSearchService.viewBuildingDetailByCategory(request.category(), request.buildingId());
     return BaseResponse.of(BaseExceptionResponseStatus.SUCCESS.getStatus(), categoryDetailResponse);
   }
 }

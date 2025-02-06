@@ -2,7 +2,7 @@ package ku_rum.backend.global.dataInsert;
 
 import jakarta.annotation.PostConstruct;
 import ku_rum.backend.domain.building.domain.Building;
-import ku_rum.backend.domain.building.domain.repository.BuildingCategoryRepository;
+import ku_rum.backend.domain.buildingCategory.domain.repository.BuildingCategoryRepository;
 import ku_rum.backend.domain.building.domain.repository.BuildingRepository;
 import ku_rum.backend.domain.category.domain.Category;
 import ku_rum.backend.domain.category.domain.repository.CategoryRepository;

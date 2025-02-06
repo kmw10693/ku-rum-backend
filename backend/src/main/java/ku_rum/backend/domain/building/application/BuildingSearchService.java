@@ -2,7 +2,7 @@ package ku_rum.backend.domain.building.application;
 
 import ku_rum.backend.domain.building.domain.Building;
 import ku_rum.backend.domain.building.domain.BuildingAbbrev;
-import ku_rum.backend.domain.building.domain.repository.BuildingCategoryQueryRepository;
+import ku_rum.backend.domain.buildingCategory.domain.repository.BuildingCategoryQueryRepository;
 import ku_rum.backend.domain.building.domain.repository.BuildingQueryRepository;
 import ku_rum.backend.domain.building.domain.repository.BuildingRepository;
 import ku_rum.backend.domain.building.dto.response.BuildingResponse;
