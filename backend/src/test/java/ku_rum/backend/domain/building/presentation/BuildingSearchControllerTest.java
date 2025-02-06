@@ -3,10 +3,14 @@ package ku_rum.backend.domain.building.presentation;
 import ku_rum.backend.config.RestDocsTestSupport;
 import ku_rum.backend.domain.building.application.BuildingSearchService;
 import ku_rum.backend.domain.building.dto.response.BuildingResponse;
+import ku_rum.backend.domain.buildingCategory.dto.request.BuildindgCategoryRequest;
+import ku_rum.backend.domain.category.dto.response.CategoryDetailResponse;
+import ku_rum.backend.domain.menu.response.MenuSimpleResponse;
 import ku_rum.backend.domain.user.application.UserService;
 import ku_rum.backend.global.config.redis.RedisUtil;
 import ku_rum.backend.global.security.jwt.JwtTokenProvider;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.json.JsonType;
 import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
@@ -19,6 +23,7 @@ import java.math.BigDecimal;
 import java.util.List;
 
 import static org.mockito.BDDMockito.given;
+import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.post;
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
 import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -177,4 +182,294 @@ class BuildingSearchControllerTest extends RestDocsTestSupport {
   }
 
 
+  @DisplayName("특정 건물이름/줄임말로 해당 건물정보를 출력한다.")
+  @Test
+  @WithMockUser
+  void viewBuildingByName() throws Exception {
+    // given (Mock 데이터 설정)
+    List<BuildingResponse> mockBuildings = List.of(
+            new BuildingResponse(16L, "공학관", 21L, "공",
+                    BigDecimal.valueOf(37.5418220000000),BigDecimal.valueOf(127.0788450000000)),
+            new BuildingResponse(1L, "경영관", 2L, "경영",
+                    BigDecimal.valueOf(37.5444190000000), BigDecimal.valueOf(127.0763700000000))
+    );
+    given(buildingSearchService.viewBuildingByName("공")).willReturn(mockBuildings.get(0));
+
+    //when then
+    mockMvc.perform(get("/api/v1/buildings/view/searchName?name=공")
+                    .contentType(MediaType.APPLICATION_JSON)
+            )
+            .andDo(print())
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$.code").value("200"))
+            .andExpect(jsonPath("$.status").value("OK"))
+            .andExpect(jsonPath("$.message").value("OK"))
+
+            .andExpect(jsonPath("$.data.buildingId").value(16))
+            .andExpect(jsonPath("$.data.buildingName").value("공학관"))
+            .andExpect(jsonPath("$.data.buildingNumber").value(21))
+            .andExpect(jsonPath("$.data.bulidingAbbreviation").value("공"))
+            .andExpect(jsonPath("$.data.latitude").value(37.541822))
+            .andExpect(jsonPath("$.data.longtitude").value(127.078845))
+
+            .andDo(restDocs.document(
+                    responseFields(
+                            fieldWithPath("code")
+                                    .type(JsonType.NUMBER)
+                                    .description("성공시 반환 코드 (200)"),
+                            fieldWithPath("status")
+                                    .type(JsonType.STRING)
+                                    .description("올바른 인증코드 시 상태 값 (OK)"),
+                            fieldWithPath("message")
+                                    .type(JsonType.STRING)
+                                    .description("올바른 인증코드 시 메시지 (OK)"),
+                            fieldWithPath("data.buildingId")
+                                    .type(JsonType.NUMBER).description("빌딩 ID"),
+                            fieldWithPath("data.buildingName")
+                                    .type(JsonType.STRING)
+                                    .description("빌딩 이름"),
+                            fieldWithPath("data.buildingNumber")
+                                    .type(JsonType.NUMBER)
+                                    .description("빌딩 번호"),
+                            fieldWithPath("data.bulidingAbbreviation")
+                                    .type(JsonType.STRING)
+                                    .description("빌딩 약어"),
+                            fieldWithPath("data.latitude")
+                                    .type(JsonType.NUMBER)
+                                    .description("위도"),
+                            fieldWithPath("data.longtitude")
+                                    .type(JsonType.NUMBER)
+                                    .description("경도")
+                    )));
+
+
+
+  }
+
+
+  @DisplayName("특정 카테고리명으로 해당되는 건물정보들을 출력한다.")
+  @Test
+  @WithMockUser
+  void viewBuildingByCategory() throws Exception {
+    // given (Mock 데이터 설정)
+    List<BuildingResponse> mockBuildings = List.of(
+            new BuildingResponse(16L, "공학관", 21L, "공",
+                    BigDecimal.valueOf(37.5418220000000),BigDecimal.valueOf(127.0788450000000)),
+            new BuildingResponse(1L, "경영관", 2L, "경영",
+                    BigDecimal.valueOf(37.5444190000000), BigDecimal.valueOf(127.0763700000000))
+    );
+    given(buildingSearchService.viewBuildingByCategory("레스티오")).willReturn(mockBuildings);
+
+    //when then
+    mockMvc.perform(get("/api/v1/buildings/view/레스티오")
+                    .contentType(MediaType.APPLICATION_JSON)
+            )
+            .andDo(print())
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$.code").value("200"))
+            .andExpect(jsonPath("$.status").value("OK"))
+            .andExpect(jsonPath("$.message").value("OK"))
+
+            .andExpect(jsonPath("$.data[0].buildingId").value(16))
+            .andExpect(jsonPath("$.data[0].buildingName").value("공학관"))
+            .andExpect(jsonPath("$.data[0].buildingNumber").value(21))
+            .andExpect(jsonPath("$.data[0].bulidingAbbreviation").value("공"))
+            .andExpect(jsonPath("$.data[0].latitude").value(37.541822))
+            .andExpect(jsonPath("$.data[0].longtitude").value(127.078845))
+            .andExpect(jsonPath("$.data[1].buildingId").value(1))
+            .andExpect(jsonPath("$.data[1].buildingName").value("경영관"))
+            .andExpect(jsonPath("$.data[1].buildingNumber").value(2))
+            .andExpect(jsonPath("$.data[1].bulidingAbbreviation").value("경영"))
+            .andExpect(jsonPath("$.data[1].latitude").value(37.544419))
+            .andExpect(jsonPath("$.data[1].longtitude").value(127.076370))
+
+            .andDo(restDocs.document(
+                    responseFields(
+                            fieldWithPath("code")
+                                    .type(JsonType.NUMBER)
+                                    .description("성공시 반환 코드 (200)"),
+                            fieldWithPath("status")
+                                    .type(JsonType.STRING)
+                                    .description("올바른 인증코드 시 상태 값 (OK)"),
+                            fieldWithPath("message")
+                                    .type(JsonType.STRING)
+                                    .description("올바른 인증코드 시 메시지 (OK)"),
+                            fieldWithPath("data[].buildingId")
+                                    .type(JsonType.NUMBER).description("빌딩 ID"),
+                            fieldWithPath("data[].buildingName")
+                                    .type(JsonType.STRING)
+                                    .description("빌딩 이름"),
+                            fieldWithPath("data[].buildingNumber")
+                                    .type(JsonType.NUMBER)
+                                    .description("빌딩 번호"),
+                            fieldWithPath("data[].bulidingAbbreviation")
+                                    .type(JsonType.STRING)
+                                    .description("빌딩 약어"),
+                            fieldWithPath("data[].latitude")
+                                    .type(JsonType.NUMBER)
+                                    .description("위도"),
+                            fieldWithPath("data[].longtitude")
+                                    .type(JsonType.NUMBER)
+                                    .description("경도")
+                    )));
+
+
+
+  }
+
+  @DisplayName("특정 카테고리명과 건물번호로 해당 카테고리의 디테일 정보를 출력한다.")
+  @Nested
+  class CategoryDetailInfo{
+
+    @DisplayName("카테고리명에 따라서 분류")
+    @Nested
+    class CategoryIsSTUDENT_CAFETERIA{
+
+      @DisplayName("카테고리명이 '학생 식당'인 경우")
+      @Test
+      @WithMockUser
+      void viewBuildingByCategoryInBuilding_STUDENT_CAFETERIA() throws Exception {
+        // given (Mock 데이터 설정)
+        BuildindgCategoryRequest request = new BuildindgCategoryRequest("학생 식당", 21L);
+        String content = objectMapper.writeValueAsString(request);
+
+        List<MenuSimpleResponse> menuList = List.of(
+                new MenuSimpleResponse("마라탕", 4000L, "마라탕url"),
+                new MenuSimpleResponse("쌀국수", 4500L, "쌀국수url"),
+                new MenuSimpleResponse("순대", 3000L, "순대url"),
+                new MenuSimpleResponse("소금삼겹", 2500L, "소금삼겹url")
+        );
+
+        CategoryDetailResponse<MenuSimpleResponse> detailData = CategoryDetailResponse.<MenuSimpleResponse>builder()
+                .category("학생 식당")
+                .floor(-1L)
+                .detailList(menuList)
+                .build();
+
+        given(buildingSearchService
+                .viewBuildingDetailByCategory("학생 식당",21L))
+                .willReturn(detailData);
+
+        //when then
+        mockMvc.perform(post("/api/v1/buildings/view")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(content)
+                )
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.code").value("200"))
+                .andExpect(jsonPath("$.status").value("OK"))
+                .andExpect(jsonPath("$.message").value("OK"))
+
+                .andExpect(jsonPath("$.data.category").value("학생 식당"))
+                .andExpect(jsonPath("$.data.floor").value(-1))
+                .andExpect(jsonPath("$.data.detailList[0].menuName").value("마라탕"))
+                .andExpect(jsonPath("$.data.detailList[0].price").value(4000))
+                .andExpect(jsonPath("$.data.detailList[0].imageUrl").value("마라탕url"))
+                .andExpect(jsonPath("$.data.detailList[1].menuName").value("쌀국수"))
+                .andExpect(jsonPath("$.data.detailList[1].price").value(4500))
+                .andExpect(jsonPath("$.data.detailList[1].imageUrl").value("쌀국수url"))
+
+                .andDo(restDocs.document(
+                        responseFields(
+                                fieldWithPath("code").type(JsonType.NUMBER)
+                                        .description("성공시 반환 코드 (200)"),
+                                fieldWithPath("status").type(JsonType.STRING)
+                                        .description("응답 상태"),
+                                fieldWithPath("message").type(JsonType.STRING)
+                                        .description("응답 메시지"),
+                                fieldWithPath("data.category").type(JsonType.STRING)
+                                        .description("카테고리명"),
+                                fieldWithPath("data.floor").type(JsonType.NUMBER)
+                                        .description("해당 층 (지하 -1)"),
+                                fieldWithPath("data.detailList[].menuName").type(JsonType.STRING)
+                                        .description("메뉴 이름"),
+                                fieldWithPath("data.detailList[].price").type(JsonType.NUMBER)
+                                        .description("메뉴 가격"),
+                                fieldWithPath("data.detailList[].imageUrl").type(JsonType.STRING)
+                                        .description("메뉴 이미지 URL")
+                        )
+                ));
+      }
+
+      }
+
+      @DisplayName("카테고리명이 '케이큐브'인 경우")
+      @Test
+      @WithMockUser
+      void viewBuildingByCategoryInBuilding_KCUBE() throws Exception {
+        // given (Mock 데이터 설정)
+        BuildindgCategoryRequest request = new BuildindgCategoryRequest("케이큐브", 1L);
+        String content = objectMapper.writeValueAsString(request);
+
+        CategoryDetailResponse<MenuSimpleResponse> detailData = CategoryDetailResponse.<MenuSimpleResponse>builder()
+                .category("케이큐브")
+                .floor(-1L)
+                .detailList(List.of())
+                .build();
+
+        given(buildingSearchService
+                .viewBuildingDetailByCategory("케이큐브",1L))
+                .willReturn(detailData);
+
+        //when then
+        mockMvc.perform(post("/api/v1/buildings/view")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(content)
+                )
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.code").value("200"))
+                .andExpect(jsonPath("$.status").value("OK"))
+                .andExpect(jsonPath("$.message").value("OK"))
+
+                .andExpect(jsonPath("$.data.category").value("케이큐브"))
+                .andExpect(jsonPath("$.data.floor").value(1))
+                .andExpect(jsonPath("$.data.detailList").isEmpty())
+
+                .andDo(restDocs.document(
+                        responseFields(
+                                fieldWithPath("code").type(JsonType.NUMBER)
+                                        .description("성공시 반환 코드 (200)"),
+                                fieldWithPath("status").type(JsonType.STRING)
+                                        .description("응답 상태"),
+                                fieldWithPath("message").type(JsonType.STRING)
+                                        .description("응답 메시지"),
+                                fieldWithPath("data.category").type(JsonType.STRING)
+                                        .description("카테고리명"),
+                                fieldWithPath("data.floor").type(JsonType.NUMBER)
+                                        .description("해당 층 (지하 -1)"),
+                                fieldWithPath("data.detailList").type(JsonType.NULL)
+                                        .description("해당 카테고리에 대한 상세 정보 (없을 경우 빈 배열")
+
+                        )
+                ));
+      }
+
+
+      }
+
+      @DisplayName("카테고리명이 '씨유편의점'인 경우")
+      @Test
+      @WithMockUser
+      void viewBuildingByCategoryInBuilding_CU() throws Exception {
+
+      }
+
+      @DisplayName("카테고리명이 '레스티오'인 경우")
+      @Test
+      @WithMockUser
+      void viewBuildingByCategoryInBuilding_RESTIO() throws Exception {
+
+      }
+
+      @DisplayName("카테고리명이 '1894카페'인 경우")
+      @Test
+      @WithMockUser
+      void viewBuildingByCategoryInBuilding_CAFE_1894() throws Exception {
+
+      }
 }
+
+
+

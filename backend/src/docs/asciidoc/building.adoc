@@ -1,5 +1,4 @@
-= KU:ROOM
-== Building API
+= KU:ROOM > Building API
 
 :source-highlighter: highlightjs
 :toc: left
@@ -66,3 +65,15 @@ include::{snippets}/building-search-controller-test/view-building-by-number/http
 
 ==== 응답 필드
 include::{snippets}/building-search-controller-test/view-building-by-number/response-fields.adoc[]
+
+
+===  2-3. 특정 건물번호로 해당 건물정보를 출력한다. (GET /api/v1/buildings/view/searchNumber?number=21)
+
+==== 요청
+include::{snippets}/building-search-controller-test/view-building-by-name/http-request.adoc[]
+
+==== 응답
+include::{snippets}/building-search-controller-test/view-building-by-name/http-response.adoc[]
+
+==== 응답 필드
+include::{snippets}/building-search-controller-test/view-building-by-name/response-fields.adoc[]
