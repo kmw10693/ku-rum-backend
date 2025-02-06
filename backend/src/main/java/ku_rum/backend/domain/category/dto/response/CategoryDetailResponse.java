@@ -1,6 +1,14 @@
 package ku_rum.backend.domain.category.dto.response;
 
-public interface CategoryDetailResponse {
-  String getCategory();
-  Long getBuildingId();
+import lombok.Builder;
+
+import java.util.List;
+import java.util.Optional;
+
+@Builder
+public record CategoryDetailResponse<T> (
+        String category,
+        Long floor,
+        Optional<List<T>> detailList
+){
 }

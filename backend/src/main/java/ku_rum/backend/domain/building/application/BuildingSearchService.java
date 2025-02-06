@@ -8,7 +8,6 @@ import ku_rum.backend.domain.building.domain.repository.BuildingRepository;
 import ku_rum.backend.domain.building.dto.response.BuildingResponse;
 import ku_rum.backend.domain.category.application.CategoryService;
 import ku_rum.backend.domain.category.domain.CategoryDetail;
-import ku_rum.backend.domain.category.dto.response.CategoryDetailFloorAndMenusProviding;
 import ku_rum.backend.domain.category.dto.response.CategoryDetailResponse;
 import ku_rum.backend.domain.menu.domain.repository.MenuQueryRepository;
 import ku_rum.backend.domain.menu.response.MenuSimpleResponse;
@@ -46,10 +45,6 @@ public class BuildingSearchService {
     return buildingQueryRepository.findBuildingByNumber(number)
             .orElseThrow(() -> new BuildingNotFoundException(BaseExceptionResponseStatus.BUILDING_DATA_NOT_FOUND_BY_NUMBER));
   }
-
-
-
-
 
   public BuildingResponse viewBuildingByName(String name) {
     String finalName = removeNumbersInName(name);
@@ -110,28 +105,35 @@ public class BuildingSearchService {
     if (validateDetailProvidingCategory(category))
     {
       CategoryDetail categoryDetail = getCategoryDetail(category);
-      return getCategoryDetailFloorAndMenus(categoryDetail,buildingId);
+      return getCategoryDetail(categoryDetail,buildingId);
     }else{
       throw new CategoryNotProvidingDetail(BaseExceptionResponseStatus.CATEGORYNAME_NOT_PROVIDING_DETAIL);
     }
   }
 
-  private CategoryDetailResponse getCategoryDetailFloorAndMenus(CategoryDetail categoryDetail, Long buildingId) {
-    CategoryDetailFloorAndMenusProviding response = new CategoryDetailFloorAndMenusProviding();
-    log.info("buildingId : {}", buildingId);
+  private CategoryDetailResponse<MenuSimpleResponse> getCategoryDetail(CategoryDetail categoryDetail, Long buildingId) {
 
     Building building = buildingRepository.findById(buildingId)
             .orElseThrow(() -> new BuildingNotFoundException(BaseExceptionResponseStatus.BUILDING_DATA_NOT_FOUND_BY_NAME));
+    Long floor_info = building.getFloor();
+    Optional<List<MenuSimpleResponse>> menuList_info = Optional.empty();
 
-    buildingCategoryQueryRepository.findByBuildingId(buildingId)
-            .ifPresent(buildingCategory -> {
-              Long floor = building.getFloor();
-              Optional<List<MenuSimpleResponse>> menus = menuQueryRepository
-                      .findAllByCategoryId(buildingCategory.getCategory().getId());
-              response.adding(floor, menus);
-            });
+    if (! categoryDetail.name().equals(CategoryDetail.KCUBE.name())){ //KCUBE 카테고리가 아니면
+      menuList_info = buildingCategoryQueryRepository.findByBuildingId(buildingId)
+              .map(buildingCategory -> {
+                Long categoryId = buildingCategory.getCategory().getId();
+                return menuQueryRepository.findAllByCategoryId(categoryId);
+              })
+              .orElse(Optional.empty());
+    }
 
-    return response;
+
+    return CategoryDetailResponse.<MenuSimpleResponse>builder()
+            .category(categoryDetail.getCategoryName())
+            .floor(floor_info)
+            .detailList(menuList_info)
+            .build();
+
   }
 
   private CategoryDetail getCategoryDetail(String category) {
