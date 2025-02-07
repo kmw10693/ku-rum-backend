@@ -77,7 +77,7 @@ spring:
       on-profile: port-local
 
 server:
-  port: 8080
+  port: 9000
 ---
 # 배포용 포트
 spring:
@@ -108,7 +108,7 @@ openai:
   model: gpt-3.5-turbo
   api:
     key: ${openai.key}
-    url: ${openai.url}
+    url: ${openai.key}
 
 # JWT 설정
 secret:
