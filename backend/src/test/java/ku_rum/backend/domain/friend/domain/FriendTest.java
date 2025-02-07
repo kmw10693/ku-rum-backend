@@ -32,14 +32,13 @@ class FriendTest {
     private User createUser(String username, String studentID) {
         Building building = createBuilding();
         Department department = Department.of("컴퓨터공학부", building);
-        return User.of(username, studentID, "password123", "202112322", department);
+        return User.of(username, "kmw106933@konkuk.ac.kr", studentID, "password123", "202112322", department);
     }
 
     private Building createBuilding() {
         BigDecimal latitude = BigDecimal.valueOf(64.3423423);
         BigDecimal longitude = BigDecimal.valueOf(342.2343434);
-        return Building.of("신공학관", 3L,"신공", latitude, longitude);
+        return Building.of("신공학관", 3L,"신공", 1L, latitude, longitude);
     }
-
 
 }

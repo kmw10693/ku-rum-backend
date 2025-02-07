@@ -1,14 +1,15 @@
 package ku_rum.backend.domain.user.application;
 
-import ku_rum.backend.domain.user.dto.request.MailSendRequest;
-import ku_rum.backend.domain.user.dto.request.MailVerificationRequest;
+import ku_rum.backend.domain.mail.application.MailService;
+import ku_rum.backend.domain.mail.dto.request.MailSendRequest;
+import ku_rum.backend.domain.mail.dto.request.MailVerificationRequest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.redis.core.RedisTemplate;
 
-import static ku_rum.backend.domain.user.domain.MailSendSetting.MAIL_SEND_INFO;
+import static ku_rum.backend.domain.mail.domain.MailSendSetting.MAIL_SEND_INFO;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest
@@ -25,8 +26,8 @@ class MailServiceTest {
     void sendCodeToEmail() {
         //given
         MailSendRequest mailSendRequest = new MailSendRequest("kmw10693@konkuk.ac.kr");
-        String key = generateKeyByEmail(mailSendRequest.getEmail());
-        String email = mailSendRequest.getEmail();
+        String key = generateKeyByEmail(mailSendRequest.email());
+        String email = mailSendRequest.email();
 
         //when
         mailService.sendCodeToEmail(mailSendRequest);
@@ -70,7 +71,6 @@ class MailServiceTest {
                 .extracting("verified")
                 .isEqualTo(false);
     }
-
 
     private String generateKeyByEmail(String email) {
         return MAIL_SEND_INFO.getAUTH_CODE_PREFIX() + email;

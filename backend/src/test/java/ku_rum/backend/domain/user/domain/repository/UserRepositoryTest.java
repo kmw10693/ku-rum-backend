@@ -34,13 +34,14 @@ class UserRepositoryTest {
 
     @BeforeEach
     void setup() {
-        Building building = Building.of("신공학관", 3L,"신공",  BigDecimal.valueOf(23.32), BigDecimal.valueOf(23.32));
+        Building building = Building.of("신공학관", 3L,"신공",1L, BigDecimal.valueOf(23.32), BigDecimal.valueOf(23.32));
         buildingRepository.save(building);
 
         Department department = Department.of("컴퓨터공학부" , building);
         departmentRepository.save(department);
 
         user = User.builder()
+                .loginId("kmw106933")
                 .email("kmw106933@naver.com")
                 .nickname("미미미누")
                 .password("password123")

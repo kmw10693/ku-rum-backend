@@ -18,7 +18,7 @@ class UserTest {
         Department department = getDepartment(building);
 
         //when
-        User user = User.of("사용자1", "미미미누", "password123", "202112322", department);
+        User user = User.of("사용자1", "kmw106933@konkuk.ac.kr","미미미누", "password123", "202112322", department);
 
         //then
         assertThat(user.getNickname()).isEqualTo("미미미누");
@@ -35,6 +35,7 @@ class UserTest {
     private Building createBuilding() {
         BigDecimal latitude = BigDecimal.valueOf(64.3423423);
         BigDecimal longitude = BigDecimal.valueOf(342.2343434);
-        return (Building.of("신공학관",3L, "신공", latitude, longitude));
+        return (Building.of("신공학관",3L, "신공", 1L, latitude, longitude));
     }
+
 }

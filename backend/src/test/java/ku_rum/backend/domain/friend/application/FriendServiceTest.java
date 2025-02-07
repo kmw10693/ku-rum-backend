@@ -19,6 +19,7 @@ import org.assertj.core.groups.Tuple;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ActiveProfiles;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -49,16 +50,16 @@ class FriendServiceTest {
 
     @BeforeAll
     void init() {
-        Building building = Building.of("신공학관",11L, "신공", BigDecimal.valueOf(64.3423423), BigDecimal.valueOf(64.3423423));
+        Building building = Building.of("신공학관",11L, "신공",1L, BigDecimal.valueOf(64.3423423), BigDecimal.valueOf(64.3423423));
         buildingRepository.save(building);
 
         Department department = Department.of("컴퓨터공학부", building);
         departmentRepository.save(department);
 
-        User fromUser = User.of("kmw106933", "미미미누", "password123", "202112322", department);
-        User toUser1 = User.of("kmw106934", "미미미누1", "password123", "202112321", department);
-        User toUser2 = User.of("kmw106935", "미미미누2", "password123", "202112323", department);
-        User newUser = User.of("kmw106936", "미미미누3", "password123", "202112324", department);
+        User fromUser = User.of("kmw106933", "kmw106933@konkuk.ac.kr", "미미미누", "password123", "202112322", department);
+        User toUser1 = User.of("kmw106934", "kmw1069332@konkuk.ac.kr","미미미누1", "password123", "202112321", department);
+        User toUser2 = User.of("kmw106935", "kmw1069333@konkuk.ac.kr","미미미누2", "password123", "202112323", department);
+        User newUser = User.of("kmw106936", "kmw1069334@konkuk.ac.kr","미미미누3", "password123", "202112324", department);
 
         userRepository.save(fromUser);
         userRepository.save(toUser1);
@@ -114,8 +115,8 @@ class FriendServiceTest {
         FriendFindResponse friendFIndResponse = friendService.findByNameInLists(friendFindRequest);
 
         //then
-        Assertions.assertThat(friendFIndResponse.getId()).isEqualTo(2L);
-        Assertions.assertThat(friendFIndResponse.getNickname()).isEqualTo("미미미누1");
+        Assertions.assertThat(friendFIndResponse.id()).isEqualTo(2L);
+        Assertions.assertThat(friendFIndResponse.nickname()).isEqualTo("미미미누1");
     }
 
     @Test

@@ -7,17 +7,15 @@ import ku_rum.backend.domain.department.domain.Department;
 import ku_rum.backend.domain.department.domain.repository.DepartmentRepository;
 import ku_rum.backend.domain.user.domain.User;
 import ku_rum.backend.domain.user.domain.repository.UserRepository;
-import ku_rum.backend.domain.user.dto.request.EmailValidationRequest;
+import ku_rum.backend.domain.mail.dto.request.LoginIdValidationRequest;
 import ku_rum.backend.domain.user.dto.request.UserSaveRequest;
 import ku_rum.backend.domain.user.dto.response.UserSaveResponse;
 import ku_rum.backend.global.exception.user.DuplicateEmailException;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.math.BigDecimal;
 
@@ -44,23 +42,13 @@ class UserServiceTest {
 
     private Department department;
 
-    @Autowired
-    private PasswordEncoder passwordEncoder;
-
     @BeforeEach
     void setUp() {
-         building = Building.of("신공학관",3L, "신공", BigDecimal.valueOf(64.3423423), BigDecimal.valueOf(64.3423423));
+         building = Building.of("신공학관",3L, "신공", 3L, BigDecimal.valueOf(64.3423423), BigDecimal.valueOf(64.3423423));
          buildingRepository.save(building);
 
          department = Department.of("컴퓨터공학부", building);
          departmentRepository.save(department);
-    }
-
-    @AfterEach
-    void tearDown() {
-        userRepository.deleteAllInBatch();
-        departmentRepository.deleteAllInBatch();
-        buildingRepository.deleteAllInBatch();
     }
 
     @Test
@@ -68,7 +56,8 @@ class UserServiceTest {
     void saveMember() {
         //given
         UserSaveRequest request = UserSaveRequest.builder()
-                .email("kmw106933")
+                .loginId("kmw106933")
+                .email("kmw10693@konkuk.ac.kr")
                 .password("password123")
                 .nickname("미미미누")
                 .studentId("202112322")
@@ -86,7 +75,8 @@ class UserServiceTest {
     void validateEmail() {
         //given
         User user = User.builder()
-                .email("kmw106933")
+                .loginId("kmw106933")
+                .email("kmw10693@konkuk.ac.kr")
                 .nickname("미미미누")
                 .password("password123")
                 .studentId("202112322")
@@ -95,12 +85,12 @@ class UserServiceTest {
 
         userRepository.save(user);
 
-        EmailValidationRequest emailValidationRequest = new EmailValidationRequest("kmw106933");
+        LoginIdValidationRequest loginIdValidationRequest = new LoginIdValidationRequest("kmw106933");
 
         //when then
-        assertThatThrownBy(() -> userService.validateEmail(emailValidationRequest))
+        assertThatThrownBy(() -> userService.validateEmail(loginIdValidationRequest))
                 .isInstanceOf(DuplicateEmailException.class)
-                .hasMessage("이미 존재하는 이메일입니다.");
+                .hasMessage("이미 존재하는 아이디입니다.");
     }
 
 }
