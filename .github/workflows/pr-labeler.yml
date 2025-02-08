@@ -4,8 +4,8 @@ name: PR labeler
 # 트리거될 이벤트 설정
 on:
   issues:
-    types: [opened]
-  pull_request:
+    types: [opened, edited, milestoned]
+  pull_request_target:
     types: [opened]
     
 # 트리거되었을 때 실행될 job 작성
@@ -20,6 +20,6 @@ jobs:
     steps:
       - name: Check Labels
         id: labeler
-        uses: jimschubert/labeler-action@v1
+        uses: jimschubert/labeler-action@v2
         with:
           GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
