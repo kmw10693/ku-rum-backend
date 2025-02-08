@@ -79,7 +79,7 @@ public class UserService {
 
     private void validateDuplicateLoginid(final String loginId) {
         if (userRepository.existsByLoginId(loginId)) {
-            throw new DuplicateEmailException(DUPLICATE_LOGINID);
+            throw new DuplicateEmailException(DUPLICATE_LOGIN);
         }
     }
 
