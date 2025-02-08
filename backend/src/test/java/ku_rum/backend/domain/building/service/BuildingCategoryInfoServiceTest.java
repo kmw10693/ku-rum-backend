@@ -51,7 +51,7 @@ public class BuildingCategoryInfoServiceTest {
         // then
         Assertions.assertEquals(9, response.detailList().size());
     }
-    
+
 // 아직 자동으로 데이터를 넣지 않아서 추후 넣을 예정
 //    @Test
 //    public void 특정_카페_카테고리_디테일_조회_성공() throws Exception {
