@@ -31,7 +31,7 @@ class MailControllerTest extends RestDocsTestSupport {
     @DisplayName("이메일 인증 요청을 보낸다.")
     @Test
     @WithMockUser
-    void sendMail() throws Exception {
+    void authCode() throws Exception {
         //given
         MailSendRequest mailSendRequest = new MailSendRequest("kmw10693@konkuk.ac.kr");
 
@@ -48,7 +48,7 @@ class MailControllerTest extends RestDocsTestSupport {
                 .andExpect(jsonPath("$.data").value("메일이 성공적으로 전송되었습니다."))
                 .andDo(restDocs.document(
                         requestFields(
-                                fieldWithPath("email")
+                                fieldWithPath("loginId")
                                         .type(JsonType.STRING)
                                         .description("건국대학교 웹메일")
                                         .attributes(constraints("이메일의 끝자리는 @konkuk.ac.kr로 끝나야 합니다."))
@@ -72,7 +72,7 @@ class MailControllerTest extends RestDocsTestSupport {
     @DisplayName("이메일 인증 코드를 검증한다.")
     @Test
     @WithMockUser
-    void verificationEmail() throws Exception {
+    void verificationCode() throws Exception {
         //given
         MailVerificationRequest mailVerificationRequest = new MailVerificationRequest("kmw10693@konkuk.ac.kr", "1234");
 
@@ -88,7 +88,7 @@ class MailControllerTest extends RestDocsTestSupport {
                 .andExpect(jsonPath("$.message").value("OK"))
                 .andDo(restDocs.document(
                         requestFields(
-                                fieldWithPath("email")
+                                fieldWithPath("loginId")
                                         .type(JsonType.STRING)
                                         .description("건국대학교 웹메일")
                                         .attributes(constraints("이메일의 끝자리는 @konkuk.ac.kr로 끝나야 합니다.")),
