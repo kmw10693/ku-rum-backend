@@ -112,6 +112,10 @@ public class JwtTokenProvider {
                 .parseSignedClaims(token);
     }
 
+    public Jws<Claims> getClaimsFromToken(String token) {
+        return parseClaims(token);
+    }
+
     public boolean validateToken(String token) {
         try {
             parseClaims(token);

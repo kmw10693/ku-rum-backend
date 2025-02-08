@@ -1,5 +1,6 @@
 package ku_rum.backend.global.config.security;
 
+import ku_rum.backend.domain.oauth.application.CustomOAuth2UserService;
 import ku_rum.backend.domain.user.domain.repository.UserRepository;
 import ku_rum.backend.global.config.redis.RedisUtil;
 import ku_rum.backend.global.security.jwt.CustomUserDetails;
@@ -33,16 +34,31 @@ import static ku_rum.backend.global.config.security.AuthorizationList.*;
 public class SecurityConfig {
     private final JwtTokenProvider jwtTokenProvider;
     private final RedisUtil redisUtil;
+    private final CustomOAuth2UserService customOAuth2UserService;
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.csrf(AbstractHttpConfigurer::disable);
         http.formLogin(AbstractHttpConfigurer::disable);
         http.httpBasic(AbstractHttpConfigurer::disable);
+
+        // 요청에 대한 권한 설정
         http.authorizeHttpRequests((auth) -> auth
-                        .requestMatchers(LIST.getAuthorities()).permitAll().anyRequest().authenticated());
+                .requestMatchers(LIST.getAuthorities()).permitAll().anyRequest().authenticated());
         http.addFilterBefore(new JwtTokenAuthenticationFilter(jwtTokenProvider, redisUtil), UsernamePasswordAuthenticationFilter.class);
         http.sessionManagement((session) -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
+        // JWT 토큰 인증 필터 추가
+        http.addFilterBefore(new JwtTokenAuthenticationFilter(jwtTokenProvider, redisUtil), UsernamePasswordAuthenticationFilter.class);
+
+        http.oauth2Login(oauth2 -> oauth2
+                .defaultSuccessUrl("/oauth/loginInfo", true) // 로그인 성공 후 이동할 URL
+                .userInfoEndpoint(userInfo -> userInfo
+                        .userService(customOAuth2UserService) // 로그인 성공 후 사용할 서비스 로직 설정
+                )
+        );
+
+        http.sessionManagement((session) -> session
+                .sessionCreationPolicy(SessionCreationPolicy.STATELESS));
         return http.build();
     }
 

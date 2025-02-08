@@ -44,9 +44,10 @@ dependencies {
 	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 
 	implementation 'com.querydsl:querydsl-jpa:5.0.0:jakarta'
-	annotationProcessor "com.querydsl:querydsl-apt:${dependencyManagement.importedProperties['querydsl.version']}:jakarta"
+	annotationProcessor "com.querydsl:querydsl-apt:5.0.0:jakarta"
 	annotationProcessor "jakarta.annotation:jakarta.annotation-api"
 	annotationProcessor "jakarta.persistence:jakarta.persistence-api"
+
 
 	// redis
 	implementation 'org.springframework.boot:spring-boot-starter-data-redis'
@@ -75,6 +76,8 @@ dependencies {
 	runtimeOnly 'io.jsonwebtoken:jjwt-impl:0.12.3'
 	runtimeOnly 'io.jsonwebtoken:jjwt-jackson:0.12.3'
 
+	// OAUTH
+	implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
 	// RestDocs
 	asciidoctorExt 'org.springframework.restdocs:spring-restdocs-asciidoctor'
 	testImplementation 'org.springframework.restdocs:spring-restdocs-mockmvc'
@@ -112,6 +115,7 @@ task copyDocument(type: Copy) { // (5)
 }
 
 def querydslSrcDir = 'src/main/generated'
+
 
 clean {
 	delete file(querydslSrcDir)
