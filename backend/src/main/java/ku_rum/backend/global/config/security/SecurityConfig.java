@@ -37,7 +37,7 @@ public class SecurityConfig {
         http.csrf(AbstractHttpConfigurer::disable);
         http.formLogin(AbstractHttpConfigurer::disable);
         http.httpBasic(AbstractHttpConfigurer::disable);
-        http.authorizeHttpRequests((auth) -> auth.requestMatchers(LIST.toString()).permitAll().anyRequest().authenticated());
+        http.authorizeHttpRequests((auth) -> auth.requestMatchers(LIST.getAuthorities()).permitAll().anyRequest().authenticated());
         http.addFilterBefore(new JwtTokenAuthenticationFilter(jwtTokenProvider, redisUtil), UsernamePasswordAuthenticationFilter.class);
         http.sessionManagement((session) -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
         return http.build();
@@ -45,7 +45,7 @@ public class SecurityConfig {
 
     @Bean
     public UserDetailsService userDetailsService(UserRepository userRepository) {
-        return email -> userRepository.findUserByLoginId(email).map(u -> CustomUserDetails.of(u.getId(), u.getLoginId(), AuthorityUtils.createAuthorityList(u.getRoles().toArray(new String[0])), u.getPassword())).orElseThrow(() -> new UsernameNotFoundException("해당 유저가 존재하지 않습니다!"));
+        return loginId -> userRepository.findUserByLoginId(loginId).map(u -> CustomUserDetails.of(u.getId(), u.getLoginId(), AuthorityUtils.createAuthorityList(u.getRoles().toArray(new String[0])), u.getPassword())).orElseThrow(() -> new UsernameNotFoundException("해당 유저가 존재하지 않습니다!"));
     }
 
     @Bean
