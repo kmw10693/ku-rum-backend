@@ -3,9 +3,11 @@ package ku_rum.backend.global.config.security;
 import ku_rum.backend.domain.user.domain.repository.UserRepository;
 import ku_rum.backend.global.config.redis.RedisUtil;
 import ku_rum.backend.global.security.jwt.CustomUserDetails;
+import ku_rum.backend.global.security.jwt.JwtProperties;
 import ku_rum.backend.global.security.jwt.JwtTokenAuthenticationFilter;
 import ku_rum.backend.global.security.jwt.JwtTokenProvider;
 import lombok.RequiredArgsConstructor;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -23,7 +25,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
-@EnableWebSecurity
 @Configuration
 @RequiredArgsConstructor
 public class SecurityConfig {
