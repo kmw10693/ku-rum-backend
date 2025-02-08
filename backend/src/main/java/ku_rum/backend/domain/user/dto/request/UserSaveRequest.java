@@ -10,7 +10,7 @@ public record UserSaveRequest(@NotBlank(message = "아이디 입력은 필수입
                               @NotNull(message = "비밀번호 입력은 필수입니다.") @Pattern(regexp = "^(?=.*[a-zA-Z])(?=.*[0-9]).{8,20}$", message = "비밀번호는 영어와 숫자를 포함해서 8자 이상 20자 이내로 입력해주세요.") String password,
                               @NotNull(message = "학번 입력은 필수입니다.") @Pattern(regexp = "^20(1[0-9]|2[0-5])\\d{5}$", message = "학번은 20으로 시작하고, 9자리여야 합니다.") String studentId,
                               @NotNull(message = "학과 입력은 필수입니다.") String department,
-                              @NotBlank(message = "닉네임 입력은 필수입니다. 최대 8자 이하입니다.") @Size(max = 8) String nickname) {
+                              @NotBlank(message = "닉네임 입력은 필수입니다. 최대 10자 이하입니다.") @Size(max = 10) String nickname) {
     @Builder
     public UserSaveRequest {
     }

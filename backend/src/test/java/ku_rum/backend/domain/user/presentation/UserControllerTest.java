@@ -58,7 +58,7 @@ class UserControllerTest extends RestDocsTestSupport {
                                         .type(JsonType.STRING)
                                         .description("멤버 아이디")
                                         .attributes(constraints("아이디 입력은 필수입니다. 최소 6자 이상입니다.")),
-                                fieldWithPath("email")
+                                fieldWithPath("loginId")
                                         .type(JsonType.STRING)
                                         .description("멤버 이메일")
                                         .attributes(constraints("@konkuk.ac.kr로 끝나야 합니다.")),
@@ -176,7 +176,7 @@ class UserControllerTest extends RestDocsTestSupport {
                 .andExpect(status().isOk())
                 .andDo(restDocs.document(
                         requestFields(
-                                fieldWithPath("email")
+                                fieldWithPath("loginId")
                                         .type(JsonType.STRING)
                                         .description("기존 이메일")
                                         .attributes(constraints("기존 이메일입니다.")),
