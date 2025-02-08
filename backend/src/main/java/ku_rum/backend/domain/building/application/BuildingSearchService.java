@@ -23,10 +23,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -127,7 +124,7 @@ public class BuildingSearchService {
 
     // 필요한 정보들
     Long floor_info = building.getFloor();
-    List<MenuSimpleResponse> menuList_info = null;
+    List<MenuSimpleResponse> menuList_info = new ArrayList<>();
 
     if (!category.equals(CategoryDetail.KCUBE.name())) { //KCUBE 카테고리가 아니면
       menuList_info = buildingCategoryQueryRepository.findByBuildingAndCategoryId(building.getId(), categoryData.getId())

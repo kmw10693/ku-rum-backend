@@ -23,7 +23,7 @@ public class BuildingCategoryQueryRepository {
   EntityManager entityManager;
 
   public List<Long> findBuildingCategoryIds(List<Long> categoryIds) {
-    QBuildingCategory qBuildingCategory = buildingCategory;
+    QBuildingCategory qBuildingCategory = QBuildingCategory.buildingCategory;
 
     // categoryIds에 포함된 category_id에 해당하는 building_id를 조회
     return queryFactory
