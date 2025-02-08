@@ -22,9 +22,6 @@ public class User extends BaseEntity {
     private Long id;
 
     @Column(nullable = false, length = 20, unique = true)
-    private String loginId;
-
-    @Column(nullable = false, length = 50, unique = true)
     private String email;
 
     @Column(nullable = false, length = 50, unique = true)
@@ -37,20 +34,14 @@ public class User extends BaseEntity {
     private String studentId;
 
     @ManyToOne(fetch = FetchType.LAZY)
-
     @JoinColumn(name = "department_id", nullable = false)
-    private Department department = null;
+    private Department department;
 
     @ElementCollection
     private List<String> roles = new ArrayList<>();
 
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
     @Builder
-    private User(String email, String loginId, String nickname, String password, String studentId, Department department) {
-        this.loginId = loginId;
+    private User(String email, String nickname, String password, String studentId, Department department) {
         this.email = email;
         this.nickname = nickname;
         this.password = password;
@@ -59,9 +50,8 @@ public class User extends BaseEntity {
         this.roles.add("ROLE_USER");
     }
 
-    public static User of(String loginId, String email, String nickname, String password, String studentId, Department department) {
+    public static User of(String email, String nickname, String password, String studentId, Department department) {
         return User.builder()
-                .loginId(loginId)
                 .email(email)
                 .nickname(nickname)
                 .password(password)
@@ -69,19 +59,4 @@ public class User extends BaseEntity {
                 .department(department)
                 .build();
     }
-    public static User of(String email, String nickname) {
-        return User.builder()
-                .email(email)
-                .nickname(nickname)
-                .build();
-    }
-
-    public void setLoginId(String loginId) {
-        this.loginId = loginId;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
 }
