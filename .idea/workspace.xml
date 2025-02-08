@@ -5,7 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="c1527f4d-4f7c-4702-bd27-f0d8c88d242d" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -285,12 +285,20 @@
       <RunAsTest>true</RunAsTest>
       <method v="2" />
     </configuration>
+    <configuration name="BackendApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
+      <module name="backend.main" />
+      <option name="SPRING_BOOT_MAIN_CLASS" value="ku_rum.backend.BackendApplication" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <list>
       <item itemvalue="Gradle.BuildingCategoryInfoServiceTest.특정_학생식당_카테고리_디테일_조회_성공" />
       <item itemvalue="Gradle.BuildingInfoServiceTest.등록된_건물정보_전체_조회_성공" />
       <item itemvalue="Gradle.BuildingCategoryInfoServiceTest.특정카테고리_전체조회_성공" />
       <item itemvalue="Gradle.BuildingCategoryInfoServiceTest" />
       <item itemvalue="Gradle.BuildingInfoServiceTest" />
+      <item itemvalue="Spring Boot.BackendApplication" />
     </list>
     <recent_temporary>
       <list>
@@ -319,7 +327,7 @@
       <option name="presentableId" value="Default" />
       <updated>1738833050990</updated>
       <workItem from="1738833052031" duration="36008000" />
-      <workItem from="1738983504155" duration="12615000" />
+      <workItem from="1738983504155" duration="12648000" />
     </task>
     <servers />
   </component>
