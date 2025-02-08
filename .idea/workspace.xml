@@ -5,8 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="c1527f4d-4f7c-4702-bd27-f0d8c88d242d" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/backend/src/main/java/ku_rum/backend/domain/building/application/BuildingSearchService.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/ku_rum/backend/domain/building/application/BuildingSearchService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/src/main/java/ku_rum/backend/domain/buildingCategory/domain/repository/BuildingCategoryQueryRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/ku_rum/backend/domain/buildingCategory/domain/repository/BuildingCategoryQueryRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -230,7 +229,7 @@
       <option name="presentableId" value="Default" />
       <updated>1738833050990</updated>
       <workItem from="1738833052031" duration="36008000" />
-      <workItem from="1738983504155" duration="1044000" />
+      <workItem from="1738983504155" duration="1363000" />
     </task>
     <servers />
   </component>
