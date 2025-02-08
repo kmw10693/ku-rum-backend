@@ -29,7 +29,7 @@ public class AuthService {
 
     public TokenResponse login(LoginRequest authRequest) {
         Authentication authenticate = authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(authRequest.email(),
+                new UsernamePasswordAuthenticationToken(authRequest.loginId(),
                 authRequest.password()));
 
         return jwtTokenProvider.createToken(authenticate);
