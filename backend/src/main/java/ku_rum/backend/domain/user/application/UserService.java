@@ -52,6 +52,7 @@ public class UserService {
                .orElseThrow(() -> new NoSuchDepartmentException(NO_SUCH_DEPARTMENT));
 
         User user = UserSaveRequest.newUser(userSaveRequest, department, password);
+        log.info(user.getPassword());
         return UserSaveResponse.from(userRepository.save(user));
     }
 
@@ -78,7 +79,7 @@ public class UserService {
 
     private void validateDuplicateLoginid(final String loginId) {
         if (userRepository.existsByLoginId(loginId)) {
-            throw new DuplicateEmailException(DUPLICATE_LOGINID);
+            throw new DuplicateEmailException(DUPLICATE_LOGIN);
         }
     }
 

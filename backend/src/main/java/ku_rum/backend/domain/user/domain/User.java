@@ -54,7 +54,7 @@ public class User extends BaseEntity {
         this.roles.add("ROLE_USER");
     }
 
-    public static User of(String loginId, String email,String nickname, String password, String studentId, Department department) {
+    public static User of(String loginId, String email, String nickname, String password, String studentId, Department department) {
         return User.builder()
                 .loginId(loginId)
                 .email(email)
