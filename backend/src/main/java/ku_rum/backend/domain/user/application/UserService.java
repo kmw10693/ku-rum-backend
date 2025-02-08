@@ -16,6 +16,7 @@ import ku_rum.backend.global.exception.user.DuplicateEmailException;
 import ku_rum.backend.global.exception.user.DuplicateStudentIdException;
 import ku_rum.backend.global.exception.user.NoSuchUserException;
 import ku_rum.backend.global.response.BaseResponse;
+import ku_rum.backend.global.security.jwt.CustomUserDetails;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.hc.client5.http.cookie.BasicCookieStore;
@@ -47,11 +48,11 @@ public class UserService {
     public UserSaveResponse saveUser(final UserSaveRequest userSaveRequest) {
         validateUser(userSaveRequest);
 
-        String password = passwordEncoder.encode(userSaveRequest.password());
+        String encodedPassword = passwordEncoder.encode(userSaveRequest.password());
         Department department = departmentRepository.findByName(userSaveRequest.department())
                .orElseThrow(() -> new NoSuchDepartmentException(NO_SUCH_DEPARTMENT));
 
-        User user = UserSaveRequest.newUser(userSaveRequest, department, password);
+        User user = UserSaveRequest.newUser(userSaveRequest, department, encodedPassword);
         return UserSaveResponse.from(userRepository.save(user));
     }
 
@@ -180,6 +181,12 @@ public class UserService {
         requestBody.add("pw", weinLoginRequest.getPassword());
         requestBody.add("rtnUrl", ""); // 리다이렉트 후 이동할 URL 지정, 필요시 수정
         return requestBody;
+    }
+
+    public void validateUserDetails(CustomUserDetails userDetails){
+        if (!userRepository.existsById(userDetails.getUserId())){
+            throw new NoSuchUserException(NO_SUCH_USER);
+        }
     }
 
 }

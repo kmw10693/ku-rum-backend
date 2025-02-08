@@ -1,10 +1,10 @@
-package ku_rum.backend.domain.building.domain;
+package ku_rum.backend.domain.buildingCategory.domain;
 
 import jakarta.persistence.*;
+import ku_rum.backend.domain.building.domain.Building;
 import ku_rum.backend.domain.category.domain.Category;
 import ku_rum.backend.global.type.BaseEntity;
 import lombok.AccessLevel;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 

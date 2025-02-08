@@ -1,6 +1,6 @@
 package ku_rum.backend.domain.category.application;
 
-import ku_rum.backend.domain.building.domain.repository.BuildingCategoryQueryRepository;
+import ku_rum.backend.domain.buildingCategory.domain.repository.BuildingCategoryQueryRepository;
 import ku_rum.backend.domain.category.domain.repository.CategoryQueryRepository;
 import ku_rum.backend.domain.category.domain.repository.CategoryRepository;
 import ku_rum.backend.global.exception.category.CategoryNotExist;

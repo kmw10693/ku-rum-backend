@@ -7,7 +7,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public enum CategoryDetail {
 
-  STUDENT_CAFETERIA("학생식당"),
+  STUDENT_CAFETERIA("학생 식당"),
   KCUBE("케이큐브"),
   CU("씨유편의점"),
   RESTIO("레스티오"),

@@ -1,5 +1,6 @@
 package ku_rum.backend.domain.building.domain;
 
+import ku_rum.backend.domain.buildingCategory.domain.BuildingCategory;
 import ku_rum.backend.domain.category.domain.Category;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

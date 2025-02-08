@@ -1,7 +1,7 @@
 package ku_rum.backend.global.dataInsert;
 
 import ku_rum.backend.domain.building.domain.Building;
-import ku_rum.backend.domain.building.domain.BuildingCategory;
+import ku_rum.backend.domain.buildingCategory.domain.BuildingCategory;
 import ku_rum.backend.domain.category.domain.Category;
 import org.springframework.stereotype.Component;
 import java.util.ArrayList;

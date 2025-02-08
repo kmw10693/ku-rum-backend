@@ -19,11 +19,10 @@ public record UserSaveRequest(@NotBlank(message = "아이디 입력은 필수입
         return User.builder()
                 .nickname(userSaveRequest.nickname())
                 .password(password)
+                .email(userSaveRequest.email())
                 .loginId(userSaveRequest.loginId())
-                .password(userSaveRequest.password())
                 .studentId(userSaveRequest.studentId())
                 .department(department)
-                .email(userSaveRequest.email())
                 .build();
     }
 

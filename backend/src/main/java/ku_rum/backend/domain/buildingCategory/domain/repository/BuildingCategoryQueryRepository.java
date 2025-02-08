@@ -1,16 +1,18 @@
-package ku_rum.backend.domain.building.domain.repository;
+package ku_rum.backend.domain.buildingCategory.domain.repository;
 
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
-import ku_rum.backend.domain.building.domain.BuildingCategory;
-import ku_rum.backend.domain.building.domain.QBuildingCategory;
+import ku_rum.backend.domain.buildingCategory.domain.BuildingCategory;
+import ku_rum.backend.domain.buildingCategory.domain.QBuildingCategory;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Optional;
+
+import static ku_rum.backend.domain.buildingCategory.domain.QBuildingCategory.buildingCategory;
 
 @Repository
 @RequiredArgsConstructor
@@ -41,7 +43,7 @@ public class BuildingCategoryQueryRepository {
   }
 
   public List<Long> findByBuildingIds(List<Long> buildingIds) {
-    QBuildingCategory qBuildingCategory = QBuildingCategory.buildingCategory;
+    QBuildingCategory qBuildingCategory = buildingCategory;
     List<Long> result = queryFactory
             .select(qBuildingCategory.id)
             .from(qBuildingCategory)
@@ -57,5 +59,15 @@ public class BuildingCategoryQueryRepository {
     return Optional.ofNullable(entityManager.createQuery(query, BuildingCategory.class)
             .setParameter("id", id)
             .getSingleResult());
+  }
+
+  public Optional<BuildingCategory> findByBuildingAndCategoryId(Long buildingId, Long categoryId) {
+    return Optional.ofNullable(
+            queryFactory
+                    .selectFrom(buildingCategory)
+                    .where(buildingCategory.building.id.eq(buildingId))
+                    .where(buildingCategory.category.id.eq(categoryId))
+                    .fetchOne()
+    );
   }
 }
