@@ -8,6 +8,7 @@ import ku_rum.backend.global.response.BaseResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import org.openqa.selenium.By;
@@ -20,7 +21,6 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 
-import org.jsoup.nodes.Document;
 
 import java.time.Duration;
 import java.util.*;
