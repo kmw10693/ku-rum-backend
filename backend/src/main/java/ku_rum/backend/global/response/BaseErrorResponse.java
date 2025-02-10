@@ -18,6 +18,12 @@ public class BaseErrorResponse implements ResponseStatus {
         this.message = message;
     }
 
+    public BaseErrorResponse(ResponseStatus status) {
+        this.code = status.getCode();
+        this.status = status.getStatus();
+        this.message = status.getMessage();
+    }
+
     @Override
     public int getCode() {
         return code;

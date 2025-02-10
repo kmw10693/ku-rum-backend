@@ -24,8 +24,8 @@ public class MailController {
      * @param mailSendRequest
      * @return String 메일이 성공적으로 전송되었습니다.
      */
-    @PostMapping
-    public BaseResponse<String> sendMail(@RequestBody @Valid final MailSendRequest mailSendRequest) {
+    @PostMapping("/auth-codes")
+    public BaseResponse<String> authCode(@RequestBody @Valid final MailSendRequest mailSendRequest) {
         mailService.sendCodeToEmail(mailSendRequest);
         return BaseResponse.ok(MAIL_SEND_INFO.getSUCCESS_MESSAGE());
     }
@@ -35,8 +35,8 @@ public class MailController {
      * @param mailVerificationRequest
      * @return OK
      */
-    @GetMapping("/mail_verifications")
-    public BaseResponse<MailVerificationResponse> verificationEmail(@RequestBody @Valid final MailVerificationRequest mailVerificationRequest) {
+    @PostMapping("/verification_codes")
+    public BaseResponse<MailVerificationResponse> verificationCode(@RequestBody @Valid final MailVerificationRequest mailVerificationRequest) {
         return BaseResponse.ok(mailService.verifiedCode(mailVerificationRequest));
     }
 
