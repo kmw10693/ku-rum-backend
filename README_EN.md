@@ -4,8 +4,8 @@
 <p style="text-align: center; font-size: 30px">KU:Room</p>
 <hr>
 
-<a href="README.md"><img src="https://img.shields.io/badge/KOR-45A1FC?style=for-the-badge&logo=XML&logoColor=white"></a>
-<a href="README_EN.md"><img src="https://img.shields.io/badge/ENG-FF5733?style=for-the-badge&logo=XML&logoColor=white"></a>
+[![KOR](https://img.shields.io/badge/한-45A1FC?style=for-the-badge&logo=XML&logoColor=white)](README_KR.md)
+[![ENG](https://img.shields.io/badge/ENG-FF5733?style=for-the-badge&logo=XML&logoColor=white)](README_EN.md)
 
 University Life Guide **"KU:Room"** Backend Repository.
 
@@ -32,9 +32,9 @@ University Life Guide **"KU:Room"** Backend Repository.
 ## Backend Members
 
 
-| <img src="https://avatars.githubusercontent.com/Hyeri1ee" width="130" height="130"> | <img src="https://avatars.githubusercontent.com/buzz0331" width="130" height="130"> |   <img src="https://avatars.githubusercontent.com/tintin010" height="130">   | <img src="https://avatars.githubusercontent.com/kmw10693" width="130" height="130">  |
-|:-----------------------------------------------------------------------------------------:|:-----------------------------------------------------------------------------------------:|:--------------------------------------------------------------------------------------:|:-----------------------------------------------------------------------------------------:|
-|                              [Hyeri](https://github.com/Hyeri1ee)                               |                             [Hyunjun](https://github.com/buzz0331)                              |                          [Jaeyoon](https://github.com/tintin010)                              |                          [Minwoo](https://github.com/kmw10693)                           |
+| <img src="https://avatars.githubusercontent.com/Hyeri1ee" width="130" height="130"> | <img src="https://avatars.githubusercontent.com/buzz0331" width="130" height="130"> |   <img src="https://avatars.githubusercontent.com/tintin010" height="130">   | <img src="https://avatars.githubusercontent.com/kmw10693" width="130" height="130"> |
+|:-----------------------------------------------------------------------------------------:|:-----------------------------------------------------------------------------------------:|:--------------------------------------------------------------------------------------:|:-----------------------------------------------------------------------------------:|
+|                              [Hyeri](https://github.com/Hyeri1ee)                               |                             [Hyunjun](https://github.com/buzz0331)                              |                          [Jaeyoon](https://github.com/tintin010)                              |                         [Minu](https://github.com/kmw10693)                         |
 
 
 ## Demo
