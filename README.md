@@ -1,7 +1,8 @@
 <p align="center">
   <img src="/backend/images/KUROOM.png">
 </p>
-<p style="text-align: center; font-size: 30px">KU:Room</p>
+
+# KU:Room
 <hr>
 
 [![KOR](https://img.shields.io/badge/한-45A1FC?style=for-the-badge&logo=XML&logoColor=white)](README_KR.md)
