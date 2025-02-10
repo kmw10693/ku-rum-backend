@@ -4,6 +4,9 @@
 <p style="text-align: center; font-size: 30px">KU:Room</p>
 <hr>
 
+<a href="README.md"><img src="https://img.shields.io/badge/한-45A1FC?style=for-the-badge&logo=XML&logoColor=white"></a>
+<a href="README_EN.md"><img src="https://img.shields.io/badge/ENG-FF5733?style=for-the-badge&logo=XML&logoColor=white"></a>
+
 대학생활 가이드 **"쿠름"** 백엔드 레포 입니다.
 
 
