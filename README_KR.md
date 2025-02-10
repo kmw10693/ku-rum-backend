@@ -58,16 +58,16 @@ coming soon~
 - MySQL
 
 ### 🛠️ 스택
-#### Framework 
+#### Framework
 <img src="https://img.shields.io/badge/Spring Boot-6DB33F?style=for-the-social&logo=Spring Boot&logoColor=white">  <img src="https://img.shields.io/badge/Gradle-02303A?style=for-the-social&logo=Gradle&logoColor=white">
 
-#### Database 
+#### Database
 <img src ="https://img.shields.io/badge/H2 Database-blue"> <img src="https://img.shields.io/badge/Amazon RDS for MySQL-527FFF?style=for-the-sociak&logo=Amazon RDS&logoColor=white"> <img src="https://img.shields.io/badge/Amazon Elasticache for Redis-DC382D?style=for-the-sociak&logo=redis&logoColor=white">
 
-#### ORM 
+#### ORM
 <img src="https://img.shields.io/badge/Spring Data JPA-6DB33F?style=for-the-social&logo=Databricks&logoColor=white">
 
-#### Deploy 
+#### Deploy
 <img src="https://img.shields.io/badge/Github Actions-2088FF?style=for-the-sociak&logo=githubactions&logoColor=white"> <img src="https://img.shields.io/badge/Docker-2496ED?style=for-the-sociak&logo=docker&logoColor=white">
 
 #### API Docs
