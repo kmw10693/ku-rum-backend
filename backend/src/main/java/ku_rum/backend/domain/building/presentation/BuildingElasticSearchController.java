@@ -41,4 +41,6 @@ public class BuildingElasticSearchController {
     List<BuildingDocument> result = buildingSearchService.searchByBuildingnameToken(name.trim());
     return BaseResponse.okList(result);
   }
+
+
 }

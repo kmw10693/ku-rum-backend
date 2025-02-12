@@ -8,7 +8,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface BuildingElasticRepository extends ElasticsearchRepository<BuildingDocument, Long> {
+public interface BuildingElasticRepository extends ElasticsearchRepository<BuildingDocument, String> {
 
   /**
    * 건물 이름을 부분 검색 (와일드 카드 사용)

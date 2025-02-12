@@ -88,7 +88,7 @@ spring:
   # ddl 전략
   jpa:
     hibernate:
-      ddl-auto: create # 로컬 환경에서만 테이블을 생성하도록 설정
+      ddl-auto: update # 로컬 환경에서만 테이블을 생성하도록 설정
     show-sql: true
     properties:
       hibernate:

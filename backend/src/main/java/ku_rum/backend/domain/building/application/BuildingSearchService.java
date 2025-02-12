@@ -4,6 +4,7 @@ import ku_rum.backend.document.BuildingDocument;
 import ku_rum.backend.domain.building.domain.Building;
 import ku_rum.backend.domain.building.domain.BuildingAbbrev;
 import ku_rum.backend.domain.building.domain.repository.BuildingElasticRepository;
+import ku_rum.backend.domain.building.dto.request.BuildingInfoRequest;
 import ku_rum.backend.domain.buildingCategory.domain.BuildingCategory;
 import ku_rum.backend.domain.buildingCategory.domain.repository.BuildingCategoryQueryRepository;
 import ku_rum.backend.domain.building.domain.repository.BuildingQueryRepository;
@@ -179,8 +180,28 @@ public class BuildingSearchService {
     buildingElasticRepository.saveAll(documents);
   }
 
-
+  /**
+   * name 이 빌딩 명칭에 있기만 하면 반환하는 함수
+   *
+   * @param name
+   * @return
+   */
   public List<BuildingDocument> searchByBuildingnameToken(String name){
     return buildingElasticRepository.findByNameCustom(name);
+  }
+
+  public BuildingResponse insertByAdminBuildingInfo(BuildingInfoRequest request){
+    Building building = Building.builder()
+            .abbreviation(request.bulidingAbbreviation())
+            .name(request.buildingName())
+            .number(request.buildingNumber())
+            .latitude(request.latitude())
+            .longitude(request.longtitude())
+            .build();
+
+    buildingElasticRepository.save(BuildingDocument.from(building));
+    buildingRepository.save(building);
+
+    return BuildingResponse.of(building);
   }
 }
