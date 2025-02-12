@@ -22,12 +22,12 @@ import java.util.stream.Collectors;
 @Mapping(mappingPath = "elastic/building-mapping.json")
 public class BuildingDocument {
   @Id
-  private Long id;
+  private String id;
   private String name;
   private String abbreviation;
 
   @Builder
-  public BuildingDocument(Long id, String name, String abbreviation) {
+  public BuildingDocument(String id, String name, String abbreviation) {
     this.id = id;
     this.name = name;
     this.abbreviation = abbreviation;
@@ -35,7 +35,7 @@ public class BuildingDocument {
 
   public static BuildingDocument from(Building building){
     return BuildingDocument.builder()
-            .id(building.getId())
+            .id(building.getId().toString())
             .name(building.getName())
             .abbreviation(building.getAbbreviation())
             .build();
