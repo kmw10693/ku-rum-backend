@@ -13,6 +13,7 @@ import org.springframework.data.elasticsearch.annotations.WriteTypeHint;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -40,11 +41,9 @@ public class BuildingDocument {
             .build();
   }
 
-  public static List<BuildingDocument> from(List<Building> savedBuildings) {
-    List<BuildingDocument> buildingDocumentList = new ArrayList<>();
-    for (Building building : savedBuildings){
-      buildingDocumentList.add(BuildingDocument.from(building));
-    }
-    return buildingDocumentList;
+  public static List<BuildingDocument> from(List<Building> buildings) {
+    return buildings.stream()
+            .map(BuildingDocument::from)
+            .collect(Collectors.toList());
   }
 }

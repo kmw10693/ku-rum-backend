@@ -168,13 +168,17 @@ public class BuildingSearchService {
   /**
    * elastic search repository에 Building 객체 정보 저장 함수
    * 
-   * @param building
+   * @param buildings
    * @return
    */
-  private Building addElasticRepo(Building building){
-    buildingElasticRepository.save(BuildingDocument.from(building));
-    return building;
+  public void addAllElasticRepo(List<Building> buildings) {
+    List<BuildingDocument> documents = buildings.stream()
+            .map(BuildingDocument::from) // Building을 BuildingDocument로 변환
+            .toList();
+
+    buildingElasticRepository.saveAll(documents);
   }
+
 
   public List<BuildingDocument> searchByBuildingnameToken(String name){
     return buildingElasticRepository.findByNameCustom(name);

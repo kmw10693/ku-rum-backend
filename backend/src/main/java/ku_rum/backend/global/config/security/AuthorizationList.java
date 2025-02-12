@@ -14,7 +14,8 @@ public enum AuthorizationList {
             "/docs/**",
             "/api/v1/users/validations/loginId",
             "/api/v1/users/weinlogin",
-            "/api/v1/users/reset-account"
+            "/api/v1/users/reset-account",
+            "/api/v1/buildings/view/**"
     )));
 
     private final List<String> authorities;

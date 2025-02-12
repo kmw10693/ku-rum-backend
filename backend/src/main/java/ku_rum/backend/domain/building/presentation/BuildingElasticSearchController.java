@@ -34,10 +34,10 @@ public class BuildingElasticSearchController {
    * @return
    */
   @GetMapping("/searchName/token")
-  public BaseResponse<List<BuildingDocument>> viewBuildingByName(
-          @AuthenticationPrincipal CustomUserDetails userDetails,
+  public BaseResponse<List<BuildingDocument>> viewBuildingByNameToken(
+          //@AuthenticationPrincipal CustomUserDetails userDetails,
           @RequestParam("name")@NotNull String name){
-    userService.validateUserDetails(userDetails);
+    //userService.validateUserDetails(userDetails);
     List<BuildingDocument> result = buildingSearchService.searchByBuildingnameToken(name.trim());
     return BaseResponse.okList(result);
   }
