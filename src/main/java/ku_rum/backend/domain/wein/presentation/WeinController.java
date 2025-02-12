@@ -19,9 +19,6 @@ import org.springframework.web.bind.annotation.RestController;
 public class WeinController {
     private final WeinService weinService;
 
-    /**
-     * 위인전 로그인 API
-     */
     @PostMapping("/weinlogin")
     public BaseResponse<WeinLoginResponse> loginToWein(@RequestBody @Valid WeinLoginRequest weinLoginRequest) {
         return weinService.loginToWein(weinLoginRequest);

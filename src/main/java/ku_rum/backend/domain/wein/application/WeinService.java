@@ -72,27 +72,18 @@ public class WeinService {
         return null;
     }
 
-    /*
-     헤더 설정 메서드
-     */
     private static HttpHeaders getHeaders() {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
         return headers;
     }
 
-    /*
-     HttpClient를 사용하는 RestTemplate 설정 메서드
-     */
     private static RestTemplate getRestTemplate(CloseableHttpClient httpClient) {
         HttpComponentsClientHttpRequestFactory requestFactory = new HttpComponentsClientHttpRequestFactory(httpClient);
         RestTemplate restTemplate = new RestTemplate(requestFactory);
         return restTemplate;
     }
 
-    /*
-     리다이렉션 전략과 쿠키 저장소를 설정하여 HttpClient 생성 메서드
-     */
     private static CloseableHttpClient getCloseableHttpClient() {
         CloseableHttpClient httpClient = HttpClients.custom()
                 .setRedirectStrategy(new DefaultRedirectStrategy()) // 기본 리다이렉션 전략
