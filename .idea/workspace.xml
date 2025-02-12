@@ -1,0 +1,361 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="c1527f4d-4f7c-4702-bd27-f0d8c88d242d" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/ku_rum/backend/domain/building/application/BuildingSearchService.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/ku_rum/backend/domain/building/application/BuildingSearchService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/ku_rum/backend/global/config/ElasticSearchConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/ku_rum/backend/global/config/ElasticSearchConfig.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/resources/application.yml" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/resources/application.yml" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="ExternalProjectsData">
+    <projectState path="$PROJECT_DIR$/backend">
+      <ProjectState />
+    </projectState>
+  </component>
+  <component name="ExternalProjectsManager">
+    <system id="GRADLE">
+      <state>
+        <task path="$PROJECT_DIR$/backend">
+          <activation />
+        </task>
+        <projects_view>
+          <tree_state>
+            <expand>
+              <path>
+                <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
+                <item name="backend" type="f1a62948:ProjectNode" />
+              </path>
+            </expand>
+            <select />
+          </tree_state>
+        </projects_view>
+      </state>
+    </system>
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Record" />
+        <option value="Class" />
+        <option value="Interface" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="ProjectColorInfo">{
+  &quot;customColor&quot;: &quot;&quot;,
+  &quot;associatedIndex&quot;: 6
+}</component>
+  <component name="ProjectId" id="2sf3xmvtLE1qJ7FeIrbqnol4e7e" />
+  <component name="ProjectLevelVcsManager">
+    <ConfirmationsSetting value="1" id="Add" />
+  </component>
+  <component name="ProjectViewState">
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "Gradle.BookmarkControllerTest.executor": "Run",
+    "Gradle.Build backend.executor": "Run",
+    "Gradle.BuildingCategoryInfoServiceTest.executor": "Run",
+    "Gradle.BuildingCategoryInfoServiceTest.디테일_제공안하는_카테고리입력시_실패.executor": "Debug",
+    "Gradle.BuildingCategoryInfoServiceTest.특정_학생식당_카테고리_디테일_조회_성공.executor": "Run",
+    "Gradle.BuildingCategoryInfoServiceTest.특정카테고리_전체조회_성공.executor": "Run",
+    "Gradle.BuildingInfoServiceTest.executor": "Debug",
+    "Gradle.BuildingInfoServiceTest.등록된_건물정보_건물번호로_조회_성공.executor": "Run",
+    "Gradle.BuildingInfoServiceTest.등록된_건물정보_전체_조회_성공.executor": "Run",
+    "Gradle.BuildingSearchControllerTest.executor": "Run",
+    "Gradle.UserControllerTest.executor": "Run",
+    "RequestMappingsPanelOrder0": "0",
+    "RequestMappingsPanelOrder1": "1",
+    "RequestMappingsPanelWidth0": "75",
+    "RequestMappingsPanelWidth1": "75",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "Spring Boot.BackendApplication.executor": "Run",
+    "git-widget-placeholder": "feature/#95",
+    "kotlin-language-version-configured": "true",
+    "last_opened_file_path": "D:/DEV/KUrum/recent-my-work",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "project.structure.last.edited": "Project",
+    "project.structure.proportion": "0.0",
+    "project.structure.side.proportion": "0.0",
+    "settings.editor.selected.configurable": "reference.settingsdialog.project.gradle",
+    "vue.rearranger.settings.migration": "true"
+  }
+}]]></component>
+  <component name="ReactorSettings">
+    <option name="notificationShown" value="true" />
+  </component>
+  <component name="RecentsManager">
+    <key name="CreateClassDialog.RecentsKey">
+      <recent name="ku_rum.backend.domain.building.domain.repository" />
+      <recent name="ku_rum.backend.domain.buildingCategory.dto.request" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="D:\DEV\KUrum\recent-my-work\backend\images" />
+    </key>
+  </component>
+  <component name="RubyModuleManagerSettings">
+    <option name="blackListedRootsPaths">
+      <list>
+        <option value="$PROJECT_DIR$/backend/src/main" />
+        <option value="$PROJECT_DIR$/backend/src/test" />
+        <option value="$PROJECT_DIR$/backend" />
+      </list>
+    </option>
+  </component>
+  <component name="RunManager" selected="Spring Boot.BackendApplication">
+    <configuration name="BuildingCategoryInfoServiceTest" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+      <ExternalSystemSettings>
+        <option name="env">
+          <map>
+            <entry key="GOOGLE_CLIENT_ID" value="496376574351-6l9trcrkacm83pn7sjiog3ss8keefifd.apps.googleusercontent.com" />
+            <entry key="GOOGLE_CLIENT_SECRET" value="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" />
+            <entry key="jwt-secret-key" value="6ce1d11af9ac1adf97712c069ca33bc4564d675ce3958942bb3dc5601829881430cfd8d98c87452ae5b098d80874df8ca569c03fa79191b4ae755e86fd719347" />
+            <entry key="mail.password" value="eofxovqewkdkhuek" />
+            <entry key="mail.username" value="ku.rum.authentication@gmail.com" />
+            <entry key="openai.key" value="temp" />
+            <entry key="openai.url" value="temp" />
+          </map>
+        </option>
+        <option name="executionName" />
+        <option name="externalProjectPath" value="$PROJECT_DIR$/backend" />
+        <option name="externalSystemIdString" value="GRADLE" />
+        <option name="scriptParameters" value="" />
+        <option name="taskDescriptions">
+          <list />
+        </option>
+        <option name="taskNames">
+          <list>
+            <option value=":test" />
+            <option value="--tests" />
+            <option value="&quot;ku_rum.backend.domain.building.service.BuildingCategoryInfoServiceTest&quot;" />
+          </list>
+        </option>
+        <option name="vmOptions" />
+      </ExternalSystemSettings>
+      <ExternalSystemDebugServerProcess>false</ExternalSystemDebugServerProcess>
+      <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
+      <DebugAllEnabled>false</DebugAllEnabled>
+      <RunAsTest>true</RunAsTest>
+      <method v="2" />
+    </configuration>
+    <configuration name="BuildingCategoryInfoServiceTest.특정카테고리_전체조회_성공" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+      <ExternalSystemSettings>
+        <option name="env">
+          <map>
+            <entry key="GOOGLE_CLIENT_ID" value="496376574351-6l9trcrkacm83pn7sjiog3ss8keefifd.apps.googleusercontent.com" />
+            <entry key="GOOGLE_CLIENT_SECRET" value="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" />
+            <entry key="jwt-secret-key" value="6ce1d11af9ac1adf97712c069ca33bc4564d675ce3958942bb3dc5601829881430cfd8d98c87452ae5b098d80874df8ca569c03fa79191b4ae755e86fd719347" />
+            <entry key="mail.password" value="eofxovqewkdkhuek" />
+            <entry key="mail.username" value="ku.rum.authentication@gmail.com" />
+            <entry key="openai.key" value="temp" />
+            <entry key="openai.url" value="temp" />
+          </map>
+        </option>
+        <option name="executionName" />
+        <option name="externalProjectPath" value="$PROJECT_DIR$/backend" />
+        <option name="externalSystemIdString" value="GRADLE" />
+        <option name="scriptParameters" value="" />
+        <option name="taskDescriptions">
+          <list />
+        </option>
+        <option name="taskNames">
+          <list>
+            <option value=":test" />
+            <option value="--tests" />
+            <option value="&quot;ku_rum.backend.domain.building.service.BuildingCategoryInfoServiceTest.특정카테고리_전체조회_성공&quot;" />
+          </list>
+        </option>
+        <option name="vmOptions" />
+      </ExternalSystemSettings>
+      <ExternalSystemDebugServerProcess>false</ExternalSystemDebugServerProcess>
+      <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
+      <DebugAllEnabled>false</DebugAllEnabled>
+      <RunAsTest>true</RunAsTest>
+      <method v="2" />
+    </configuration>
+    <configuration name="BuildingCategoryInfoServiceTest.특정_학생식당_카테고리_디테일_조회_성공" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+      <ExternalSystemSettings>
+        <option name="env">
+          <map>
+            <entry key="GOOGLE_CLIENT_ID" value="496376574351-6l9trcrkacm83pn7sjiog3ss8keefifd.apps.googleusercontent.com" />
+            <entry key="GOOGLE_CLIENT_SECRET" value="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" />
+            <entry key="jwt-secret-key" value="6ce1d11af9ac1adf97712c069ca33bc4564d675ce3958942bb3dc5601829881430cfd8d98c87452ae5b098d80874df8ca569c03fa79191b4ae755e86fd719347" />
+            <entry key="mail.password" value="eofxovqewkdkhuek" />
+            <entry key="mail.username" value="ku.rum.authentication@gmail.com" />
+            <entry key="openai.key" value="temp" />
+            <entry key="openai.url" value="temp" />
+          </map>
+        </option>
+        <option name="executionName" />
+        <option name="externalProjectPath" value="$PROJECT_DIR$/backend" />
+        <option name="externalSystemIdString" value="GRADLE" />
+        <option name="scriptParameters" value="" />
+        <option name="taskDescriptions">
+          <list />
+        </option>
+        <option name="taskNames">
+          <list>
+            <option value=":test" />
+            <option value="--tests" />
+            <option value="&quot;ku_rum.backend.domain.building.service.BuildingCategoryInfoServiceTest.특정_학생식당_카테고리_디테일_조회_성공&quot;" />
+          </list>
+        </option>
+        <option name="vmOptions" />
+      </ExternalSystemSettings>
+      <ExternalSystemDebugServerProcess>false</ExternalSystemDebugServerProcess>
+      <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
+      <DebugAllEnabled>false</DebugAllEnabled>
+      <RunAsTest>true</RunAsTest>
+      <method v="2" />
+    </configuration>
+    <configuration name="BuildingInfoServiceTest" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+      <ExternalSystemSettings>
+        <option name="env">
+          <map>
+            <entry key="GOOGLE_CLIENT_ID" value="496376574351-6l9trcrkacm83pn7sjiog3ss8keefifd.apps.googleusercontent.com" />
+            <entry key="GOOGLE_CLIENT_SECRET" value="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" />
+            <entry key="jwt-secret-key" value="6ce1d11af9ac1adf97712c069ca33bc4564d675ce3958942bb3dc5601829881430cfd8d98c87452ae5b098d80874df8ca569c03fa79191b4ae755e86fd719347" />
+            <entry key="mail.password" value="eofxovqewkdkhuek" />
+            <entry key="mail.username" value="ku.rum.authentication@gmail.com" />
+            <entry key="openai.key" value="temp" />
+            <entry key="openai.url" value="temp" />
+          </map>
+        </option>
+        <option name="executionName" />
+        <option name="externalProjectPath" value="$PROJECT_DIR$/backend" />
+        <option name="externalSystemIdString" value="GRADLE" />
+        <option name="scriptParameters" value="" />
+        <option name="taskDescriptions">
+          <list />
+        </option>
+        <option name="taskNames">
+          <list>
+            <option value=":test" />
+            <option value="--tests" />
+            <option value="&quot;ku_rum.backend.domain.building.service.BuildingInfoServiceTest&quot;" />
+          </list>
+        </option>
+        <option name="vmOptions" />
+      </ExternalSystemSettings>
+      <ExternalSystemDebugServerProcess>false</ExternalSystemDebugServerProcess>
+      <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
+      <DebugAllEnabled>false</DebugAllEnabled>
+      <RunAsTest>true</RunAsTest>
+      <method v="2" />
+    </configuration>
+    <configuration name="BuildingInfoServiceTest.등록된_건물정보_전체_조회_성공" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+      <ExternalSystemSettings>
+        <option name="env">
+          <map>
+            <entry key="GOOGLE_CLIENT_ID" value="496376574351-6l9trcrkacm83pn7sjiog3ss8keefifd.apps.googleusercontent.com" />
+            <entry key="GOOGLE_CLIENT_SECRET" value="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" />
+            <entry key="jwt-secret-key" value="6ce1d11af9ac1adf97712c069ca33bc4564d675ce3958942bb3dc5601829881430cfd8d98c87452ae5b098d80874df8ca569c03fa79191b4ae755e86fd719347" />
+            <entry key="mail.password" value="eofxovqewkdkhuek" />
+            <entry key="mail.username" value="ku.rum.authentication@gmail.com" />
+            <entry key="openai.key" value="temp" />
+            <entry key="openai.url" value="temp" />
+          </map>
+        </option>
+        <option name="executionName" />
+        <option name="externalProjectPath" value="$PROJECT_DIR$/backend" />
+        <option name="externalSystemIdString" value="GRADLE" />
+        <option name="scriptParameters" value="" />
+        <option name="taskDescriptions">
+          <list />
+        </option>
+        <option name="taskNames">
+          <list>
+            <option value=":test" />
+            <option value="--tests" />
+            <option value="&quot;ku_rum.backend.domain.building.service.BuildingInfoServiceTest.등록된_건물정보_전체_조회_성공&quot;" />
+          </list>
+        </option>
+        <option name="vmOptions" />
+      </ExternalSystemSettings>
+      <ExternalSystemDebugServerProcess>false</ExternalSystemDebugServerProcess>
+      <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
+      <DebugAllEnabled>false</DebugAllEnabled>
+      <RunAsTest>true</RunAsTest>
+      <method v="2" />
+    </configuration>
+    <configuration name="BackendApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
+      <envs>
+        <env name="GOOGLE_CLIENT_ID" value="496376574351-6l9trcrkacm83pn7sjiog3ss8keefifd.apps.googleusercontent.com" />
+        <env name="GOOGLE_CLIENT_SECRET" value="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" />
+        <env name="jwt-secret-key" value="6ce1d11af9ac1adf97712c069ca33bc4564d675ce3958942bb3dc5601829881430cfd8d98c87452ae5b098d80874df8ca569c03fa79191b4ae755e86fd719347" />
+        <env name="mail.password" value="eofxovqewkdkhuek" />
+        <env name="mail.username" value="ku.rum.authentication@gmail.com" />
+        <env name="openai.key" value="temp" />
+        <env name="openai.url" value="temp" />
+      </envs>
+      <module name="backend.main" />
+      <option name="SPRING_BOOT_MAIN_CLASS" value="ku_rum.backend.BackendApplication" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <list>
+      <item itemvalue="Gradle.BuildingCategoryInfoServiceTest.특정_학생식당_카테고리_디테일_조회_성공" />
+      <item itemvalue="Gradle.BuildingInfoServiceTest.등록된_건물정보_전체_조회_성공" />
+      <item itemvalue="Gradle.BuildingCategoryInfoServiceTest.특정카테고리_전체조회_성공" />
+      <item itemvalue="Gradle.BuildingCategoryInfoServiceTest" />
+      <item itemvalue="Gradle.BuildingInfoServiceTest" />
+      <item itemvalue="Spring Boot.BackendApplication" />
+    </list>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Gradle.BuildingCategoryInfoServiceTest" />
+        <item itemvalue="Gradle.BuildingCategoryInfoServiceTest.특정_학생식당_카테고리_디테일_조회_성공" />
+        <item itemvalue="Gradle.BuildingCategoryInfoServiceTest.특정카테고리_전체조회_성공" />
+        <item itemvalue="Gradle.BuildingInfoServiceTest" />
+        <item itemvalue="Gradle.BuildingInfoServiceTest.등록된_건물정보_전체_조회_성공" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="bundled-jdk-9823dce3aa75-28b599e66164-intellij.indexing.shared.core-IU-242.23339.11" />
+        <option value="bundled-js-predefined-d6986cc7102b-5c90d61e3bab-JavaScript-IU-242.23339.11" />
+      </set>
+    </attachedChunks>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="c1527f4d-4f7c-4702-bd27-f0d8c88d242d" name="Changes" comment="" />
+      <created>1738833050990</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1738833050990</updated>
+      <workItem from="1738833052031" duration="36008000" />
+      <workItem from="1738983504155" duration="12648000" />
+      <workItem from="1739025667739" duration="3150000" />
+      <workItem from="1739030996197" duration="3879000" />
+      <workItem from="1739143009186" duration="11878000" />
+      <workItem from="1739322946441" duration="11850000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="com.intellij.coverage.CoverageDataManagerImpl">
+    <SUITE FILE_PATH="coverage/recent_my_work$BuildingInfoServiceTest.ic" NAME="BuildingInfoServiceTest Coverage Results" MODIFIED="1738986447251" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="true" />
+  </component>
+</project>

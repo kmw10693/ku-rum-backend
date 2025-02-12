@@ -9,7 +9,7 @@ import org.springframework.data.elasticsearch.repository.config.EnableElasticsea
 @Configuration
 @EnableElasticsearchRepositories
 public class ElasticSearchConfig extends ElasticsearchConfiguration {
-  @Value("${spring.elasticsearch.host}")
+  @Value("${elasticsearch.host}")
   private String host;
 
   @Override

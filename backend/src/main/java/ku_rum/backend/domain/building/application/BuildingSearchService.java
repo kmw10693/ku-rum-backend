@@ -1,7 +1,9 @@
 package ku_rum.backend.domain.building.application;
 
+import ku_rum.backend.document.BuildingDocument;
 import ku_rum.backend.domain.building.domain.Building;
 import ku_rum.backend.domain.building.domain.BuildingAbbrev;
+import ku_rum.backend.domain.building.domain.repository.BuildingElasticRepository;
 import ku_rum.backend.domain.buildingCategory.domain.BuildingCategory;
 import ku_rum.backend.domain.buildingCategory.domain.repository.BuildingCategoryQueryRepository;
 import ku_rum.backend.domain.building.domain.repository.BuildingQueryRepository;
@@ -36,6 +38,7 @@ public class BuildingSearchService {
   private final BuildingCategoryQueryRepository buildingCategoryQueryRepository;
   private final MenuRepository menuQueryRepository;
   private final CategoryRepository categoryRepository;
+  private final BuildingElasticRepository buildingElasticRepository;
 
 
   public List<BuildingResponse> findAllBuildings() {
@@ -159,5 +162,21 @@ public class BuildingSearchService {
       }
     }
     return false;
+  }
+
+
+  /**
+   * elastic search repository에 Building 객체 정보 저장 함수
+   * 
+   * @param building
+   * @return
+   */
+  private Building add(Building building){
+    buildingElasticRepository.save(BuildingDocument.from(building));
+    return building;
+  }
+
+  public List<BuildingDocument> searchByBuildingnameToken(String name){
+    return buildingElasticRepository.findByNameCustom(name);
   }
 }
