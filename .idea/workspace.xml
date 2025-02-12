@@ -5,8 +5,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="c1527f4d-4f7c-4702-bd27-f0d8c88d242d" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/backend/src/main/java/ku_rum/backend/domain/building/presentation/BuildingElasticSearchController.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/ku_rum/backend/domain/building/presentation/BuildingElasticSearchController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/src/main/java/ku_rum/backend/global/response/BaseResponse.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/ku_rum/backend/global/response/BaseResponse.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/ku_rum/backend/document/BuildingDocument.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/ku_rum/backend/document/BuildingDocument.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/ku_rum/backend/domain/building/application/BuildingSearchService.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/ku_rum/backend/domain/building/application/BuildingSearchService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/ku_rum/backend/domain/building/domain/repository/BuildingElasticRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/ku_rum/backend/domain/building/domain/repository/BuildingElasticRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/ku_rum/backend/global/dataInsert/DataLoader.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/ku_rum/backend/global/dataInsert/DataLoader.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -347,7 +349,7 @@
       <workItem from="1739025667739" duration="3150000" />
       <workItem from="1739030996197" duration="3879000" />
       <workItem from="1739143009186" duration="11878000" />
-      <workItem from="1739322946441" duration="12271000" />
+      <workItem from="1739322946441" duration="13071000" />
     </task>
     <servers />
   </component>
