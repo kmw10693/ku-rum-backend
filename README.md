@@ -5,8 +5,8 @@
 # KU:Room
 <hr>
 
-[![KOR](https://img.shields.io/badge/한-45A1FC?style=for-the-badge&logo=XML&logoColor=white)](README_KR.md)
-[![ENG](https://img.shields.io/badge/ENG-FF5733?style=for-the-badge&logo=XML&logoColor=white)](README_EN.md)
+[![KOR](https://img.shields.io/badge/한-45A1FC?style=for-the-badge&logo=XML&logoColor=white)](docs/README_KR.md)
+[![ENG](https://img.shields.io/badge/ENG-FF5733?style=for-the-badge&logo=XML&logoColor=white)](docs/README_EN.md)
 
 대학생활 가이드 **"쿠름"** 백엔드 레포 입니다.
 
