@@ -67,8 +67,8 @@ secret:
   refreshToken-valid-time: 604800000 # 일주일
 
 # elastic search 설정
-  elasticsearch:
-    host: localhost:9200
+elasticsearch:
+  host: localhost:9200
 
 ---
 
