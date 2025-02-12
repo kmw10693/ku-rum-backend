@@ -72,7 +72,7 @@ class FriendControllerTest  extends RestDocsTestSupport {
     @Test
     void findByNameInFriendLists() throws Exception {
         //given
-        FriendFindRequest request = FriendFindRequest.from(1L, "nickname");
+        FriendFindRequest request = FriendFindRequest.from("nickname");
 
         // when then
         mockMvc.perform(get("/api/v1/friends/find")
