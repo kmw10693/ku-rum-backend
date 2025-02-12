@@ -23,7 +23,7 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor
 @Validated
-@RequestMapping("/api/v1/buildings/token/view")
+@RequestMapping("/api/v1/buildings/view")
 public class BuildingElasticSearchController {
   private final BuildingSearchService buildingSearchService;
   private final UserService userService;
@@ -33,10 +33,12 @@ public class BuildingElasticSearchController {
    *
    * @return
    */
-  @GetMapping("/searchName")
-  public BaseResponse<BuildingResponse> viewBuildingByName(@AuthenticationPrincipal CustomUserDetails userDetails, @RequestParam("name")@NotNull String name){
+  @GetMapping("/searchName/token")
+  public BaseResponse<List<BuildingDocument>> viewBuildingByName(
+          @AuthenticationPrincipal CustomUserDetails userDetails,
+          @RequestParam("name")@NotNull String name){
     userService.validateUserDetails(userDetails);
     List<BuildingDocument> result = buildingSearchService.searchByBuildingnameToken(name.trim());
-    return BaseResponse.of(BaseExceptionResponseStatus.SUCCESS.getStatus(), result);
+    return BaseResponse.okList(result);
   }
 }

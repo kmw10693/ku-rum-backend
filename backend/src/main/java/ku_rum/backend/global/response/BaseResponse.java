@@ -6,6 +6,8 @@ import ku_rum.backend.global.response.status.ResponseStatus;
 import lombok.Getter;
 import org.springframework.http.HttpStatus;
 
+import java.util.List;
+
 @Getter
 @JsonPropertyOrder({"code", "status", "message", "result"})
 public class BaseResponse<T> implements ResponseStatus {
@@ -25,6 +27,7 @@ public class BaseResponse<T> implements ResponseStatus {
         this.data = data;
     }
 
+
     public static <T> BaseResponse<T> of(HttpStatus status, String message, T data) {
         return new BaseResponse<>(status, message, data);
     }
@@ -35,6 +38,10 @@ public class BaseResponse<T> implements ResponseStatus {
 
     public static <T> BaseResponse<T> ok(T data) {
         return of(HttpStatus.OK, data);
+    }
+
+    public static <T> BaseResponse<List<T>> okList(List<T> data) {
+        return new BaseResponse<>(HttpStatus.OK, HttpStatus.OK.getReasonPhrase(), data);
     }
 
     @Override
