@@ -6,6 +6,7 @@ import ku_rum.backend.domain.auth.dto.request.LoginRequest;
 import ku_rum.backend.domain.auth.dto.request.ReissueRequest;
 import ku_rum.backend.global.config.redis.RedisUtil;
 import ku_rum.backend.global.security.jwt.*;
+import ku_rum.backend.global.security.jwt.dto.TokenResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -17,11 +18,14 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.Duration;
 import java.util.Date;
 
+import static ku_rum.backend.global.response.status.BaseExceptionResponseStatus.MALFORMED_TOKEN;
+
 @Slf4j
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
 public class AuthService {
+
     private final AuthenticationManager authenticationManager;
     private final JwtTokenProvider jwtTokenProvider;
     private final JwtTokenAuthenticationFilter jwtTokenAuthenticationFilter;
@@ -53,8 +57,8 @@ public class AuthService {
 
         if (TokenCheckInRedis(reissueRequest, principal)) return jwtTokenProvider.createToken(authenticate);
 
-        log.error("유효하지 않는 리프레시 토큰입니다.");
-        throw new JwtException("유효하지 않는 리프레시 토큰입니다!");
+        log.error(MALFORMED_TOKEN.getMessage());
+        throw new JwtException(MALFORMED_TOKEN.getMessage());
     }
 
     private boolean TokenCheckInRedis(ReissueRequest reissueRequest, CustomUserDetails principal) {
