@@ -39,8 +39,8 @@ public class CustomUserDetails implements UserDetails {
     public static CustomUserDetails of(User user) {
         return new CustomUserDetails(
                 user.getId(),
-                user.getNickname(),            // 닉네임을 username으로 사용
-                user.getEmail(),               // email 필드에 저장
+                user.getNickname(),
+                user.getEmail(),
                 AuthorityUtils.createAuthorityList("ROLE_USER"),
                 user.getPassword()
         );
