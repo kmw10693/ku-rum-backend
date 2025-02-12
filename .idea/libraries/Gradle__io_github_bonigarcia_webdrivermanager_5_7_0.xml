@@ -1,0 +1,10 @@
+<component name="libraryTable">
+  <library name="Gradle: io.github.bonigarcia:webdrivermanager:5.7.0" type="java-imported" external-system-id="GRADLE">
+    <properties groupId="io.github.bonigarcia" artifactId="webdrivermanager" version="5.7.0" />
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/../../timetogether-v2/caches/modules-2/files-2.1/io.github.bonigarcia/webdrivermanager/5.7.0/e61b8c534853f21d8a1545c19e4eccc8b26e538f/webdrivermanager-5.7.0.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
