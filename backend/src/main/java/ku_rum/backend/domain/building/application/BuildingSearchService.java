@@ -204,4 +204,20 @@ public class BuildingSearchService {
 
     return BuildingResponse.of(building);
   }
+
+  /**
+   * elastic search와 성능 검사 비교 위한 일반 검색 함수 (contians)
+   *
+   * @param name
+   * @return
+   */
+  public List<BuildingResponse> searchByBuildingnameFullText(String name) {
+    List<Building> buildings = buildingRepository.findByNameContaining(name);
+
+    return buildings.stream()
+            .map(BuildingResponse::of)
+            .collect(Collectors.toList());
+  }
+
+
 }

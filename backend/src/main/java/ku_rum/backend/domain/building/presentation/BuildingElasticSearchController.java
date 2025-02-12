@@ -42,5 +42,22 @@ public class BuildingElasticSearchController {
     return BaseResponse.okList(result);
   }
 
+  /**
+   * 성능 비교를 위한 임시 함수 (삭제 예정)
+   *
+   * @param name
+   * @return
+   */
+  @GetMapping("/searchName/fulltext")
+  public BaseResponse<List<BuildingResponse>> viewBuildingByNameFullText(
+          //@AuthenticationPrincipal CustomUserDetails userDetails,
+          @RequestParam("name")@NotNull String name){
+    //userService.validateUserDetails(userDetails);
+    List<BuildingResponse> result = buildingSearchService.searchByBuildingnameFullText(name.trim());
+    return BaseResponse.okList(result);
+  }
+
+
+
 
 }
