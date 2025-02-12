@@ -3,14 +3,6 @@ package ku_rum.backend.global.handler;
 import com.github.dockerjava.api.exception.BadRequestException;
 import com.github.dockerjava.api.exception.InternalServerErrorException;
 import jakarta.validation.ConstraintViolationException;
-import ku_rum.backend.global.exception.building.BuildingNotFoundException;
-import ku_rum.backend.global.exception.building.BuildingNotRegisteredException;
-import ku_rum.backend.global.exception.department.NoSuchDepartmentException;
-import ku_rum.backend.global.exception.notice.NoSuchNoticeException;
-import ku_rum.backend.global.exception.user.DuplicateEmailException;
-import ku_rum.backend.global.exception.user.DuplicateStudentIdException;
-import ku_rum.backend.global.exception.user.MailSendException;
-import ku_rum.backend.global.exception.user.NoSuchUserException;
 import ku_rum.backend.global.response.BaseErrorResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.hibernate.TypeMismatchException;
@@ -27,7 +19,6 @@ import static ku_rum.backend.global.response.status.BaseExceptionResponseStatus.
 @Slf4j
 @RestControllerAdvice
 public class BaseControllerAdvice {
-
 
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     @ExceptionHandler(Exception.class)

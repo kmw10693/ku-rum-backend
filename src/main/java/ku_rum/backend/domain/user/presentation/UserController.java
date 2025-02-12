@@ -8,7 +8,6 @@ import ku_rum.backend.domain.mail.dto.request.LoginIdValidationRequest;
 import ku_rum.backend.domain.user.dto.request.UserSaveRequest;
 import ku_rum.backend.domain.user.dto.response.UserSaveResponse;
 import ku_rum.backend.global.response.BaseResponse;
-import ku_rum.backend.global.security.jwt.UserUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
