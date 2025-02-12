@@ -56,7 +56,7 @@ class UserServiceTest {
     void saveMember() {
         //given
         UserSaveRequest request = UserSaveRequest.builder()
-                .loginId("kmw106933")
+                .loginId("kmw10693")
                 .email("kmw10693@konkuk.ac.kr")
                 .password("password123")
                 .nickname("미미미누")
@@ -88,9 +88,8 @@ class UserServiceTest {
         LoginIdValidationRequest loginIdValidationRequest = new LoginIdValidationRequest("kmw106933");
 
         //when then
-        assertThatThrownBy(() -> userService.validateEmail(loginIdValidationRequest))
+        assertThatThrownBy(() -> userService.ValidateUserId(loginIdValidationRequest))
                 .isInstanceOf(DuplicateEmailException.class)
                 .hasMessage("이미 존재하는 아이디입니다.");
     }
-
 }

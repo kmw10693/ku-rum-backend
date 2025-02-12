@@ -44,7 +44,7 @@ public class MailService {
         } catch (RuntimeException e) {
             log.debug("메일 서버에서 메일 전송 중, 오류가 발생했습니다. toEmail: {}, " +
                     "title: {}, text: {}", toEmail, title, text);
-            throw new MailSendException(MAIL_SEND_EXCEPTION, e.getMessage());
+            throw new MailSendException(MAIL_SEND_EXCEPTION);
         }
     }
 
@@ -123,5 +123,4 @@ public class MailService {
             throw new DuplicateEmailException(DUPLICATE_EMAIL);
         }
     }
-
 }

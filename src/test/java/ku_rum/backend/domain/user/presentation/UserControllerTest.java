@@ -6,13 +6,20 @@ import ku_rum.backend.domain.user.application.UserService;
 import ku_rum.backend.domain.mail.dto.request.LoginIdValidationRequest;
 import ku_rum.backend.domain.user.dto.request.ResetAccountRequest;
 import ku_rum.backend.domain.user.dto.request.UserSaveRequest;
+import ku_rum.backend.global.security.jwt.CustomUserDetails;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mock;
 import org.openqa.selenium.json.JsonType;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
+import org.springframework.security.core.authority.AuthorityUtils;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.test.context.support.WithMockUser;
+import org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors;
 import org.springframework.transaction.annotation.Transactional;
 
 import static org.springframework.restdocs.payload.PayloadDocumentation.*;
@@ -27,6 +34,9 @@ class UserControllerTest extends RestDocsTestSupport {
 
     @MockBean
     private UserService userService;
+
+    @MockBean
+    private UserDetailsService userDetailsService;
 
     @DisplayName("신규 유저를 생성한다.")
     @Test
@@ -58,7 +68,7 @@ class UserControllerTest extends RestDocsTestSupport {
                                         .type(JsonType.STRING)
                                         .description("멤버 아이디")
                                         .attributes(constraints("아이디 입력은 필수입니다. 최소 6자 이상입니다.")),
-                                fieldWithPath("loginId")
+                                fieldWithPath("email")
                                         .type(JsonType.STRING)
                                         .description("멤버 이메일")
                                         .attributes(constraints("@konkuk.ac.kr로 끝나야 합니다.")),
@@ -93,13 +103,13 @@ class UserControllerTest extends RestDocsTestSupport {
     }
 
 
-    @DisplayName("이메일 중복을 확인한다.")
+    @DisplayName("아이디 중복을 확인한다.")
     @Test
     void validateEmail() throws Exception {
         //given
         LoginIdValidationRequest loginIdValidationRequest = new LoginIdValidationRequest("kmw106933@naver.com");
         //when then
-        mockMvc.perform(post("/api/v1/users/validations/email")
+        mockMvc.perform(post("/api/v1/users/validations")
                         .content(objectMapper.writeValueAsString(loginIdValidationRequest))
                         .contentType(MediaType.APPLICATION_JSON)
                 )
@@ -140,7 +150,7 @@ class UserControllerTest extends RestDocsTestSupport {
 
         //when then
 
-        mockMvc.perform(post("/api/v1/users/weinlogin")
+        mockMvc.perform(post("/api/v1/wein/weinlogin")
                         .content(objectMapper.writeValueAsString(weinLoginRequest))
                         .contentType(MediaType.APPLICATION_JSON)
                 )
@@ -161,14 +171,16 @@ class UserControllerTest extends RestDocsTestSupport {
     }
 
     @Test
-    @DisplayName("아이디/비밀번호를 변경한다.")
+    @DisplayName("비밀번호를 변경한다.")
     @WithMockUser
     void resetAccount() throws Exception {
         // given
-        ResetAccountRequest resetAccountRequest = new ResetAccountRequest("test1234@konkuk.ac.kr", "test123456", "testte123");
+        ResetAccountRequest resetAccountRequest = new ResetAccountRequest("test1234");
+        CustomUserDetails userDetails = CustomUserDetails.of(1L, "testUser",  AuthorityUtils.createAuthorityList("ROLE_USER"),"test12345");
 
         // when then
         mockMvc.perform(post("/api/v1/users/reset-account")
+                        .with(SecurityMockMvcRequestPostProcessors.user(userDetails))
                         .content(objectMapper.writeValueAsString(resetAccountRequest))
                         .contentType(MediaType.APPLICATION_JSON)
                 )
