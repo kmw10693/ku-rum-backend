@@ -5,20 +5,14 @@ import ku_rum.backend.config.RestDocsTestSupport;
 import ku_rum.backend.domain.friend.application.FriendService;
 import ku_rum.backend.domain.friend.dto.request.FriendFindRequest;
 import ku_rum.backend.domain.friend.dto.request.FriendListRequest;
-import ku_rum.backend.global.config.security.SecurityConfig;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.json.JsonType;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
-import org.springframework.test.web.servlet.MockMvc;
 
-import static javax.management.openmbean.SimpleType.STRING;
-import static javax.swing.text.html.parser.DTDConstants.NUMBER;
 import static org.springframework.restdocs.payload.PayloadDocumentation.*;
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -78,7 +72,7 @@ class FriendControllerTest  extends RestDocsTestSupport {
     @Test
     void findByNameInFriendLists() throws Exception {
         //given
-        FriendFindRequest request = FriendFindRequest.of(1L, "nickname");
+        FriendFindRequest request = FriendFindRequest.from(1L, "nickname");
 
         // when then
         mockMvc.perform(get("/api/v1/friends/find")

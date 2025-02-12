@@ -5,7 +5,7 @@ import lombok.Builder;
 
 public record FriendListResponse(
         Long id,
-        String name) {
+        String nickname) {
 
     @Builder
     public FriendListResponse {
@@ -14,7 +14,7 @@ public record FriendListResponse(
     public static FriendListResponse from(Friend friend) {
         return FriendListResponse.builder()
                 .id(friend.getToUser().getId())
-                .name(friend.getToUser().getNickname())
+                .nickname(friend.getToUser().getNickname())
                 .build();
     }
 }

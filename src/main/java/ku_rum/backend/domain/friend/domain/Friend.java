@@ -26,16 +26,24 @@ public class Friend extends BaseEntity {
     @JoinColumn(name = "toUser_id", nullable = false)
     private User toUser;
 
-    @Builder
-    private Friend(User fromUser, User toUser) {
-        this.fromUser = fromUser;
-        this.toUser = toUser;
+    private FriendStatus status;
+
+    public void setStatus(FriendStatus status) {
+        this.status = status;
     }
 
-    public static Friend of(User fromUser, User toUser) {
+    @Builder
+    private Friend(User fromUser, User toUser, FriendStatus status) {
+        this.fromUser = fromUser;
+        this.toUser = toUser;
+        this.status = status;
+    }
+
+    public static Friend of(User fromUser, User toUser, FriendStatus status) {
         return Friend.builder()
                 .fromUser(fromUser)
                 .toUser(toUser)
+                .status(status)
                 .build();
     }
 }
