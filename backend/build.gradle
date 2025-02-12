@@ -81,6 +81,10 @@ dependencies {
 
 	//jsoup
 	implementation 'org.jsoup:jsoup:1.17.2'
+
+	// elastic search
+	implementation 'org.springframework.data:spring-data-elasticsearch'
+
 }
 tasks.named('testClasses') { // (1)
 	doFirst {
@@ -222,5 +226,6 @@ sonar {
 				'**/*Response.java, **/*Exception.java, **/security/**, **/support/**, **/Q*.java'
 		property 'sonar.test.inclusions', '**/*Test.java'
 		property 'sonar.java.coveragePlugin', 'jacoco'
+
 	}
 }
