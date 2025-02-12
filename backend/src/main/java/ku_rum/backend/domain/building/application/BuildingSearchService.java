@@ -171,7 +171,7 @@ public class BuildingSearchService {
    * @param building
    * @return
    */
-  private Building add(Building building){
+  private Building addElasticRepo(Building building){
     buildingElasticRepository.save(BuildingDocument.from(building));
     return building;
   }

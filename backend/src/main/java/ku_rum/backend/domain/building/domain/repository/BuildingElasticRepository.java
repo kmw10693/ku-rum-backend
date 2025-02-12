@@ -10,6 +10,13 @@ import java.util.List;
 @Repository
 public interface BuildingElasticRepository extends ElasticsearchRepository<BuildingDocument, Long> {
 
+  /**
+   * 건물 이름을 부분 검색 (와일드 카드 사용)
+   *
+   * @param name
+   * @return
+   */
   @Query("{\"wildcard\": {\"name\": {\"value\": \"*?0*\"}}}")
   List<BuildingDocument> findByNameCustom(String name);
+
 }

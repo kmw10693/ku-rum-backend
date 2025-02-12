@@ -1,7 +1,9 @@
 package ku_rum.backend.global.dataInsert;
 
 import jakarta.annotation.PostConstruct;
+import ku_rum.backend.document.BuildingDocument;
 import ku_rum.backend.domain.building.domain.Building;
+import ku_rum.backend.domain.building.domain.repository.BuildingElasticRepository;
 import ku_rum.backend.domain.buildingCategory.domain.repository.BuildingCategoryRepository;
 import ku_rum.backend.domain.building.domain.repository.BuildingRepository;
 import ku_rum.backend.domain.category.domain.Category;
@@ -27,6 +29,8 @@ public class DataLoader implements ApplicationRunner {
   private final MenuRepository menuRepository;
   private final DepartmentRepository departmentRepository;
 
+  private final BuildingElasticRepository buildingElasticRepository;
+
   @PostConstruct
   public void init() {
     System.out.println("DataLoader 실행됨!");
@@ -38,6 +42,7 @@ public class DataLoader implements ApplicationRunner {
     // 각 리포지토리에서 데이터 존재 여부 확인
     if (buildingRepository.count() == 0) {
       List<Building> savedBuildings = buildingRepository.saveAll(BuildingInitializer.initialize());
+      buildingElasticRepository.saveAll(BuildingDocument.from(savedBuildings));
 
       if (categoryRepository.count() == 0) {
         List<Category> savedCategories = categoryRepository.saveAll(CategoryInitializer.initialize());

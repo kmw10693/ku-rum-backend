@@ -11,6 +11,9 @@ import org.springframework.data.elasticsearch.annotations.Mapping;
 import org.springframework.data.elasticsearch.annotations.Setting;
 import org.springframework.data.elasticsearch.annotations.WriteTypeHint;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Document(indexName = "posts", writeTypeHint = WriteTypeHint.FALSE)
@@ -35,5 +38,13 @@ public class BuildingDocument {
             .name(building.getName())
             .abbreviation(building.getAbbreviation())
             .build();
+  }
+
+  public static List<BuildingDocument> from(List<Building> savedBuildings) {
+    List<BuildingDocument> buildingDocumentList = new ArrayList<>();
+    for (Building building : savedBuildings){
+      buildingDocumentList.add(BuildingDocument.from(building));
+    }
+    return buildingDocumentList;
   }
 }
