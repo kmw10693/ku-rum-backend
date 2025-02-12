@@ -15,6 +15,7 @@ public enum BaseExceptionResponseStatus implements ResponseStatus {
      * 100: 요청 성공 (OK)
      */
     SUCCESS(100, HttpStatus.OK, "요청에 성공하였습니다."),
+    SUCCESS_PROFILE_SET(100, HttpStatus.OK, "프로필 변경에 성공하였습니다."),
 
     /**
      * 200: Request 오류 (BAD_REQUEST)
@@ -31,7 +32,7 @@ public enum BaseExceptionResponseStatus implements ResponseStatus {
     MAIL_SEND_EXCEPTION(302, HttpStatus.INTERNAL_SERVER_ERROR, "인증 메일 전송에 오류가 발생했습니다."),
     INVALID_AUTH_CODE_GENERATION(303, HttpStatus.INTERNAL_SERVER_ERROR, "인증 번호 4자리 수 생성에 오류가 발생했습니다."),
     NO_SUCH_USER(304, HttpStatus.BAD_REQUEST, "존재하지 않는 사용자입니다."),
-    DUPLICATE_EMAIL(300, HttpStatus.BAD_REQUEST, "이미 존재하는 이메일입니다."),
+    DUPLICATE_EMAIL(305, HttpStatus.BAD_REQUEST, "이미 존재하는 이메일입니다."),
 
     /**
      * 400: Department 오류
@@ -55,6 +56,7 @@ public enum BaseExceptionResponseStatus implements ResponseStatus {
      * 700: Friends 오류
      */
     NO_FRIENDS_FOUND(700, HttpStatus.NO_CONTENT, "친구 목록에 친구가 존재하지 않습니다."),
+    DUPLICATE_FRIENDS(700, HttpStatus.NO_CONTENT, "이미 존재하는 친구입니다."),
 
     /**
      * 800: Notice 오류
@@ -77,7 +79,9 @@ public enum BaseExceptionResponseStatus implements ResponseStatus {
     INVALID_TOKEN(1003, HttpStatus.UNAUTHORIZED, "유효하지 않은 토큰입니다."),
     MALFORMED_TOKEN(1004, HttpStatus.UNAUTHORIZED, "토큰이 올바르게 구성되지 않았습니다."),
     EXPIRED_TOKEN(1005, HttpStatus.UNAUTHORIZED, "만료된 토큰입니다."),
-    TOKEN_MISMATCH(1006, HttpStatus.UNAUTHORIZED, "로그인 정보가 토큰 정보와 일치하지 않습니다.");
+    TOKEN_MISMATCH(1006, HttpStatus.UNAUTHORIZED, "로그인 정보가 토큰 정보와 일치하지 않습니다."),
+    LOGIN_ERROR(1007, HttpStatus.UNAUTHORIZED, "잘못된 아이디/비밀번호입니다."),
+    LOGOUT_SUCCESS(1008, HttpStatus.OK, "로그아웃이 정상적으로 완료되었습니다.");
 
     private final int code;
     private final HttpStatus status;
