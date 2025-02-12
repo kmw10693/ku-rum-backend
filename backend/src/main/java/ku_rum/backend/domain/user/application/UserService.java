@@ -5,8 +5,7 @@ import ku_rum.backend.domain.department.domain.Department;
 import ku_rum.backend.domain.department.domain.repository.DepartmentRepository;
 import ku_rum.backend.domain.user.domain.User;
 import ku_rum.backend.domain.user.domain.repository.UserRepository;
-import ku_rum.backend.domain.mail.dto.request.LoginIdValidationRequest;
-import ku_rum.backend.domain.user.dto.request.ResetAccountRequest;
+import ku_rum.backend.domain.mail.dto.request.EmailValidationRequest;
 import ku_rum.backend.domain.user.dto.request.UserSaveRequest;
 import ku_rum.backend.domain.reservation.dto.request.WeinLoginRequest;
 import ku_rum.backend.domain.user.dto.response.UserSaveResponse;
@@ -14,9 +13,7 @@ import ku_rum.backend.domain.user.dto.response.WeinLoginResponse;
 import ku_rum.backend.global.exception.department.NoSuchDepartmentException;
 import ku_rum.backend.global.exception.user.DuplicateEmailException;
 import ku_rum.backend.global.exception.user.DuplicateStudentIdException;
-import ku_rum.backend.global.exception.user.NoSuchUserException;
 import ku_rum.backend.global.response.BaseResponse;
-import ku_rum.backend.global.security.jwt.CustomUserDetails;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.hc.client5.http.cookie.BasicCookieStore;
@@ -48,38 +45,27 @@ public class UserService {
     public UserSaveResponse saveUser(final UserSaveRequest userSaveRequest) {
         validateUser(userSaveRequest);
 
-        String encodedPassword = passwordEncoder.encode(userSaveRequest.password());
+        String password = passwordEncoder.encode(userSaveRequest.password());
         Department department = departmentRepository.findByName(userSaveRequest.department())
                .orElseThrow(() -> new NoSuchDepartmentException(NO_SUCH_DEPARTMENT));
 
-        User user = UserSaveRequest.newUser(userSaveRequest, department, encodedPassword);
+        User user = UserSaveRequest.newUser(userSaveRequest, department, password);
         return UserSaveResponse.from(userRepository.save(user));
     }
 
-    @Transactional
-    public void resetAccount(final ResetAccountRequest resetAccountRequest) {
-        User user = findUserByEmail(resetAccountRequest.email());
-        changeLoginIdAndPassword(resetAccountRequest, user);
-    }
-
-    private void changeLoginIdAndPassword(ResetAccountRequest resetAccountRequest, User user) {
-        user.setPassword(passwordEncoder.encode(resetAccountRequest.password()));
-        user.setLoginId(resetAccountRequest.loginId());
-    }
-
     private void validateUser(UserSaveRequest userSaveRequest) {
-        validateDuplicateLoginid(userSaveRequest.loginId());
+        validateDuplicateEmail(userSaveRequest.email());
         validateDuplicateStudentId(userSaveRequest.studentId());
         validateDepartmentName(userSaveRequest.department());
     }
 
-    public void validateEmail(final LoginIdValidationRequest loginIdValidationRequest) {
-        validateDuplicateLoginid(loginIdValidationRequest.loginId());
+    public void validateEmail(final EmailValidationRequest emailValidationRequest) {
+        validateDuplicateEmail(emailValidationRequest.email());
     }
 
-    private void validateDuplicateLoginid(final String loginId) {
-        if (userRepository.existsByLoginId(loginId)) {
-            throw new DuplicateEmailException(DUPLICATE_LOGINID);
+    private void validateDuplicateEmail(final String email) {
+        if (userRepository.existsByEmail(email)) {
+            throw new DuplicateEmailException(DUPLICATE_EMAIL);
         }
     }
 
@@ -93,11 +79,6 @@ public class UserService {
         if (!departmentRepository.existsByName(department)) {
             throw new NoSuchDepartmentException(NO_SUCH_DEPARTMENT);
         }
-    }
-
-    private User findUserByEmail(final String email) {
-        return userRepository.findUserByEmail(email)
-                .orElseThrow(() -> new NoSuchUserException(NO_SUCH_USER));
     }
 
     public BaseResponse<WeinLoginResponse> loginToWein(@Valid final WeinLoginRequest weinLoginRequest) {
@@ -181,12 +162,6 @@ public class UserService {
         requestBody.add("pw", weinLoginRequest.getPassword());
         requestBody.add("rtnUrl", ""); // 리다이렉트 후 이동할 URL 지정, 필요시 수정
         return requestBody;
-    }
-
-    public void validateUserDetails(CustomUserDetails userDetails){
-        if (!userRepository.existsById(userDetails.getUserId())){
-            throw new NoSuchUserException(NO_SUCH_USER);
-        }
     }
 
 }
