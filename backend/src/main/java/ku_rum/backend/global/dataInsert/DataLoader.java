@@ -1,4 +1,4 @@
-package ku_rum.backend.global.dataInsert;
+package ku_rum.backend.global.dataInit;
 
 import jakarta.annotation.PostConstruct;
 import ku_rum.backend.document.BuildingDocument;

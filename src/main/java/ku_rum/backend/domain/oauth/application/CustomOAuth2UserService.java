@@ -1,19 +1,13 @@
 package ku_rum.backend.domain.oauth.application;
 
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jws;
 import ku_rum.backend.domain.oauth.domain.OAuthAttributes;
 import ku_rum.backend.domain.oauth.domain.UserProfile;
-import ku_rum.backend.domain.oauth.util.TokenValidator;
 import ku_rum.backend.domain.user.domain.User;
 import ku_rum.backend.domain.user.domain.repository.UserRepository;
 import ku_rum.backend.global.security.jwt.CustomUserDetails;
-import ku_rum.backend.global.security.jwt.JwtTokenProvider;
-import ku_rum.backend.global.security.jwt.TokenResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;

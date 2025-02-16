@@ -48,4 +48,3 @@ src/main/resources/static/docs/
 ### QueryDSL ###
 /src/main/generated/
 
-src/main/resources/application.yml

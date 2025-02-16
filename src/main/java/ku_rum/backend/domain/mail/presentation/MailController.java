@@ -19,22 +19,12 @@ import static ku_rum.backend.domain.mail.domain.MailSendSetting.MAIL_SEND_INFO;
 public class MailController {
     private final MailService mailService;
 
-    /**
-     * 유저 회원가입 시, 건국대 웹 메일로 인증코드 전송
-     * @param mailSendRequest
-     * @return String 메일이 성공적으로 전송되었습니다.
-     */
     @PostMapping("/auth-codes")
     public BaseResponse<String> authCode(@RequestBody @Valid final MailSendRequest mailSendRequest) {
         mailService.sendCodeToEmail(mailSendRequest);
         return BaseResponse.ok(MAIL_SEND_INFO.getSUCCESS_MESSAGE());
     }
 
-    /**
-     * 유저 회원가입 시, 적절한 인증코드인지 확인
-     * @param mailVerificationRequest
-     * @return OK
-     */
     @PostMapping("/verification_codes")
     public BaseResponse<MailVerificationResponse> verificationCode(@RequestBody @Valid final MailVerificationRequest mailVerificationRequest) {
         return BaseResponse.ok(mailService.verifiedCode(mailVerificationRequest));

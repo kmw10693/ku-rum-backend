@@ -6,6 +6,7 @@ import ku_rum.backend.domain.building.domain.repository.BuildingRepository;
 import ku_rum.backend.domain.department.domain.Department;
 import ku_rum.backend.domain.department.domain.repository.DepartmentRepository;
 import ku_rum.backend.domain.friend.domain.Friend;
+import ku_rum.backend.domain.friend.domain.FriendStatus;
 import ku_rum.backend.domain.friend.domain.repository.FriendRepository;
 import ku_rum.backend.domain.friend.dto.request.FriendFindRequest;
 import ku_rum.backend.domain.friend.dto.request.FriendListRequest;
@@ -19,7 +20,6 @@ import org.assertj.core.groups.Tuple;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.ActiveProfiles;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -66,8 +66,8 @@ class FriendServiceTest {
         userRepository.save(toUser2);
         userRepository.save(newUser);
 
-        Friend friend = Friend.of(fromUser, toUser1);
-        Friend friend2 = Friend.of(fromUser, toUser2);
+        Friend friend = Friend.of(fromUser, toUser1, FriendStatus.ACCEPT);
+        Friend friend2 = Friend.of(fromUser, toUser2, FriendStatus.ACCEPT);
 
         friendRepository.save(friend);
         friendRepository.save(friend2);
@@ -81,7 +81,7 @@ class FriendServiceTest {
         FriendListRequest friendListRequest = FriendListRequest.from(1L);
 
         //when
-        List<FriendListResponse> myLists = friendService.getMyLists(friendListRequest);
+        List<FriendListResponse> myLists = friendService.getMyLists();
 
         //then
         assertThat(myLists).hasSize(2)
@@ -100,7 +100,7 @@ class FriendServiceTest {
         FriendListRequest friendListRequest = FriendListRequest.from(2L);
 
         //when
-        assertThatThrownBy(() -> friendService.getMyLists(friendListRequest))
+        assertThatThrownBy(() -> friendService.getMyLists())
                 .isInstanceOf(NoFriendsException.class)
                 .hasMessage("친구 목록에 친구가 존재하지 않습니다.");
     }
@@ -109,10 +109,10 @@ class FriendServiceTest {
     @DisplayName("내 친구 목록에 존재하는 친구를 검색한다 - 성공")
     void findAFriendInMyFriendLists() {
         //given
-        FriendFindRequest friendFindRequest = FriendFindRequest.of(1L, "미미미누1");
+        FriendFindRequest friendFindRequest = FriendFindRequest.from("미미미누1");
 
         //when
-        FriendFindResponse friendFIndResponse = friendService.findByNameInLists(friendFindRequest);
+        FriendFindResponse friendFIndResponse = friendService.findByNameInLists("미미미누1");
 
         //then
         Assertions.assertThat(friendFIndResponse.id()).isEqualTo(2L);
@@ -123,10 +123,10 @@ class FriendServiceTest {
     @DisplayName("내 친구 목록에 존재하는 않는 친구를 검색한다 - 실패")
     void findNoAFriendInMyFriendLists() {
         //given
-        FriendFindRequest friendFindRequest = FriendFindRequest.of(2L, "미미미누3");
+        FriendFindRequest friendFindRequest = FriendFindRequest.from("미미미누3");
 
         //when
-        assertThatThrownBy(() -> friendService.findByNameInLists(friendFindRequest))
+        assertThatThrownBy(() -> friendService.findByNameInLists("미미미누3"))
                 .isInstanceOf(NoFriendsException.class)
                 .hasMessage("친구 목록에 친구가 존재하지 않습니다.");
     }

@@ -16,5 +16,4 @@ public class UserSaveResponse {
     public static UserSaveResponse from(User user) {
         return new UserSaveResponse(user.getId());
     }
-
 }

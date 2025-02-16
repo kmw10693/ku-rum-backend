@@ -1,4 +1,4 @@
-package ku_rum.backend.global.security.jwt;
+package ku_rum.backend.global.security.jwt.dto;
 
 import jakarta.validation.constraints.NotBlank;
 
