@@ -4,6 +4,7 @@ import com.querydsl.jpa.impl.JPAQueryFactory;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import ku_rum.backend.domain.category.domain.BuildingCategory;
+import ku_rum.backend.domain.category.domain.Category;
 import ku_rum.backend.domain.category.domain.QBuildingCategory;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -70,4 +71,7 @@ public class BuildingCategoryQueryRepository {
                     .fetchOne()
     );
   }
+
+    public List<Category> searchCategoryByNgram(String searchText) {
+    }
 }

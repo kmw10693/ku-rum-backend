@@ -48,7 +48,7 @@ public class BuildingSearchService {
             .orElseThrow(() -> new BuildingNotFoundException(BaseExceptionResponseStatus.BUILDING_DATA_NOT_FOUND_BY_NUMBER));
   }
 
-  public BuildingResponse viewBuildingByName(String name) {
+  public Optional<BuildingResponse> viewBuildingByName(String name) {
     String finalName = removeNumbersInName(name);
 
     List<BuildingAbbrev> potentialMatches = Arrays.asList(BuildingAbbrev.values());

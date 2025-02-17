@@ -15,14 +15,11 @@ public record BuildingResponse(
 ) {
 
   @QueryProjection
-  public BuildingResponse(Long buildingId, String buildingName, Long buildingNumber, String buildingAbbreviation, BigDecimal latitude, BigDecimal longitude) {
-    this.buildingId = buildingId;
-    this.buildingName = buildingName;
-    this.buildingNumber = buildingNumber;
-    this.buildingAbbreviation = buildingAbbreviation;
-    this.latitude = latitude;
-    this.longitude = longitude;
+  public BuildingResponse {
+
   }
+
+
 
   public static BuildingResponse of(Building building) {
     return new BuildingResponse(

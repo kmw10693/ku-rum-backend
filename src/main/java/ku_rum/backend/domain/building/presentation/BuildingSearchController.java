@@ -17,6 +17,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 import static ku_rum.backend.global.response.status.BaseExceptionResponseStatus.SUCCESS;
 
@@ -62,9 +63,9 @@ public class BuildingSearchController {
    * @return
    */
   @GetMapping("/searchName")
-  public BaseResponse<BuildingResponse> viewBuildingByName(@AuthenticationPrincipal CustomUserDetails userDetails, @RequestParam("name")@NotNull String name){
+  public BaseResponse<Optional<BuildingResponse>> viewBuildingByName(@AuthenticationPrincipal CustomUserDetails userDetails, @RequestParam("name")@NotNull String name){
     userService.validateUserDetails(userDetails);
-    BuildingResponse result = buildingSearchService.viewBuildingByName(name.trim());
+    Optional<BuildingResponse> result = buildingSearchService.viewBuildingByName(name.trim());
     return BaseResponse.of(SUCCESS.getStatus(), result);
   }
 
