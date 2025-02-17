@@ -159,4 +159,31 @@ public class BuildingSearchService {
     }
     return false;
   }
+
+  public List<Object> searchAvailableText(String text) {
+
+    // N-gram 인덱스를 활용
+    String searchText = text.trim().toLowerCase();
+
+    List<Object> resultList = new ArrayList<>();
+
+    // 빌딩 이름에서 매칭되는 부분 검색
+    List<Building> buildingsFound = buildingQueryRepository.searchBuildingByNgram(searchText);
+    List<BuildingResponse> buildingResponses = buildingsFound.stream()
+            .map(building -> BuildingResponse.of(building))
+            .collect(Collectors.toList());
+    resultList.addAll(buildingResponses);
+
+    // 카테고리 이름에서 매칭되는 부분 검색
+    List<Category> categoriesFound = buildingCategoryQueryRepository.searchCategoryByNgram(searchText);
+    for (Category category : categoriesFound) {
+      List<Building> categoryBuildings = buildingQueryRepository.findAllByCategory(category);
+      List<BuildingResponse> categoryBuildingResponses = categoryBuildings.stream()
+              .map(building -> BuildingResponse.of(building))
+              .collect(Collectors.toList());
+      resultList.addAll(categoryBuildingResponses);
+    }
+
+    return resultList;
+  }
 }
