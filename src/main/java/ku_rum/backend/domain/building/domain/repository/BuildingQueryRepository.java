@@ -5,6 +5,7 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import ku_rum.backend.domain.building.domain.Building;
 import ku_rum.backend.domain.building.dto.response.BuildingResponse;
+import ku_rum.backend.domain.category.domain.Category;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Repository;
@@ -79,5 +80,9 @@ public class BuildingQueryRepository {
     return entityManager.createQuery(query, Long.class)
             .setParameter("number", number)
             .getResultList().get(0);
+  }
+
+  public List<Building> findAllByCategory(Category category) {
+    return buildingQueryRepository.findByCategory(category);
   }
 }
