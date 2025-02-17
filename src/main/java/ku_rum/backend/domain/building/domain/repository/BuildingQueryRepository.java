@@ -1,5 +1,6 @@
 package ku_rum.backend.domain.building.domain.repository;
 
+import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import ku_rum.backend.domain.building.domain.Building;
 import ku_rum.backend.domain.building.domain.QBuilding;
@@ -22,7 +23,7 @@ public class BuildingQueryRepository {
 
   public List<BuildingResponse> findAllBuildings() {
     return queryFactory
-            .select(new QBuildingResponse(
+            .select(Projections.constructor(BuildingResponse.class,
                     qBuilding.id,
                     qBuilding.name,
                     qBuilding.number,
@@ -37,7 +38,7 @@ public class BuildingQueryRepository {
   public Optional<BuildingResponse> findBuildingByNumber(Long number) {
     return Optional.ofNullable(
             queryFactory
-                    .select(new QBuildingResponse(
+                    .select(Projections.constructor(BuildingResponse.class,
                             qBuilding.id,
                             qBuilding.name,
                             qBuilding.number,
@@ -54,7 +55,7 @@ public class BuildingQueryRepository {
   public Optional<BuildingResponse> findBuildingByName(String name) {
     return Optional.ofNullable(
             queryFactory
-                    .select(new QBuildingResponse(
+                    .select(Projections.constructor(BuildingResponse.class,
                             qBuilding.id,
                             qBuilding.name,
                             qBuilding.number,
@@ -99,5 +100,8 @@ public class BuildingQueryRepository {
             .selectFrom(qBuilding)
             .where(qBuilding.category.eq(category))
             .fetch();
+  }
+
+  public List<Building> searchBuildingByNgram(String searchText) {
   }
 }
