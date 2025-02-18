@@ -1,21 +1,35 @@
 package ku_rum.backend.global.dataInit;
 
-import jakarta.annotation.PostConstruct;
-import jakarta.persistence.EntityManager;
-import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.boot.context.event.ApplicationReadyEvent;
+import org.springframework.context.event.EventListener;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
 
 @Component
-@RequiredArgsConstructor
 public class DatabaseInitializer {
 
-    private final EntityManager entityManager;
+    private static final Logger log = LoggerFactory.getLogger(DatabaseInitializer.class);
+    private final JdbcTemplate jdbcTemplate;
 
-    @PostConstruct
+    public DatabaseInitializer(JdbcTemplate jdbcTemplate) {
+        this.jdbcTemplate = jdbcTemplate;
+    }
+
+    @EventListener(ApplicationReadyEvent.class)
     public void init() {
-        entityManager.createNativeQuery(
-                "ALTER TABLE building ADD FULLTEXT INDEX name_fulltext_index (name) WITH PARSER ngram"
-        ).executeUpdate();
+        try {
+            jdbcTemplate.execute(
+                    "ALTER TABLE building ADD FULLTEXT INDEX name_fulltext_index (name) WITH PARSER ngram"
+            );
+            jdbcTemplate.execute(
+                    "ALTER TABLE category ADD FULLTEXT INDEX name_fulltext_index (name) WITH PARSER ngram"
+            );
+            log.info("✅ FULLTEXT INDEX 추가 완료");
+        } catch (Exception e) {
+            log.error("❌ FULLTEXT INDEX 추가 실패: {}", e.getMessage(), e);
+        }
     }
 }
 

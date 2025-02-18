@@ -160,12 +160,12 @@ public class BuildingSearchService {
     return false;
   }
 
-  public List<Object> searchAvailableText(String text) {
+  public List<BuildingResponse> searchAvailableText(String text) {
 
     // N-gram 인덱스를 활용
     String searchText = text.trim().toLowerCase();
 
-    List<Object> resultList = new ArrayList<>();
+    List<BuildingResponse> resultList = new ArrayList<>();
 
     // 빌딩 이름에서 매칭되는 부분 검색
     List<Building> buildingsFound = buildingQueryRepository.searchBuildingByNgram(searchText);

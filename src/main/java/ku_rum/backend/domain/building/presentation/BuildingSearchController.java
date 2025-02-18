@@ -107,9 +107,9 @@ public class BuildingSearchController {
    * @return
    */
   @GetMapping("/{text}")
-  public BaseResponse<List<Object>> viewAvailableTextNameList(@AuthenticationPrincipal CustomUserDetails userDetails, @PathVariable("text") String text){
+  public BaseResponse<List<BuildingResponse>> viewAvailableTextNameList(@AuthenticationPrincipal CustomUserDetails userDetails, @PathVariable("text") String text){
     userService.validateUserDetails(userDetails);
-    List<Object> resultList = buildingSearchService.searchAvailableText(text);
+    List<BuildingResponse> resultList = buildingSearchService.searchAvailableText(text);
     return BaseResponse.of(SUCCESS.getStatus(), resultList);
   }
 
