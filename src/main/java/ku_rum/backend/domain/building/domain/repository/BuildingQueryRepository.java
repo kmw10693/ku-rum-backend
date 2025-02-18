@@ -103,5 +103,6 @@ public class BuildingQueryRepository {
   }
 
   public List<Building> searchBuildingByNgram(String searchText) {
+    return null;
   }
 }

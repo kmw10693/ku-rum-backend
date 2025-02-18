@@ -10,7 +10,7 @@ import java.math.BigDecimal;
 @Getter
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@Table(indexes = @Index(name = "idx_name_fulltext", columnList = "name", unique = false))
+@Table(name = "building")
 public class Building extends BaseEntity {
 
     @Id
@@ -58,7 +58,7 @@ public class Building extends BaseEntity {
         this.category = category;
     }
 
-    public static Building of(String name, Long number, String abbreviation, Long floor, BigDecimal latitude, BigDecimal longitude,Category category) {
+    public static Building of(String name, Long number, String abbreviation, Long floor, BigDecimal latitude, BigDecimal longitude) {
         return Building.builder()
                 .name(name)
                 .number(number)
@@ -66,18 +66,16 @@ public class Building extends BaseEntity {
                 .floor(floor)
                 .latitude(latitude)
                 .longitude(longitude)
-                .category(category)
                 .build();
     }
 
-    public static Building of(String name, Long number, String abbreviation,BigDecimal latitude, BigDecimal longitude,Category category) {
+    public static Building of(String name, Long number, String abbreviation,BigDecimal latitude, BigDecimal longitude) {
         return Building.builder()
                 .name(name)
                 .number(number)
                 .abbreviation(abbreviation)
                 .latitude(latitude)
                 .longitude(longitude)
-                .category(category)
                 .build();
     }
 }
