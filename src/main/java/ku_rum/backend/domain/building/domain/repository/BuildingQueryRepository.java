@@ -1,5 +1,6 @@
 package ku_rum.backend.domain.building.domain.repository;
 
+import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import ku_rum.backend.domain.building.domain.Building;
@@ -103,6 +104,12 @@ public class BuildingQueryRepository {
   }
 
   public List<Building> searchBuildingByNgram(String searchText) {
-    return null;
+    return queryFactory
+            .selectFrom(qBuilding)
+            .where(Expressions.booleanTemplate(
+                    "MATCH({0}) AGAINST ({1} IN NATURAL LANGUAGE MODE)",
+                    qBuilding.name, searchText
+            ))
+            .fetch();
   }
 }

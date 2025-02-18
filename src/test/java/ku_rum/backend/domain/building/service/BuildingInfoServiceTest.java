@@ -38,7 +38,7 @@ public class BuildingInfoServiceTest {
     @Test
     public void 등록된_건물정보_이름으로_조회_성공() throws Exception {
         // given
-        BuildingResponse buildingResponse = buildingSearchService.viewBuildingByName("경영102");
+        BuildingResponse buildingResponse = buildingSearchService.viewBuildingByName("경영102").get();
 
         // then
         Assertions.assertEquals(2L, buildingResponse.buildingNumber());
