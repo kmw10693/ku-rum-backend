@@ -21,12 +21,12 @@ import static javax.management.openmbean.SimpleType.STRING;
 import static javax.swing.text.html.parser.DTDConstants.NUMBER;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.when;
+import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get;
+import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.post;
 import static org.springframework.restdocs.payload.PayloadDocumentation.*;
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
 import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
 import static org.springframework.restdocs.request.RequestDocumentation.queryParameters;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -36,7 +36,6 @@ class NoticeControllerTest extends RestDocsTestSupport {
 
     @MockBean
     private NoticeService noticeService;
-
 
     @DisplayName("공지사항 크롤링 성공")
     @Test
@@ -83,7 +82,7 @@ class NoticeControllerTest extends RestDocsTestSupport {
         when(noticeService.findNoticesByCategory(NoticeCategory.AFFAIR))
                 .thenReturn(List.of(response));
 
-        mockMvc.perform(RestDocumentationRequestBuilders.get("/api/v1/notices")
+        mockMvc.perform(get("/api/v1/notices")
                         .param("category", "AFFAIR")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andDo(print())

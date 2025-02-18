@@ -24,18 +24,17 @@ import java.util.List;
 
 import static org.mockito.Mockito.when;
 import static org.mockito.Mockito.doNothing;
+import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get;
+import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.post;
 import static org.springframework.restdocs.payload.PayloadDocumentation.*;
 import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
 import static org.springframework.restdocs.request.RequestDocumentation.queryParameters;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest
 class BookmarkControllerTest extends RestDocsTestSupport {
-
 
     @MockBean
     private BookmarkService bookmarkService;
@@ -47,24 +46,22 @@ class BookmarkControllerTest extends RestDocsTestSupport {
     @Test
     void addBookmarkSuccess() throws Exception {
         // given
-        BookmarkSaveRequest request = new BookmarkSaveRequest(1L, "https://konkuk.ac.kr");
+        BookmarkSaveRequest request = new BookmarkSaveRequest("https://konkuk.ac.kr");
 
         doNothing().when(bookmarkService).addBookmark(request);
 
         // when & then
         mockMvc.perform(post("/api/v1/bookmarks/save")
+                        .header("Bearer", "6ce1d11af9ac1adf97712c069ca33bc4564d675ce3958942bb3dc5601829881430cfd8d98c8745")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(request)))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.code").value(200))
                 .andExpect(jsonPath("$.message").value("OK"))
-                .andExpect(jsonPath("$.data").value("북마크가 저장되었습니다."))
+                .andExpect(jsonPath("$.data").value("북마크에 성공하였습니다"))
                 .andDo(restDocs.document(
                         requestFields(
-                                fieldWithPath("userId")
-                                        .type(JsonFieldType.NUMBER)
-                                        .description("북마크할 사용자 id"),
                                 fieldWithPath("url")
                                         .type(JsonFieldType.STRING)
                                         .description("북마크할 주소 url")
@@ -99,11 +96,11 @@ class BookmarkControllerTest extends RestDocsTestSupport {
 
         NoticeSimpleResponse response = new NoticeSimpleResponse(notice);
 
-        when(bookmarkService.getBookmarks(1L)).thenReturn(List.of(response));
+        when(bookmarkService.getBookmarks()).thenReturn(List.of(response));
 
         // when & then
         mockMvc.perform(get("/api/v1/bookmarks/find")
-                        .param("userId", "1")
+                        .header("Bearer", "6ce1d11af9ac1adf97712c069ca33bc4564d675ce3958942bb3dc5601829881430cfd8d98c8745")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andDo(print())
                 .andExpect(status().isOk())
@@ -114,9 +111,6 @@ class BookmarkControllerTest extends RestDocsTestSupport {
                 .andExpect(jsonPath("$.data[0].date").value("2024-11-08"))
                 .andExpect(jsonPath("$.data[0].category").value("학사"))
                 .andDo(restDocs.document(
-                        queryParameters(
-                                parameterWithName("userId").description("북마크 가져올 사용자 인덱스")
-                        ),
                         responseFields(
                                 fieldWithPath("code")
                                         .type(JsonType.NUMBER)

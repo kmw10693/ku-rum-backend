@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import static ku_rum.backend.global.response.status.BaseExceptionResponseStatus.WEIN_LOGIN_SUCCESS;
+
 @RestController
 @RequestMapping("/api/v1/wein")
 @RequiredArgsConstructor
@@ -19,9 +21,9 @@ import org.springframework.web.bind.annotation.RestController;
 public class WeinController {
     private final WeinService weinService;
 
-    @PostMapping("/weinlogin")
-    public BaseResponse<WeinLoginResponse> loginToWein(@RequestBody @Valid WeinLoginRequest weinLoginRequest) {
-        return weinService.loginToWein(weinLoginRequest);
-
+    @PostMapping("/login")
+    public BaseResponse<String> loginToWein(@RequestBody @Valid WeinLoginRequest weinLoginRequest) {
+        weinService.loginToWein(weinLoginRequest);
+        return BaseResponse.ok(WEIN_LOGIN_SUCCESS.getMessage());
     }
 }

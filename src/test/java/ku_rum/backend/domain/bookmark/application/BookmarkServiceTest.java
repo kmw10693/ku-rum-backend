@@ -10,12 +10,17 @@ import ku_rum.backend.domain.notice.domain.repository.NoticeRepository;
 import ku_rum.backend.domain.notice.dto.response.NoticeSimpleResponse;
 import ku_rum.backend.domain.user.domain.User;
 import ku_rum.backend.domain.user.domain.repository.UserRepository;
+import ku_rum.backend.global.security.jwt.UserUtils;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.MockedStatic;
 import org.mockito.MockitoAnnotations;
+import org.springframework.security.test.context.support.WithMockUser;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -24,6 +29,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
+@Transactional
 class BookmarkServiceTest {
 
     @InjectMocks
@@ -38,8 +44,12 @@ class BookmarkServiceTest {
     @Mock
     private NoticeRepository noticeRepository;
 
+    private MockedStatic<UserUtils> mockedStatic;
+
     private User user;
+
     private Notice notice;
+
 
     @BeforeEach
     void setUp() {
@@ -54,18 +64,27 @@ class BookmarkServiceTest {
                 .noticeStatus(NoticeStatus.GENERAL)
                 .noticeCategory(NoticeCategory.AFFAIR)
                 .build();
+
+        mockedStatic = mockStatic(UserUtils.class);
+        mockedStatic.when(UserUtils::getLongMemberId).thenReturn(1L);
+        userRepository.save(user);
+    }
+
+    @AfterEach
+    void tearDown() {
+        mockedStatic.close();
     }
 
     @DisplayName("북마크 추가 성공")
     @Test
+    @WithMockUser
     void addBookmarkSuccess() {
         // given
-        BookmarkSaveRequest request = new BookmarkSaveRequest(user.getId(), notice.getUrl());
 
-        when(userRepository.findById(user.getId())).thenReturn(Optional.of(user));
+        BookmarkSaveRequest request = new BookmarkSaveRequest(notice.getUrl());
+        when(userRepository.findUserById(1L)).thenReturn(Optional.of(user));
         when(noticeRepository.findByUrl(notice.getUrl())).thenReturn(Optional.of(notice));
         when(bookmarkRepository.findByUserAndNotice(user, notice)).thenReturn(Optional.empty());
-
         // when
         bookmarkService.addBookmark(request);
 
@@ -75,15 +94,16 @@ class BookmarkServiceTest {
 
     @DisplayName("북마크 조회 성공")
     @Test
+    @WithMockUser
     void getBookmarksSuccess() {
         // given
         Bookmark bookmark = Bookmark.of(user, notice);
 
-        when(userRepository.findById(user.getId())).thenReturn(Optional.of(user));
+        when(userRepository.findUserById(1L)).thenReturn(Optional.of(user));
         when(bookmarkRepository.findByUser(user)).thenReturn(List.of(bookmark));
 
         // when
-        List<NoticeSimpleResponse> bookmarks = bookmarkService.getBookmarks(user.getId());
+        List<NoticeSimpleResponse> bookmarks = bookmarkService.getBookmarks();
 
         // then
         assertEquals(1, bookmarks.size());

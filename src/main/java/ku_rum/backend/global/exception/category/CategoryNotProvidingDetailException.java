@@ -4,9 +4,9 @@ import ku_rum.backend.global.response.status.BaseExceptionResponseStatus;
 import lombok.Getter;
 
 @Getter
-public class CategoryNotExist extends RuntimeException {
+public class CategoryNotProvidingDetailException extends RuntimeException {
   private BaseExceptionResponseStatus status;
-  public CategoryNotExist(BaseExceptionResponseStatus status) {
+  public CategoryNotProvidingDetailException(BaseExceptionResponseStatus status) {
     this.status = status;
   }
 }

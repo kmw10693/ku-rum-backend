@@ -15,8 +15,8 @@ import ku_rum.backend.domain.menu.domain.repository.MenuRepository;
 import ku_rum.backend.domain.menu.response.MenuSimpleResponse;
 import ku_rum.backend.global.exception.building.BuildingNotFoundException;
 import ku_rum.backend.global.exception.building.BuildingNotRegisteredException;
-import ku_rum.backend.global.exception.category.CategoryNotExist;
-import ku_rum.backend.global.exception.category.CategoryNotProvidingDetail;
+import ku_rum.backend.global.exception.category.CategoryNotExistException;
+import ku_rum.backend.global.exception.category.CategoryNotProvidingDetailException;
 import ku_rum.backend.global.response.status.BaseExceptionResponseStatus;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -109,7 +109,7 @@ public class BuildingSearchService {
       CategoryDetail categoryDetail = getCategoryDetail(category);
       return getCategoryDetail(categoryDetail,buildingId);
     }else{
-      throw new CategoryNotProvidingDetail(BaseExceptionResponseStatus.CATEGORYNAME_NOT_PROVIDING_DETAIL);
+      throw new CategoryNotProvidingDetailException(BaseExceptionResponseStatus.CATEGORYNAME_NOT_PROVIDING_DETAIL);
     }
   }
 
@@ -119,7 +119,7 @@ public class BuildingSearchService {
     Building building = buildingRepository.findById(buildingId)
             .orElseThrow(() -> new BuildingNotFoundException(BaseExceptionResponseStatus.BUILDING_DATA_NOT_FOUND_BY_NAME));
     Category categoryData = categoryRepository.findByName(category)
-            .orElseThrow(() -> new CategoryNotExist(BaseExceptionResponseStatus.CATEGORY_NAME_NOT_EXIST));
+            .orElseThrow(() -> new CategoryNotExistException(BaseExceptionResponseStatus.CATEGORY_NAME_NOT_EXIST));
 
     // 필요한 정보들
     Long floor_info = building.getFloor();
@@ -147,7 +147,7 @@ public class BuildingSearchService {
     return Arrays.stream(CategoryDetail.values())
             .filter(detail -> detail.getCategoryName().equals(category))
             .findFirst()
-            .orElseThrow(() -> new CategoryNotProvidingDetail(BaseExceptionResponseStatus.CATEGORYNAME_NOT_PROVIDING_DETAIL));
+            .orElseThrow(() -> new CategoryNotProvidingDetailException(BaseExceptionResponseStatus.CATEGORYNAME_NOT_PROVIDING_DETAIL));
   }
 
 

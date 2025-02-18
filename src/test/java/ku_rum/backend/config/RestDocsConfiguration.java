@@ -1,5 +1,6 @@
 package ku_rum.backend.config;
 
+import com.epages.restdocs.apispec.MockMvcRestDocumentationWrapper;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.restdocs.mockmvc.MockMvcRestDocumentation;
@@ -11,7 +12,7 @@ import static org.springframework.restdocs.operation.preprocess.Preprocessors.*;
 public class RestDocsConfiguration {
     @Bean
     public RestDocumentationResultHandler restDocumentationResultHandler() {
-        return MockMvcRestDocumentation.document(
+        return MockMvcRestDocumentationWrapper.document(
                 "{class-name}/{method-name}",  // 문서 이름 설정
                 preprocessRequest(  // 공통 헤더 설정
                         modifyHeaders()

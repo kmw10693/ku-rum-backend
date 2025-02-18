@@ -1,8 +1,23 @@
+// 1. Import 추가
+import com.sun.security.ntlm.Server
+import org.hidetake.gradle.swagger.generator.GenerateSwaggerUI
+import org.springframework.boot.gradle.tasks.bundling.BootJar
+
+buildscript {
+	ext {
+		restdocsApiSpecVersion = '0.17.1' // restdocsApiSpecVersion 버전 변수 설정
+	}
+}
+
 plugins {
 	id 'java'
 	id 'org.springframework.boot' version '3.3.4'
 	id 'io.spring.dependency-management' version '1.1.6'
 	id 'org.asciidoctor.jvm.convert' version '3.3.2'
+	// epages-restdocs 플러그인 추가
+	id 'com.epages.restdocs-api-spec' version "${restdocsApiSpecVersion}"
+	//swagger generator 플러그인 추가
+	id 'org.hidetake.swagger.generator' version '2.18.2'
 }
 
 group = 'ku-rum'
@@ -15,19 +30,31 @@ java {
 }
 
 configurations {
-	asciidoctorExt
-
 	compileOnly {
 		extendsFrom annotationProcessor
 	}
 }
 
-ext {
-	set('snippetsDir', file("build/generated-snippets"))
-}
-
 repositories {
 	mavenCentral()
+}
+
+// 5. 생성된 API 스펙이 어느 위치에 있는지 지정
+swaggerSources {
+	sample {
+		setInputFile(file("${project.buildDir}/api-spec/openapi3.yaml"))
+	}
+}
+
+// 6. openapi3 스펙 생성시 설정 정보
+openapi3 {
+	servers = [
+			{ url = "http://localhost:8080" }
+	]
+	title = "API 문서"
+	description = "RestDocsWithSwagger Docs"
+	version = "0.0.1"
+	format = "yaml"
 }
 
 dependencies {
@@ -79,36 +106,35 @@ dependencies {
 	// JSOUP
 	implementation 'org.jsoup:jsoup:1.17.2'
 
-	// RestDocs
-	asciidoctorExt 'org.springframework.restdocs:spring-restdocs-asciidoctor'
+	// Spring REST Docs 의존성
 	testImplementation 'org.springframework.restdocs:spring-restdocs-mockmvc'
+	// 8. openAPI3 추가
+	testImplementation 'com.epages:restdocs-api-spec-mockmvc:' + restdocsApiSpecVersion
+	// 9. SwaggerUI 추가
+	swaggerUI 'org.webjars:swagger-ui:4.11.1'
 }
-tasks.named('testClasses') { // (1)
-	doFirst {
-		delete file('build/docs/asciidoc')
-	}
-}
+
 
 tasks.named('test') {
 	useJUnitPlatform()
-	outputs.dir snippetsDir
-	finalizedBy asciidoctor
 }
 
-tasks.named('asciidoctor') {
-	dependsOn test
-	configurations 'asciidoctorExt'
-	inputs.dir snippetsDir
-	finalizedBy copyDocument
+// 10. openapi3가 먼저 실행 - doFrist를 통한 Header 설정 (글에서 자세하게 설명)
+tasks.withType(GenerateSwaggerUI) {
+	dependsOn 'openapi3'
 	doFirst {
-		delete file('src/main/resources/static/docs')
-	}
-}
+		def swaggerUIFile = file("${openapi3.outputDirectory}/openapi3.yaml")
 
-task copyDocument(type: Copy) { // (5)
-	dependsOn asciidoctor
-	from file('build/docs/asciidoc')
-	into file('src/main/resources/static/docs')
+		def securitySchemesContent =  "  securitySchemes:\n" +  \
+                                      "    APIKey:\n" +  \
+                                      "      type: apiKey\n" +  \
+                                      "      name: Authorization\n" +  \
+                                      "      in: header\n" + \
+                                      "security:\n" +
+				"  - APIKey: []  # Apply the security scheme here"
+
+		swaggerUIFile.append securitySchemesContent
+	}
 }
 
 def querydslSrcDir = 'src/main/generated'
@@ -117,13 +143,10 @@ clean {
 	delete file(querydslSrcDir)
 }
 
-bootJar { // (6)
-	dependsOn asciidoctor
-	doFirst {
-		delete file('static/docs')
-	}
-
-	from( "${asciidoctor.outputDir}") {
+// 11. 생성된 openapi3 스펙을 기반으로 SwaggerUISample 생성 및 static/docs 패키지에 복사
+bootJar {
+	dependsOn generateSwaggerUISample
+	from("${generateSwaggerUISample.outputDir}") {
 		into 'static/docs'
 	}
 }

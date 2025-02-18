@@ -12,9 +12,8 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 
+import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.post;
 import static org.springframework.restdocs.payload.PayloadDocumentation.*;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -33,7 +32,7 @@ class MailControllerTest extends RestDocsTestSupport {
         MailSendRequest mailSendRequest = new MailSendRequest("kmw10693@konkuk.ac.kr");
 
         //when then
-        mockMvc.perform(post("/api/v1/mails")
+        mockMvc.perform(post("/api/v1/mails/auth-codes")
                         .content(objectMapper.writeValueAsString(mailSendRequest))
                         .contentType(MediaType.APPLICATION_JSON)
                 )
@@ -45,7 +44,7 @@ class MailControllerTest extends RestDocsTestSupport {
                 .andExpect(jsonPath("$.data").value("메일이 성공적으로 전송되었습니다."))
                 .andDo(restDocs.document(
                         requestFields(
-                                fieldWithPath("loginId")
+                                fieldWithPath("email")
                                         .type(JsonType.STRING)
                                         .description("건국대학교 웹메일")
                                         .attributes(constraints("이메일의 끝자리는 @konkuk.ac.kr로 끝나야 합니다."))
@@ -74,7 +73,7 @@ class MailControllerTest extends RestDocsTestSupport {
         MailVerificationRequest mailVerificationRequest = new MailVerificationRequest("kmw10693@konkuk.ac.kr", "1234");
 
         //when then
-        mockMvc.perform(get("/api/v1/mails/mail_verifications")
+        mockMvc.perform(post("/api/v1/mails/verification_codes")
                         .content(objectMapper.writeValueAsString(mailVerificationRequest))
                         .contentType(MediaType.APPLICATION_JSON)
                 )
@@ -85,7 +84,7 @@ class MailControllerTest extends RestDocsTestSupport {
                 .andExpect(jsonPath("$.message").value("OK"))
                 .andDo(restDocs.document(
                         requestFields(
-                                fieldWithPath("loginId")
+                                fieldWithPath("email")
                                         .type(JsonType.STRING)
                                         .description("건국대학교 웹메일")
                                         .attributes(constraints("이메일의 끝자리는 @konkuk.ac.kr로 끝나야 합니다.")),

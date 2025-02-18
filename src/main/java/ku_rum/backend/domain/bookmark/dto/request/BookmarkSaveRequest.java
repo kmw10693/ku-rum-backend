@@ -9,15 +9,11 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class BookmarkSaveRequest {
 
-    @NotNull(message = "userId는 필수 입력값입니다.")
-    private Long userId;
-
     @NotNull(message = "url은 필수 입력값입니다.")
     private String url;
 
     @Builder
-    public BookmarkSaveRequest(Long userId, String url) {
-        this.userId = userId;
+    public BookmarkSaveRequest(String url) {
         this.url = url;
     }
 

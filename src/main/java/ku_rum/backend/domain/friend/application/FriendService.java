@@ -28,6 +28,7 @@ import static ku_rum.backend.global.response.status.BaseExceptionResponseStatus.
 public class FriendService {
     private final FriendRepository friendRepository;
     private final UserRepository userRepository;
+    private final UserUtils userUtils;
 
     public List<FriendListResponse> getMyLists() {
         User user = getUser();
@@ -110,8 +111,8 @@ public class FriendService {
         return friends;
     }
 
-    private User getUser() {
-        Long memberId = UserUtils.getLongMemberId();
+    User getUser() {
+        Long memberId = userUtils.getLongMemberId();
         User user = userRepository.findUserById(memberId).orElseThrow(() -> new NoSuchUserException(NO_SUCH_USER));
         return user;
     }

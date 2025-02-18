@@ -1,8 +1,8 @@
 package ku_rum.backend.global.handler;
 
 import jakarta.annotation.Priority;
-import ku_rum.backend.global.exception.category.CategoryNotExist;
-import ku_rum.backend.global.exception.category.CategoryNotProvidingDetail;
+import ku_rum.backend.global.exception.category.CategoryNotExistException;
+import ku_rum.backend.global.exception.category.CategoryNotProvidingDetailException;
 import ku_rum.backend.global.response.BaseErrorResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -19,15 +19,15 @@ import static ku_rum.backend.global.response.status.BaseExceptionResponseStatus.
 public class CategoryExceptionControllerAdvice {
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    @ExceptionHandler(CategoryNotExist.class)
-    public BaseErrorResponse handleCategoryNotExistException(final CategoryNotExist e){
+    @ExceptionHandler(CategoryNotExistException.class)
+    public BaseErrorResponse handleCategoryNotExistException(final CategoryNotExistException e){
         log.error("[handle_CategoryException]");
         return new BaseErrorResponse(CATEGORY_NAME_NOT_EXIST);
     }
 
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    @ExceptionHandler(CategoryNotProvidingDetail.class)
-    public BaseErrorResponse handleCategoryNotProvidingDetail(final CategoryNotProvidingDetail e){
+    @ExceptionHandler(CategoryNotProvidingDetailException.class)
+    public BaseErrorResponse handleCategoryNotProvidingDetail(final CategoryNotProvidingDetailException e){
         log.error("[handle_CategoryException]");
         return new BaseErrorResponse(CATEGORYNAME_NOT_PROVIDING_DETAIL);
     }
