@@ -1,5 +1,6 @@
 package ku_rum.backend.domain.building.presentation;
 
+import com.epages.restdocs.apispec.ResourceSnippetParameters;
 import ku_rum.backend.config.RestDocsTestSupport;
 import ku_rum.backend.domain.building.application.BuildingSearchService;
 import ku_rum.backend.domain.building.dto.response.BuildingResponse;
@@ -7,11 +8,14 @@ import ku_rum.backend.domain.category.dto.request.BuildindgCategoryRequest;
 import ku_rum.backend.domain.category.dto.response.CategoryDetailResponse;
 import ku_rum.backend.domain.menu.response.MenuSimpleResponse;
 import ku_rum.backend.domain.user.application.UserService;
+import ku_rum.backend.global.config.WebConfig;
 import ku_rum.backend.global.config.redis.RedisUtil;
+import ku_rum.backend.global.log.domain.repository.ApiLogRepository;
 import ku_rum.backend.global.security.jwt.JwtTokenProvider;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mock;
 import org.openqa.selenium.json.JsonType;
 import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -23,11 +27,12 @@ import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 
+import static com.epages.restdocs.apispec.ResourceDocumentation.resource;
 import static org.mockito.BDDMockito.given;
+import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.post;
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
 import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -47,6 +52,9 @@ class BuildingSearchControllerTest extends RestDocsTestSupport {
 
   @MockBean
   private RedisUtil redisUtil;
+
+  @MockBean
+  private ApiLogRepository apiLogRepository;
 
   @DisplayName("학교의 모든 건물정보를 출력한다.")
   @Test
@@ -85,7 +93,11 @@ class BuildingSearchControllerTest extends RestDocsTestSupport {
             .andExpect(jsonPath("$.data[1].longitude").value(127.076370))
 
             .andDo(restDocs.document(
-                    responseFields(
+                    resource(
+                            ResourceSnippetParameters.builder()
+                                    .tag("빌딩 API")
+                                    .description("모든 건물 정보 출력")
+                                    .responseFields(
                             fieldWithPath("code")
                                     .type(JsonType.NUMBER)
                                     .description("성공시 반환 코드 (200)"),
@@ -112,7 +124,7 @@ class BuildingSearchControllerTest extends RestDocsTestSupport {
                             fieldWithPath("data[].longtitude")
                                     .type(JsonType.NUMBER)
                                     .description("경도")
-                    )));
+                    ).build())));
 
 
   }
@@ -149,7 +161,11 @@ class BuildingSearchControllerTest extends RestDocsTestSupport {
             .andExpect(jsonPath("$.data.longitude").value(127.078845))
 
             .andDo(restDocs.document(
-                    responseFields(
+                    resource(
+                            ResourceSnippetParameters.builder()
+                                    .tag("빌딩 API")
+                                    .description("특정 건물번호로 건물 정보 출력")
+                                    .responseFields(
                             fieldWithPath("code")
                                     .type(JsonType.NUMBER)
                                     .description("성공시 반환 코드 (200)"),
@@ -176,7 +192,7 @@ class BuildingSearchControllerTest extends RestDocsTestSupport {
                             fieldWithPath("data.longtitude")
                                     .type(JsonType.NUMBER)
                                     .description("경도")
-                    )));
+                    ).build())));
 
 
   }
@@ -213,7 +229,11 @@ class BuildingSearchControllerTest extends RestDocsTestSupport {
             .andExpect(jsonPath("$.data.longitude").value(127.078845))
 
             .andDo(restDocs.document(
-                    responseFields(
+                    resource(
+                            ResourceSnippetParameters.builder()
+                                    .tag("빌딩 API")
+                                    .description("건물이름/줄임말로 건물정보 검색")
+                                    .responseFields(
                             fieldWithPath("code")
                                     .type(JsonType.NUMBER)
                                     .description("성공시 반환 코드 (200)"),
@@ -240,7 +260,7 @@ class BuildingSearchControllerTest extends RestDocsTestSupport {
                             fieldWithPath("data.longtitude")
                                     .type(JsonType.NUMBER)
                                     .description("경도")
-                    )));
+                    ).build())));
 
 
   }
@@ -283,7 +303,11 @@ class BuildingSearchControllerTest extends RestDocsTestSupport {
             .andExpect(jsonPath("$.data[1].longitude").value(127.076370))
 
             .andDo(restDocs.document(
-                    responseFields(
+                    resource(
+                            ResourceSnippetParameters.builder()
+                                    .tag("빌딩 API")
+                                    .description("특정 카테고리명으로 건물정보 검색")
+                                    .responseFields(
                             fieldWithPath("code")
                                     .type(JsonType.NUMBER)
                                     .description("성공시 반환 코드 (200)"),
@@ -310,7 +334,7 @@ class BuildingSearchControllerTest extends RestDocsTestSupport {
                             fieldWithPath("data[].longtitude")
                                     .type(JsonType.NUMBER)
                                     .description("경도")
-                    )));
+                    ).build())));
 
 
   }
@@ -375,7 +399,11 @@ class BuildingSearchControllerTest extends RestDocsTestSupport {
                 .andExpect(jsonPath("$.data.detailList[3].imageUrl").value("소금삼겹url"))
 
                 .andDo(restDocs.document(
-                        responseFields(
+                        resource(
+                                ResourceSnippetParameters.builder()
+                                        .tag("빌딩 API")
+                                        .description("카테고리(학생식당)로 검색")
+                                        .responseFields(
                                 fieldWithPath("code").type(JsonType.NUMBER)
                                         .description("성공시 반환 코드 (200)"),
                                 fieldWithPath("status").type(JsonType.STRING)
@@ -392,8 +420,8 @@ class BuildingSearchControllerTest extends RestDocsTestSupport {
                                         .description("메뉴 가격"),
                                 fieldWithPath("data.detailList[].imageUrl").type(JsonType.STRING)
                                         .description("메뉴 이미지 URL")
-                        )
-                ));
+                        ).build()
+                )));
       }
 
 
@@ -431,7 +459,11 @@ class BuildingSearchControllerTest extends RestDocsTestSupport {
                 .andExpect(jsonPath("$.data.detailList").isEmpty())
 
                 .andDo(restDocs.document(
-                        responseFields(
+                        resource(
+                                ResourceSnippetParameters.builder()
+                                        .tag("빌딩 API")
+                                        .description("케이큐브로 검색")
+                                        .responseFields(
                                 fieldWithPath("code").type(JsonType.NUMBER)
                                         .description("성공시 반환 코드 (200)"),
                                 fieldWithPath("status").type(JsonType.STRING)
@@ -445,8 +477,8 @@ class BuildingSearchControllerTest extends RestDocsTestSupport {
                                 fieldWithPath("data.detailList").type(JsonType.NULL)
                                         .description("해당 카테고리에 대한 상세 정보 (없을 경우 빈 배열")
 
-                        )
-                ));
+                        ).build()
+                )));
       }
 
       @DisplayName("3) 카테고리명이 '씨유편의점'인 경우")
@@ -488,7 +520,11 @@ class BuildingSearchControllerTest extends RestDocsTestSupport {
                 .andExpect(jsonPath("$.data.detailList[0].imageUrl").value("삼각김밥url"))
 
                 .andDo(restDocs.document(
-                        responseFields(
+                        resource(
+                                ResourceSnippetParameters.builder()
+                                        .tag("빌딩 API")
+                                        .description("카테고리(씨유)로 검색")
+                                        .responseFields(
                                 fieldWithPath("code").type(JsonType.NUMBER).description("성공시 반환 코드 (200)"),
                                 fieldWithPath("status").type(JsonType.STRING).description("응답 상태"),
                                 fieldWithPath("message").type(JsonType.STRING).description("응답 메시지"),
@@ -497,8 +533,8 @@ class BuildingSearchControllerTest extends RestDocsTestSupport {
                                 fieldWithPath("data.detailList[].name").type(JsonType.STRING).description("상품명"),
                                 fieldWithPath("data.detailList[].price").type(JsonType.NUMBER).description("상품 가격"),
                                 fieldWithPath("data.detailList[].imageUrl").type(JsonType.STRING).description("상품 이미지 URL")
-                        )
-                ));
+                        ).build()
+                )));
       }
 
       @DisplayName("4) 카테고리명이 '레스티오'인 경우")
@@ -542,7 +578,11 @@ class BuildingSearchControllerTest extends RestDocsTestSupport {
                 .andExpect(jsonPath("$.data.detailList[0].imageUrl").value("파스타url"))
 
                 .andDo(restDocs.document(
-                        responseFields(
+                        resource(
+                                ResourceSnippetParameters.builder()
+                                        .tag("빌딩 API")
+                                        .description("레스티오로 검색")
+                                        .responseFields(
                                 fieldWithPath("code").type(JsonType.NUMBER).description("성공시 반환 코드 (200)"),
                                 fieldWithPath("status").type(JsonType.STRING).description("응답 상태"),
                                 fieldWithPath("message").type(JsonType.STRING).description("응답 메시지"),
@@ -551,8 +591,8 @@ class BuildingSearchControllerTest extends RestDocsTestSupport {
                                 fieldWithPath("data.detailList[].name").type(JsonType.STRING).description("메뉴 이름"),
                                 fieldWithPath("data.detailList[].price").type(JsonType.NUMBER).description("메뉴 가격"),
                                 fieldWithPath("data.detailList[].imageUrl").type(JsonType.STRING).description("메뉴 이미지 URL")
-                        )
-                ));
+                        ).build()
+                )));
       }
 
       @DisplayName("5) 카테고리명이 '1894카페'인 경우")
@@ -596,7 +636,11 @@ class BuildingSearchControllerTest extends RestDocsTestSupport {
                 .andExpect(jsonPath("$.data.detailList[0].imageUrl").value("아메리카노url"))
 
                 .andDo(restDocs.document(
-                        responseFields(
+                        resource(
+                                ResourceSnippetParameters.builder()
+                                        .tag("빌딩 API")
+                                        .description("1894로 검색")
+                                        .responseFields(
                                 fieldWithPath("code").type(JsonType.NUMBER).description("성공시 반환 코드 (200)"),
                                 fieldWithPath("status").type(JsonType.STRING).description("응답 상태"),
                                 fieldWithPath("message").type(JsonType.STRING).description("응답 메시지"),
@@ -605,8 +649,8 @@ class BuildingSearchControllerTest extends RestDocsTestSupport {
                                 fieldWithPath("data.detailList[].name").type(JsonType.STRING).description("메뉴 이름"),
                                 fieldWithPath("data.detailList[].price").type(JsonType.NUMBER).description("메뉴 가격"),
                                 fieldWithPath("data.detailList[].imageUrl").type(JsonType.STRING).description("메뉴 이미지 URL")
-                        )
-                ));
+                        ).build()
+                )));
       }
 
     }

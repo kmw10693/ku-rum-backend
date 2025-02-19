@@ -16,7 +16,7 @@ import java.util.Collection;
 public class CustomUserDetails implements UserDetails {
     private Long userId;
     private String username;
-    private String email; // 이메일 추가
+    private String email;
     private Collection<? extends GrantedAuthority> roles;
     private String password;
 

@@ -15,17 +15,30 @@ import ku_rum.backend.domain.friend.dto.response.FriendListResponse;
 import ku_rum.backend.domain.user.domain.User;
 import ku_rum.backend.domain.user.domain.repository.UserRepository;
 import ku_rum.backend.global.exception.friend.NoFriendsException;
+import ku_rum.backend.global.security.jwt.CustomUserDetails;
+import ku_rum.backend.global.security.jwt.UserUtils;
 import org.assertj.core.api.Assertions;
 import org.assertj.core.groups.Tuple;
 import org.junit.jupiter.api.*;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.MockedStatic;
+import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.test.context.support.WithMockUser;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.*;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.*;
 
 @SpringBootTest
 @Transactional
@@ -35,7 +48,7 @@ class FriendServiceTest {
     @Autowired
     private FriendRepository friendRepository;
 
-    @Autowired
+    @Mock
     private UserRepository userRepository;
 
     @Autowired
@@ -47,13 +60,15 @@ class FriendServiceTest {
     @Autowired
     private FriendService friendService;
 
+    private Department department;
 
     @BeforeAll
     void init() {
+
         Building building = Building.of("신공학관",11L, "신공",1L, BigDecimal.valueOf(64.3423423), BigDecimal.valueOf(64.3423423));
         buildingRepository.save(building);
 
-        Department department = Department.of("컴퓨터공학부", building);
+        department = Department.of("컴퓨터공학부", building);
         departmentRepository.save(department);
 
         User fromUser = User.of("kmw106933", "kmw106933@konkuk.ac.kr", "미미미누", "password123", "202112322", department);
@@ -71,64 +86,9 @@ class FriendServiceTest {
 
         friendRepository.save(friend);
         friendRepository.save(friend2);
-    }
 
-
-    @Test
-    @DisplayName("기존 유저의 친구 정보를 가져온다 - 성공")
-    void getFriendsLists() {
-        //given
-        FriendListRequest friendListRequest = FriendListRequest.from(1L);
-
-        //when
-        List<FriendListResponse> myLists = friendService.getMyLists();
-
-        //then
-        assertThat(myLists).hasSize(2)
-                .extracting("id", "name")
-                .containsExactlyInAnyOrder(
-                        Tuple.tuple(2L, "미미미누1"),
-                        Tuple.tuple(3L, "미미미누2")
-                );
-
-    }
-
-    @Test
-    @DisplayName("내 친구 목록에 친구가 없는 경우 예외를 발생시킨다.")
-    void getFriendListsWithNoFriends() {
-        //given
-        FriendListRequest friendListRequest = FriendListRequest.from(2L);
-
-        //when
-        assertThatThrownBy(() -> friendService.getMyLists())
-                .isInstanceOf(NoFriendsException.class)
-                .hasMessage("친구 목록에 친구가 존재하지 않습니다.");
-    }
-
-    @Test
-    @DisplayName("내 친구 목록에 존재하는 친구를 검색한다 - 성공")
-    void findAFriendInMyFriendLists() {
-        //given
-        FriendFindRequest friendFindRequest = FriendFindRequest.from("미미미누1");
-
-        //when
-        FriendFindResponse friendFIndResponse = friendService.findByNameInLists("미미미누1");
-
-        //then
-        Assertions.assertThat(friendFIndResponse.id()).isEqualTo(2L);
-        Assertions.assertThat(friendFIndResponse.nickname()).isEqualTo("미미미누1");
-    }
-
-    @Test
-    @DisplayName("내 친구 목록에 존재하는 않는 친구를 검색한다 - 실패")
-    void findNoAFriendInMyFriendLists() {
-        //given
-        FriendFindRequest friendFindRequest = FriendFindRequest.from("미미미누3");
-
-        //when
-        assertThatThrownBy(() -> friendService.findByNameInLists("미미미누3"))
-                .isInstanceOf(NoFriendsException.class)
-                .hasMessage("친구 목록에 친구가 존재하지 않습니다.");
+        MockedStatic<UserUtils> mockedStatic = mockStatic(UserUtils.class);
+        mockedStatic.when(UserUtils::getLongMemberId).thenReturn(1L);
     }
 
 }

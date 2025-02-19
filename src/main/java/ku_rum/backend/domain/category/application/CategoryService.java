@@ -3,7 +3,7 @@ package ku_rum.backend.domain.category.application;
 import ku_rum.backend.domain.category.domain.repository.BuildingCategoryQueryRepository;
 import ku_rum.backend.domain.category.domain.repository.CategoryQueryRepository;
 import ku_rum.backend.domain.category.domain.repository.CategoryRepository;
-import ku_rum.backend.global.exception.category.CategoryNotExist;
+import ku_rum.backend.global.exception.category.CategoryNotExistException;
 import ku_rum.backend.global.response.status.BaseExceptionResponseStatus;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -19,7 +19,7 @@ public class CategoryService {
 
   public List<Long> findByCategoryReturnBuildingIds(String category){
     List<Long> categoryIds = categoryQueryRepository.findAllByName(category)
-            .orElseThrow(() -> new CategoryNotExist(BaseExceptionResponseStatus.CATEGORY_NAME_NOT_EXIST));
+            .orElseThrow(() -> new CategoryNotExistException(BaseExceptionResponseStatus.CATEGORY_NAME_NOT_EXIST));
     List<Long> buildingCategoryIds = buildingCategoryQueryRepository.findBuildingCategoryIds(categoryIds);
     return buildingCategoryQueryRepository.findBuildingIdsByCategoryIds(buildingCategoryIds);
   }

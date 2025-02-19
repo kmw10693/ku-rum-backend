@@ -3,6 +3,7 @@ package ku_rum.backend.domain.wein.application;
 import jakarta.validation.Valid;
 import ku_rum.backend.domain.reservation.dto.request.WeinLoginRequest;
 import ku_rum.backend.domain.reservation.dto.response.WeinLoginResponse;
+import ku_rum.backend.global.exception.wein.WeinException;
 import ku_rum.backend.global.response.BaseResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -20,13 +21,15 @@ import org.springframework.web.client.RestTemplate;
 
 import java.util.Optional;
 
+import static ku_rum.backend.global.response.status.BaseExceptionResponseStatus.LOGIN_FAILED;
+
 @Service
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
 @Slf4j
 public class WeinService {
 
-    public BaseResponse<WeinLoginResponse> loginToWein(@Valid final WeinLoginRequest weinLoginRequest) {
+    public void loginToWein(@Valid final WeinLoginRequest weinLoginRequest) {
         CloseableHttpClient httpClient = getCloseableHttpClient();
         RestTemplate restTemplate = getRestTemplate(httpClient);
         HttpHeaders headers = getHeaders();
@@ -36,14 +39,10 @@ public class WeinService {
 
         try {
             ResponseEntity<String> response = getResponseEntity(restTemplate, requestEntity);
-            BaseResponse<WeinLoginResponse> loginSuccess = getWeinLoginResponseBaseResponse(weinLoginRequest, response);
-            if (loginSuccess != null) return loginSuccess;
-
-            log.error("Unexpected response for userId: {}, status code: {}, response body: {}", weinLoginRequest.getUserId(), response.getStatusCode(), response.getBody());
-            return BaseResponse.of(HttpStatus.INTERNAL_SERVER_ERROR, new WeinLoginResponse(false, "Unexpected login response"));
+            getWeinLoginResponseBaseResponse(weinLoginRequest, response);
         } catch (Exception e) {
             log.error("Exception occurred during login: ", e);
-            return BaseResponse.of(HttpStatus.INTERNAL_SERVER_ERROR, new WeinLoginResponse(false, "Wein login failed due to server error"));
+            throw new WeinException(LOGIN_FAILED);
         }
     }
 
@@ -57,19 +56,17 @@ public class WeinService {
         return response;
     }
 
-    private static BaseResponse<WeinLoginResponse> getWeinLoginResponseBaseResponse(WeinLoginRequest weinLoginRequest, ResponseEntity<String> response) {
+    private static void getWeinLoginResponseBaseResponse(WeinLoginRequest weinLoginRequest, ResponseEntity<String> response) {
         Optional<String> responseBodyOpt = Optional.ofNullable(response.getBody());
         if (responseBodyOpt.isPresent()) {
             String responseBody = responseBodyOpt.get();
             if (responseBody.contains("index.do")) {
                 log.info("Login successful for userId: {}", weinLoginRequest.getUserId());
-                return BaseResponse.ok(new WeinLoginResponse(true, "Wein login successful"));
             } else if (responseBody.contains("login.do")) {
                 log.warn("Login failed for userId: {}", weinLoginRequest.getUserId());
-                return BaseResponse.of(HttpStatus.UNAUTHORIZED, new WeinLoginResponse(false, "Invalid Wein credentials"));
+                throw new WeinException(LOGIN_FAILED);
             }
         }
-        return null;
     }
 
     private static HttpHeaders getHeaders() {

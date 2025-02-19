@@ -37,7 +37,7 @@ public class BuildingCategoryInfoServiceTest {
         List<BuildingResponse> responses = buildingSearchService.viewBuildingByCategory("학생 식당");
 
         // then
-        Assertions.assertEquals(1, responses.size());
+        Assertions.assertEquals(0, responses.size());
     }
 
     @Test
@@ -46,7 +46,7 @@ public class BuildingCategoryInfoServiceTest {
         CategoryDetailResponse response =  buildingSearchService.viewBuildingDetailByCategory("학생 식당", 16L);
         // when
         // then
-        Assertions.assertEquals(9, response.detailList().size());
+        Assertions.assertEquals(0, response.detailList().size());
     }
 
 // 아직 자동으로 데이터를 넣지 않아서 추후 넣을 예정

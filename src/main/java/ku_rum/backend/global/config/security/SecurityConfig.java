@@ -2,7 +2,6 @@ package ku_rum.backend.global.config.security;
 
 import ku_rum.backend.domain.user.domain.repository.UserRepository;
 import ku_rum.backend.global.config.redis.RedisUtil;
-import ku_rum.backend.global.response.status.BaseExceptionResponseStatus;
 import ku_rum.backend.global.security.jwt.CustomUserDetails;
 import ku_rum.backend.global.security.jwt.JwtTokenAuthenticationFilter;
 import ku_rum.backend.global.security.jwt.JwtTokenProvider;

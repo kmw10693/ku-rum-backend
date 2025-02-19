@@ -21,12 +21,12 @@ class UserSaveRequestTest {
 
     @ParameterizedTest
     @NullAndEmptySource
-    @DisplayName("회원가입 아이디에 빈 문자열이 들어오는 경우 처리한다.")
+    @DisplayName("회원가입 이메일에 빈 문자열이 들어오는 경우 처리한다.")
     void blankEmail(String email) {
         UserSaveRequest userSaveRequest = new UserSaveRequest(email, "kmw10693@konkuk.ac.kr","password12", "202112322", "컴퓨터공학부", "미미미누");
 
         assertThat(validator.validate(userSaveRequest))
-                .anyMatch(violation -> violation.getMessage().equals("아이디 입력은 필수입니다. 최소 6자 이상입니다."));
+                .anyMatch(violation -> violation.getMessage().equals("이메일 입력은 필수입니다."));
     }
 
     @ParameterizedTest
