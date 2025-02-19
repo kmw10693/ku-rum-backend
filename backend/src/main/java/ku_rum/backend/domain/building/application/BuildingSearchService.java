@@ -1,7 +1,10 @@
 package ku_rum.backend.domain.building.application;
 
+import ku_rum.backend.document.BuildingDocument;
 import ku_rum.backend.domain.building.domain.Building;
 import ku_rum.backend.domain.building.domain.BuildingAbbrev;
+import ku_rum.backend.domain.building.domain.repository.BuildingElasticRepository;
+import ku_rum.backend.domain.building.dto.request.BuildingInfoRequest;
 import ku_rum.backend.domain.buildingCategory.domain.BuildingCategory;
 import ku_rum.backend.domain.buildingCategory.domain.repository.BuildingCategoryQueryRepository;
 import ku_rum.backend.domain.building.domain.repository.BuildingQueryRepository;
@@ -36,6 +39,7 @@ public class BuildingSearchService {
   private final BuildingCategoryQueryRepository buildingCategoryQueryRepository;
   private final MenuRepository menuQueryRepository;
   private final CategoryRepository categoryRepository;
+  private final BuildingElasticRepository buildingElasticRepository;
 
 
   public List<BuildingResponse> findAllBuildings() {
@@ -160,4 +164,60 @@ public class BuildingSearchService {
     }
     return false;
   }
+
+
+  /**
+   * elastic search repository에 Building 객체 정보 저장 함수
+   * 
+   * @param buildings
+   * @return
+   */
+  public void addAllElasticRepo(List<Building> buildings) {
+    List<BuildingDocument> documents = buildings.stream()
+            .map(BuildingDocument::from) // Building을 BuildingDocument로 변환
+            .toList();
+
+    buildingElasticRepository.saveAll(documents);
+  }
+
+  /**
+   * name 이 빌딩 명칭에 있기만 하면 반환하는 함수
+   *
+   * @param name
+   * @return
+   */
+  public List<BuildingDocument> searchByBuildingnameToken(String name){
+    return buildingElasticRepository.findByNameCustom(name);
+  }
+
+  public BuildingResponse insertByAdminBuildingInfo(BuildingInfoRequest request){
+    Building building = Building.builder()
+            .abbreviation(request.bulidingAbbreviation())
+            .name(request.buildingName())
+            .number(request.buildingNumber())
+            .latitude(request.latitude())
+            .longitude(request.longtitude())
+            .build();
+
+    buildingElasticRepository.save(BuildingDocument.from(building));
+    buildingRepository.save(building);
+
+    return BuildingResponse.of(building);
+  }
+
+  /**
+   * elastic search와 성능 검사 비교 위한 일반 검색 함수 (contians)
+   *
+   * @param name
+   * @return
+   */
+  public List<BuildingResponse> searchByBuildingnameFullText(String name) {
+    List<Building> buildings = buildingRepository.findByNameContaining(name);
+
+    return buildings.stream()
+            .map(BuildingResponse::of)
+            .collect(Collectors.toList());
+  }
+
+
 }

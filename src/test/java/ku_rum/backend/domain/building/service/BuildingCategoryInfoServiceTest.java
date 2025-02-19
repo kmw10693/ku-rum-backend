@@ -35,10 +35,7 @@ public class BuildingCategoryInfoServiceTest {
     public void 특정카테고리_전체조회_성공() throws Exception {
         // given
         List<BuildingResponse> responses = buildingSearchService.viewBuildingByCategory("학생 식당");
-        // when
-        for (BuildingResponse e : responses) {
-            System.out.println("Response : " + e.bulidingAbbreviation());
-        }
+
         // then
         Assertions.assertEquals(1, responses.size());
     }

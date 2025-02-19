@@ -9,6 +9,7 @@ import org.junit.jupiter.api.Test;
 
 import java.math.BigDecimal;
 
+import static ku_rum.backend.domain.friend.domain.FriendStatus.PENDING;
 import static org.assertj.core.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -22,7 +23,7 @@ class FriendTest {
         User toUser = createUser("사용자2", "202123232");
 
         //when
-        Friend friend = Friend.of(fromUser, toUser);
+        Friend friend = Friend.of(fromUser, toUser, PENDING);
 
         //then
         assertThat(friend.getFromUser()).isEqualTo(fromUser);
