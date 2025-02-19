@@ -75,7 +75,7 @@ public class BuildingSearchController {
    * @param category
    * @return
    */
-  @GetMapping("/{category}")
+  @GetMapping("/category/{category}")
   public BaseResponse<List> viewBuildingByCategory(@AuthenticationPrincipal CustomUserDetails userDetails, @PathVariable("category") String category){
     userService.validateUserDetails(userDetails);
     List<BuildingResponse> categoryList = buildingSearchService.viewBuildingByCategory(category.trim());
@@ -106,7 +106,7 @@ public class BuildingSearchController {
    * @param text
    * @return
    */
-  @GetMapping("/{text}")
+  @GetMapping("/text/{text}")
   public BaseResponse<List<BuildingResponse>> viewAvailableTextNameList(@AuthenticationPrincipal CustomUserDetails userDetails, @PathVariable("text") String text){
     userService.validateUserDetails(userDetails);
     List<BuildingResponse> resultList = buildingSearchService.searchAvailableText(text);

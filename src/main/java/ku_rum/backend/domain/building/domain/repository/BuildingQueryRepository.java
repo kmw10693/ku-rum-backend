@@ -1,14 +1,15 @@
 package ku_rum.backend.domain.building.domain.repository;
 
-import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import jakarta.persistence.EntityManager;
 import ku_rum.backend.domain.building.domain.Building;
 import ku_rum.backend.domain.building.domain.QBuilding;
 import ku_rum.backend.domain.building.dto.response.BuildingResponse;
 import ku_rum.backend.domain.category.domain.Category;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import jakarta.persistence.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -21,6 +22,7 @@ public class BuildingQueryRepository {
 
   private final JPAQueryFactory queryFactory;
   private final QBuilding qBuilding = QBuilding.building;
+  private final EntityManager entityManager;
 
   public List<BuildingResponse> findAllBuildings() {
     return queryFactory
@@ -104,12 +106,11 @@ public class BuildingQueryRepository {
   }
 
   public List<Building> searchBuildingByNgram(String searchText) {
-    return queryFactory
-            .selectFrom(qBuilding)
-            .where(Expressions.booleanTemplate(
-                    "MATCH({0}) AGAINST ({1} IN NATURAL LANGUAGE MODE)",
-                    qBuilding.name, searchText
-            ))
-            .fetch();
+    String nativeQuery = "SELECT * FROM building WHERE MATCH(name) AGAINST (?1 IN BOOLEAN MODE)";
+
+    Query query = entityManager.createNativeQuery(nativeQuery, Building.class);
+    query.setParameter(1, searchText + "*");
+
+    return query.getResultList();
   }
 }
