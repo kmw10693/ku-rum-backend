@@ -48,3 +48,7 @@ src/main/resources/static/docs/
 ### QueryDSL ###
 /src/main/generated/
 
+## ngrinder
+ngrinder-controller/
+
+
