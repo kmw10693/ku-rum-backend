@@ -8,11 +8,14 @@ import ku_rum.backend.domain.category.dto.request.BuildindgCategoryRequest;
 import ku_rum.backend.domain.category.dto.response.CategoryDetailResponse;
 import ku_rum.backend.domain.menu.response.MenuSimpleResponse;
 import ku_rum.backend.domain.user.application.UserService;
+import ku_rum.backend.global.config.WebConfig;
 import ku_rum.backend.global.config.redis.RedisUtil;
+import ku_rum.backend.global.log.domain.repository.ApiLogRepository;
 import ku_rum.backend.global.security.jwt.JwtTokenProvider;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mock;
 import org.openqa.selenium.json.JsonType;
 import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -48,6 +51,9 @@ class BuildingSearchControllerTest extends RestDocsTestSupport {
 
   @MockBean
   private RedisUtil redisUtil;
+
+  @MockBean
+  private ApiLogRepository apiLogRepository;
 
   @DisplayName("학교의 모든 건물정보를 출력한다.")
   @Test
