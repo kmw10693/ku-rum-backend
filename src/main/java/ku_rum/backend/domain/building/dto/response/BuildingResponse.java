@@ -1,38 +1,34 @@
 package ku_rum.backend.domain.building.dto.response;
 
+import com.querydsl.core.annotations.QueryProjection;
 import ku_rum.backend.domain.building.domain.Building;
-import lombok.Builder;
-import lombok.Getter;
 
 import java.math.BigDecimal;
 
-public record BuildingResponse (
+public record BuildingResponse(
         Long buildingId,
         String buildingName,
         Long buildingNumber,
-        String bulidingAbbreviation,
+        String buildingAbbreviation,
         BigDecimal latitude,
-        BigDecimal longtitude
-){
+        BigDecimal longitude
+) {
 
-  @Builder
-  public BuildingResponse(Long buildingId, String buildingName, Long buildingNumber, String bulidingAbbreviation, BigDecimal latitude, BigDecimal longtitude) {
-    this.buildingId = buildingId;
-    this.buildingName = buildingName;
-    this.buildingNumber = buildingNumber;
-    this.bulidingAbbreviation = bulidingAbbreviation;
-    this.latitude = latitude;
-    this.longtitude = longtitude;
+  @QueryProjection
+  public BuildingResponse {
+
   }
 
+
+
   public static BuildingResponse of(Building building) {
-    return BuildingResponse.builder()
-            .buildingId(building.getId())
-            .buildingName(building.getName())
-            .buildingNumber(building.getNumber())
-            .bulidingAbbreviation(building.getAbbreviation())
-            .latitude(building.getLatitude())
-            .longtitude(building.getLongitude())
-            .build();
+    return new BuildingResponse(
+            building.getId(),
+            building.getName(),
+            building.getNumber(),
+            building.getAbbreviation(),
+            building.getLatitude(),
+            building.getLongitude()
+    );
   }
 }

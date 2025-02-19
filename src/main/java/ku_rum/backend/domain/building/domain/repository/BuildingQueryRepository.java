@@ -1,10 +1,12 @@
 package ku_rum.backend.domain.building.domain.repository;
 
+import com.querydsl.core.types.dsl.Expressions;
+import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.impl.JPAQueryFactory;
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.PersistenceContext;
 import ku_rum.backend.domain.building.domain.Building;
+import ku_rum.backend.domain.building.domain.QBuilding;
 import ku_rum.backend.domain.building.dto.response.BuildingResponse;
+import ku_rum.backend.domain.category.domain.Category;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Repository;
@@ -16,68 +18,98 @@ import java.util.Optional;
 @RequiredArgsConstructor
 @Slf4j
 public class BuildingQueryRepository {
-  private final JPAQueryFactory queryFactory;
 
-  @PersistenceContext
-  EntityManager entityManager;
+  private final JPAQueryFactory queryFactory;
+  private final QBuilding qBuilding = QBuilding.building;
 
   public List<BuildingResponse> findAllBuildings() {
-    String query = "SELECT new ku_rum.backend.domain.building.dto.response.BuildingResponse(" +
-            "m.id, m.name, m.number, m.abbreviation, m.latitude, m.longitude" +
-            ") " +
-            "FROM Building m";
-
-    return entityManager.createQuery(query, BuildingResponse.class)
-            .getResultList();
+    return queryFactory
+            .select(Projections.constructor(BuildingResponse.class,
+                    qBuilding.id,
+                    qBuilding.name,
+                    qBuilding.number,
+                    qBuilding.abbreviation,
+                    qBuilding.latitude,
+                    qBuilding.longitude
+            ))
+            .from(qBuilding)
+            .fetch();
   }
 
   public Optional<BuildingResponse> findBuildingByNumber(Long number) {
-    String query = "SELECT new ku_rum.backend.domain.building.dto.response.BuildingResponse(" +
-            "m.id, m.name, m.number, m.abbreviation, m.latitude, m.longitude" +
-            ") " +
-            "FROM Building m " +
-            "WHERE m.number = :number";
-
-    List<BuildingResponse> result = entityManager.createQuery(query, BuildingResponse.class)
-            .setParameter("number", number)
-            .getResultList();
-
-    return result.isEmpty() ? Optional.empty() : Optional.of(result.get(0));
+    return Optional.ofNullable(
+            queryFactory
+                    .select(Projections.constructor(BuildingResponse.class,
+                            qBuilding.id,
+                            qBuilding.name,
+                            qBuilding.number,
+                            qBuilding.abbreviation,
+                            qBuilding.latitude,
+                            qBuilding.longitude
+                    ))
+                    .from(qBuilding)
+                    .where(qBuilding.number.eq(number))
+                    .fetchOne()
+    );
   }
 
-
-  public BuildingResponse findBuildingByName(String name) {
-    String query = "SELECT new ku_rum.backend.domain.building.dto.response.BuildingResponse(" +
-            "m.id, m.name, m.number, m.abbreviation, m.latitude, m.longitude" +
-            ") " +
-            "FROM Building m " +
-            "where m.name =: name";
-    return entityManager.createQuery(query, BuildingResponse.class)
-            .setParameter("name", name)
-            .getSingleResult();
+  public Optional<BuildingResponse> findBuildingByName(String name) {
+    return Optional.ofNullable(
+            queryFactory
+                    .select(Projections.constructor(BuildingResponse.class,
+                            qBuilding.id,
+                            qBuilding.name,
+                            qBuilding.number,
+                            qBuilding.abbreviation,
+                            qBuilding.latitude,
+                            qBuilding.longitude
+                    ))
+                    .from(qBuilding)
+                    .where(qBuilding.name.eq(name))
+                    .fetchOne()
+    );
   }
 
-  public List<Building> findAllByIdIn(List<Long> buildingIdsFr) {
-    String query = "SELECT m FROM Building m WHERE m.id IN :buildingIds";
-
-    // buildingIdsFr에 해당하는 모든 Building 엔티티를 조회
-    return entityManager.createQuery(query, Building.class)
-            .setParameter("buildingIds", buildingIdsFr)
-            .getResultList();
+  public List<Building> findAllByIdIn(List<Long> buildingIds) {
+    return queryFactory
+            .selectFrom(qBuilding)
+            .where(qBuilding.id.in(buildingIds))
+            .fetch();
   }
 
-  public Building findBuildingBy(Long buildingId) {
-    String query = "SELECT m FROM Building m WHERE m.id =: buildingId";
-    return entityManager.createQuery(query, Building.class)
-            .setParameter("buildingId" , buildingId)
-            .getSingleResult();
+  public Optional<Building> findBuildingById(Long buildingId) {
+    return Optional.ofNullable(
+            queryFactory
+                    .selectFrom(qBuilding)
+                    .where(qBuilding.id.eq(buildingId))
+                    .fetchOne()
+    );
   }
 
-  public Long findBuildingByNumber_test(long number) {
-    String query = "SELECT m.id FROM Building m " +
-            "where m.number =: number";
-    return entityManager.createQuery(query, Long.class)
-            .setParameter("number", number)
-            .getResultList().get(0);
+  public Optional<Long> findBuildingIdByNumber(long number) {
+    return Optional.ofNullable(
+            queryFactory
+                    .select(qBuilding.id)
+                    .from(qBuilding)
+                    .where(qBuilding.number.eq(number))
+                    .fetchOne()
+    );
+  }
+
+  public List<Building> findAllByCategory(Category category) {
+    return queryFactory
+            .selectFrom(qBuilding)
+            .where(qBuilding.category.eq(category))
+            .fetch();
+  }
+
+  public List<Building> searchBuildingByNgram(String searchText) {
+    return queryFactory
+            .selectFrom(qBuilding)
+            .where(Expressions.booleanTemplate(
+                    "MATCH({0}) AGAINST ({1} IN NATURAL LANGUAGE MODE)",
+                    qBuilding.name, searchText
+            ))
+            .fetch();
   }
 }

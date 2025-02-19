@@ -17,6 +17,9 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
+
+import static ku_rum.backend.global.response.status.BaseExceptionResponseStatus.SUCCESS;
 
 @Slf4j
 @RestController
@@ -37,7 +40,7 @@ public class BuildingSearchController {
   public BaseResponse viewAll(@AuthenticationPrincipal CustomUserDetails userDetails) {
     userService.validateUserDetails(userDetails);
     List<BuildingResponse> results = buildingSearchService.findAllBuildings();
-    return BaseResponse.of(BaseExceptionResponseStatus.SUCCESS.getStatus(),results);
+    return BaseResponse.of(SUCCESS.getStatus(),results);
   }
 
   /**
@@ -50,7 +53,7 @@ public class BuildingSearchController {
   public BaseResponse<BuildingResponse> viewBuildingByNumber(@AuthenticationPrincipal CustomUserDetails userDetails, @RequestParam("number")@NotNull @Min(1)  Long number) {
     userService.validateUserDetails(userDetails);
     BuildingResponse result = buildingSearchService.viewBuildingByNumber(number);
-    return BaseResponse.of(BaseExceptionResponseStatus.SUCCESS.getStatus(), result);
+    return BaseResponse.of(SUCCESS.getStatus(), result);
   }
 
   /**
@@ -60,10 +63,10 @@ public class BuildingSearchController {
    * @return
    */
   @GetMapping("/searchName")
-  public BaseResponse<BuildingResponse> viewBuildingByName(@AuthenticationPrincipal CustomUserDetails userDetails, @RequestParam("name")@NotNull String name){
+  public BaseResponse<Optional<BuildingResponse>> viewBuildingByName(@AuthenticationPrincipal CustomUserDetails userDetails, @RequestParam("name")@NotNull String name){
     userService.validateUserDetails(userDetails);
-    BuildingResponse result = buildingSearchService.viewBuildingByName(name.trim());
-    return BaseResponse.of(BaseExceptionResponseStatus.SUCCESS.getStatus(), result);
+    Optional<BuildingResponse> result = buildingSearchService.viewBuildingByName(name.trim());
+    return BaseResponse.of(SUCCESS.getStatus(), result);
   }
 
   /**
@@ -76,7 +79,7 @@ public class BuildingSearchController {
   public BaseResponse<List> viewBuildingByCategory(@AuthenticationPrincipal CustomUserDetails userDetails, @PathVariable("category") String category){
     userService.validateUserDetails(userDetails);
     List<BuildingResponse> categoryList = buildingSearchService.viewBuildingByCategory(category.trim());
-    return BaseResponse.of(BaseExceptionResponseStatus.SUCCESS.getStatus(), categoryList);
+    return BaseResponse.of(SUCCESS.getStatus(), categoryList);
   }
 
   /**
@@ -86,13 +89,28 @@ public class BuildingSearchController {
    * @param request
    * @return
    */
-  @PostMapping()
+  @PostMapping
   public BaseResponse<CategoryDetailResponse> viewBuildingByCategoryInBuilding(
           @AuthenticationPrincipal CustomUserDetails userDetails,
           @RequestBody BuildindgCategoryRequest  request
   ){
     userService.validateUserDetails(userDetails);
     CategoryDetailResponse categoryDetailResponse = buildingSearchService.viewBuildingDetailByCategory(request.category(), request.buildingId());
-    return BaseResponse.of(BaseExceptionResponseStatus.SUCCESS.getStatus(), categoryDetailResponse);
+    return BaseResponse.of(SUCCESS.getStatus(), categoryDetailResponse);
   }
+
+  /**
+   * full text 검색을 위한 함수
+   *
+   * @param userDetails
+   * @param text
+   * @return
+   */
+  @GetMapping("/{text}")
+  public BaseResponse<List<BuildingResponse>> viewAvailableTextNameList(@AuthenticationPrincipal CustomUserDetails userDetails, @PathVariable("text") String text){
+    userService.validateUserDetails(userDetails);
+    List<BuildingResponse> resultList = buildingSearchService.searchAvailableText(text);
+    return BaseResponse.of(SUCCESS.getStatus(), resultList);
+  }
+
 }
