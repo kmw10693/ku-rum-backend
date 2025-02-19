@@ -1,5 +1,6 @@
 package ku_rum.backend.domain.user.presentation;
 
+import com.epages.restdocs.apispec.ResourceSnippetParameters;
 import ku_rum.backend.config.RestDocsTestSupport;
 import ku_rum.backend.domain.reservation.dto.request.WeinLoginRequest;
 import ku_rum.backend.domain.user.application.UserService;
@@ -21,6 +22,7 @@ import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors;
 import org.springframework.transaction.annotation.Transactional;
 
+import static com.epages.restdocs.apispec.ResourceDocumentation.resource;
 import static org.springframework.restdocs.headers.HeaderDocumentation.headerWithName;
 import static org.springframework.restdocs.headers.HeaderDocumentation.requestHeaders;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.patch;
@@ -64,8 +66,11 @@ class UserControllerTest extends RestDocsTestSupport {
                 .andExpect(jsonPath("$.code").value("200"))
                 .andExpect(jsonPath("$.status").value("OK"))
                 .andExpect(jsonPath("$.message").value("OK"))
-                .andDo(restDocs.document(
-                        requestFields(
+                .andDo(restDocs.document(resource(
+                        ResourceSnippetParameters.builder()
+                                .tag("유저 API")
+                                .description("신규 유저 생성")
+                                .requestFields(
                                 fieldWithPath("loginId")
                                         .type(JsonType.STRING)
                                         .description("멤버 아이디")
@@ -90,8 +95,8 @@ class UserControllerTest extends RestDocsTestSupport {
                                         .type(JsonType.STRING)
                                         .description("멤버 학과")
                                         .attributes(constraints("ex) 컴퓨터공학부"))
-                        ),
-                        responseFields(
+                        )
+                                .responseFields(
                                 fieldWithPath("code")
                                         .type(JsonType.STRING)
                                         .description("성공시 반환 코드 (200)"),
@@ -101,7 +106,7 @@ class UserControllerTest extends RestDocsTestSupport {
                                 fieldWithPath("message")
                                         .type(JsonType.STRING)
                                         .description("성공 시 메시지 (OK)")
-                        )));
+                        ).build())));
     }
 
 
@@ -121,14 +126,17 @@ class UserControllerTest extends RestDocsTestSupport {
                 .andExpect(jsonPath("$.status").value("OK"))
                 .andExpect(jsonPath("$.message").value("OK"))
                 .andExpect(jsonPath("$.data").value("올바른 이메일 입니다."))
-                .andDo(restDocs.document(
-                        requestFields(
+                .andDo(restDocs.document(resource(
+                        ResourceSnippetParameters.builder()
+                                .tag("유저 API")
+                                .description("아이디 중복 확인")
+                                .requestFields(
                                 fieldWithPath("loginId")
                                         .type(JsonType.STRING)
                                         .description("멤버 아이디")
                                         .attributes(constraints("아이디 입력은 필수입니다. 최소 6자 이상입니다."))
-                        ),
-                        responseFields(
+                        )
+                                .responseFields(
                                 fieldWithPath("code")
                                         .type(JsonType.NUMBER)
                                         .description("성공시 반환 코드 (200)"),
@@ -141,7 +149,7 @@ class UserControllerTest extends RestDocsTestSupport {
                                 fieldWithPath("data")
                                         .type(JsonType.STRING)
                                         .description("성공 시 '올바른 이메일 입니다.' 반환")
-                        )));
+                        ).build())));
     }
 
     @Test
@@ -161,17 +169,20 @@ class UserControllerTest extends RestDocsTestSupport {
                 )
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andDo(restDocs.document(
-                        requestHeaders(
+                .andDo(restDocs.document(resource(
+                        ResourceSnippetParameters.builder()
+                                .tag("유저 API")
+                                .description("비밀번호 변경")
+                                .requestHeaders(
                                 headerWithName("Bearer").description("발급 받은 엑세스 토큰입니다.")
-                        ),
-                        requestFields(
+                        )
+                                .requestFields(
                                 fieldWithPath("password")
                                         .type(JsonType.STRING)
                                         .description("새로 변경할 비밀번호")
                                         .attributes(constraints("새로 변경할 비밀번호입니다."))
-                        ),
-                        responseFields(
+                        )
+                                .responseFields(
                                 fieldWithPath("code")
                                         .type(JsonType.NUMBER)
                                         .description("성공시 반환 코드 (200)"),
@@ -184,7 +195,7 @@ class UserControllerTest extends RestDocsTestSupport {
                                 fieldWithPath("data")
                                         .type(JsonType.STRING)
                                         .description("성공 시 '아이디/비밀번호가 변경되었습니다.' 반환")
-                        )));
+                        ).build())));
     }
 
     @Test
@@ -205,16 +216,20 @@ class UserControllerTest extends RestDocsTestSupport {
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andDo(restDocs.document(
-                        requestHeaders(
+                        resource(
+                                ResourceSnippetParameters.builder()
+                                        .tag("유저 API")
+                                        .description("프로필 이미지 변경")
+                                        .requestHeaders(
                                 headerWithName("Bearer").description("발급 받은 엑세스 토큰입니다.")
-                        ),
-                        requestFields(
+                        )
+                                        .requestFields(
                                 fieldWithPath("imageUrl")
                                         .type(JsonType.STRING)
                                         .description("새로 변경할 프로필")
                                         .attributes(constraints("새로 변경할 프로필입니다."))
-                        ),
-                        responseFields(
+                        )
+                                        .responseFields(
                                 fieldWithPath("code")
                                         .type(JsonType.NUMBER)
                                         .description("성공시 반환 코드 (200)"),
@@ -227,6 +242,6 @@ class UserControllerTest extends RestDocsTestSupport {
                                 fieldWithPath("data")
                                         .type(JsonType.STRING)
                                         .description("성공 시 반환 메시지")
-                        )));
+                        ).build())));
     }
 }

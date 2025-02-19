@@ -1,5 +1,6 @@
 package ku_rum.backend.domain.friend.presentation;
 
+import com.epages.restdocs.apispec.ResourceSnippetParameters;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import ku_rum.backend.config.RestDocsTestSupport;
 import ku_rum.backend.domain.friend.application.FriendService;
@@ -15,6 +16,7 @@ import org.springframework.http.MediaType;
 import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders;
 import org.springframework.security.test.context.support.WithMockUser;
 
+import static com.epages.restdocs.apispec.ResourceDocumentation.resource;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.springframework.restdocs.headers.HeaderDocumentation.headerWithName;
 import static org.springframework.restdocs.headers.HeaderDocumentation.requestHeaders;
@@ -55,10 +57,14 @@ class FriendControllerTest  extends RestDocsTestSupport {
                 .andExpect(jsonPath("$.status").value("OK"))
                 .andExpect(jsonPath("$.message").value("OK"))
                 .andDo(restDocs.document(
-                        requestHeaders(
+                        resource(
+                                ResourceSnippetParameters.builder()
+                                        .tag("친구 API")
+                                        .description("유저의 친구 목록 조회")
+                                        .requestHeaders(
                                 headerWithName("Bearer").description("발급 받은 엑세스 토큰입니다.")
-                        ),
-                        responseFields(
+                        )
+                                        .responseFields(
                                 fieldWithPath("code")
                                         .type(JsonType.NUMBER)
                                         .description("성공시 반환 코드 (200)"),
@@ -71,7 +77,7 @@ class FriendControllerTest  extends RestDocsTestSupport {
                                 fieldWithPath("data")
                                         .type(JsonType.STRING)
                                         .description("데이터 성공시 빈 값")
-                        )));
+                        ).build())));
     }
 
     @DisplayName("기존 친구 목록에서 닉네임으로 친구를 검색한다.")
@@ -93,17 +99,21 @@ class FriendControllerTest  extends RestDocsTestSupport {
                 .andExpect(jsonPath("$.status").value("OK"))
                 .andExpect(jsonPath("$.message").value("OK"))
                 .andDo(restDocs.document(
-                        queryParameters(parameterWithName("nickname").description("찾을 닉네임입니다.")),
-                        requestHeaders(
+                        resource(
+                                ResourceSnippetParameters.builder()
+                                        .tag("친구 API")
+                                        .description("닉네임으로 친구를 검색")
+                                        .queryParameters(parameterWithName("nickname").description("찾을 닉네임입니다."))
+                                        .requestHeaders(
                                 headerWithName("Bearer").description("발급 받은 엑세스 토큰입니다.")
-                        ),
-                        requestFields(
+                        )
+                                        .requestFields(
                                 fieldWithPath("nickname")
                                         .type(JsonType.STRING)
                                         .description("멤버 인덱스")
                                         .attributes(constraints("찾고자 하는 친구 닉네임"))
-                        ),
-                        responseFields(
+                        )
+                                        .responseFields(
                                 fieldWithPath("code")
                                         .type(JsonType.NUMBER)
                                         .description("성공시 반환 코드 (200)"),
@@ -113,7 +123,7 @@ class FriendControllerTest  extends RestDocsTestSupport {
                                 fieldWithPath("message")
                                         .type(JsonType.STRING)
                                         .description("성공 시 메시지 값 (OK)")
-                        )));
+                        ).build())));
     }
 
     @DisplayName("친구 요청을 보낸다.")
@@ -133,13 +143,18 @@ class FriendControllerTest  extends RestDocsTestSupport {
                 .andExpect(jsonPath("$.data").value("친구 요청이 성공적으로 완료되었습니다."))
 
                 .andDo(restDocs.document(
-                        pathParameters( // 5
+                        resource(
+                                ResourceSnippetParameters.builder()
+                                        .tag("친구 API")
+                                        .description("친구 요청")
+
+                                        .pathParameters( // 5
                                 parameterWithName("requestId").description("요청할 ID입니다.")
-                        ),
-                        requestHeaders(
+                        )
+                                        .requestHeaders(
                                 headerWithName("Bearer").description("발급 받은 엑세스 토큰입니다.")
-                        ),
-                        responseFields(
+                        )
+                                        .responseFields(
                                 fieldWithPath("code")
                                         .type(JsonType.NUMBER)
                                         .description("성공시 반환 코드 (200)"),
@@ -152,7 +167,7 @@ class FriendControllerTest  extends RestDocsTestSupport {
                                 fieldWithPath("data")
                                         .type(JsonType.STRING)
                                         .description("성공 시 데이터 값 (OK)")
-                        )));
+                        ).build())));
     }
 
     @DisplayName("친구 요청을 승인한다.")
@@ -172,13 +187,17 @@ class FriendControllerTest  extends RestDocsTestSupport {
                 .andExpect(jsonPath("$.data").value("친구 요청이 성공적으로 완료되었습니다."))
 
                 .andDo(restDocs.document(
-                        pathParameters( // 5
+                        resource(
+                                ResourceSnippetParameters.builder()
+                                        .tag("친구 API")
+                                        .description("친구 승인")
+                                        .pathParameters( // 5
                                 parameterWithName("requestId").description("요청할 ID입니다.")
-                        ),
-                        requestHeaders(
+                        )
+                                        .requestHeaders(
                                 headerWithName("Bearer").description("발급 받은 엑세스 토큰입니다.")
-                        ),
-                        responseFields(
+                        )
+                                        .responseFields(
                                 fieldWithPath("code")
                                         .type(JsonType.NUMBER)
                                         .description("성공시 반환 코드 (200)"),
@@ -191,7 +210,7 @@ class FriendControllerTest  extends RestDocsTestSupport {
                                 fieldWithPath("data")
                                         .type(JsonType.STRING)
                                         .description("성공 시 데이터 값 (OK)")
-                        )));
+                        ).build())));
     }
 
     @DisplayName("친구 요청을 거절한다.")
@@ -211,13 +230,17 @@ class FriendControllerTest  extends RestDocsTestSupport {
                 .andExpect(jsonPath("$.data").value("친구 거절 되었습니다."))
 
                 .andDo(restDocs.document(
-                        pathParameters(
+                        resource(
+                                ResourceSnippetParameters.builder()
+                                        .tag("친구 API")
+                                        .description("친구 요청 거절")
+                                        .pathParameters(
                                 parameterWithName("requestId").description("요청할 ID입니다.")
-                        ),
-                        requestHeaders(
+                        )
+                                        .requestHeaders(
                                 headerWithName("Bearer").description("발급 받은 엑세스 토큰입니다.")
-                        ),
-                        responseFields(
+                        )
+                                        .responseFields(
                                 fieldWithPath("code")
                                         .type(JsonType.NUMBER)
                                         .description("성공시 반환 코드 (200)"),
@@ -230,7 +253,7 @@ class FriendControllerTest  extends RestDocsTestSupport {
                                 fieldWithPath("data")
                                         .type(JsonType.STRING)
                                         .description("성공 시 데이터 값 (OK)")
-                        )));
+                        ).build())));
     }
 
     @DisplayName("친구를 삭제한다.")
@@ -250,13 +273,17 @@ class FriendControllerTest  extends RestDocsTestSupport {
                 .andExpect(jsonPath("$.data").value("친구 삭제 되었습니다."))
 
                 .andDo(restDocs.document(
-                        pathParameters( // 5
+                        resource(
+                                ResourceSnippetParameters.builder()
+                                        .tag("친구 API")
+                                        .description("친구 삭제")
+                                        .pathParameters( // 5
                                 parameterWithName("requestId").description("요청할 ID입니다.")
-                        ),
-                        requestHeaders(
+                        )
+                                        .requestHeaders(
                                 headerWithName("Bearer").description("발급 받은 엑세스 토큰입니다.")
-                        ),
-                        responseFields(
+                        )
+                                        .responseFields(
                                 fieldWithPath("code")
                                         .type(JsonType.NUMBER)
                                         .description("성공시 반환 코드 (200)"),
@@ -269,7 +296,7 @@ class FriendControllerTest  extends RestDocsTestSupport {
                                 fieldWithPath("data")
                                         .type(JsonType.STRING)
                                         .description("성공 시 데이터 값 (OK)")
-                        )));
+                        ).build())));
     }
 
 }

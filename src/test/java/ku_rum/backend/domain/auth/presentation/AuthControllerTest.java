@@ -1,5 +1,6 @@
 package ku_rum.backend.domain.auth.presentation;
 
+import com.epages.restdocs.apispec.ResourceSnippetParameters;
 import ku_rum.backend.config.RestDocsTestSupport;
 import ku_rum.backend.domain.auth.application.AuthService;
 import ku_rum.backend.domain.auth.dto.request.LoginRequest;
@@ -15,6 +16,7 @@ import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.transaction.annotation.Transactional;
 
+import static com.epages.restdocs.apispec.ResourceDocumentation.resource;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.patch;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.post;
 import static org.springframework.restdocs.payload.PayloadDocumentation.*;
@@ -54,7 +56,11 @@ class AuthControllerTest extends RestDocsTestSupport {
                 .andExpect(jsonPath("$.status").value("OK"))
                 .andExpect(jsonPath("$.message").value("OK"))
                 .andDo(restDocs.document(
-                        requestFields(
+                        resource(
+                                ResourceSnippetParameters.builder()
+                                        .tag("권한 API")
+                                        .description("로그인")
+                                        .requestFields(
                                 fieldWithPath("loginId")
                                         .type(JsonType.STRING)
                                         .description("멤버 아이디")
@@ -63,8 +69,8 @@ class AuthControllerTest extends RestDocsTestSupport {
                                         .type(JsonType.STRING)
                                         .description("비밀번호")
                                         .attributes(constraints("비밀번호 입력은 필수입니다,"))
-                        ),
-                        responseFields(
+                        )
+                                        .responseFields(
                                 fieldWithPath("code")
                                         .type(JsonType.STRING)
                                         .description("성공시 반환 코드 (200)"),
@@ -86,7 +92,7 @@ class AuthControllerTest extends RestDocsTestSupport {
                                 fieldWithPath("data.refreshExpireIn")
                                         .type(JsonType.STRING)
                                         .description("리프레시 토큰 만료 기간")
-                        )));
+                        ).build())));
     }
 
     @DisplayName("로그아웃을 진행한다.")
@@ -104,7 +110,11 @@ class AuthControllerTest extends RestDocsTestSupport {
                 .andExpect(jsonPath("$.status").value("OK"))
                 .andExpect(jsonPath("$.message").value("OK"))
                 .andDo(restDocs.document(
-                        responseFields(
+                        resource(
+                                ResourceSnippetParameters.builder()
+                                        .tag("권한 API")
+                                        .description("로그아웃")
+                                        .responseFields(
                                 fieldWithPath("code")
                                         .type(JsonType.STRING)
                                         .description("성공시 반환 코드 (200)"),
@@ -117,7 +127,7 @@ class AuthControllerTest extends RestDocsTestSupport {
                                 fieldWithPath("data")
                                         .type(JsonType.STRING)
                                         .description("성공 시 반환 메시지")
-                        )));
+                        ).build())));
     }
 
     @DisplayName("토큰을 재발급한다")
@@ -139,12 +149,16 @@ class AuthControllerTest extends RestDocsTestSupport {
                 .andExpect(jsonPath("$.status").value("OK"))
                 .andExpect(jsonPath("$.message").value("OK"))
                 .andDo(restDocs.document(
-                        requestFields(
+                        resource(
+                                ResourceSnippetParameters.builder()
+                                        .tag("권한 API")
+                                        .description("토큰 재발급")
+                                        .requestFields(
                                 fieldWithPath("refreshToken")
                                         .type(JsonType.STRING)
                                         .description("발급받은 리프레시 토큰")
-                        ),
-                        responseFields(
+                        )
+                                        .responseFields(
                                 fieldWithPath("code")
                                         .type(JsonType.STRING)
                                         .description("성공시 반환 코드 (200)"),
@@ -166,6 +180,6 @@ class AuthControllerTest extends RestDocsTestSupport {
                                 fieldWithPath("data.refreshExpireIn")
                                         .type(JsonType.STRING)
                                         .description("리프레시 토큰 만료 기간")
-                        )));
+                        ).build())));
     }
 }

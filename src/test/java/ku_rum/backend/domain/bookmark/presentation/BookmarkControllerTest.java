@@ -1,5 +1,6 @@
 package ku_rum.backend.domain.bookmark.presentation;
 
+import com.epages.restdocs.apispec.ResourceSnippetParameters;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import ku_rum.backend.config.RestDocsTestSupport;
 import ku_rum.backend.domain.bookmark.application.BookmarkService;
@@ -22,6 +23,7 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.List;
 
+import static com.epages.restdocs.apispec.ResourceDocumentation.resource;
 import static org.mockito.Mockito.when;
 import static org.mockito.Mockito.doNothing;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get;
@@ -61,12 +63,16 @@ class BookmarkControllerTest extends RestDocsTestSupport {
                 .andExpect(jsonPath("$.message").value("OK"))
                 .andExpect(jsonPath("$.data").value("북마크에 성공하였습니다"))
                 .andDo(restDocs.document(
-                        requestFields(
+                        resource(
+                                ResourceSnippetParameters.builder()
+                                        .tag("북마크 API")
+                                        .description("북마크 추가")
+                                        .requestFields(
                                 fieldWithPath("url")
                                         .type(JsonFieldType.STRING)
                                         .description("북마크할 주소 url")
-                        ),
-                        responseFields(
+                        )
+                                        .responseFields(
                                 fieldWithPath("code")
                                         .type(JsonType.NUMBER)
                                         .description("성공시 반환 코드 (200)"),
@@ -79,7 +85,7 @@ class BookmarkControllerTest extends RestDocsTestSupport {
                                 fieldWithPath("data")
                                         .type(JsonFieldType.STRING)
                                         .description("성공 시 메시지")
-                        )));
+                        ).build())));
     }
 
     @DisplayName("사용자 북마크 조회 성공")
@@ -111,7 +117,11 @@ class BookmarkControllerTest extends RestDocsTestSupport {
                 .andExpect(jsonPath("$.data[0].date").value("2024-11-08"))
                 .andExpect(jsonPath("$.data[0].category").value("학사"))
                 .andDo(restDocs.document(
-                        responseFields(
+                        resource(
+                                ResourceSnippetParameters.builder()
+                                        .tag("북마크 API")
+                                        .description("북마크 조회")
+                                        .responseFields(
                                 fieldWithPath("code")
                                         .type(JsonType.NUMBER)
                                         .description("성공시 반환 코드 (200)"),
@@ -139,7 +149,7 @@ class BookmarkControllerTest extends RestDocsTestSupport {
                                 fieldWithPath("data[].category")
                                         .type(JsonFieldType.STRING)
                                         .description("성공 시 반환 카테고리")
-                        )));
+                        ).build())));
     }
 
 }

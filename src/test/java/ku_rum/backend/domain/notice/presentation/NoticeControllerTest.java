@@ -1,5 +1,6 @@
 package ku_rum.backend.domain.notice.presentation;
 
+import com.epages.restdocs.apispec.ResourceSnippetParameters;
 import ku_rum.backend.config.RestDocsTestSupport;
 import ku_rum.backend.domain.notice.application.NoticeService;
 import ku_rum.backend.domain.notice.domain.Notice;
@@ -17,6 +18,7 @@ import org.springframework.restdocs.payload.JsonFieldType;
 
 import java.util.List;
 
+import static com.epages.restdocs.apispec.ResourceDocumentation.resource;
 import static javax.management.openmbean.SimpleType.STRING;
 import static javax.swing.text.html.parser.DTDConstants.NUMBER;
 import static org.mockito.Mockito.doNothing;
@@ -50,7 +52,11 @@ class NoticeControllerTest extends RestDocsTestSupport {
                 .andExpect(jsonPath("$.message").value("OK"))
                 .andExpect(jsonPath("$.data").value("크롤링 작업이 시작되었습니다."))
                 .andDo(restDocs.document(
-                        responseFields(
+                        resource(
+                                ResourceSnippetParameters.builder()
+                                        .tag("공지 사항 API")
+                                        .description("위인전 크롤링")
+                                        .responseFields(
                                 fieldWithPath("code")
                                         .type(JsonType.NUMBER)
                                         .description("성공시 반환 코드 (200)"),
@@ -63,7 +69,7 @@ class NoticeControllerTest extends RestDocsTestSupport {
                                 fieldWithPath("data")
                                         .type(JsonType.STRING)
                                         .description("성공 시 '크롤링 작업이 시작되었습니다.' 반환")
-                        )));
+                        ).build())));
     }
 
     @DisplayName("카테고리별 공지사항 조회 성공")
@@ -90,10 +96,15 @@ class NoticeControllerTest extends RestDocsTestSupport {
                 .andExpect(jsonPath("$.code").value(200))
                 .andExpect(jsonPath("$.data[0].title").value("Notice Category Test"))
                 .andDo(restDocs.document(
-                        queryParameters(
+                        resource(
+                                ResourceSnippetParameters.builder()
+                                        .tag("공지 사항 API")
+                                        .description("카테고리 별 공지사항 조회")
+
+                                        .queryParameters(
                                 parameterWithName("category").description("크롤링할 카테고리")
-                        ),
-                        responseFields(
+                        )
+                                        .responseFields(
                                 fieldWithPath("code")
                                         .type(JsonType.NUMBER)
                                         .description("성공시 반환 코드 (200)"),
@@ -121,7 +132,7 @@ class NoticeControllerTest extends RestDocsTestSupport {
                                 fieldWithPath("data[].important")
                                         .type(JsonFieldType.BOOLEAN)
                                         .description("성공 시 반환 중요도 여부")
-                        )));
+                        ).build())));
     }
 
     @DisplayName("검색어를 통한 공지사항 조회 성공")
@@ -148,10 +159,14 @@ class NoticeControllerTest extends RestDocsTestSupport {
                 .andExpect(jsonPath("$.code").value(200))
                 .andExpect(jsonPath("$.data[0].title").value("Notice Search Test"))
                 .andDo(restDocs.document(
-                        queryParameters(
+                        resource(
+                                ResourceSnippetParameters.builder()
+                                        .tag("공지 사항 API")
+                                        .description("검색어를 통한 공지사항 조회")
+                                        .queryParameters(
                                 parameterWithName("searchTerm").description("크롤링할 검색어")
-                        ),
-                        responseFields(
+                        )
+                                        .responseFields(
                                 fieldWithPath("code")
                                         .type(JsonType.NUMBER)
                                         .description("성공시 반환 코드 (200)"),
@@ -179,7 +194,7 @@ class NoticeControllerTest extends RestDocsTestSupport {
                                 fieldWithPath("data[].important")
                                         .type(JsonFieldType.BOOLEAN)
                                         .description("성공 시 반환 중요도 여부")
-                        )));
+                        ).build())));
     }
 
 }
