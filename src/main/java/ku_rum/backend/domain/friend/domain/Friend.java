@@ -26,6 +26,7 @@ public class Friend extends BaseEntity {
     @JoinColumn(name = "toUser_id", nullable = false)
     private User toUser;
 
+    @Enumerated(EnumType.STRING)
     private FriendStatus status;
 
     public void setStatus(FriendStatus status) {

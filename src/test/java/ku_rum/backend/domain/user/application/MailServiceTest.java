@@ -25,7 +25,7 @@ class MailServiceTest {
     @DisplayName("회원에게 정상적으로 인증 이메일을 전송한다.")
     void sendCodeToEmail() {
         //given
-        MailSendRequest mailSendRequest = new MailSendRequest("kmw10693@konkuk.ac.kr");
+        MailSendRequest mailSendRequest = new MailSendRequest("testtest123@konkuk.ac.kr");
         String key = generateKeyByEmail(mailSendRequest.email());
         String email = mailSendRequest.email();
 
@@ -35,19 +35,18 @@ class MailServiceTest {
         //then
         assertThat(getRedisAuthCode(generateKeyByEmail(email))
                 .equals(redisTemplate.opsForValue().get(key)));
-
     }
 
     @Test
     @DisplayName("회원이 올바른 인증번호를 인증했을 시, true를 반환한다.")
     void verifiedCode() {
-        MailSendRequest mailSendRequest = new MailSendRequest("kmw10693@konkuk.ac.kr");
+        MailSendRequest mailSendRequest = new MailSendRequest("testtest123@konkuk.ac.kr");
         mailService.sendCodeToEmail(mailSendRequest);
 
-        String authCode = getRedisAuthCode(generateKeyByEmail("kmw10693@konkuk.ac.kr"));
+        String authCode = getRedisAuthCode(generateKeyByEmail("testtest123@konkuk.ac.kr"));
 
         MailVerificationRequest mailVerificationRequest =
-                new MailVerificationRequest("kmw10693@konkuk.ac.kr", authCode);
+                new MailVerificationRequest("testtest123@konkuk.ac.kr", authCode);
 
         //when then
         assertThat(mailService.verifiedCode(mailVerificationRequest))
@@ -58,13 +57,13 @@ class MailServiceTest {
     @Test
     @DisplayName("회원이 올바르지 않는 인증번호를 인증했을시, false를 반환한다.")
     void nonVerifiedCode() {
-        MailSendRequest mailSendRequest = new MailSendRequest("kmw10693@konkuk.ac.kr");
+        MailSendRequest mailSendRequest = new MailSendRequest("testtest123@konkuk.ac.kr");
         mailService.sendCodeToEmail(mailSendRequest);
 
         String authCode = getRedisAuthCode(generateKeyByEmail("testtest1234@konkuk.ac.kr"));
 
         MailVerificationRequest mailVerificationRequest =
-                new MailVerificationRequest("kmw10693@konkuk.ac.kr", authCode);
+                new MailVerificationRequest("testtest123@konkuk.ac.kr", authCode);
 
         //when then
         assertThat(mailService.verifiedCode(mailVerificationRequest))

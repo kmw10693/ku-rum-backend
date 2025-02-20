@@ -2,7 +2,6 @@ package ku_rum.backend.domain.wein.presentation;
 
 import jakarta.validation.Valid;
 import ku_rum.backend.domain.reservation.dto.request.WeinLoginRequest;
-import ku_rum.backend.domain.reservation.dto.response.WeinLoginResponse;
 import ku_rum.backend.domain.wein.application.WeinService;
 import ku_rum.backend.global.response.BaseResponse;
 import lombok.RequiredArgsConstructor;

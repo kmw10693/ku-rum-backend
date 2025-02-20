@@ -56,6 +56,9 @@ class BuildingSearchControllerTest extends RestDocsTestSupport {
   @MockBean
   private ApiLogRepository apiLogRepository;
 
+  @MockBean
+  private WebConfig webConfig;
+
   @DisplayName("학교의 모든 건물정보를 출력한다.")
   @Test
   @WithMockUser

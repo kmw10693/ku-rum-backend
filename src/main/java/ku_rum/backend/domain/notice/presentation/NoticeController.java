@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-import static ku_rum.backend.domain.notice.presentation.CrawlingResponse.*;
+import static ku_rum.backend.domain.notice.dto.response.CrawlingResponse.*;
 
 @RestController
 @RequestMapping("/api/v1/notices")
@@ -27,12 +27,6 @@ public class NoticeController {
         noticeService.crawlAndSaveKonkukNotices();
         return BaseResponse.ok(START_CRAWLING.getMessage());
     }
-
-//    @PostMapping("/crawl/saramin")
-//    public BaseResponse<String> crawlSaraminNotices() {
-//        noticeService.crawlAndSaveSaraminNotices();
-//        return BaseResponse.ok("사람인 hot100 크롤링 및 저장에 성공하였습니다.");
-//    }
 
     /**
      * 카테고리별 공지사항 조회

@@ -38,7 +38,7 @@ public class BookmarkService {
         User user = getUser();
         Notice notice = getNotice(bookmarkRequest);
 
-        if (bookmarkRepository.findByUserAndNotice(user, notice).isPresent()) {
+        if (bookmarkRepository.existsByUserAndNotice(user, notice)) {
             throw new DuplicateNoticeException(DUPLICATE_NOTICE);
         }
 
@@ -68,5 +68,4 @@ public class BookmarkService {
         return noticeRepository.findByUrl(bookmarkRequest.getUrl())
                 .orElseThrow(() -> new NoSuchNoticeException(BaseExceptionResponseStatus.NO_SUCH_NOTICE));
     }
-
 }

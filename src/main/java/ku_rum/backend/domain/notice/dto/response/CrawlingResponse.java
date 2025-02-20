@@ -1,4 +1,4 @@
-package ku_rum.backend.domain.notice.presentation;
+package ku_rum.backend.domain.notice.dto.response;
 
 import lombok.Getter;
 

@@ -42,7 +42,6 @@ public class Notice extends BaseEntity {
         this.noticeStatus = noticeStatus;
     }
 
-
     public static Notice of(String title, String url, String date, NoticeCategory noticeCategory, NoticeStatus noticeStatus) {
         return Notice.builder()
                 .title(title)
