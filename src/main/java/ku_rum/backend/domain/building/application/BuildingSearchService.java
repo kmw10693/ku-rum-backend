@@ -25,6 +25,9 @@ import org.springframework.stereotype.Service;
 import java.util.*;
 import java.util.stream.Collectors;
 
+import static ku_rum.backend.global.response.status.BaseExceptionResponseStatus.BUILDING_DATA_NOT_FOUND_BY_NUMBER;
+import static ku_rum.backend.global.response.status.BaseExceptionResponseStatus.NO_BUILDING_REGISTERED_CURRENTLY;
+
 @Service
 @RequiredArgsConstructor
 @Slf4j
@@ -40,24 +43,24 @@ public class BuildingSearchService {
   public List<BuildingResponse> findAllBuildings() {
     return Optional.ofNullable(buildingQueryRepository.findAllBuildings())
             .filter(buildings -> !buildings.isEmpty())
-            .orElseThrow(() -> new BuildingNotRegisteredException(BaseExceptionResponseStatus.NO_BUILDING_REGISTERED_CURRENTLY));//리스트가 비어있는 경우 예외처리
+            .orElseThrow(() -> new BuildingNotFoundException(NO_BUILDING_REGISTERED_CURRENTLY));
   }
 
   public BuildingResponse viewBuildingByNumber(Long number) {
     return buildingQueryRepository.findBuildingByNumber(number)
-            .orElseThrow(() -> new BuildingNotFoundException(BaseExceptionResponseStatus.BUILDING_DATA_NOT_FOUND_BY_NUMBER));
+            .orElseThrow(() -> new BuildingNotFoundException(BUILDING_DATA_NOT_FOUND_BY_NUMBER));
   }
 
-  public Optional<BuildingResponse> viewBuildingByName(String name) {
-    String finalName = removeNumbersInName(name);
+  public BuildingResponse viewBuildingByName(String name) {
+    String nameData = removeNumbersInName(name);
 
     List<BuildingAbbrev> potentialMatches = Arrays.asList(BuildingAbbrev.values());
 
     BuildingAbbrev matchedBuilding = potentialMatches.stream()
-            .filter(b -> b.getOriginalName().toLowerCase().equals(finalName) ||
-                    b.name().toLowerCase().equals(finalName))
+            .filter(b -> b.getOriginalName().toLowerCase().equals(nameData) ||
+                    b.name().toLowerCase().equals(nameData))
             .findFirst()
-            .orElseThrow(() -> new IllegalArgumentException("Building name not found: " + name));
+            .orElseThrow(() -> new BuildingNotFoundException(BUILDING_DATA_NOT_FOUND_BY_NUMBER));
 
     return buildingQueryRepository.findBuildingByName(matchedBuilding.getOriginalName());
   }

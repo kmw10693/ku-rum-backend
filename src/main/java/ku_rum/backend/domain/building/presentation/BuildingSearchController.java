@@ -63,12 +63,12 @@ public class BuildingSearchController {
   /**
    * 작성자: 이혜리
    * 수정일자: 2025-02-22
-   * 건물정보(건물이름, 줄임말)로 빌딩의 정보 반환
+   * 건물정보(건물이름, 줄임말)로 빌딩의 정보 반환 - full text 검색 부분과 비교하기 위함
    * @param name
    * @return
    */
   @GetMapping("/name")
-  public BaseResponse<Optional<BuildingResponse>> viewBuildingByName(@AuthenticationPrincipal CustomUserDetails userDetails,
+  public BaseResponse<BuildingResponse> viewBuildingByName(@AuthenticationPrincipal CustomUserDetails userDetails,
                                                                      @RequestParam("name")@NotNull String name)
   {
     userService.validateUserDetails(userDetails);
