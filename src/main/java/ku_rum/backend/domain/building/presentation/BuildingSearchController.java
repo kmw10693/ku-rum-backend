@@ -2,6 +2,7 @@ package ku_rum.backend.domain.building.presentation;
 
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
+import jakarta.websocket.server.PathParam;
 import ku_rum.backend.domain.building.dto.response.BuildingResponse;
 import ku_rum.backend.domain.building.application.BuildingSearchService;
 import ku_rum.backend.domain.category.dto.request.BuildindgCategoryRequest;
@@ -31,42 +32,68 @@ public class BuildingSearchController {
   private final UserService userService;
 
   /**
-   * 전체 강의실의 핀포인트 조회
-   *
+   * 작성자: 이혜리
+   * 수정일자: 2025-02-22
+   * 모든 빌딩의 정보 반환
    * @return
    */
   @GetMapping
   public BaseResponse viewAll(@AuthenticationPrincipal CustomUserDetails userDetails) {
     userService.validateUserDetails(userDetails);
-    List<BuildingResponse> results = buildingSearchService.findAllBuildings();
-    return BaseResponse.ok(results);
+    List<BuildingResponse> resultList = buildingSearchService.findAllBuildings();
+    return BaseResponse.ok(resultList);
   }
 
   /**
-   * 특정 강의실의 핀포인트 조회 (건물번호로)
-   *
+   * 작성자: 이혜리
+   * 수정일자: 2025-02-22
+   * 건물번호로 빌딩의 정보 반환
    * @param number
    * @return
    */
-  @GetMapping("/searchNumber")
-  public BaseResponse<BuildingResponse> viewBuildingByNumber(@AuthenticationPrincipal CustomUserDetails userDetails, @RequestParam("number")@NotNull @Min(1)  Long number) {
+  @GetMapping("/number")
+  public BaseResponse<BuildingResponse> viewBuildingByNumber(@AuthenticationPrincipal CustomUserDetails userDetails,
+                                                             @RequestParam("number")@NotNull @Min(1)  Long number)
+  {
     userService.validateUserDetails(userDetails);
     BuildingResponse result = buildingSearchService.viewBuildingByNumber(number);
-    return BaseResponse.of(SUCCESS.getStatus(), result);
+    return BaseResponse.ok(result);
   }
 
   /**
-   * 특정 강의실의 핀포인트 조회 (건물정식명칭으로, 건물 줄임말로)
-   *
+   * 작성자: 이혜리
+   * 수정일자: 2025-02-22
+   * 건물정보(건물이름, 줄임말)로 빌딩의 정보 반환
    * @param name
    * @return
    */
-  @GetMapping("/searchName")
-  public BaseResponse<Optional<BuildingResponse>> viewBuildingByName(@AuthenticationPrincipal CustomUserDetails userDetails, @RequestParam("name")@NotNull String name){
+  @GetMapping("/name")
+  public BaseResponse<Optional<BuildingResponse>> viewBuildingByName(@AuthenticationPrincipal CustomUserDetails userDetails,
+                                                                     @RequestParam("name")@NotNull String name)
+  {
     userService.validateUserDetails(userDetails);
     Optional<BuildingResponse> result = buildingSearchService.viewBuildingByName(name.trim());
     return BaseResponse.of(SUCCESS.getStatus(), result);
   }
+
+  /**
+   * 작성자: 이혜리
+   * 수정일자: 2025-02-22
+   * full text 검색으로 건물명,건물명 줄임말,카테고리로 빌딩의 정보 반환
+   * @param userDetails
+   * @param text
+   * @return
+   */
+  @GetMapping("/text")
+  public BaseResponse<List<BuildingResponse>> viewAvailableTextNameList(@AuthenticationPrincipal CustomUserDetails userDetails,
+                                                                        @PathParam("text") String text)
+  {
+    userService.validateUserDetails(userDetails);
+    List<BuildingResponse> resultList = buildingSearchService.searchAvailableText(text);
+    return BaseResponse.ok(resultList);
+  }
+
+  // ====================================================================
 
   /**
    * 특정 카테고리의 핀포인트들 조회 (카테고리명으로)
@@ -82,6 +109,7 @@ public class BuildingSearchController {
   }
 
   /**
+   * 
    * 카테고리에 해당하는 특정 핀포인트 디테일 정보 확인 (학생식당, K-CUBE/K-HUB)
    *
    * @param userDetails
@@ -96,20 +124,6 @@ public class BuildingSearchController {
     userService.validateUserDetails(userDetails);
     CategoryDetailResponse categoryDetailResponse = buildingSearchService.viewBuildingDetailByCategory(request.category(), request.buildingId());
     return BaseResponse.of(SUCCESS.getStatus(), categoryDetailResponse);
-  }
-
-  /**
-   * full text 검색을 위한 함수
-   *
-   * @param userDetails
-   * @param text
-   * @return
-   */
-  @GetMapping("/text/{text}")
-  public BaseResponse<List<BuildingResponse>> viewAvailableTextNameList(@AuthenticationPrincipal CustomUserDetails userDetails, @PathVariable("text") String text){
-    userService.validateUserDetails(userDetails);
-    List<BuildingResponse> resultList = buildingSearchService.searchAvailableText(text);
-    return BaseResponse.of(SUCCESS.getStatus(), resultList);
   }
 
 }
