@@ -21,11 +21,10 @@ import java.util.Optional;
 
 import static ku_rum.backend.global.response.status.BaseExceptionResponseStatus.SUCCESS;
 
-@Slf4j
 @RestController
 @RequiredArgsConstructor
 @Validated
-@RequestMapping("/api/v1/buildings/view")
+@RequestMapping("/api/v1/building/search")
 public class BuildingSearchController {
 
   private final BuildingSearchService buildingSearchService;
@@ -40,7 +39,7 @@ public class BuildingSearchController {
   public BaseResponse viewAll(@AuthenticationPrincipal CustomUserDetails userDetails) {
     userService.validateUserDetails(userDetails);
     List<BuildingResponse> results = buildingSearchService.findAllBuildings();
-    return BaseResponse.of(SUCCESS.getStatus(),results);
+    return BaseResponse.ok(results);
   }
 
   /**

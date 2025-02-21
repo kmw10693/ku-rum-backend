@@ -3,16 +3,17 @@ package ku_rum.backend.global.response;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import ku_rum.backend.global.response.status.ResponseStatus;
-import lombok.Getter;
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 
-@Getter
 @JsonPropertyOrder({"code", "status", "message", "result"})
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
 public class BaseResponse<T> implements ResponseStatus {
 
-    private final int code;
-    private final HttpStatus status;
-    private final String message;
+    final int code;
+    final HttpStatus status;
+    final String message;
 
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private final T data;
