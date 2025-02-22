@@ -1,11 +1,10 @@
 package ku_rum.backend.domain.recruitment.domain;
 
 import jakarta.persistence.*;
-import ku_rum.backend.global.type.BaseEntity;
+import ku_rum.backend.global.support.type.BaseEntity;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.checkerframework.checker.units.qual.C;
 
 @Getter
 @Entity

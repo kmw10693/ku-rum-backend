@@ -1,7 +1,7 @@
 package ku_rum.backend.domain.recruitment.presentation;
 
 import ku_rum.backend.domain.recruitment.application.RecruitmentService;
-import ku_rum.backend.global.response.BaseResponse;
+import ku_rum.backend.global.support.response.BaseResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
