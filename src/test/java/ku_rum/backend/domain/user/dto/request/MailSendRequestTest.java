@@ -2,7 +2,7 @@ package ku_rum.backend.domain.user.dto.request;
 
 import jakarta.validation.Validation;
 import jakarta.validation.Validator;
-import ku_rum.backend.domain.mail.dto.request.MailSendRequest;
+import ku_rum.backend.domain.common.mail.dto.request.MailSendRequest;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.params.ParameterizedTest;

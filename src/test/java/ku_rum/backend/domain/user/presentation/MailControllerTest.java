@@ -2,9 +2,9 @@ package ku_rum.backend.domain.user.presentation;
 
 import com.epages.restdocs.apispec.ResourceSnippetParameters;
 import ku_rum.backend.config.RestDocsTestSupport;
-import ku_rum.backend.domain.mail.application.MailService;
-import ku_rum.backend.domain.mail.dto.request.MailSendRequest;
-import ku_rum.backend.domain.mail.dto.request.MailVerificationRequest;
+import ku_rum.backend.domain.common.mail.application.MailService;
+import ku_rum.backend.domain.common.mail.dto.request.MailSendRequest;
+import ku_rum.backend.domain.common.mail.dto.request.MailVerificationRequest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.json.JsonType;
