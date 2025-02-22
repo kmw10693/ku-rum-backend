@@ -38,21 +38,20 @@ public class BuildingQueryRepository {
             .fetch();
   }
 
+
   public Optional<BuildingResponse> findBuildingByNumber(Long number) {
-    return Optional.ofNullable(
-            queryFactory
-                    .select(Projections.constructor(BuildingResponse.class,
-                            qBuilding.id,
-                            qBuilding.name,
-                            qBuilding.number,
-                            qBuilding.abbreviation,
-                            qBuilding.latitude,
-                            qBuilding.longitude
-                    ))
-                    .from(qBuilding)
-                    .where(qBuilding.number.eq(number))
-                    .fetchOne()
-    );
+    return Optional.ofNullable(queryFactory
+            .select(Projections.constructor(BuildingResponse.class,
+                    qBuilding.id,
+                    qBuilding.name,
+                    qBuilding.number,
+                    qBuilding.abbreviation,
+                    qBuilding.latitude,
+                    qBuilding.longitude
+            ))
+            .from(qBuilding)
+            .where(qBuilding.number.eq(number))
+            .fetchOne());
   }
 
   public Optional<BuildingResponse> findBuildingByName(String name) {

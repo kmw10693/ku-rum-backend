@@ -41,9 +41,7 @@ public class BuildingSearchService {
 
 
   public List<BuildingResponse> findAllBuildings() {
-    return Optional.ofNullable(buildingQueryRepository.findAllBuildings())
-            .filter(buildings -> !buildings.isEmpty())
-            .orElseThrow(() -> new BuildingNotFoundException(NO_BUILDING_REGISTERED_CURRENTLY));
+    return buildingQueryRepository.findAllBuildings();
   }
 
   public BuildingResponse viewBuildingByNumber(Long number) {
@@ -56,13 +54,14 @@ public class BuildingSearchService {
 
     List<BuildingAbbrev> potentialMatches = Arrays.asList(BuildingAbbrev.values());
 
-    BuildingAbbrev matchedBuilding = potentialMatches.stream()
+    Optional<BuildingAbbrev> matchedBuilding = potentialMatches.stream()
             .filter(b -> b.getOriginalName().toLowerCase().equals(nameData) ||
                     b.name().toLowerCase().equals(nameData))
-            .findFirst()
+            .findFirst();
+
+    return buildingQueryRepository.findBuildingByName(matchedBuilding.get().getOriginalName())
             .orElseThrow(() -> new BuildingNotFoundException(BUILDING_DATA_NOT_FOUND_BY_NUMBER));
 
-    return buildingQueryRepository.findBuildingByName(matchedBuilding.getOriginalName());
   }
 
   /**

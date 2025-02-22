@@ -62,7 +62,7 @@ public class BuildingSearchController {
 
   /**
    * 작성자: 이혜리
-   * 수정일자: 2025-02-22
+   * 수정일자: 2025-02-23
    * 건물정보(건물이름, 줄임말)로 빌딩의 정보 반환 - full text 검색 부분과 비교하기 위함
    * @param name
    * @return
@@ -72,14 +72,14 @@ public class BuildingSearchController {
                                                                      @RequestParam("name")@NotNull String name)
   {
     userService.validateUserDetails(userDetails);
-    Optional<BuildingResponse> result = buildingSearchService.viewBuildingByName(name.trim());
+    BuildingResponse result = buildingSearchService.viewBuildingByName(name.trim());
     return BaseResponse.of(SUCCESS.getStatus(), result);
   }
 
   /**
    * 작성자: 이혜리
    * 수정일자: 2025-02-22
-   * full text 검색으로 건물명,건물명 줄임말,카테고리로 빌딩의 정보 반환
+   * full text 검색으로 건물명,카테고리로 빌딩의 정보 반환
    * @param userDetails
    * @param text
    * @return
