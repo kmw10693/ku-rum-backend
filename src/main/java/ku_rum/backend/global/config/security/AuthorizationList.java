@@ -18,7 +18,8 @@ public enum AuthorizationList {
             "/api/v1/users/weinlogin",
             "/api/v1/users/join",
             "/api/v1/mails/auth-codes",
-            "/api/v1/mails/verification_codes"
+            "/api/v1/mails/verification_codes",
+            "/index.html"
     )));
 
     private final List<String> authorities;
