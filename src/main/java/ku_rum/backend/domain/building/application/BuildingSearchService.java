@@ -17,7 +17,7 @@ import ku_rum.backend.global.exception.building.BuildingNotFoundException;
 import ku_rum.backend.global.exception.building.BuildingNotRegisteredException;
 import ku_rum.backend.global.exception.category.CategoryNotExistException;
 import ku_rum.backend.global.exception.category.CategoryNotProvidingDetailException;
-import ku_rum.backend.global.response.status.BaseExceptionResponseStatus;
+import ku_rum.backend.global.support.response.status.BaseExceptionResponseStatus;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
