@@ -42,13 +42,9 @@ class FriendControllerTest  extends RestDocsTestSupport {
     @Test
     @WithMockUser
     void getFriendLists() throws Exception {
-        //given
-        FriendListRequest request = FriendListRequest.from(1L);
-
         // when then
         mockMvc.perform(get("/api/v1/friends")
-                        .header("Bearer", "6ce1d11af9ac1adf97712c069ca33bc4564d675ce3958942bb3dc5601829881430cfd8d98c8745")
-                        .content(objectMapper.writeValueAsString(request))
+                        .header("Bearer", "eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyUEsiOjEsInJvbGVzIjoiUk9MRV9VU0VSIiwiaWF0IjoxNzQwMjQyNjQxLCJleHAiOjE3NDAyNDQ0NDF9.kLSMBLWdvIvrBpGJdOigSKjxMIab0cV06xFjSpwrq70")
                         .contentType(MediaType.APPLICATION_JSON)
                 )
                 .andDo(print())
@@ -89,7 +85,7 @@ class FriendControllerTest  extends RestDocsTestSupport {
 
         // when then
         mockMvc.perform(get("/api/v1/friends/find?nickname=nickname")
-                        .header("Bearer", "6ce1d11af9ac1adf97712c069ca33bc4564d675ce3958942bb3dc5601829881430cfd8d98c8745")
+                        .header("Bearer", "eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyUEsiOjEsInJvbGVzIjoiUk9MRV9VU0VSIiwiaWF0IjoxNzQwMjQyNjQxLCJleHAiOjE3NDAyNDQ0NDF9.kLSMBLWdvIvrBpGJdOigSKjxMIab0cV06xFjSpwrq70")
                         .content(objectMapper.writeValueAsString(request))
                         .contentType(MediaType.APPLICATION_JSON)
                 )
@@ -132,7 +128,7 @@ class FriendControllerTest  extends RestDocsTestSupport {
     void requestFriends() throws Exception {
         // when then
         mockMvc.perform(RestDocumentationRequestBuilders.post("/api/v1/friends/{requestId}", 1)
-                        .header("Bearer", "6ce1d11af9ac1adf97712c069ca33bc4564d675ce3958942bb3dc5601829881430cfd8d98c8745")
+                        .header("Bearer", "eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyUEsiOjEsInJvbGVzIjoiUk9MRV9VU0VSIiwiaWF0IjoxNzQwMjQyNjQxLCJleHAiOjE3NDAyNDQ0NDF9.kLSMBLWdvIvrBpGJdOigSKjxMIab0cV06xFjSpwrq70")
                         .contentType(MediaType.APPLICATION_JSON)
                 )
                 .andDo(print())
@@ -176,7 +172,7 @@ class FriendControllerTest  extends RestDocsTestSupport {
     void accept() throws Exception {
         // when then
         mockMvc.perform(RestDocumentationRequestBuilders.put("/api/v1/friends/{requestId}/accept", 1)
-                        .header("Bearer", "6ce1d11af9ac1adf97712c069ca33bc4564d675ce3958942bb3dc5601829881430cfd8d98c8745")
+                        .header("Bearer", "eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyUEsiOjEsInJvbGVzIjoiUk9MRV9VU0VSIiwiaWF0IjoxNzQwMjQyNjQxLCJleHAiOjE3NDAyNDQ0NDF9.kLSMBLWdvIvrBpGJdOigSKjxMIab0cV06xFjSpwrq70")
                         .contentType(MediaType.APPLICATION_JSON)
                 )
                 .andDo(print())
@@ -219,7 +215,7 @@ class FriendControllerTest  extends RestDocsTestSupport {
     void deny() throws Exception {
         // when then
         mockMvc.perform(RestDocumentationRequestBuilders.put("/api/v1/friends/{requestId}/deny", 1)
-                        .header("Bearer", "6ce1d11af9ac1adf97712c069ca33bc4564d675ce3958942bb3dc5601829881430cfd8d98c8745")
+                        .header("Bearer", "eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyUEsiOjEsInJvbGVzIjoiUk9MRV9VU0VSIiwiaWF0IjoxNzQwMjQyNjQxLCJleHAiOjE3NDAyNDQ0NDF9.kLSMBLWdvIvrBpGJdOigSKjxMIab0cV06xFjSpwrq70")
                         .contentType(MediaType.APPLICATION_JSON)
                 )
                 .andDo(print())
@@ -262,7 +258,7 @@ class FriendControllerTest  extends RestDocsTestSupport {
     void delete() throws Exception {
         // when then
         mockMvc.perform(RestDocumentationRequestBuilders.delete("/api/v1/friends/{requestId}", 1)
-                        .header("Bearer", "6ce1d11af9ac1adf97712c069ca33bc4564d675ce3958942bb3dc5601829881430cfd8d98c8745")
+                        .header("Bearer", "eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyUEsiOjEsInJvbGVzIjoiUk9MRV9VU0VSIiwiaWF0IjoxNzQwMjQyNjQxLCJleHAiOjE3NDAyNDQ0NDF9.kLSMBLWdvIvrBpGJdOigSKjxMIab0cV06xFjSpwrq70")
                         .contentType(MediaType.APPLICATION_JSON)
                 )
                 .andDo(print())

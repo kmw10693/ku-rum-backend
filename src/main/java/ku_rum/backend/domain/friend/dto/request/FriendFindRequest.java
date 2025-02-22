@@ -6,7 +6,8 @@ public record FriendFindRequest
         (String nickname) {
 
     @Builder
-    public FriendFindRequest {}
+    public FriendFindRequest {
+    }
 
     public static FriendFindRequest from
             (String nickname) {

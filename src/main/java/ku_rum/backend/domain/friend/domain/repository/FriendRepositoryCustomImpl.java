@@ -40,8 +40,8 @@ public class FriendRepositoryCustomImpl implements FriendRepositoryCustom {
                 .from(friend)
                 .where(friend.status.eq(status)
                         .and(
-                                (friend.fromUser.id.eq(fromUser).and(friend.toUser.id.eq(toUser)))  // `fromUser.id`가 `fromUser`와 일치하고, `toUser.id`가 `toUser`와 일치하는 데이터
-                                        .or(friend.fromUser.id.eq(toUser).and(friend.toUser.id.eq(fromUser)))  // `fromUser.id`가 `toUser`와 일치하고, `toUser.id`가 `fromUser`와 일치하는 데이터
+                                (friend.fromUser.id.eq(fromUser).and(friend.toUser.id.eq(toUser)))
+                                        .or(friend.fromUser.id.eq(toUser).and(friend.toUser.id.eq(fromUser)))
                         ))
                 .fetchFirst();
 
@@ -52,7 +52,7 @@ public class FriendRepositoryCustomImpl implements FriendRepositoryCustom {
     public List<Friend> findOriginFriends(FriendStatus status, Long fromUser, Long toUser) {
         QFriend friend = QFriend.friend;
 
-        List<Friend> fetch = queryFactory.selectFrom(friend)
+        return queryFactory.selectFrom(friend)
                 .leftJoin(friend.fromUser).fetchJoin()
                 .leftJoin(friend.toUser).fetchJoin()
                 .where(friend.status.eq(status)
@@ -63,7 +63,6 @@ public class FriendRepositoryCustomImpl implements FriendRepositoryCustom {
                                         )
                         ))
                 .fetch();
-        return fetch;
     }
 
 }
