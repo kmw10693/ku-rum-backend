@@ -1,7 +1,7 @@
 package ku_rum.backend.domain.notice.domain;
 
 import jakarta.persistence.*;
-import ku_rum.backend.global.type.BaseEntity;
+import ku_rum.backend.global.support.type.BaseEntity;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

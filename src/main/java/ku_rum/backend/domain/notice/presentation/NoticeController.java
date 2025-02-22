@@ -3,7 +3,7 @@ package ku_rum.backend.domain.notice.presentation;
 import ku_rum.backend.domain.notice.application.NoticeService;
 import ku_rum.backend.domain.notice.domain.NoticeCategory;
 import ku_rum.backend.domain.notice.dto.response.NoticeSimpleResponse;
-import ku_rum.backend.global.response.BaseResponse;
+import ku_rum.backend.global.support.response.BaseResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
