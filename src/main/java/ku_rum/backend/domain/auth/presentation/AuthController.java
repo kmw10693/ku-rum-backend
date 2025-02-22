@@ -5,12 +5,12 @@ import jakarta.validation.Valid;
 import ku_rum.backend.domain.auth.application.AuthService;
 import ku_rum.backend.domain.auth.dto.request.LoginRequest;
 import ku_rum.backend.domain.auth.dto.request.ReissueRequest;
-import ku_rum.backend.global.response.BaseResponse;
+import ku_rum.backend.global.support.response.BaseResponse;
 import ku_rum.backend.global.security.jwt.dto.TokenResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
-import static ku_rum.backend.global.response.status.BaseExceptionResponseStatus.LOGOUT_SUCCESS;
+import static ku_rum.backend.global.support.response.status.BaseExceptionResponseStatus.LOGOUT_SUCCESS;
 
 @RestController
 @RequestMapping("/api/v1/auth")
