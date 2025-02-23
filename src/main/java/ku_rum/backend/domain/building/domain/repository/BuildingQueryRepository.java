@@ -112,4 +112,13 @@ public class BuildingQueryRepository {
 
     return query.getResultList();
   }
+
+  public List<Building> searchBuildingByCategoryNgram(Category category) {
+    String nativeQuery = "SELECT * FROM building WHERE MATCH(name) AGAINST (?1 IN BOOLEAN MODE)";
+
+    Query query = entityManager.createNativeQuery(nativeQuery, Building.class);
+    query.setParameter(1, category.getName() + "*");
+
+    return query.getResultList();
+  }
 }

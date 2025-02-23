@@ -1,7 +1,9 @@
 package ku_rum.backend.domain.building.application;
 
+import ku_rum.backend.domain.building.application.method.SearchStrategy;
 import ku_rum.backend.domain.building.domain.Building;
 import ku_rum.backend.domain.building.domain.BuildingAbbrev;
+import ku_rum.backend.domain.building.application.method.MatchParameter;
 import ku_rum.backend.domain.category.domain.repository.BuildingCategoryQueryRepository;
 import ku_rum.backend.domain.building.domain.repository.BuildingQueryRepository;
 import ku_rum.backend.domain.building.domain.repository.BuildingRepository;
@@ -14,7 +16,6 @@ import ku_rum.backend.domain.category.dto.response.CategoryDetailResponse;
 import ku_rum.backend.domain.menu.domain.repository.MenuRepository;
 import ku_rum.backend.domain.menu.response.MenuSimpleResponse;
 import ku_rum.backend.global.exception.building.BuildingNotFoundException;
-import ku_rum.backend.global.exception.building.BuildingNotRegisteredException;
 import ku_rum.backend.global.exception.category.CategoryNotExistException;
 import ku_rum.backend.global.exception.category.CategoryNotProvidingDetailException;
 import ku_rum.backend.global.response.status.BaseExceptionResponseStatus;
@@ -26,7 +27,6 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 import static ku_rum.backend.global.response.status.BaseExceptionResponseStatus.BUILDING_DATA_NOT_FOUND_BY_NUMBER;
-import static ku_rum.backend.global.response.status.BaseExceptionResponseStatus.NO_BUILDING_REGISTERED_CURRENTLY;
 
 @Service
 @RequiredArgsConstructor
@@ -38,6 +38,8 @@ public class BuildingSearchService {
   private final BuildingCategoryQueryRepository buildingCategoryQueryRepository;
   private final MenuRepository menuQueryRepository;
   private final CategoryRepository categoryRepository;
+
+  private final List<SearchStrategy<Building>> searchStrategies;
 
 
   public List<BuildingResponse> findAllBuildings() {
@@ -152,7 +154,6 @@ public class BuildingSearchService {
             .orElseThrow(() -> new CategoryNotProvidingDetailException(BaseExceptionResponseStatus.CATEGORYNAME_NOT_PROVIDING_DETAIL));
   }
 
-
   private boolean validateDetailProvidingCategory(String category) {
     for (CategoryDetail c : CategoryDetail.values()){
       if (category.trim().equals(c.getCategoryName()) || category.trim().equals(c.name())){
@@ -163,37 +164,14 @@ public class BuildingSearchService {
   }
 
   public List<BuildingResponse> searchAvailableText(String text) {
-    // N-gram 인덱스를 활용
     String searchText = text.trim().toLowerCase();
-    List<BuildingResponse> resultList = new ArrayList<>();
 
-    try {
-      // 빌딩 이름에서 매칭되는 부분 검색
-      List<Building> buildingsFound = buildingQueryRepository.searchBuildingByNgram(searchText);
-      if (buildingsFound != null && !buildingsFound.isEmpty()) {
-        List<BuildingResponse> buildingResponses = buildingsFound.stream()
-                .map(building -> BuildingResponse.of(building))
-                .collect(Collectors.toList());
-        resultList.addAll(buildingResponses);
-      }
-
-      // 카테고리 이름에서 매칭되는 부분 검색
-      List<Category> categoriesFound = buildingCategoryQueryRepository.searchCategoryByNgram(searchText);
-      if (categoriesFound != null && !categoriesFound.isEmpty()) {
-        for (Category category : categoriesFound) {
-          List<Building> categoryBuildings = buildingQueryRepository.findAllByCategory(category);
-          if (categoryBuildings != null && !categoryBuildings.isEmpty()) {
-            List<BuildingResponse> categoryBuildingResponses = categoryBuildings.stream()
-                    .map(building -> BuildingResponse.of(building))
-                    .collect(Collectors.toList());
-            resultList.addAll(categoryBuildingResponses);
-          }
-        }
-      }
-    } catch (Exception e) {
-      log.error("Error during text search: {}", e.getMessage());
-    }
-
-    return resultList;
+    return searchStrategies.stream()
+            .map(strategy -> strategy.search(searchText))
+            .filter(Objects::nonNull)
+            .flatMap(List::stream)
+            .distinct()
+            .map(BuildingResponse::of)
+            .collect(Collectors.toList());
   }
 }

@@ -3,6 +3,8 @@ package ku_rum.backend.domain.category.domain.repository;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
+import jakarta.persistence.Query;
+import ku_rum.backend.domain.building.domain.Building;
 import ku_rum.backend.domain.category.domain.BuildingCategory;
 import ku_rum.backend.domain.category.domain.Category;
 import ku_rum.backend.domain.category.domain.QBuildingCategory;
@@ -66,7 +68,12 @@ public class BuildingCategoryQueryRepository {
     return null;
   }
 
-    public List<Category> searchCategoryByNgram(String searchText) {
-      return null;
-    }
+  public List<Category> searchCategoryByNgram(String searchText) {
+    String nativeQuery = "SELECT * FROM category WHERE MATCH(name) AGAINST (?1 IN BOOLEAN MODE)";
+
+    Query query = entityManager.createNativeQuery(nativeQuery, Category.class);
+    query.setParameter(1, searchText + "*");
+
+    return query.getResultList();
+  }
 }

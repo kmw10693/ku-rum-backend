@@ -69,11 +69,26 @@ public class BuildingSearchController {
    */
   @GetMapping("/name")
   public BaseResponse<BuildingResponse> viewBuildingByName(@AuthenticationPrincipal CustomUserDetails userDetails,
-                                                                     @RequestParam("name")@NotNull String name)
+                                                           @RequestParam("name")@NotNull String name)
   {
     userService.validateUserDetails(userDetails);
     BuildingResponse result = buildingSearchService.viewBuildingByName(name.trim());
-    return BaseResponse.of(SUCCESS.getStatus(), result);
+    return BaseResponse.ok(result);
+  }
+
+  /**
+   * 작성자: 이혜리
+   * 수정일자: 2025-02-23
+   * 카테고리명으로 빌딩의 정보 반환 - full text 검색 부분과 비교하기 위함
+   * @param category
+   * @return
+   */
+  @GetMapping("/category")
+  public BaseResponse<List<BuildingResponse>> viewBuildingByCategory(@AuthenticationPrincipal CustomUserDetails userDetails,
+                                                   @PathParam("category") String category){
+    userService.validateUserDetails(userDetails);
+    List<BuildingResponse> resultList = buildingSearchService.viewBuildingByCategory(category.trim());
+    return BaseResponse.ok(resultList);
   }
 
   /**
@@ -93,25 +108,10 @@ public class BuildingSearchController {
     return BaseResponse.ok(resultList);
   }
 
-  // ====================================================================
-
   /**
-   * 특정 카테고리의 핀포인트들 조회 (카테고리명으로)
-   *
-   * @param category
-   * @return
-   */
-  @GetMapping("/category/{category}")
-  public BaseResponse<List> viewBuildingByCategory(@AuthenticationPrincipal CustomUserDetails userDetails, @PathVariable("category") String category){
-    userService.validateUserDetails(userDetails);
-    List<BuildingResponse> categoryList = buildingSearchService.viewBuildingByCategory(category.trim());
-    return BaseResponse.of(SUCCESS.getStatus(), categoryList);
-  }
-
-  /**
-   * 
+   * 작성자: 이혜리
+   * 수정일자: 2025-02-23
    * 카테고리에 해당하는 특정 핀포인트 디테일 정보 확인 (학생식당, K-CUBE/K-HUB)
-   *
    * @param userDetails
    * @param request
    * @return
