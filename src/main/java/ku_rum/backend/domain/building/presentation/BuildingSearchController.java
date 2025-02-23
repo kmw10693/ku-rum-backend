@@ -38,7 +38,7 @@ public class BuildingSearchController {
    * @return
    */
   @GetMapping
-  public BaseResponse viewAll(@AuthenticationPrincipal CustomUserDetails userDetails) {
+  public BaseResponse<List<BuildingResponse>> viewAll(@AuthenticationPrincipal CustomUserDetails userDetails) {
     userService.validateUserDetails(userDetails);
     List<BuildingResponse> resultList = buildingSearchService.findAllBuildings();
     return BaseResponse.ok(resultList);

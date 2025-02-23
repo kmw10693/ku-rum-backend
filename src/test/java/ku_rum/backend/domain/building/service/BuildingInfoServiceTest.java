@@ -8,6 +8,7 @@ import ku_rum.backend.domain.building.dto.response.BuildingResponse;
 import ku_rum.backend.global.exception.building.BuildingNotFoundException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -15,6 +16,8 @@ import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+
+import static ku_rum.backend.global.response.status.BaseExceptionResponseStatus.NO_BUILDING_REGISTERED_CURRENTLY;
 
 @WebAppConfiguration
 @SpringBootTest
@@ -24,21 +27,31 @@ public class BuildingInfoServiceTest {
     @Autowired
     BuildingSearchService buildingSearchService;
 
-    @DisplayName("등록된_건물정보_전체_조회_성공")
-    @Test
-    public void 등록된_건물정보_전체_조회_성공() throws Exception {
-        // given
-        List<BuildingResponse> buildingResponses = buildingSearchService.findAllBuildings();
+    @DisplayName("성공")
+    @Nested
+    class Success{
+        @DisplayName("학교의 모든 건물정보를 출력")
+        @Test
+        public void viewAll() throws Exception {
+            // given
+            List<BuildingResponse> buildingResponses = buildingSearchService.findAllBuildings();
 
-        //then
-        Assertions.assertEquals(19, buildingResponses.size());
+            //when then
+            Assertions.assertEquals(26, buildingResponses.size());
+        }
+    }
+
+    @DisplayName("실패")
+    @Nested
+    class Failure{
+
     }
 
     @DisplayName("등록된_건물정보_이름으로_조회_성공")
     @Test
     public void 등록된_건물정보_이름으로_조회_성공() throws Exception {
         // given
-        BuildingResponse buildingResponse = buildingSearchService.viewBuildingByName("경영102").get();
+        BuildingResponse buildingResponse = buildingSearchService.viewBuildingByName("경영102");
 
         // then
         Assertions.assertEquals(2L, buildingResponse.buildingNumber());

@@ -27,6 +27,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 import static ku_rum.backend.global.response.status.BaseExceptionResponseStatus.BUILDING_DATA_NOT_FOUND_BY_NUMBER;
+import static ku_rum.backend.global.response.status.BaseExceptionResponseStatus.NO_BUILDING_REGISTERED_CURRENTLY;
 
 @Service
 @RequiredArgsConstructor
@@ -43,7 +44,9 @@ public class BuildingSearchService {
 
 
   public List<BuildingResponse> findAllBuildings() {
-    return buildingQueryRepository.findAllBuildings();
+    return Optional.ofNullable(buildingQueryRepository.findAllBuildings())
+            .filter(list -> !list.isEmpty())
+            .orElseThrow(() -> new BuildingNotFoundException(NO_BUILDING_REGISTERED_CURRENTLY));
   }
 
   public BuildingResponse viewBuildingByNumber(Long number) {

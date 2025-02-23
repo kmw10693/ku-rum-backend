@@ -97,13 +97,6 @@ public class BuildingQueryRepository {
     );
   }
 
-  public List<Building> findAllByCategory(Category category) {
-    return queryFactory
-            .selectFrom(qBuilding)
-            .where(qBuilding.category.eq(category))
-            .fetch();
-  }
-
   public List<Building> searchBuildingByNgram(String searchText) {
     String nativeQuery = "SELECT * FROM building WHERE MATCH(name) AGAINST (?1 IN BOOLEAN MODE)";
 

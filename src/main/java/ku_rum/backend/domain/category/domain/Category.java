@@ -24,9 +24,6 @@ public class Category extends BaseEntity {
     @Column(nullable = false)
     private String name;
 
-    @OneToMany(mappedBy = "category")
-    private List<Building> buildingList = new ArrayList<>();
-
     @Builder
     private Category(String name) {
         this.name = name;

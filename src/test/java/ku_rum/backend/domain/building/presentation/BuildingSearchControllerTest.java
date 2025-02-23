@@ -28,7 +28,9 @@ import java.util.List;
 import java.util.Optional;
 
 import static com.epages.restdocs.apispec.ResourceDocumentation.resource;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.verify;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.post;
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
@@ -70,7 +72,7 @@ class BuildingSearchControllerTest extends RestDocsTestSupport {
     given(buildingSearchService.findAllBuildings()).willReturn(mockBuildings);
 
     //when then
-    mockMvc.perform(get("/api/v1/buildings/view")
+    mockMvc.perform(get("/api/v1/building/search")
                     .contentType(MediaType.APPLICATION_JSON)
             )
             .andDo(print())
@@ -115,17 +117,19 @@ class BuildingSearchControllerTest extends RestDocsTestSupport {
                             fieldWithPath("data[].buildingNumber")
                                     .type(JsonType.NUMBER)
                                     .description("빌딩 번호"),
-                            fieldWithPath("data[].bulidingAbbreviation")
+                            fieldWithPath("data[].buildingAbbreviation")
                                     .type(JsonType.STRING)
                                     .description("빌딩 약어"),
                             fieldWithPath("data[].latitude")
                                     .type(JsonType.NUMBER)
                                     .description("위도"),
-                            fieldWithPath("data[].longtitude")
+                            fieldWithPath("data[].longitude")
                                     .type(JsonType.NUMBER)
                                     .description("경도")
                     ).build())));
 
+    verify(buildingSearchService).findAllBuildings();
+    verify(userService).validateUserDetails(any());
 
   }
 
@@ -209,7 +213,7 @@ class BuildingSearchControllerTest extends RestDocsTestSupport {
             new BuildingResponse(1L, "경영관", 2L, "경영",
                     BigDecimal.valueOf(37.5444190000000), BigDecimal.valueOf(127.0763700000000))
     );
-    given(buildingSearchService.viewBuildingByName("공")).willReturn(Optional.of(mockBuildings.get(0)));
+    //given(buildingSearchService.viewBuildingByName("공")).willReturn(Optional.of(mockBuildings.get(0)));
 
     //when then
     mockMvc.perform(get("/api/v1/buildings/view/searchName?name=공")
