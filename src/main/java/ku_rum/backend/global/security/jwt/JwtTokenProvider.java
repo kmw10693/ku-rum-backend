@@ -30,7 +30,6 @@ public class JwtTokenProvider {
 
     private final JwtProperties jwtProperties;
     private final RedisUtil redisUtil;
-
     private SecretKey secretKey;
 
     @PostConstruct
@@ -42,51 +41,16 @@ public class JwtTokenProvider {
 
     public TokenResponse createToken(Authentication authentication) {
         var claims = getClaims(authentication);
-        
-        Date now = new Date();
-        Date accessValidity = new Date(getAccessValidTime(now));
-        Date refreshValidity = new Date(getRefreshValidTime(now));
 
-        String accessToken = createToken(claims, now, accessValidity);
-        String refreshToken = createToken(claims, now, refreshValidity);
-
-        redisUtil.setRedisData(String.valueOf(claims.get("userPK")), refreshToken);
+        String accessToken = createToken(claims, getAccessValidTime());
+        String refreshToken = createToken(claims, getRefreshValidTime());
+        setRedisData(claims, refreshToken);
 
         return TokenResponse.of(
                 accessToken,
                 refreshToken,
                 this.jwtProperties.getAccessTokenValiditySeconds(),
                 this.jwtProperties.getRefreshTokenValiditySeconds());
-    }
-
-    private long getRefreshValidTime(Date now) {
-        return now.getTime() + this.jwtProperties.getRefreshTokenValiditySeconds();
-    }
-
-    private long getAccessValidTime(Date now) {
-        return now.getTime() + this.jwtProperties.getAccessTokenValiditySeconds();
-    }
-
-    private String createToken(Claims claims, Date now, Date accessValidity) {
-        return Jwts.builder()
-                .claims(claims)
-                .issuedAt(now)
-                .expiration(accessValidity)
-                .signWith(this.secretKey, Jwts.SIG.HS256)
-                .compact();
-    }
-
-    private Claims getClaims(Authentication authentication) {
-        CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
-
-        Collection<? extends GrantedAuthority> authorities = userDetails.getRoles();
-        var claimsBuilder = Jwts.claims().add("userPK", userDetails.getUserId());
-
-        if (!authorities.isEmpty()) {
-            claimsBuilder.add(AUTHORITIES_KEY, authorities.stream()
-                    .map(GrantedAuthority::getAuthority).collect(joining(",")));
-        }
-        return claimsBuilder.build();
     }
 
     public Authentication getAuthentication(String token) {
@@ -96,25 +60,7 @@ public class JwtTokenProvider {
         Collection<? extends GrantedAuthority> roles = getGrantedAuthorities(claims);
 
         CustomUserDetails principal = CustomUserDetails.of(userId, "", roles, "");
-
         return new UsernamePasswordAuthenticationToken(principal, token, roles);
-    }
-
-    private static Collection<? extends GrantedAuthority> getGrantedAuthorities(Claims claims) {
-        Object authoritiesClaim = claims.get(AUTHORITIES_KEY);
-
-        return authoritiesClaim == null
-                ? AuthorityUtils.NO_AUTHORITIES
-                : AuthorityUtils.commaSeparatedStringToAuthorityList(authoritiesClaim.toString());
-    }
-
-    private Jws<Claims> parseClaims(String token) {
-        return Jwts.parser().verifyWith(this.secretKey).build()
-                .parseSignedClaims(token);
-    }
-
-    public Jws<Claims> getClaimsFromToken(String token) {
-        return parseClaims(token);
     }
 
     public boolean validateToken(String token) {
@@ -155,4 +101,61 @@ public class JwtTokenProvider {
         return parseClaims(token).getPayload().get("userPK", Long.class);
     }
 
+    private void setRedisData(Claims claims, String refreshToken) {
+        try {
+            redisUtil.setRedisData(String.valueOf(claims.get("userPK")), refreshToken);
+        } catch (Exception e) {
+            log.error("레디스에 리프레시 토큰 저장 실패", e);
+            throw new JwtException("레디스에 리프레시 토큰 저장 실패");
+        }
+    }
+
+    private Date getRefreshValidTime() {
+        Date now = new Date();
+        return new Date(now.getTime() + this.jwtProperties.getRefreshTokenValiditySeconds());
+    }
+
+    private Date getAccessValidTime() {
+        Date now = new Date();
+        return new Date(now.getTime() + this.jwtProperties.getAccessTokenValiditySeconds());
+    }
+
+    private String createToken(Claims claims, Date accessValidity) {
+        return Jwts.builder()
+                .claims(claims)
+                .issuedAt(new Date())
+                .expiration(accessValidity)
+                .signWith(this.secretKey, Jwts.SIG.HS256)
+                .compact();
+    }
+
+    private Claims getClaims(Authentication authentication) {
+        CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
+
+        Collection<? extends GrantedAuthority> authorities = userDetails.getRoles();
+        return getClaimsInUserDetails(userDetails, authorities);
+    }
+
+    private Claims getClaimsInUserDetails(CustomUserDetails userDetails, Collection<? extends GrantedAuthority> authorities) {
+        var claimsBuilder = Jwts.claims().add("userPK", userDetails.getUserId());
+
+        if (!authorities.isEmpty()) {
+            claimsBuilder.add(AUTHORITIES_KEY, authorities.stream()
+                    .map(GrantedAuthority::getAuthority).collect(joining(",")));
+        }
+        return claimsBuilder.build();
+    }
+
+    private Collection<? extends GrantedAuthority> getGrantedAuthorities(Claims claims) {
+        Object authoritiesClaim = claims.get(AUTHORITIES_KEY);
+
+        return authoritiesClaim == null
+                ? AuthorityUtils.NO_AUTHORITIES
+                : AuthorityUtils.commaSeparatedStringToAuthorityList(authoritiesClaim.toString());
+    }
+
+    private Jws<Claims> parseClaims(String token) {
+        return Jwts.parser().verifyWith(this.secretKey).build()
+                .parseSignedClaims(token);
+    }
 }

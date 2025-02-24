@@ -4,7 +4,7 @@ import ku_rum.backend.domain.friend.application.FriendService;
 import ku_rum.backend.domain.friend.domain.FriendMessage;
 import ku_rum.backend.domain.friend.dto.response.FriendFindResponse;
 import ku_rum.backend.domain.friend.dto.response.FriendListResponse;
-import ku_rum.backend.global.response.BaseResponse;
+import ku_rum.backend.global.support.response.BaseResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -36,20 +36,20 @@ public class FriendController {
     }
 
     @PutMapping("/{request_id}/accept")
-    public BaseResponse<String> accept(@PathVariable("request_id") Long requestId) {
-        friendService.accept(requestId);
+    public BaseResponse<String> acceptFriendRequest(@PathVariable("request_id") Long requestId) {
+        friendService.acceptFriendRequest(requestId);
         return BaseResponse.ok(FriendMessage.SUCCESS.getMessage());
     }
 
     @PutMapping("/{request_id}/deny")
-    public BaseResponse<String> deny(@PathVariable("request_id") Long requestId) {
-        friendService.deny(requestId);
+    public BaseResponse<String> denyFriendRequest(@PathVariable("request_id") Long requestId) {
+        friendService.denyFriendRequest(requestId);
         return BaseResponse.ok(FriendMessage.SUCCESS_DENY.getMessage());
     }
 
     @DeleteMapping("/{request_id}")
-    public BaseResponse<String> delete(@PathVariable("request_id") Long requestId) {
-        friendService.delete(requestId);
+    public BaseResponse<String> deleteFriendRequest(@PathVariable("request_id") Long requestId) {
+        friendService.deleteFriendRequest(requestId);
         return BaseResponse.ok(FriendMessage.SUCCESS_DELETE.getMessage());
     }
 }

@@ -2,7 +2,7 @@ package ku_rum.backend.domain.user.application;
 
 import ku_rum.backend.domain.department.domain.Department;
 import ku_rum.backend.domain.department.domain.repository.DepartmentRepository;
-import ku_rum.backend.domain.mail.dto.request.LoginIdValidationRequest;
+import ku_rum.backend.domain.common.mail.dto.request.LoginIdValidationRequest;
 import ku_rum.backend.domain.user.domain.User;
 import ku_rum.backend.domain.user.domain.repository.UserRepository;
 import ku_rum.backend.domain.user.dto.request.ProfileChangeRequest;
@@ -21,7 +21,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import static ku_rum.backend.global.response.status.BaseExceptionResponseStatus.*;
+import static ku_rum.backend.global.support.response.status.BaseExceptionResponseStatus.*;
 
 @Service
 @Transactional(readOnly = true)
@@ -37,8 +37,7 @@ public class UserService {
         validateUser(userSaveRequest);
 
         String password = passwordEncoder.encode(userSaveRequest.password());
-        Department department = departmentRepository.findFirstByName(userSaveRequest.department())
-               .orElseThrow(() -> new NoSuchDepartmentException(NO_SUCH_DEPARTMENT));
+        Department department = getDepartment(userSaveRequest);
 
         User user = UserSaveRequest.newUser(userSaveRequest, department, password);
         return UserSaveResponse.from(userRepository.save(user));
@@ -58,8 +57,7 @@ public class UserService {
 
     private User getUser() {
         Long memberId = UserUtils.getLongMemberId();
-        User user = userRepository.findUserById(memberId).orElseThrow(() -> new NoSuchUserException(NO_SUCH_USER));
-        return user;
+        return userRepository.findUserById(memberId).orElseThrow(() -> new NoSuchUserException(NO_SUCH_USER));
     }
 
     public void ValidateUserId(final LoginIdValidationRequest emailValidationRequest) {
@@ -94,6 +92,11 @@ public class UserService {
         if (!departmentRepository.existsByName(department)) {
             throw new NoSuchDepartmentException(NO_SUCH_DEPARTMENT);
         }
+    }
+
+    private Department getDepartment(UserSaveRequest userSaveRequest) {
+        return departmentRepository.findFirstByName(userSaveRequest.department())
+                .orElseThrow(() -> new NoSuchDepartmentException(NO_SUCH_DEPARTMENT));
     }
 
 }

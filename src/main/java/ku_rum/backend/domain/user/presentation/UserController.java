@@ -4,17 +4,17 @@ import jakarta.validation.Valid;
 import ku_rum.backend.domain.user.dto.request.ProfileChangeRequest;
 import ku_rum.backend.domain.user.dto.request.ResetAccountRequest;
 import ku_rum.backend.domain.user.application.UserService;
-import ku_rum.backend.domain.mail.dto.request.LoginIdValidationRequest;
+import ku_rum.backend.domain.common.mail.dto.request.LoginIdValidationRequest;
 import ku_rum.backend.domain.user.dto.request.UserSaveRequest;
 import ku_rum.backend.domain.user.dto.response.UserSaveResponse;
-import ku_rum.backend.global.response.BaseResponse;
+import ku_rum.backend.global.support.response.BaseResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import static ku_rum.backend.domain.user.domain.UserMessage.SUCCESS_RESET_PASSWORD;
 import static ku_rum.backend.domain.user.domain.UserMessage.VALID_EMAIL_MESSAGE;
-import static ku_rum.backend.global.response.status.BaseExceptionResponseStatus.SUCCESS_PROFILE_SET;
+import static ku_rum.backend.global.support.response.status.BaseExceptionResponseStatus.SUCCESS_PROFILE_SET;
 
 @RestController
 @RequestMapping("/api/v1/users")

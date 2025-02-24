@@ -20,7 +20,8 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import static ku_rum.backend.domain.friend.domain.FriendStatus.*;
-import static ku_rum.backend.global.response.status.BaseExceptionResponseStatus.*;
+import static ku_rum.backend.global.support.response.status.BaseExceptionResponseStatus.*;
+import static ku_rum.backend.global.support.response.status.BaseExceptionResponseStatus.NO_SUCH_USER;
 
 @Service
 @Transactional(readOnly = true)
@@ -28,7 +29,6 @@ import static ku_rum.backend.global.response.status.BaseExceptionResponseStatus.
 public class FriendService {
     private final FriendRepository friendRepository;
     private final UserRepository userRepository;
-    private final UserUtils userUtils;
 
     public List<FriendListResponse> getMyLists() {
         User user = getUser();
@@ -63,39 +63,45 @@ public class FriendService {
     }
 
     @Transactional
-    public void accept(Long requestId) {
-        User fromUser = userRepository.findUserById(requestId).orElseThrow(() -> new NoSuchUserException(NO_SUCH_USER));
+    public void acceptFriendRequest(Long requestId) {
+        User fromUser = getUserById(requestId);
         User touser = getUser();
 
-        Friend friend = friendRepository.findFirstByFromUserAndToUserAndStatus(fromUser, touser, PENDING).orElseThrow(() -> new NoFriendsException(NO_FRIENDS_FOUND));
+        Friend friend = findPendingFriend(fromUser, touser);
         friend.setStatus(ACCEPT);
     }
 
     @Transactional
-    public void deny(Long requestId) {
-        User fromUser = userRepository.findUserById(requestId).orElseThrow(() -> new NoSuchUserException(NO_SUCH_USER));
+    public void denyFriendRequest(Long requestId) {
+        User fromUser = getUserById(requestId);
         User touser = getUser();
 
-        Friend friend = friendRepository.findFirstByFromUserAndToUserAndStatus(fromUser, touser, PENDING).orElseThrow(() -> new NoFriendsException(NO_FRIENDS_FOUND));
+        Friend friend = findPendingFriend(fromUser, touser);
         friend.setStatus(REJECT);
     }
 
     @Transactional
-    public void delete(Long requestId) {
-        User fromUser = userRepository.findUserById(requestId).orElseThrow(() -> new NoSuchUserException(NO_SUCH_USER));
+    public void deleteFriendRequest(Long requestId) {
+        User fromUser = getUserById(requestId);
         User touser = getUser();
 
         List<Friend> friends = friendRepository.findOriginFriends(ACCEPT, fromUser.getId(), touser.getId());
         friends.forEach(friend -> friend.setStatus(REJECT));
     }
 
-    private static List<FriendListResponse> getFriendListResponses(Set<User> userLists) {
+    User getUser() {
+        Long memberId = UserUtils.getLongMemberId();
+        User user = userRepository.findUserById(memberId).orElseThrow(() -> new NoSuchUserException(NO_SUCH_USER));
+        return user;
+    }
+
+    private List<FriendListResponse> getFriendListResponses(Set<User> userLists) {
         return userLists.stream()
                 .map(userList -> new FriendListResponse(userList.getId(), userList.getNickname()))
                 .collect(Collectors.toList());
     }
 
-    private static Set<User> getUserSet(List<Friend> friends, User user) {
+    private Set<User> getUserSet(List<Friend> friends, User user) {
         Set<User> userLists = friends.stream()
                 .flatMap(friend -> Stream.of(friend.getFromUser(), friend.getToUser()))
                 .filter(users -> !users.equals(user))
@@ -111,9 +117,13 @@ public class FriendService {
         return friends;
     }
 
-    User getUser() {
-        Long memberId = userUtils.getLongMemberId();
-        User user = userRepository.findUserById(memberId).orElseThrow(() -> new NoSuchUserException(NO_SUCH_USER));
-        return user;
+    private User getUserById(Long userId) {
+        return userRepository.findUserById(userId)
+                .orElseThrow(() -> new NoSuchUserException(NO_SUCH_USER));
+    }
+
+    private Friend findPendingFriend(User fromUser, User toUser) {
+        return friendRepository.findFirstByFromUserAndToUserAndStatus(fromUser, toUser, PENDING)
+                .orElseThrow(() -> new NoFriendsException(NO_FRIENDS_FOUND));
     }
 }
