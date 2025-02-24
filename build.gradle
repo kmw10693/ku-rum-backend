@@ -56,7 +56,8 @@ jacocoTestReport {
 					'**/service/alarm/**',
 					'**/aop/**',
 					'**/config/**',
-					'**/MemberRole*'
+					'**/MemberRole*',
+					'**/oauth/**'
 			] + QDomainList)
 		}))
 	}
