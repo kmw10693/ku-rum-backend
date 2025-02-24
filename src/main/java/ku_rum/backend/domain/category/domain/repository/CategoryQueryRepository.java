@@ -20,7 +20,7 @@ public class CategoryQueryRepository {
   public Optional<List<Long>> findAllByName(String category) {
     QCategory qCategory = QCategory.category;
     List<Long> buildingCategoryIds = queryFactory
-            .select(qCategory.id)  // 필요한 필드 : category객체의 id
+            .select(qCategory.id)
             .from(qCategory)
             .where(qCategory.name.eq(category))
             .fetch();

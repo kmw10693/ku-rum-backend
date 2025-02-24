@@ -36,13 +36,13 @@ public class BuildingCategoryQueryRepository {
             .fetch();  // 결과를 List<Long>로 반환
   }
 
-  public List<Long> findBuildingIdsByCategoryIds(List<Long> buildingCategoryIds) {
-    return entityManager.createQuery(
-                    "SELECT bc.building.id " +
-                            "FROM BuildingCategory bc " +
-                            "WHERE bc.id IN :buildingCategoryIds", Long.class)
-            .setParameter("buildingCategoryIds", buildingCategoryIds)
-            .getResultList();
+  public List<Long> findBuildingIdsByCategoryIds(List<Long> categoryIds) {
+    QBuildingCategory qBuildingCategory = buildingCategory;
+    return queryFactory
+            .select(qBuildingCategory.id)
+            .from(qBuildingCategory)
+            .where(qBuildingCategory.category.id.in(categoryIds))
+            .fetch();
   }
 
   public List<Long> findByBuildingIds(List<Long> buildingIds) {

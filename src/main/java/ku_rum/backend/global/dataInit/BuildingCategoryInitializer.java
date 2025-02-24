@@ -13,17 +13,14 @@ public class BuildingCategoryInitializer {
     ArrayList<BuildingCategory> buildingCategories = new ArrayList<>();
 
     //빌딩
-    Building 동물생명과학관 = buildings.get(12-1);
-    Building 공학관 = buildings.get(21-1);
-    Building 제1학생회관 = buildings.get(20-1);
-    Building 상허도서관 = buildings.get(9-1);
-    Building 생명과학관 = buildings.get(11-1);
-    Building 상허연구관 = buildings.get(3-1);
-    Building 건축관 = buildings.get(17-1);
-    Building 경영관 = buildings.get(2-1);
-    Building 과학관 = buildings.get(23-1);
-    Building 새천년관 = buildings.get(16-1);
-    
+    Building 레스티오_동생대점 = buildings.get(27-1);
+    Building 레스티오_공대점 = buildings.get(28-1);
+    Building 카페_1984_학생회관점 = buildings.get(29-1);
+    Building 카페_1984_도서관점 = buildings.get(30-1);
+    Building CU_학생회관점 = buildings.get(31-1);
+    Building CU_도서관점 = buildings.get(32-1);
+    Building KCUBE_공학관 = buildings.get(36-1);
+
 
     //카테고리
     Category 레스티오 = categories.get(2-1);
@@ -35,68 +32,31 @@ public class BuildingCategoryInitializer {
 
     //레스티오 추가
     buildingCategories.add(
-            BuildingCategory.of(동물생명과학관, 레스티오)
+            BuildingCategory.of(레스티오_동생대점, 레스티오)
     );
     buildingCategories.add(
-            BuildingCategory.of(공학관, 레스티오)
+            BuildingCategory.of(레스티오_공대점, 레스티오)
     );
 
     //카페_1984 추가
     buildingCategories.add(
-            BuildingCategory.of(제1학생회관, 카페_1984)
+            BuildingCategory.of(카페_1984_학생회관점, 카페_1984)
     );
     buildingCategories.add(
-            BuildingCategory.of(상허도서관, 카페_1984)
+            BuildingCategory.of(카페_1984_도서관점, 카페_1984)
     );
 
     //cu 추가
     buildingCategories.add(
-          BuildingCategory.of(제1학생회관, cu)
+          BuildingCategory.of(CU_학생회관점, cu)
     );
     buildingCategories.add(
-            BuildingCategory.of(상허도서관, cu)
+            BuildingCategory.of(CU_도서관점, cu)
     );
 
     //KCUBE 추가
     buildingCategories.add(
-          BuildingCategory.of(생명과학관,KCUBE)      
-    );
-    buildingCategories.add(
-            BuildingCategory.of(상허도서관,KCUBE)
-    );
-    buildingCategories.add(
-            BuildingCategory.of(동물생명과학관,KCUBE)
-    );
-    buildingCategories.add(
-            BuildingCategory.of(생명과학관,KCUBE)
-    );
-    buildingCategories.add(
-            BuildingCategory.of(공학관,KCUBE)
-    );
-    buildingCategories.add(
-            BuildingCategory.of(상허연구관,KCUBE)
-    );
-
-    //KHUB 추가
-    buildingCategories.add(
-            BuildingCategory.of(건축관,KHUB)
-    );
-    buildingCategories.add(
-            BuildingCategory.of(경영관,KHUB)
-    );
-    buildingCategories.add(
-            BuildingCategory.of(과학관,KHUB)
-    );
-
-    //학생식당 추가
-    buildingCategories.add(
-            BuildingCategory.of(제1학생회관,학생식당)
-    );
-    buildingCategories.add(
-            BuildingCategory.of(상허도서관,학생식당)
-    );
-    buildingCategories.add(
-            BuildingCategory.of(새천년관,학생식당)
+          BuildingCategory.of(KCUBE_공학관,KCUBE)
     );
 
 

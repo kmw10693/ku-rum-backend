@@ -26,8 +26,7 @@ import org.springframework.stereotype.Service;
 import java.util.*;
 import java.util.stream.Collectors;
 
-import static ku_rum.backend.global.response.status.BaseExceptionResponseStatus.BUILDING_DATA_NOT_FOUND_BY_NUMBER;
-import static ku_rum.backend.global.response.status.BaseExceptionResponseStatus.NO_BUILDING_REGISTERED_CURRENTLY;
+import static ku_rum.backend.global.response.status.BaseExceptionResponseStatus.*;
 
 @Service
 @RequiredArgsConstructor
@@ -57,15 +56,12 @@ public class BuildingSearchService {
   public BuildingResponse viewBuildingByName(String name) {
     String nameData = removeNumbersInName(name);
 
-    List<BuildingAbbrev> potentialMatches = Arrays.asList(BuildingAbbrev.values());
+    BuildingAbbrev matchedBuilding = Arrays.stream(BuildingAbbrev.values())
+            .filter(b -> b.getOriginalName().toLowerCase().equals(nameData) || b.name().toLowerCase().equals(nameData))
+            .findFirst()
+            .orElseThrow(() -> new BuildingNotFoundException(BUILDING_DATA_NOT_FOUND_BY_NAME));
 
-    Optional<BuildingAbbrev> matchedBuilding = potentialMatches.stream()
-            .filter(b -> b.getOriginalName().toLowerCase().equals(nameData) ||
-                    b.name().toLowerCase().equals(nameData))
-            .findFirst();
-
-    return buildingQueryRepository.findBuildingByName(matchedBuilding.get().getOriginalName())
-            .orElseThrow(() -> new BuildingNotFoundException(BUILDING_DATA_NOT_FOUND_BY_NUMBER));
+    return buildingQueryRepository.findBuildingByName(matchedBuilding.getOriginalName()).get();
 
   }
 

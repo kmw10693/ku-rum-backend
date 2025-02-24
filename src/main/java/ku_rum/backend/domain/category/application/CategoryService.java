@@ -10,17 +10,17 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+import static ku_rum.backend.global.response.status.BaseExceptionResponseStatus.CATEGORY_NAME_NOT_EXIST;
+
 @Service
 @RequiredArgsConstructor
 public class CategoryService {
-  private final CategoryRepository categoryRepository;
   private final BuildingCategoryQueryRepository buildingCategoryQueryRepository;
   private final CategoryQueryRepository categoryQueryRepository;
 
   public List<Long> findByCategoryReturnBuildingIds(String category){
     List<Long> categoryIds = categoryQueryRepository.findAllByName(category)
-            .orElseThrow(() -> new CategoryNotExistException(BaseExceptionResponseStatus.CATEGORY_NAME_NOT_EXIST));
-    List<Long> buildingCategoryIds = buildingCategoryQueryRepository.findBuildingCategoryIds(categoryIds);
-    return buildingCategoryQueryRepository.findBuildingIdsByCategoryIds(buildingCategoryIds);
+            .orElseThrow(() -> new CategoryNotExistException(CATEGORY_NAME_NOT_EXIST));
+    return buildingCategoryQueryRepository.findBuildingIdsByCategoryIds(categoryIds);
   }
 }

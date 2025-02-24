@@ -8,14 +8,12 @@ import ku_rum.backend.domain.category.dto.request.BuildindgCategoryRequest;
 import ku_rum.backend.domain.category.dto.response.CategoryDetailResponse;
 import ku_rum.backend.domain.menu.response.MenuSimpleResponse;
 import ku_rum.backend.domain.user.application.UserService;
-import ku_rum.backend.global.config.WebConfig;
 import ku_rum.backend.global.config.redis.RedisUtil;
 import ku_rum.backend.global.log.domain.repository.ApiLogRepository;
 import ku_rum.backend.global.security.jwt.JwtTokenProvider;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mock;
 import org.openqa.selenium.json.JsonType;
 import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -25,7 +23,6 @@ import org.springframework.security.test.context.support.WithMockUser;
 
 import java.math.BigDecimal;
 import java.util.List;
-import java.util.Optional;
 
 import static com.epages.restdocs.apispec.ResourceDocumentation.resource;
 import static org.mockito.ArgumentMatchers.any;
@@ -148,7 +145,7 @@ class BuildingSearchControllerTest extends RestDocsTestSupport {
     given(buildingSearchService.viewBuildingByNumber(21L)).willReturn(mockBuildings.get(0));
 
     //when then
-    mockMvc.perform(get("/api/v1/buildings/view/searchNumber?number=21")
+    mockMvc.perform(get("/api/v1/building/search/number?number=21")
                     .contentType(MediaType.APPLICATION_JSON)
             )
             .andDo(print())
@@ -187,13 +184,13 @@ class BuildingSearchControllerTest extends RestDocsTestSupport {
                             fieldWithPath("data.buildingNumber")
                                     .type(JsonType.NUMBER)
                                     .description("빌딩 번호"),
-                            fieldWithPath("data.bulidingAbbreviation")
+                            fieldWithPath("data.buildingAbbreviation")
                                     .type(JsonType.STRING)
                                     .description("빌딩 약어"),
                             fieldWithPath("data.latitude")
                                     .type(JsonType.NUMBER)
                                     .description("위도"),
-                            fieldWithPath("data.longtitude")
+                            fieldWithPath("data.longitude")
                                     .type(JsonType.NUMBER)
                                     .description("경도")
                     ).build())));
@@ -213,10 +210,10 @@ class BuildingSearchControllerTest extends RestDocsTestSupport {
             new BuildingResponse(1L, "경영관", 2L, "경영",
                     BigDecimal.valueOf(37.5444190000000), BigDecimal.valueOf(127.0763700000000))
     );
-    //given(buildingSearchService.viewBuildingByName("공")).willReturn(Optional.of(mockBuildings.get(0)));
+    given(buildingSearchService.viewBuildingByName("공")).willReturn(mockBuildings.get(0));
 
     //when then
-    mockMvc.perform(get("/api/v1/buildings/view/searchName?name=공")
+    mockMvc.perform(get("/api/v1/building/search/name?name=공")
                     .contentType(MediaType.APPLICATION_JSON)
             )
             .andDo(print())
@@ -255,13 +252,13 @@ class BuildingSearchControllerTest extends RestDocsTestSupport {
                             fieldWithPath("data.buildingNumber")
                                     .type(JsonType.NUMBER)
                                     .description("빌딩 번호"),
-                            fieldWithPath("data.bulidingAbbreviation")
+                            fieldWithPath("data.buildingAbbreviation")
                                     .type(JsonType.STRING)
                                     .description("빌딩 약어"),
                             fieldWithPath("data.latitude")
                                     .type(JsonType.NUMBER)
                                     .description("위도"),
-                            fieldWithPath("data.longtitude")
+                            fieldWithPath("data.longitude")
                                     .type(JsonType.NUMBER)
                                     .description("경도")
                     ).build())));
@@ -276,15 +273,15 @@ class BuildingSearchControllerTest extends RestDocsTestSupport {
   void viewBuildingByCategory() throws Exception {
     // given (Mock 데이터 설정)
     List<BuildingResponse> mockBuildings = List.of(
-            new BuildingResponse(16L, "공학관", 21L, "공",
+            new BuildingResponse(16L, "레스티오_공대점", 21L, "레스티오_공",
                     BigDecimal.valueOf(37.5418220000000), BigDecimal.valueOf(127.0788450000000)),
-            new BuildingResponse(1L, "경영관", 2L, "경영",
+            new BuildingResponse(1L, "레스티오_동생대점", 2L, "레스티오_동",
                     BigDecimal.valueOf(37.5444190000000), BigDecimal.valueOf(127.0763700000000))
     );
     given(buildingSearchService.viewBuildingByCategory("레스티오")).willReturn(mockBuildings);
 
     //when then
-    mockMvc.perform(get("/api/v1/buildings/view/레스티오")
+    mockMvc.perform(get("/api/v1/building/search/category?category=레스티오")
                     .contentType(MediaType.APPLICATION_JSON)
             )
             .andDo(print())
@@ -294,15 +291,15 @@ class BuildingSearchControllerTest extends RestDocsTestSupport {
             .andExpect(jsonPath("$.message").value("OK"))
 
             .andExpect(jsonPath("$.data[0].buildingId").value(16))
-            .andExpect(jsonPath("$.data[0].buildingName").value("공학관"))
+            .andExpect(jsonPath("$.data[0].buildingName").value("레스티오_공대점"))
             .andExpect(jsonPath("$.data[0].buildingNumber").value(21))
-            .andExpect(jsonPath("$.data[0].buildingAbbreviation").value("공"))
+            .andExpect(jsonPath("$.data[0].buildingAbbreviation").value("레스티오_공"))
             .andExpect(jsonPath("$.data[0].latitude").value(37.541822))
             .andExpect(jsonPath("$.data[0].longitude").value(127.078845))
             .andExpect(jsonPath("$.data[1].buildingId").value(1))
-            .andExpect(jsonPath("$.data[1].buildingName").value("경영관"))
+            .andExpect(jsonPath("$.data[1].buildingName").value("레스티오_동생대점"))
             .andExpect(jsonPath("$.data[1].buildingNumber").value(2))
-            .andExpect(jsonPath("$.data[1].buildingAbbreviation").value("경영"))
+            .andExpect(jsonPath("$.data[1].buildingAbbreviation").value("레스티오_동"))
             .andExpect(jsonPath("$.data[1].latitude").value(37.544419))
             .andExpect(jsonPath("$.data[1].longitude").value(127.076370))
 
@@ -329,13 +326,13 @@ class BuildingSearchControllerTest extends RestDocsTestSupport {
                             fieldWithPath("data[].buildingNumber")
                                     .type(JsonType.NUMBER)
                                     .description("빌딩 번호"),
-                            fieldWithPath("data[].bulidingAbbreviation")
+                            fieldWithPath("data[].buildingAbbreviation")
                                     .type(JsonType.STRING)
                                     .description("빌딩 약어"),
                             fieldWithPath("data[].latitude")
                                     .type(JsonType.NUMBER)
                                     .description("위도"),
-                            fieldWithPath("data[].longtitude")
+                            fieldWithPath("data[].longitude")
                                     .type(JsonType.NUMBER)
                                     .description("경도")
                     ).build())));

@@ -8,6 +8,7 @@ public class BuildingNotFoundException extends RuntimeException {
 
   private BaseExceptionResponseStatus status;
   public BuildingNotFoundException(BaseExceptionResponseStatus status) {
+    super(status.getMessage());
     this.status = status;
   }
 }

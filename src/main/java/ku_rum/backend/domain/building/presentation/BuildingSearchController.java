@@ -79,7 +79,7 @@ public class BuildingSearchController {
   /**
    * 작성자: 이혜리
    * 수정일자: 2025-02-23
-   * 카테고리명으로 빌딩의 정보 반환 - full text 검색 부분과 비교하기 위함
+   * 카테고리 버튼으로 빌딩의 정보 반환
    * @param category
    * @return
    */
@@ -93,8 +93,8 @@ public class BuildingSearchController {
 
   /**
    * 작성자: 이혜리
-   * 수정일자: 2025-02-22
-   * full text 검색으로 건물명,카테고리로 빌딩의 정보 반환
+   * 수정일자: 2025-02-24
+   * full text 검색으로 건물명,카테고리명으로 빌딩의 정보 반환
    * @param userDetails
    * @param text
    * @return

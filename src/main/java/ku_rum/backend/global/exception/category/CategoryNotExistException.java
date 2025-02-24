@@ -5,8 +5,10 @@ import lombok.Getter;
 
 @Getter
 public class CategoryNotExistException extends RuntimeException {
+
   private BaseExceptionResponseStatus status;
   public CategoryNotExistException(BaseExceptionResponseStatus status) {
+    super(status.getMessage());
     this.status = status;
   }
 }

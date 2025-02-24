@@ -21,6 +21,7 @@ public class BuildingInitializer {
                     BigDecimal.valueOf(127.075067)
             )
     );
+    //건물
     buildings.add(
             Building.of(
                     BuildingAbbrev.경영.getOriginalName(),
@@ -222,6 +223,94 @@ public class BuildingInitializer {
                     BigDecimal.valueOf(37.539474),
                     BigDecimal.valueOf(127.078203))
     );
+    //카테고리
+    //레스티오
+    buildings.add(//27
+            Building.of(
+                    BuildingAbbrev.레스티오_동생대점.getOriginalName(),
+                    0L,
+                    BuildingAbbrev.레스티오_동생대점.name(),
+                    BigDecimal.valueOf(37.540222),
+                    BigDecimal.valueOf(127.073524))
+    );
+    buildings.add(//28
+            Building.of(
+                    BuildingAbbrev.레스티오_공대점.getOriginalName(),
+                    0L,
+                    BuildingAbbrev.레스티오_공대점.name(),
+                    BigDecimal.valueOf(37.541620),
+                    BigDecimal.valueOf(127.078732))
+    );
+    //카페_1984
+    buildings.add(//29
+            Building.of(
+                    BuildingAbbrev.카페_1984_학생회관점.getOriginalName(),
+                    0L,
+                    BuildingAbbrev.카페_1984_학생회관점.name(),
+                    BigDecimal.valueOf(37.541840),
+                    BigDecimal.valueOf(127.077815))
+    );
+    buildings.add(//30
+            Building.of(
+                    BuildingAbbrev.카페_1984_도서관점.getOriginalName(),
+                    0L,
+                    BuildingAbbrev.카페_1984_도서관점.name(),
+                    BigDecimal.valueOf(37.541927),
+                    BigDecimal.valueOf(127.073876))
+    );
+    buildings.add(//31
+            Building.of(
+                    BuildingAbbrev.CU_학생회관점.getOriginalName(),
+                    0L,
+                    BuildingAbbrev.CU_학생회관점.name(),
+                    BigDecimal.valueOf(37.541797),
+                    BigDecimal.valueOf(127.078266))
+    );
+    //CU
+    buildings.add(//32
+            Building.of(
+                    BuildingAbbrev.CU_도서관점.getOriginalName(),
+                    0L,
+                    BuildingAbbrev.CU_도서관점.name(),
+                    BigDecimal.valueOf(37.541994),
+                    BigDecimal.valueOf(127.074035))
+    );
+    //학생식당
+    buildings.add(//33
+            Building.of(
+                    BuildingAbbrev.학생식당_학생회관점.getOriginalName(),
+                    0L,
+                    BuildingAbbrev.학생식당_학생회관점.name(),
+                    BigDecimal.valueOf(37.541994),
+                    BigDecimal.valueOf(127.074035))
+    );
+    buildings.add(//34
+            Building.of(
+                    BuildingAbbrev.학생식당_도서관점.getOriginalName(),
+                    0L,
+                    BuildingAbbrev.학생식당_도서관점.name(),
+                    BigDecimal.valueOf(37.541994),
+                    BigDecimal.valueOf(127.074035))
+    );
+    buildings.add(//35
+            Building.of(
+                    BuildingAbbrev.학생식당_기숙사점.getOriginalName(),
+                    0L,
+                    BuildingAbbrev.학생식당_기숙사점.name(),
+                    BigDecimal.valueOf(37.541994),
+                    BigDecimal.valueOf(127.074035))
+    );
+    //KHUB
+    //KCUBE
+    buildings.add(//36
+            Building.of(
+                    BuildingAbbrev.KCUBE_공학관.getOriginalName(),
+                    0L,
+                    BuildingAbbrev.KCUBE_공학관.name(),
+                    BigDecimal.valueOf(37.541994),
+                    BigDecimal.valueOf(127.074035))
+    );
+
     return buildings;
   }
 }
