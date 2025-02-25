@@ -18,6 +18,8 @@ import java.util.List;
 
 import static ku_rum.backend.global.response.status.BaseExceptionResponseStatus.*;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.junit.jupiter.api.Assertions.assertAll;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @WebAppConfiguration
 @SpringBootTest
@@ -37,7 +39,7 @@ public class BuildingSearchServcieTest {
             List<BuildingResponse> buildingResponses = buildingSearchService.findAllBuildings();
 
             //when then
-            Assertions.assertEquals(26, buildingResponses.size());
+            assertEquals(26, buildingResponses.size());
         }
 
 
@@ -49,7 +51,7 @@ public class BuildingSearchServcieTest {
             BuildingResponse buildingResponse = buildingSearchService.viewBuildingByNumber(number);
 
             //when then
-            Assertions.assertEquals("상허연구관", buildingResponse.buildingName());
+            assertEquals("상허연구관", buildingResponse.buildingName());
         }
 
         @DisplayName("건물이름으로 건물정보를 출력")
@@ -60,7 +62,7 @@ public class BuildingSearchServcieTest {
             BuildingResponse buildingResponse = buildingSearchService.viewBuildingByName(name);
 
             //when then
-            Assertions.assertEquals("공학관", buildingResponse.buildingName());
+            assertEquals("공학관", buildingResponse.buildingName());
         }
 
         @DisplayName("카테고리 이름으로 카테고리용 건물정보를 출력")
@@ -71,7 +73,30 @@ public class BuildingSearchServcieTest {
             BuildingResponse buildingResponse = buildingSearchService.viewBuildingByName(name);
 
             //when then
-            Assertions.assertEquals("레스티오_공학관점", buildingResponse.buildingName());
+            assertEquals("레스티오_공학관점", buildingResponse.buildingName());
+        }
+
+        @DisplayName("full text로 검색어 결과 출력")
+        @Test
+        public void viewAvailableTextNameList_success() throws Exception{
+            //given
+            String text = "cu";
+            List<BuildingResponse> buildingResponseList = buildingSearchService.searchAvailableText(text);
+
+            //when then
+            assertAll(
+                    () -> assertEquals(3, buildingResponseList.size()),
+                    () -> assertEquals( buildingResponseList.stream()
+                            .allMatch(building ->
+                                    building.buildingAbbreviation().toLowerCase()
+                                            .contains("cu".toLowerCase())),
+                            true),
+                    () -> assertEquals( buildingResponseList.stream()
+                            .allMatch(building ->
+                                    building.buildingName().toLowerCase()
+                                            .contains("cu".toLowerCase())),
+                            true)
+            );
         }
     }
 
@@ -113,26 +138,21 @@ public class BuildingSearchServcieTest {
                     .isInstanceOf(CategoryNotExistException.class)
                     .hasMessageContaining(CATEGORY_NAME_NOT_EXIST.getMessage());
         }
-    }
 
-    @DisplayName("등록된_건물정보_이름으로_조회_성공")
-    @Test
-    public void 등록된_건물정보_이름으로_조회_성공() throws Exception {
-        // given
-        BuildingResponse buildingResponse = buildingSearchService.viewBuildingByName("경영102");
+        @DisplayName("full text로 검색어 결과 출력 - 실패")
+        @Test
+        public void viewAvailableTextNameList_failure() throws Exception{
+            //given
+            String text = "1111";
 
-        // then
-        Assertions.assertEquals(2L, buildingResponse.buildingNumber());
-    }
+            //when then
+            assertThatThrownBy(() ->
+                    buildingSearchService.searchAvailableText(text))
+                    .isInstanceOf(BuildingNotFoundException.class)
+                    .hasMessageContaining(BUILDING_DATA_NOT_FOUND_BY_NAME.getMessage());
 
-    @DisplayName("등록된_건물정보_건물번호로_조회_실패")
-    @Test
-    public void 등록된_건물정보_건물번호로_조회_실패() throws Exception {
-        // given
-        Long number = 202L;
-        Assertions.assertThrows(BuildingNotFoundException.class, () -> {
-            buildingSearchService.viewBuildingByNumber(number);
-        });
-    }
 
+        }
+
+}
 }

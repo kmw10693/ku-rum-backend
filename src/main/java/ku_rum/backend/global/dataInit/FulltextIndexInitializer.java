@@ -27,10 +27,14 @@ public class FulltextIndexInitializer {
     }
 
     private void insert_fulltext_index(String tableName, String indexName) {
-        if (!isIndexExists(tableName,indexName)){
-            jdbcTemplate.execute(
-                    "ALTER TABLE tableName ADD FULLTEXT INDEX indexName (name) WITH PARSER ngram"
+        if (!isIndexExists(tableName, indexName)) {
+            String sql = String.format(
+                    "ALTER TABLE %s ADD FULLTEXT INDEX %s (name) WITH PARSER ngram",
+                    tableName,
+                    indexName
             );
+            jdbcTemplate.execute(sql);
+            log.info("✅ FULLTEXT INDEX 추가됨: 테이블={}, 인덱스={}", tableName, indexName);
         }
     }
 

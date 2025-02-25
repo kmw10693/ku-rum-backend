@@ -72,7 +72,7 @@ public class BuildingCategoryQueryRepository {
     String nativeQuery = "SELECT * FROM category WHERE MATCH(name) AGAINST (?1 IN BOOLEAN MODE)";
 
     Query query = entityManager.createNativeQuery(nativeQuery, Category.class);
-    query.setParameter(1, searchText + "*");
+    query.setParameter(1, searchText);
 
     return query.getResultList();
   }

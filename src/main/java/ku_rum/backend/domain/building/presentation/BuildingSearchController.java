@@ -93,7 +93,7 @@ public class BuildingSearchController {
 
   /**
    * 작성자: 이혜리
-   * 수정일자: 2025-02-24
+   * 수정일자: 2025-02-25
    * full text 검색으로 건물명,카테고리명으로 빌딩의 정보 반환
    * @param userDetails
    * @param text
@@ -110,7 +110,7 @@ public class BuildingSearchController {
 
   /**
    * 작성자: 이혜리
-   * 수정일자: 2025-02-23
+   * 수정일자: 2025-02-25
    * 카테고리에 해당하는 특정 핀포인트 디테일 정보 확인 (학생식당, K-CUBE/K-HUB)
    * @param userDetails
    * @param request
