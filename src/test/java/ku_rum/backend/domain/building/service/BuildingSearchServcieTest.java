@@ -181,9 +181,6 @@ public class BuildingSearchServcieTest {
                     buildingSearchService.viewBuildingDetailByCategory(text, buildingId))
                     .isInstanceOf(CategoryNotProvidingDetailException.class)
                     .hasMessageContaining(CATEGORYNAME_NOT_PROVIDING_DETAIL.getMessage());
-
-
         }
-
 }
 }
