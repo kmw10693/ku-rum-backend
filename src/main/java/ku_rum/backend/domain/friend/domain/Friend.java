@@ -3,7 +3,7 @@ package ku_rum.backend.domain.friend.domain;
 import jakarta.persistence.*;
 
 import ku_rum.backend.domain.user.domain.User;
-import ku_rum.backend.global.type.BaseEntity;
+import ku_rum.backend.global.support.type.BaseEntity;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -26,6 +26,7 @@ public class Friend extends BaseEntity {
     @JoinColumn(name = "toUser_id", nullable = false)
     private User toUser;
 
+    @Enumerated(EnumType.STRING)
     private FriendStatus status;
 
     public void setStatus(FriendStatus status) {

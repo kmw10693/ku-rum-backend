@@ -23,7 +23,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
-import static ku_rum.backend.global.response.status.BaseExceptionResponseStatus.*;
+import static ku_rum.backend.global.support.response.status.BaseExceptionResponseStatus.NO_SUCH_USER;
 
 @EnableWebSecurity
 @Configuration

@@ -2,7 +2,7 @@ package ku_rum.backend.domain.category.domain;
 
 import jakarta.persistence.*;
 import ku_rum.backend.domain.building.domain.Building;
-import ku_rum.backend.global.type.BaseEntity;
+import ku_rum.backend.global.support.type.BaseEntity;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

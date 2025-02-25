@@ -4,7 +4,7 @@ import jakarta.validation.Valid;
 import ku_rum.backend.domain.reservation.application.ReservationService;
 import ku_rum.backend.domain.reservation.dto.request.SelectDateRequest;
 import ku_rum.backend.domain.reservation.dto.request.WeinLoginRequest;
-import ku_rum.backend.global.response.BaseResponse;
+import ku_rum.backend.global.support.response.BaseResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;

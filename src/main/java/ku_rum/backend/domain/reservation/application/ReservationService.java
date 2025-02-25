@@ -4,7 +4,7 @@ import ku_rum.backend.domain.reservation.domain.ReservationCategory;
 import ku_rum.backend.domain.reservation.dto.RoomReservation;
 import ku_rum.backend.domain.reservation.dto.TimeTable;
 import ku_rum.backend.domain.reservation.dto.request.WeinLoginRequest;
-import ku_rum.backend.global.response.BaseResponse;
+import ku_rum.backend.global.support.response.BaseResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.jsoup.Jsoup;

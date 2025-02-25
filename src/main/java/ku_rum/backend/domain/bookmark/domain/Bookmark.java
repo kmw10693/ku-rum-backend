@@ -3,7 +3,7 @@ package ku_rum.backend.domain.bookmark.domain;
 import jakarta.persistence.*;
 import ku_rum.backend.domain.notice.domain.Notice;
 import ku_rum.backend.domain.user.domain.User;
-import ku_rum.backend.global.type.BaseEntity;
+import ku_rum.backend.global.support.type.BaseEntity;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;

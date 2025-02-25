@@ -2,7 +2,7 @@ package ku_rum.backend.domain.building.domain;
 
 import jakarta.persistence.*;
 import ku_rum.backend.domain.category.domain.Category;
-import ku_rum.backend.global.type.BaseEntity;
+import ku_rum.backend.global.support.type.BaseEntity;
 import lombok.*;
 
 import java.math.BigDecimal;

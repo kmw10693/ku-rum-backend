@@ -26,6 +26,8 @@ public class FriendRepositoryCustomImpl implements FriendRepositoryCustom {
         QFriend friend = QFriend.friend;
 
         return queryFactory.selectFrom(friend)
+                .leftJoin(friend.fromUser).fetchJoin()
+                .leftJoin(friend.toUser).fetchJoin()
                 .where(friend.status.eq(status)
                         .and(friend.fromUser.id.eq(userId).or(friend.toUser.id.eq(userId))))
                 .fetch();
@@ -33,39 +35,34 @@ public class FriendRepositoryCustomImpl implements FriendRepositoryCustom {
 
     @Override
     public Boolean existFriends(FriendStatus status, Long fromUser, Long toUser) {
-        Integer fetchOne = queryFactory
+        Integer result = queryFactory
                 .selectOne()
                 .from(friend)
-                .where(friend.status.eq(status).and(
-                        friend.fromUser.id.eq(fromUser).and((friend.toUser.id.eq(toUser)))))
+                .where(friend.status.eq(status)
+                        .and(
+                                (friend.fromUser.id.eq(fromUser).and(friend.toUser.id.eq(toUser)))
+                                        .or(friend.fromUser.id.eq(toUser).and(friend.toUser.id.eq(fromUser)))
+                        ))
                 .fetchFirst();
 
-        Integer fetchTwo = queryFactory
-                .selectOne()
-                .from(friend)
-                .where(friend.status.eq(status).and(
-                        friend.fromUser.id.eq(toUser).and((friend.toUser.id.eq(fromUser)))))
-                .fetchFirst();
-
-        return fetchOne != null || fetchTwo != null;
+        return result != null;
     }
 
     @Override
     public List<Friend> findOriginFriends(FriendStatus status, Long fromUser, Long toUser) {
         QFriend friend = QFriend.friend;
 
-        List<Friend> fetch = queryFactory.selectFrom(friend)
+        return queryFactory.selectFrom(friend)
+                .leftJoin(friend.fromUser).fetchJoin()
+                .leftJoin(friend.toUser).fetchJoin()
                 .where(friend.status.eq(status)
-                        .and(friend.fromUser.id.eq(fromUser).or(friend.toUser.id.eq(toUser))))
+                        .and(
+                                (friend.fromUser.id.eq(fromUser).or(friend.toUser.id.eq(toUser)))
+                                        .or(
+                                                friend.fromUser.id.eq(toUser).or(friend.toUser.id.eq(fromUser))
+                                        )
+                        ))
                 .fetch();
-
-        List<Friend> fetch2 = queryFactory.selectFrom(friend)
-                .where(friend.status.eq(status)
-                        .and(friend.fromUser.id.eq(toUser).or(friend.toUser.id.eq(fromUser))))
-                .fetch();
-
-        fetch.addAll(fetch2);
-        return fetch;
     }
 
 }

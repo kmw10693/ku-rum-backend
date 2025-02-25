@@ -1,6 +1,6 @@
 package ku_rum.backend.global.exception.notice;
 
-import ku_rum.backend.global.response.status.ResponseStatus;
+import ku_rum.backend.global.support.response.status.ResponseStatus;
 import lombok.Getter;
 
 @Getter

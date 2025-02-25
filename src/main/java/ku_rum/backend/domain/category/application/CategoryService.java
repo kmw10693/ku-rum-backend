@@ -4,7 +4,7 @@ import ku_rum.backend.domain.category.domain.repository.BuildingCategoryQueryRep
 import ku_rum.backend.domain.category.domain.repository.CategoryQueryRepository;
 import ku_rum.backend.domain.category.domain.repository.CategoryRepository;
 import ku_rum.backend.global.exception.category.CategoryNotExistException;
-import ku_rum.backend.global.response.status.BaseExceptionResponseStatus;
+import ku_rum.backend.global.support.response.status.BaseExceptionResponseStatus;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

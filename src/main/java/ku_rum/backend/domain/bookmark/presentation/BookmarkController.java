@@ -4,17 +4,14 @@ import jakarta.validation.Valid;
 import ku_rum.backend.domain.bookmark.application.BookmarkService;
 import ku_rum.backend.domain.bookmark.dto.request.BookmarkSaveRequest;
 import ku_rum.backend.domain.notice.dto.response.NoticeSimpleResponse;
-import ku_rum.backend.domain.user.domain.User;
-import ku_rum.backend.global.response.BaseResponse;
-import ku_rum.backend.global.security.jwt.CustomUserDetails;
+import ku_rum.backend.global.support.response.BaseResponse;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-import static ku_rum.backend.global.response.status.BaseExceptionResponseStatus.BOOKMARK_SUCCESS;
+import static ku_rum.backend.global.support.response.status.BaseExceptionResponseStatus.BOOKMARK_SUCCESS;
 
 @RestController
 @RequestMapping("/api/v1/bookmarks")
