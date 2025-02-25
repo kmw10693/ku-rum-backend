@@ -7,6 +7,7 @@ import lombok.Getter;
 public class CategoryNotProvidingDetailException extends RuntimeException {
   private BaseExceptionResponseStatus status;
   public CategoryNotProvidingDetailException(BaseExceptionResponseStatus status) {
+    super(status.getMessage());
     this.status = status;
   }
 }

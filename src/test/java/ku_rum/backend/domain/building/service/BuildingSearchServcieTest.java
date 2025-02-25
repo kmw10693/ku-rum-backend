@@ -2,9 +2,10 @@ package ku_rum.backend.domain.building.service;
 
 import ku_rum.backend.domain.building.application.BuildingSearchService;
 import ku_rum.backend.domain.building.dto.response.BuildingResponse;
+import ku_rum.backend.domain.category.dto.response.CategoryDetailResponse;
 import ku_rum.backend.global.exception.building.BuildingNotFoundException;
 import ku_rum.backend.global.exception.category.CategoryNotExistException;
-import org.junit.jupiter.api.Assertions;
+import ku_rum.backend.global.exception.category.CategoryNotProvidingDetailException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -12,7 +13,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.transaction.annotation.Transactional;
-
 
 import java.util.List;
 
@@ -39,7 +39,7 @@ public class BuildingSearchServcieTest {
             List<BuildingResponse> buildingResponses = buildingSearchService.findAllBuildings();
 
             //when then
-            assertEquals(26, buildingResponses.size());
+            assertEquals(36, buildingResponses.size());
         }
 
 
@@ -98,6 +98,21 @@ public class BuildingSearchServcieTest {
                             true)
             );
         }
+
+        @DisplayName("디테일 반환하는 카테고리의 디테일 정보 출력")
+        @Test
+        public void viewBuildingByCategoryInBuilding_success() throws Exception{
+            //given
+            Long buildingId = 36L;
+            String text = "학생 식당";
+            CategoryDetailResponse categoryDetailResponse = buildingSearchService.viewBuildingDetailByCategory(text, buildingId);
+
+            //when then
+            assertAll(
+                    () -> assertEquals(9, categoryDetailResponse.detailList().size()),
+                    () -> assertEquals( categoryDetailResponse.category(),text)
+            );
+        }
     }
 
     @DisplayName("실패")
@@ -150,6 +165,22 @@ public class BuildingSearchServcieTest {
                     buildingSearchService.searchAvailableText(text))
                     .isInstanceOf(BuildingNotFoundException.class)
                     .hasMessageContaining(BUILDING_DATA_NOT_FOUND_BY_NAME.getMessage());
+
+
+        }
+
+        @DisplayName("디테일 반환하는 카테고리의 디테일 정보 출력 - 실패")
+        @Test
+        public void viewBuildingByCategoryInBuilding_failure() throws Exception{
+            //given
+            Long buildingId = 34L;
+            String text = "레레레";
+
+            //when then
+            assertThatThrownBy(() ->
+                    buildingSearchService.viewBuildingDetailByCategory(text, buildingId))
+                    .isInstanceOf(CategoryNotProvidingDetailException.class)
+                    .hasMessageContaining(CATEGORYNAME_NOT_PROVIDING_DETAIL.getMessage());
 
 
         }

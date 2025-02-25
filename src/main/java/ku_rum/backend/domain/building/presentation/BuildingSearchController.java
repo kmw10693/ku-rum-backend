@@ -116,14 +116,14 @@ public class BuildingSearchController {
    * @param request
    * @return
    */
-  @PostMapping
+  @PostMapping("/detail")
   public BaseResponse<CategoryDetailResponse> viewBuildingByCategoryInBuilding(
           @AuthenticationPrincipal CustomUserDetails userDetails,
           @RequestBody BuildindgCategoryRequest  request
   ){
     userService.validateUserDetails(userDetails);
     CategoryDetailResponse categoryDetailResponse = buildingSearchService.viewBuildingDetailByCategory(request.category(), request.buildingId());
-    return BaseResponse.of(SUCCESS.getStatus(), categoryDetailResponse);
+    return BaseResponse.ok(categoryDetailResponse);
   }
 
 }
