@@ -1,8 +1,8 @@
 package ku_rum.backend.domain.common.wein.presentation;
 
 import jakarta.validation.Valid;
-import ku_rum.backend.domain.reservation.dto.request.WeinLoginRequest;
 import ku_rum.backend.domain.common.wein.application.WeinService;
+import ku_rum.backend.domain.common.wein.dto.request.WeinLoginRequest;
 import ku_rum.backend.global.support.response.BaseResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.validation.annotation.Validated;

@@ -11,6 +11,7 @@ import ku_rum.backend.global.exception.friend.NoFriendsException;
 import ku_rum.backend.global.exception.user.NoSuchUserException;
 import ku_rum.backend.global.security.jwt.UserUtils;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -26,6 +27,7 @@ import static ku_rum.backend.global.support.response.status.BaseExceptionRespons
 @Service
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
+@Slf4j
 public class FriendService {
     private final FriendRepository friendRepository;
     private final UserRepository userRepository;

@@ -1,94 +1,128 @@
 package ku_rum.backend.domain.friend.application;
 
-import jakarta.transaction.Transactional;
 import ku_rum.backend.domain.building.domain.Building;
-import ku_rum.backend.domain.building.domain.repository.BuildingRepository;
 import ku_rum.backend.domain.department.domain.Department;
-import ku_rum.backend.domain.department.domain.repository.DepartmentRepository;
 import ku_rum.backend.domain.friend.domain.Friend;
 import ku_rum.backend.domain.friend.domain.FriendStatus;
 import ku_rum.backend.domain.friend.domain.repository.FriendRepository;
-import ku_rum.backend.domain.friend.dto.request.FriendFindRequest;
-import ku_rum.backend.domain.friend.dto.request.FriendListRequest;
-import ku_rum.backend.domain.friend.dto.response.FriendFindResponse;
 import ku_rum.backend.domain.friend.dto.response.FriendListResponse;
 import ku_rum.backend.domain.user.domain.User;
 import ku_rum.backend.domain.user.domain.repository.UserRepository;
 import ku_rum.backend.global.exception.friend.NoFriendsException;
-import ku_rum.backend.global.security.jwt.CustomUserDetails;
 import ku_rum.backend.global.security.jwt.UserUtils;
-import org.assertj.core.api.Assertions;
-import org.assertj.core.groups.Tuple;
-import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockedStatic;
-import org.mockito.MockitoAnnotations;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContext;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.test.context.support.WithMockUser;
+import org.mockito.Mockito;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 
-import static org.assertj.core.api.Assertions.*;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.*;
 
-@SpringBootTest
-@Transactional
-@TestInstance(TestInstance.Lifecycle.PER_CLASS)
+@ExtendWith(MockitoExtension.class)
 class FriendServiceTest {
 
-    @Autowired
+    @Mock
     private FriendRepository friendRepository;
 
     @Mock
     private UserRepository userRepository;
 
-    @Autowired
-    private DepartmentRepository departmentRepository;
-
-    @Autowired
-    private BuildingRepository buildingRepository;
-
-    @Autowired
+    @InjectMocks
     private FriendService friendService;
 
-    private Department department;
+    private User user;
+    private User friend;
+    private Friend friendEntity;
+    MockedStatic<UserUtils> userUtilsMockedStatic;
 
-    @BeforeAll
-    void init() {
+    @BeforeEach
+    void setUp() {
+        BigDecimal latitude = BigDecimal.valueOf(64.3423423);
+        BigDecimal longitude = BigDecimal.valueOf(342.2343434);
 
-        Building building = Building.of("신공학관",11L, "신공",1L, BigDecimal.valueOf(64.3423423), BigDecimal.valueOf(64.3423423));
-        buildingRepository.save(building);
+        Building building = Building.of("신공학관", 3L,"신공", 1L, latitude, longitude);
+        user = User.of("user1", "user1@example.com", "nickname1", "password", "123456", Department.of("CS", building));
+        friend = User.of("user2", "user2@example.com", "nickname2", "password", "654321", Department.of("Math", building));
+        friendEntity = Friend.of(user, friend, FriendStatus.PENDING);
 
-        department = Department.of("컴퓨터공학부", building);
-        departmentRepository.save(department);
-
-        User fromUser = User.of("kmw106933", "kmw106933@konkuk.ac.kr", "미미미누", "password123", "202112322", department);
-        User toUser1 = User.of("kmw106934", "kmw1069332@konkuk.ac.kr","미미미누1", "password123", "202112321", department);
-        User toUser2 = User.of("kmw106935", "kmw1069333@konkuk.ac.kr","미미미누2", "password123", "202112323", department);
-        User newUser = User.of("kmw106936", "kmw1069334@konkuk.ac.kr","미미미누3", "password123", "202112324", department);
-
-        userRepository.save(fromUser);
-        userRepository.save(toUser1);
-        userRepository.save(toUser2);
-        userRepository.save(newUser);
-
-        Friend friend = Friend.of(fromUser, toUser1, FriendStatus.ACCEPT);
-        Friend friend2 = Friend.of(fromUser, toUser2, FriendStatus.ACCEPT);
-
-        friendRepository.save(friend);
-        friendRepository.save(friend2);
-
-        MockedStatic<UserUtils> mockedStatic = mockStatic(UserUtils.class);
-        mockedStatic.when(UserUtils::getLongMemberId).thenReturn(1L);
+        userUtilsMockedStatic = Mockito.mockStatic(UserUtils.class);
+        userUtilsMockedStatic.when(UserUtils::getLongMemberId).thenReturn(1L);
     }
 
+    @AfterEach
+    public void tearDown() {
+        userUtilsMockedStatic.close();
+    }
+
+    @Test
+    @DisplayName("친구 조회시 모든 친구 조회 - 성공")
+    void getMyLists_ShouldReturnFriendList() {
+        when(userRepository.findUserById(anyLong())).thenReturn(Optional.of(user));
+        when(friendRepository.findFriends(
+                eq(FriendStatus.ACCEPT), any())).thenReturn(List.of(friendEntity));
+
+        List<FriendListResponse> result = friendService.getMyLists();
+
+        assertThat(result).isNotEmpty();
+        assertThat(result.get(0).nickname()).isEqualTo("nickname2");
+    }
+
+    @Test
+    @DisplayName("친구 요청 시 친구를 저장한다 - 성공")
+    void requestFriends_ShouldSaveFriendRequest() {
+        when(userRepository.findUserById(anyLong())).thenReturn(Optional.of(user)).thenReturn(Optional.of(friend));
+        when(friendRepository.existFriends(FriendStatus.ACCEPT, user.getId(), friend.getId())).thenReturn(false);
+
+        friendService.requestFriends(1L);
+
+        verify(friendRepository).save(any(Friend.class));
+    }
+
+    @Test
+    @DisplayName("친구 요청 시 이미 친구가 있는 경우 - 예외 발생")
+    void requestFriends_ShouldThrowExceptionIfAlreadyFriends() {
+        when(userRepository.findUserById(anyLong())).thenReturn(Optional.of(user)).thenReturn(Optional.of(friend));
+        when(friendRepository.existFriends(FriendStatus.ACCEPT, user.getId(), friend.getId())).thenReturn(true);
+
+        assertThatThrownBy(() -> friendService.requestFriends(1L))
+                .isInstanceOf(NoFriendsException.class);
+    }
+
+    @Test
+    @DisplayName("친구 수락 시 상태를 ACCEPT로 변환한다.")
+    void acceptFriendRequest_ShouldUpdateStatusToAccept() {
+        lenient().when(userRepository.findUserById(anyLong())).thenReturn(Optional.of(user));
+        lenient().when(friendRepository.findFirstByFromUserAndToUserAndStatus(
+                        any(User.class), any(User.class), eq(FriendStatus.PENDING)))
+                .thenReturn(Optional.of(friendEntity));
+
+        friendService.acceptFriendRequest(1L);
+
+        assertThat(friendEntity.getStatus()).isEqualTo(FriendStatus.ACCEPT);
+    }
+
+    @Test
+    @DisplayName("친구를 삭제하는 경우 - 상태를 Reject으로 변경한다.")
+    void deleteFriendRequest_ShouldUpdateStatusToReject() {
+        when(userRepository.findUserById(anyLong())).thenReturn(Optional.of(user)).thenReturn(Optional.of(friend));
+        when(friendRepository.findOriginFriends(FriendStatus.ACCEPT, user.getId(), friend.getId()))
+                .thenReturn(List.of(friendEntity));
+
+        friendService.deleteFriendRequest(2L);
+
+        assertThat(friendEntity.getStatus()).isEqualTo(FriendStatus.REJECT);
+    }
 }
