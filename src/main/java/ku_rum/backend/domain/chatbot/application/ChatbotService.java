@@ -24,7 +24,7 @@ public class ChatbotService {
                 .body(String.class);
     }
 
-    private static Map<String, Object> getModel(String content) {
+    private Map<String, Object> getModel(String content) {
         return Map.of(
                 "model", "gpt-4",
                 "messages", List.of(Map.of("role", "user", "content", content))
