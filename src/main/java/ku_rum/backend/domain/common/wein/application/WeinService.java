@@ -1,7 +1,6 @@
 package ku_rum.backend.domain.common.wein.application;
 
-import jakarta.validation.Valid;
-import ku_rum.backend.domain.reservation.dto.request.WeinLoginRequest;
+import ku_rum.backend.domain.common.wein.dto.request.WeinLoginRequest;
 import ku_rum.backend.global.exception.wein.WeinException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -27,7 +26,7 @@ import static ku_rum.backend.global.support.response.status.BaseExceptionRespons
 @Slf4j
 public class WeinService {
 
-    public void loginToWein(@Valid final WeinLoginRequest weinLoginRequest) {
+    public void loginToWein(final WeinLoginRequest weinLoginRequest) {
         CloseableHttpClient httpClient = getCloseableHttpClient();
         RestTemplate restTemplate = getRestTemplate(httpClient);
         HttpHeaders headers = getHeaders();
@@ -44,7 +43,7 @@ public class WeinService {
         }
     }
 
-    private static ResponseEntity<String> getResponseEntity(RestTemplate restTemplate, HttpEntity<MultiValueMap<String, String>> requestEntity) {
+    private ResponseEntity<String> getResponseEntity(RestTemplate restTemplate, HttpEntity<MultiValueMap<String, String>> requestEntity) {
         ResponseEntity<String> response = restTemplate.exchange(
                 "https://wein.konkuk.ac.kr/common/user/loginProc.do",
                 HttpMethod.POST,
@@ -54,7 +53,7 @@ public class WeinService {
         return response;
     }
 
-    private static void getWeinLoginResponseBaseResponse(WeinLoginRequest weinLoginRequest, ResponseEntity<String> response) {
+    private void getWeinLoginResponseBaseResponse(WeinLoginRequest weinLoginRequest, ResponseEntity<String> response) {
         Optional<String> responseBodyOpt = Optional.ofNullable(response.getBody());
         if (responseBodyOpt.isPresent()) {
             String responseBody = responseBodyOpt.get();
@@ -67,19 +66,19 @@ public class WeinService {
         }
     }
 
-    private static HttpHeaders getHeaders() {
+    private HttpHeaders getHeaders() {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
         return headers;
     }
 
-    private static RestTemplate getRestTemplate(CloseableHttpClient httpClient) {
+    private RestTemplate getRestTemplate(CloseableHttpClient httpClient) {
         HttpComponentsClientHttpRequestFactory requestFactory = new HttpComponentsClientHttpRequestFactory(httpClient);
         RestTemplate restTemplate = new RestTemplate(requestFactory);
         return restTemplate;
     }
 
-    private static CloseableHttpClient getCloseableHttpClient() {
+    private CloseableHttpClient getCloseableHttpClient() {
         CloseableHttpClient httpClient = HttpClients.custom()
                 .setRedirectStrategy(new DefaultRedirectStrategy()) // 기본 리다이렉션 전략
                 .setDefaultCookieStore(new BasicCookieStore())       // 세션 유지를 위한 쿠키 관리
@@ -87,7 +86,7 @@ public class WeinService {
         return httpClient;
     }
 
-    private MultiValueMap<String, String> createRequestBody(WeinLoginRequest weinLoginRequest) {
+    MultiValueMap<String, String> createRequestBody(WeinLoginRequest weinLoginRequest) {
         MultiValueMap<String, String> requestBody = new LinkedMultiValueMap<>();
         requestBody.add("userId", weinLoginRequest.getUserId());
         requestBody.add("pw", weinLoginRequest.getPassword());

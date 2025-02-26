@@ -171,6 +171,10 @@ dependencies {
 	testImplementation 'com.epages:restdocs-api-spec-mockmvc:' + restdocsApiSpecVersion
 	// 9. SwaggerUI 추가
 	swaggerUI 'org.webjars:swagger-ui:4.11.1'
+
+	// Testcontainers & Selenium
+	testImplementation 'org.testcontainers:junit-jupiter'
+	testImplementation 'org.testcontainers:selenium'
 }
 
 
