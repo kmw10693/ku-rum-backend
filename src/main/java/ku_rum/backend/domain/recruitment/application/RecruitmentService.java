@@ -9,6 +9,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeOptions;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -27,9 +28,12 @@ public class RecruitmentService {
     public void crawlAndSaveRecruitments() {
         WebDriver driver = null;
 
-        try{
-            driver = new ChromeDriver();
-            for(RecruitCategory category : RecruitCategory.values()){
+        try {
+            ChromeOptions chromeOptions = new ChromeOptions();
+            chromeOptions.addArguments("--headless");
+            chromeOptions.addArguments("--no-sandbox");
+            driver = new ChromeDriver(chromeOptions);
+            for (RecruitCategory category : RecruitCategory.values()) {
                 String url = category.getUrl();
                 driver.get(url);
                 log.info("크롤링 시작: {}", category.getUrl());
@@ -40,19 +44,19 @@ public class RecruitmentService {
         }
     }
 
-    private void crawlAndSave(RecruitCategory category, WebDriver driver) {
+    void crawlAndSave(RecruitCategory category, WebDriver driver) {
         List<WebElement> recruitList = driver.findElements(By.cssSelector(category.getSelector()));
 
-        if(recruitList.isEmpty()){
+        if (recruitList.isEmpty()) {
             log.warn("채용 공고를 찾지 못했습니다: {}", category.getUrl());
             return;
         }
-
         //사람인의 경우 첫번째요소가 실시간으로 바뀌기 때문에 건너뜁니다.
         int startIndex = category.isEqual(SARAMIN) ? 1 : 0;
 
         for (int i = startIndex; i < recruitList.size(); i++) {
             WebElement recruitElement = recruitList.get(i);
+
             try {
                 String title = recruitElement.findElement(By.cssSelector(category.getTitleSelector())).getText();
                 String url = recruitElement.findElement(By.cssSelector(category.getUrlSelector())).getAttribute("href");

@@ -14,7 +14,7 @@ import ku_rum.backend.domain.category.domain.repository.BuildingCategoryQueryRep
 import ku_rum.backend.domain.category.domain.repository.CategoryRepository;
 import ku_rum.backend.domain.category.dto.response.CategoryDetailResponse;
 import ku_rum.backend.domain.menu.domain.repository.MenuRepository;
-import ku_rum.backend.domain.menu.response.MenuSimpleResponse;
+import ku_rum.backend.domain.menu.dto.response.MenuSimpleResponse;
 import ku_rum.backend.global.exception.building.BuildingNotFoundException;
 import ku_rum.backend.global.exception.category.CategoryNotExistException;
 import ku_rum.backend.global.exception.category.CategoryNotProvidingDetailException;

@@ -6,7 +6,7 @@ import ku_rum.backend.domain.building.application.BuildingSearchService;
 import ku_rum.backend.domain.building.dto.response.BuildingResponse;
 import ku_rum.backend.domain.category.domain.Category;
 import ku_rum.backend.domain.category.dto.response.CategoryDetailResponse;
-import ku_rum.backend.domain.menu.response.MenuSimpleResponse;
+import ku_rum.backend.domain.menu.dto.response.MenuSimpleResponse;
 import ku_rum.backend.domain.user.application.UserService;
 import ku_rum.backend.global.config.redis.RedisUtil;
 import ku_rum.backend.global.log.domain.repository.ApiLogRepository;
