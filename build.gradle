@@ -182,6 +182,10 @@ tasks.named('test') {
 	useJUnitPlatform()
 }
 
+tasks.named('jar') {
+	enabled = false
+}
+
 // 10. openapi3가 먼저 실행
 tasks.withType(GenerateSwaggerUI) {
 	dependsOn 'openapi3'
