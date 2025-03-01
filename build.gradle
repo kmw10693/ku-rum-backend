@@ -108,7 +108,8 @@ swaggerSources {
 // 6. openapi3 스펙 생성시 설정 정보
 openapi3 {
 	servers = [
-			{ url = "http://localhost:8080" }
+			{ url = "http://43.202.65.121:8111" },
+			{ url = "http://43.202.65.121:8112" }
 	]
 	title = "API 문서"
 	description = "RestDocsWithSwagger Docs"
