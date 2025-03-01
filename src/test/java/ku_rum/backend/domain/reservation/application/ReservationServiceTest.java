@@ -7,10 +7,12 @@ import ku_rum.backend.domain.reservation.dto.TimeTable;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.springframework.test.context.ActiveProfiles;
 
 import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+@ActiveProfiles("test")
 class ReservationServiceTest {
 
     private ReservationService reservationService;
