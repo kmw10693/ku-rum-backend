@@ -177,6 +177,9 @@ dependencies {
 	// Testcontainers & Selenium
 	testImplementation 'org.testcontainers:junit-jupiter'
 	testImplementation 'org.testcontainers:selenium'
+
+	//FireBase
+	implementation 'com.google.firebase:firebase-admin:6.8.1'
 }
 
 
