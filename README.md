@@ -15,6 +15,10 @@
 ### CI/CD
 <img width="80%" alt="스크린샷 2025-03-01 오후 6 56 29" src="https://github.com/user-attachments/assets/688834db-852a-421f-9687-72e9232bf68a" />
 
+### 모니터링
+<img width="80%" alt="image" src="https://github.com/user-attachments/assets/110ac0fe-2c69-42ab-8cfd-c4b1f9c45168" />
+
+
 
 ## 멤버
 
