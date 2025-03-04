@@ -4,6 +4,7 @@ import io.jsonwebtoken.JwtException;
 import jakarta.servlet.http.HttpServletRequest;
 import ku_rum.backend.domain.auth.dto.request.LoginRequest;
 import ku_rum.backend.domain.auth.dto.request.ReissueRequest;
+import ku_rum.backend.domain.common.firebase.application.NotificationService;
 import ku_rum.backend.global.security.jwt.*;
 import ku_rum.backend.global.security.jwt.dto.TokenResponse;
 import lombok.RequiredArgsConstructor;
@@ -28,6 +29,7 @@ public class AuthService {
     private final JwtTokenProvider jwtTokenProvider;
     private final JwtTokenAuthenticationFilter jwtTokenAuthenticationFilter;
     private final TokenBlacklistService tokenBlacklistService;
+    private final NotificationService notificationService;
 
     public TokenResponse login(LoginRequest authRequest) {
         try {
@@ -46,7 +48,10 @@ public class AuthService {
         Long userId = jwtTokenProvider.getUserId(token);
 
         long expiredAccessTokenTime = getExpiredAccessTokenTime(token);
+        notificationService.deleteToken(userId);
+        log.debug("FCM 토큰 만료 완료");
         tokenBlacklistService.setBlackListInRedis(token, expiredAccessTokenTime, userId);
+        log.info("사용자 {} 가 로그인 했습니다.", userId);
     }
 
     public TokenResponse reissue(ReissueRequest reissueRequest) {
@@ -69,6 +74,7 @@ public class AuthService {
     private String validateAccessToken(HttpServletRequest request) {
         String token = jwtTokenAuthenticationFilter.resolveToken(request);
         jwtTokenProvider.validateToken(token);
+        log.trace("");
         return token;
     }
 }
