@@ -3,17 +3,20 @@ package ku_rum.backend.domain.building.domain.repository;
 import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import jakarta.persistence.EntityManager;
+import jakarta.persistence.Query;
 import ku_rum.backend.domain.building.domain.Building;
 import ku_rum.backend.domain.building.domain.QBuilding;
 import ku_rum.backend.domain.building.dto.response.BuildingResponse;
-import ku_rum.backend.domain.category.domain.Category;
+import ku_rum.backend.global.exception.building.BuildingNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import jakarta.persistence.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Optional;
+
+import static ku_rum.backend.global.support.response.status.BaseExceptionResponseStatus.*;
+
 
 @Repository
 @RequiredArgsConstructor
@@ -38,21 +41,20 @@ public class BuildingQueryRepository {
             .fetch();
   }
 
+
   public Optional<BuildingResponse> findBuildingByNumber(Long number) {
-    return Optional.ofNullable(
-            queryFactory
-                    .select(Projections.constructor(BuildingResponse.class,
-                            qBuilding.id,
-                            qBuilding.name,
-                            qBuilding.number,
-                            qBuilding.abbreviation,
-                            qBuilding.latitude,
-                            qBuilding.longitude
-                    ))
-                    .from(qBuilding)
-                    .where(qBuilding.number.eq(number))
-                    .fetchOne()
-    );
+    return Optional.ofNullable(queryFactory
+            .select(Projections.constructor(BuildingResponse.class,
+                    qBuilding.id,
+                    qBuilding.name,
+                    qBuilding.number,
+                    qBuilding.abbreviation,
+                    qBuilding.latitude,
+                    qBuilding.longitude
+            ))
+            .from(qBuilding)
+            .where(qBuilding.number.eq(number))
+            .fetchOne());
   }
 
   public Optional<BuildingResponse> findBuildingByName(String name) {
@@ -98,19 +100,16 @@ public class BuildingQueryRepository {
     );
   }
 
-  public List<Building> findAllByCategory(Category category) {
-    return queryFactory
-            .selectFrom(qBuilding)
-            .where(qBuilding.category.eq(category))
-            .fetch();
-  }
-
   public List<Building> searchBuildingByNgram(String searchText) {
     String nativeQuery = "SELECT * FROM building WHERE MATCH(name) AGAINST (?1 IN BOOLEAN MODE)";
 
     Query query = entityManager.createNativeQuery(nativeQuery, Building.class);
-    query.setParameter(1, searchText + "*");
+    query.setParameter(1, searchText);
+    List queryResultList = query.getResultList();
 
-    return query.getResultList();
+    if (queryResultList.isEmpty())
+      throw new BuildingNotFoundException(BUILDING_DATA_NOT_FOUND_BY_NAME);
+    return queryResultList;
   }
+
 }

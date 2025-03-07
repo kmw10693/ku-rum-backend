@@ -1,13 +1,15 @@
 package ku_rum.backend.global.support.response;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import ku_rum.backend.global.support.response.status.ResponseStatus;
-import lombok.Getter;
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 
-@Getter
-@JsonPropertyOrder({"code", "status", "message", "result"})
+@JsonPropertyOrder({"code", "status", "message", "data"})
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
 public class BaseResponse<T> implements ResponseStatus {
 
     private final int code;
@@ -15,6 +17,7 @@ public class BaseResponse<T> implements ResponseStatus {
     private final String message;
 
     @JsonInclude(JsonInclude.Include.NON_NULL)
+    @JsonProperty("data")
     private final T data;
 
 
@@ -50,5 +53,9 @@ public class BaseResponse<T> implements ResponseStatus {
     @Override
     public String getMessage() {
         return message;
+    }
+
+    public T getData() {
+        return data;
     }
 }

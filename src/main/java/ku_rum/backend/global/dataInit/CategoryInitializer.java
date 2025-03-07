@@ -24,6 +24,9 @@ public class CategoryInitializer {
             Category.of(CategoryType.KCUBE.getText())
     );
     categories.add(
+            Category.of(CategoryType.KHUB.getText())
+    );
+    categories.add(
             Category.of(CategoryType.STUDENT_CAFETERIA.getText())
     );
     return categories;

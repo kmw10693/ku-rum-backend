@@ -21,14 +21,12 @@ public class BuildingExceptionControllerAdvice {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @ExceptionHandler(BuildingNotRegisteredException.class)
     public BaseErrorResponse handleNoBuildingRegisteredException(final BuildingNotRegisteredException e) {
-        log.error("[handleNoBuildingRegisteredException]", e);
         return new BaseErrorResponse(NO_BUILDING_REGISTERED_CURRENTLY);
     }
 
     @ResponseStatus(HttpStatus.NOT_FOUND)
     @ExceptionHandler(BuildingNotFoundException.class)
     public BaseErrorResponse handleNoBuildingFoundException(final BuildingNotFoundException e){
-        log.error("[handleNoBuildingFoundException]", e);
         return new BaseErrorResponse(BUILDING_DATA_NOT_FOUND_BY_NAME);
     }
 }

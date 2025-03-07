@@ -14,6 +14,16 @@ public class BuildingInitializer {
 
     buildings.add(
             Building.of(
+                    BuildingAbbrev.행정.getOriginalName(),
+                    1L,
+                    BuildingAbbrev.행정.name(),
+                    BigDecimal.valueOf(37.543075),
+                    BigDecimal.valueOf(127.075067)
+            )
+    );
+    //건물
+    buildings.add(
+            Building.of(
                     BuildingAbbrev.경영.getOriginalName(),
                     2L,
                     BuildingAbbrev.경영.name(),
@@ -54,11 +64,28 @@ public class BuildingInitializer {
     );
     buildings.add(
             Building.of(
+                    BuildingAbbrev.박물관.getOriginalName(),
+                    7L,
+                    BuildingAbbrev.박물관.name(),
+                    BigDecimal.valueOf(37.542373),
+                    BigDecimal.valueOf(127.075628)
+            )
+    );
+    buildings.add(
+            Building.of(
                     BuildingAbbrev.종강.getOriginalName(),
                     8L,
                     BuildingAbbrev.종강.name(),
                     BigDecimal.valueOf(37.542260),
                     BigDecimal.valueOf(127.073637))
+    );
+    buildings.add(
+            Building.of(
+                    BuildingAbbrev.도서관.getOriginalName(),
+                    9L,
+                    BuildingAbbrev.도서관.name(),
+                    BigDecimal.valueOf(37.541939),
+                    BigDecimal.valueOf(127.073687))
     );
     buildings.add(
             Building.of(
@@ -83,6 +110,14 @@ public class BuildingInitializer {
                     BuildingAbbrev.동.name(),
                     BigDecimal.valueOf(37.540242),
                     BigDecimal.valueOf(127.074289))
+    );
+    buildings.add(
+            Building.of(
+                    BuildingAbbrev.입학.getOriginalName(),
+                    13L,
+                    BuildingAbbrev.입학.name(),
+                    BigDecimal.valueOf(37.540323),
+                    BigDecimal.valueOf(127.073469))
     );
     buildings.add(
             Building.of(
@@ -134,6 +169,14 @@ public class BuildingInitializer {
     );
     buildings.add(
             Building.of(
+                    BuildingAbbrev.학생회관.getOriginalName(),
+                    20L,
+                    BuildingAbbrev.학생회관.name(),
+                    BigDecimal.valueOf(37.541873),
+                    BigDecimal.valueOf(127.078133))
+    );
+    buildings.add(
+            Building.of(
                     BuildingAbbrev.공.getOriginalName(),
                     21L,
                     BuildingAbbrev.공.name(),
@@ -164,6 +207,110 @@ public class BuildingInitializer {
                     BigDecimal.valueOf(37.540757),
                     BigDecimal.valueOf(127.079368))
     );
+    buildings.add(
+            Building.of(
+                    BuildingAbbrev.KU기술혁신관.getOriginalName(),
+                    25L,
+                    BuildingAbbrev.KU기술혁신관.name(),
+                    BigDecimal.valueOf(37.539690),
+                    BigDecimal.valueOf(127.077253))
+    );
+    buildings.add(
+            Building.of(
+                    BuildingAbbrev.기숙사.getOriginalName(),
+                    26L,
+                    BuildingAbbrev.기숙사.name(),
+                    BigDecimal.valueOf(37.539474),
+                    BigDecimal.valueOf(127.078203))
+    );
+    //카테고리
+    //레스티오
+    buildings.add(//27
+            Building.of(
+                    BuildingAbbrev.레스티오_동생대점.getOriginalName(),
+                    0L,
+                    BuildingAbbrev.레스티오_동생대점.name(),
+                    BigDecimal.valueOf(37.540222),
+                    BigDecimal.valueOf(127.073524))
+    );
+    buildings.add(//28
+            Building.of(
+                    BuildingAbbrev.레스티오_공대점.getOriginalName(),
+                    0L,
+                    BuildingAbbrev.레스티오_공대점.name(),
+                    BigDecimal.valueOf(37.541620),
+                    BigDecimal.valueOf(127.078732))
+    );
+    //카페_1984
+    buildings.add(//29
+            Building.of(
+                    BuildingAbbrev.카페_1984_학생회관점.getOriginalName(),
+                    0L,
+                    BuildingAbbrev.카페_1984_학생회관점.name(),
+                    BigDecimal.valueOf(37.541840),
+                    BigDecimal.valueOf(127.077815))
+    );
+    buildings.add(//30
+            Building.of(
+                    BuildingAbbrev.카페_1984_도서관점.getOriginalName(),
+                    0L,
+                    BuildingAbbrev.카페_1984_도서관점.name(),
+                    BigDecimal.valueOf(37.541927),
+                    BigDecimal.valueOf(127.073876))
+    );
+    buildings.add(//31
+            Building.of(
+                    BuildingAbbrev.CU_학생회관점.getOriginalName(),
+                    0L,
+                    BuildingAbbrev.CU_학생회관점.name(),
+                    BigDecimal.valueOf(37.541797),
+                    BigDecimal.valueOf(127.078266))
+    );
+    //CU
+    buildings.add(//32
+            Building.of(
+                    BuildingAbbrev.CU_도서관점.getOriginalName(),
+                    0L,
+                    BuildingAbbrev.CU_도서관점.name(),
+                    BigDecimal.valueOf(37.541994),
+                    BigDecimal.valueOf(127.074035))
+    );
+    //학생식당
+    buildings.add(//33
+            Building.of(
+                    BuildingAbbrev.학생식당_학생회관점.getOriginalName(),
+                    0L,
+                    BuildingAbbrev.학생식당_학생회관점.name(),
+                    BigDecimal.valueOf(37.541994),
+                    BigDecimal.valueOf(127.074035))
+    );
+    buildings.add(//34
+            Building.of(
+                    BuildingAbbrev.학생식당_도서관점.getOriginalName(),
+                    0L,
+                    BuildingAbbrev.학생식당_도서관점.name(),
+                    BigDecimal.valueOf(37.541994),
+                    BigDecimal.valueOf(127.074035))
+    );
+    buildings.add(//35
+            Building.of(
+                    BuildingAbbrev.학생식당_기숙사점.getOriginalName(),
+                    0L,
+                    BuildingAbbrev.학생식당_기숙사점.name(),
+                    BigDecimal.valueOf(37.541994),
+                    BigDecimal.valueOf(127.074035))
+    );
+    //KHUB
+    //KCUBE
+    buildings.add(//36
+            Building.of(
+                    BuildingAbbrev.KCUBE_공학관.getOriginalName(),
+                    0L,
+                    BuildingAbbrev.KCUBE_공학관.name(),
+                    BigDecimal.valueOf(37.541994),
+                    BigDecimal.valueOf(127.074035))
+    );
+
     return buildings;
   }
 }
