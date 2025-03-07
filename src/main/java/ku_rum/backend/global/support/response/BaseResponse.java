@@ -1,9 +1,11 @@
 package ku_rum.backend.global.support.response;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-import ku_rum.backend.global.response.status.ResponseStatus;
-import lombok.Getter;
+import ku_rum.backend.global.support.response.status.ResponseStatus;
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 
 @JsonPropertyOrder({"code", "status", "message", "data"})

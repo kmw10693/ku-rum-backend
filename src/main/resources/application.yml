@@ -1,0 +1,17 @@
+spring:
+  application:
+    name: kurum
+  profiles:
+    active: prod
+
+  thymeleaf:
+    prefix: classpath:/templates/
+    suffix: .html
+    cache: false
+    encoding: UTF-8
+    mode: HTML
+    enabled: true
+
+logging:
+  level:
+    org.springframework.cache: trace

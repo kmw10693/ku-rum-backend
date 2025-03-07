@@ -13,6 +13,7 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.FilterType;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
@@ -24,6 +25,7 @@ import static org.assertj.core.api.Assertions.assertThat;
         type = FilterType.ASSIGNABLE_TYPE,
         classes = JpaAuditingConfig.class
 ))
+@ActiveProfiles("test")
 public class FriendRepositoryCustomImplTest {
 
     @Autowired

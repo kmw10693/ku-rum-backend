@@ -3,80 +3,112 @@ package ku_rum.backend.domain.user.application;
 import ku_rum.backend.domain.common.mail.application.MailService;
 import ku_rum.backend.domain.common.mail.dto.request.MailSendRequest;
 import ku_rum.backend.domain.common.mail.dto.request.MailVerificationRequest;
+import ku_rum.backend.domain.common.mail.dto.response.MailVerificationResponse;
+import ku_rum.backend.domain.user.domain.repository.UserRepository;
+import ku_rum.backend.global.exception.user.DuplicateEmailException;
+import ku_rum.backend.global.exception.user.MailSendException;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.ArgumentMatchers;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.core.ValueOperations;
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSender;
 
-import static ku_rum.backend.domain.common.mail.domain.MailSendSetting.MAIL_SEND_INFO;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.doThrow;
+import static org.mockito.Mockito.when;
 
-@SpringBootTest
+@ExtendWith(MockitoExtension.class)
 class MailServiceTest {
 
-    @Autowired
+    @Mock
+    private JavaMailSender emailSender;
+
+    @Mock
+    private UserRepository userRepository;
+
+    @Mock
     private RedisTemplate<String, String> redisTemplate;
 
-    @Autowired
+    @Mock
+    private ValueOperations<String, String> valueOperations;
+
+    @InjectMocks
     private MailService mailService;
 
     @Test
-    @DisplayName("회원에게 정상적으로 인증 이메일을 전송한다.")
-    void sendCodeToEmail() {
-        //given
-        MailSendRequest mailSendRequest = new MailSendRequest("testtest123@konkuk.ac.kr");
-        String key = generateKeyByEmail(mailSendRequest.email());
-        String email = mailSendRequest.email();
+    @DisplayName("인증을 보낸 이메일이 중복인 경우 예외 처리한다.")
+    void DuplicateEmailCheck() {
+        // given
+        String email = "test@example.com";
+        when(userRepository.existsByEmail(email)).thenReturn(true);
 
-        //when
-        mailService.sendCodeToEmail(mailSendRequest);
-
-        //then
-        assertThat(getRedisAuthCode(generateKeyByEmail(email))
-                .equals(redisTemplate.opsForValue().get(key)));
+        // when & then
+        assertThatThrownBy(() -> mailService.sendCodeToEmail(new MailSendRequest(email)))
+                .isInstanceOf(DuplicateEmailException.class);
     }
 
     @Test
-    @DisplayName("회원이 올바른 인증번호를 인증했을 시, true를 반환한다.")
-    void verifiedCode() {
-        MailSendRequest mailSendRequest = new MailSendRequest("testtest123@konkuk.ac.kr");
-        mailService.sendCodeToEmail(mailSendRequest);
+    @DisplayName("인증을 보낸 이메일이 중복이 아닌 경우 정상 작동된다.")
+    void NonDuplicateEmailCheck() {
+        // given
+        String email = "test@example.com";
+        when(userRepository.existsByEmail(email)).thenReturn(false);
+        doThrow(new RuntimeException()).when(emailSender).send(any(SimpleMailMessage.class));
 
-        String authCode = getRedisAuthCode(generateKeyByEmail("testtest123@konkuk.ac.kr"));
-
-        MailVerificationRequest mailVerificationRequest =
-                new MailVerificationRequest("testtest123@konkuk.ac.kr", authCode);
-
-        //when then
-        assertThat(mailService.verifiedCode(mailVerificationRequest))
-                .extracting("verified")
-                .isEqualTo(true);
+        // when & then
+        assertThatThrownBy(() -> mailService.sendCodeToEmail(new MailSendRequest(email)))
+                .isInstanceOf(MailSendException.class);
     }
 
     @Test
-    @DisplayName("회원이 올바르지 않는 인증번호를 인증했을시, false를 반환한다.")
-    void nonVerifiedCode() {
-        MailSendRequest mailSendRequest = new MailSendRequest("testtest123@konkuk.ac.kr");
-        mailService.sendCodeToEmail(mailSendRequest);
+    @DisplayName("이메일 인증 코드 검증 - 성공")
+    void codeVerifySuccess() {
+        // given
+        String email = "test@example.com";
+        String authCode = "123456";
+        String key = "auth_code:" + email;
 
-        String authCode = getRedisAuthCode(generateKeyByEmail("testtest1234@konkuk.ac.kr"));
+        when(userRepository.existsByEmail(email)).thenReturn(false);
+        when(redisTemplate.opsForValue()).thenReturn(valueOperations);
+        when(valueOperations.get(any())).thenReturn(authCode);
+        when(redisTemplate.hasKey(any())).thenReturn(true);
 
-        MailVerificationRequest mailVerificationRequest =
-                new MailVerificationRequest("testtest123@konkuk.ac.kr", authCode);
+        mailService.sendCodeToEmail(new MailSendRequest(email));
 
-        //when then
-        assertThat(mailService.verifiedCode(mailVerificationRequest))
-                .extracting("verified")
-                .isEqualTo(false);
+        // when
+        MailVerificationResponse response = mailService.verifiedCode(new MailVerificationRequest(email, authCode));
+
+        // then
+        assertThat(response.isVerified()).isTrue();
     }
 
-    private String generateKeyByEmail(String email) {
-        return MAIL_SEND_INFO.getAUTH_CODE_PREFIX() + email;
-    }
+    @Test
+    @DisplayName("이메일 인증 코드 검증 - 실패")
+    void codeVerifyFailure() {
+        // given
+        String email = "test@example.com";
+        String wrongAuthCode = "654321";
+        String key = "auth_code:" + email;
 
-    private String getRedisAuthCode(String key) {
-        return redisTemplate.opsForValue().get(key);
-    }
+        when(userRepository.existsByEmail(email)).thenReturn(false);
+        when(redisTemplate.opsForValue()).thenReturn(valueOperations);
+        when(valueOperations.get(any())).thenReturn("123456");
+        when(redisTemplate.hasKey(any())).thenReturn(true);
 
+        // when
+        MailVerificationResponse response = mailService.verifiedCode(new MailVerificationRequest(email, wrongAuthCode));
+
+        // then
+        assertThat(response.isVerified()).isFalse();
+    }
 }

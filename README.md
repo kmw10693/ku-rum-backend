@@ -1,92 +1,59 @@
-<p align="center">
-  <img src="/backend/images/KUROOM.png">
-</p>
+## 쿠룸 백엔드
+<img width="100%" alt="image" src="https://github.com/user-attachments/assets/3024650b-a989-4e47-947b-101710730c06" />
 
-# KU:Room
-<hr>
+## 기술 스택
 
-[![KOR](https://img.shields.io/badge/한-45A1FC?style=for-the-badge&logo=XML&logoColor=white)](docs/README_KR.md)
-[![ENG](https://img.shields.io/badge/ENG-FF5733?style=for-the-badge&logo=XML&logoColor=white)](docs/README_EN.md)
+### 백엔드
+<img width="80%" alt="image" src="https://github.com/user-attachments/assets/d96a8087-689e-410c-8a81-d243192997c1" />
 
-대학생활 가이드 **"쿠름"** 백엔드 레포 입니다.
+<br>
 
-
-- 2025학년도부터 자유전공학부로 개편되어 대학생활 정보를 쉽게 얻을 수 있도록 만들었어요!
-- **학교 공지사항**(학사,국제,취창업 등)을 한 번에 볼 수 있어요!
-- **학교 맵**과 각종 편의시설(k-cube,k-hub,편의점,학생식당 등)의 위치와 정보들을 볼 수 있어요!
-- **커뮤니티 기능**이 있어서 포인트를 찍고 글, 댓글로 소통할 수 있어요!
-
-<br/>
-
-## 목차
-
-- [백엔드멤버](#백엔드멤버)
-- [데모](#데모)
-- [아키텍쳐](#아키텍쳐)
-- [스택](#스택)
-- [협업방식](#협업방식)
-- [권한](#권한)
+### 인프라
+<img width="80%" alt="image" src="https://github.com/user-attachments/assets/5c09b4f9-09d2-47c3-8532-4e04d4cc2335" />
 
 
-<br/>
+### CI/CD
+<img width="80%" alt="스크린샷 2025-03-01 오후 6 56 29" src="https://github.com/user-attachments/assets/688834db-852a-421f-9687-72e9232bf68a" />
 
-## 백엔드멤버
+### 모니터링
+<img width="80%" alt="image" src="https://github.com/user-attachments/assets/110ac0fe-2c69-42ab-8cfd-c4b1f9c45168" />
 
+## 기술 의사 결정
+
+<details>
+<summary><h3> &nbsp Spring RestDocs </h3></summary>
+
+### 도입 배경
+
+---
+- Swagger (Springdoc OpenAPI)와 같은 UI 기반 문서화 도구도 있지만, </br>
+테스트 코드 기반이 아니라서, 실제 API와 문서가 불일치할 가능성이 있음
+
+- Spring REST Docs는 테스트 코드 기반으로 API 문서를 자동 생성하기 때문에 </br>
+API 변경 사항이 있으면 테스트 코드 수정과 함께 문서도 자동 업데이트됨
+### 선택지
+
+---
+
+|     | Swagger                                                      | Spring REST Docs                                                                                    | 
+|:---:|:-----------------------------------------------------------|:-----------------------------------------------------------------------------------------|                                                
+| 장점  | 쉬운 세팅 및 사용, 실제 API 호출 기능 제공 | 실제 API의 동작을 테스트하면서 문서가 생성되므로, 코드와 문서 사이의 불일치가 발생할 가능성이 적음 |
+| 단점  | 코드에 주석을 기반으로 하므로, 실제 코드와 문서화 사이에 불일치 발생 가능    | 테스트 코드 작성에 투자해야 하는 시간과 노력이 필요  |
+
+### 최종 결정
+
+---
+프로덕션 코드에 영향이 없고, 컨트롤러 테스트 코드를 의무화하는 Spring REST Docs와<br> API를 호출 할 수 있는 웹 기반 UI가 제공하는 Swagger UI 통합 사용
+</details>
+
+## 멤버
+
+### 백엔드
 
 | <img src="https://avatars.githubusercontent.com/Hyeri1ee" width="130" height="130"> | <img src="https://avatars.githubusercontent.com/buzz0331" width="130" height="130"> |   <img src="https://avatars.githubusercontent.com/tintin010" height="130">   | <img src="https://avatars.githubusercontent.com/kmw10693" width="130" height="130">  |
 |:-----------------------------------------------------------------------------------------:|:-----------------------------------------------------------------------------------------:|:--------------------------------------------------------------------------------------:|:-----------------------------------------------------------------------------------------:|
 |                              [혜리](https://github.com/Hyeri1ee)                               |                             [현준](https://github.com/buzz0331)                              |                          [재윤](https://github.com/tintin010)                              |                          [민우](https://github.com/kmw10693)                           |
 
 
-## 데모
-
-coming soon~
-
-## 아키텍쳐
-
-coming soon~
 
 
-
-
-
-## 스택
-
-### 🛠️ 의존성
-- Java 17, Junit 5
-- Spring Boot 3.0
-- MySQL
-
-### 🛠️ 스택
-#### Framework 
-<img src="https://img.shields.io/badge/Spring Boot-6DB33F?style=for-the-social&logo=Spring Boot&logoColor=white">  <img src="https://img.shields.io/badge/Gradle-02303A?style=for-the-social&logo=Gradle&logoColor=white">
-
-#### Database 
-<img src ="https://img.shields.io/badge/H2 Database-blue"> <img src="https://img.shields.io/badge/Amazon RDS for MySQL-527FFF?style=for-the-sociak&logo=Amazon RDS&logoColor=white"> <img src="https://img.shields.io/badge/Amazon Elasticache for Redis-DC382D?style=for-the-sociak&logo=redis&logoColor=white">
-
-#### ORM 
-<img src="https://img.shields.io/badge/Spring Data JPA-6DB33F?style=for-the-social&logo=Databricks&logoColor=white">
-
-#### Deploy 
-<img src="https://img.shields.io/badge/Github Actions-2088FF?style=for-the-sociak&logo=githubactions&logoColor=white"> <img src="https://img.shields.io/badge/Docker-2496ED?style=for-the-sociak&logo=docker&logoColor=white">
-
-#### API Docs
-<img src ="https://img.shields.io/badge/restdocs-green">
-
-#### Test
-<img src="https://img.shields.io/badge/JUnit5-25A162?style=for-the-sociak&logo=junit5&logoColor=white"> <img src="https://img.shields.io/badge/RestAssured-25A162"> <img src="https://img.shields.io/badge/CodeCov-F01F7A?style=for-the-sociak&logo=codecov&logoColor=white">
-
-## 협업방식
-
-보다 더 재밌고 효율적인 개발을 하기 위해 쿠름은 이런 협업방식을 추구해요
-
-<p align="center"><u>git action으로 업무 자동화</u></p>
-
-- Pull request를 생성하면 Jira 일정이 자동 생성돼요!
-- 매일 오후 4시마다 남은 Pull request 목록들이 디스코드로 알림이 가요!
-- 자동으로 마감기한 라벨이 변경되어 마감기한을 지키기 수월해요!
-
-
-
-## 권한
-ⓒ 2025. KU:Room All rights reserved.

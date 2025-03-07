@@ -26,7 +26,8 @@ import org.springframework.stereotype.Service;
 import java.util.*;
 import java.util.stream.Collectors;
 
-import static ku_rum.backend.global.response.status.BaseExceptionResponseStatus.*;
+import static ku_rum.backend.global.support.response.status.BaseExceptionResponseStatus.*;
+
 
 @Service
 @RequiredArgsConstructor
@@ -140,7 +141,7 @@ public class BuildingSearchService {
 
   private BuildingCategoryVar getBuildingCategoryVar(Long buildingId, String category) {
     Building building = buildingRepository.findById(buildingId)
-            .orElseThrow(() -> new BuildingNotFoundException(BaseExceptionResponseStatus.BUILDING_DATA_NOT_FOUND_BY_NAME));
+            .orElseThrow(() -> new BuildingNotFoundException(BUILDING_DATA_NOT_FOUND_BY_NAME));
     Category categoryData = categoryRepository.findByName(category)
             .orElseThrow(() -> new CategoryNotExistException(BaseExceptionResponseStatus.CATEGORY_NAME_NOT_EXIST));
     BuildingCategoryVar result = new BuildingCategoryVar(building, categoryData);
