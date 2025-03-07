@@ -91,7 +91,7 @@ public class CrawlingService {
                 // Redis에 이미 저장된 URL인지 확인
                 String redisKey = NOTICE_REDIS_KEY_PREFIX.getPrefix() + link;
                 if (Boolean.TRUE.equals(urlRedisTemplate.hasKey(redisKey))) {
-                    log.info("이미 저장된 공지사항: {}", link);
+//                    log.info("이미 저장된 공지사항: {}", link);
                     continue;
                 }
 
