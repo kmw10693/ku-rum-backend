@@ -18,4 +18,6 @@ public interface NoticeRepository extends JpaRepository<Notice, String> {
 
     @Query("SELECT n FROM Notice n WHERE LOWER(n.title) LIKE LOWER(CONCAT('%', :searchTerm, '%'))")
     List<Notice> searchNoticesByTitle(@Param("searchTerm") String searchTerm);
+
+    boolean existsByUrl(String url);
 }
