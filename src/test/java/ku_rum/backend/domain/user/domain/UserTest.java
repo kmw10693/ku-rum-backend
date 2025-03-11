@@ -2,6 +2,7 @@ package ku_rum.backend.domain.user.domain;
 
 import ku_rum.backend.domain.building.domain.Building;
 import ku_rum.backend.domain.department.domain.Department;
+import ku_rum.backend.domain.user.domain.enums.AgreementStatus;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -18,7 +19,7 @@ class UserTest {
         Department department = getDepartment(building);
 
         //when
-        User user = User.of("사용자1", "kmw106933@konkuk.ac.kr","미미미누", "password123", "202112322", department);
+        User user = User.of("사용자1", "kmw106933@konkuk.ac.kr","미미미누", "password123", "202112322", department, AgreementStatus.AGREED);
 
         //then
         assertThat(user.getNickname()).isEqualTo("미미미누");

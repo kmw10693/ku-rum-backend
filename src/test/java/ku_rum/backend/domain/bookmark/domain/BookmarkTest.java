@@ -5,6 +5,7 @@ import ku_rum.backend.domain.department.domain.Department;
 import ku_rum.backend.domain.notice.domain.Notice;
 import ku_rum.backend.domain.notice.domain.NoticeCategory;
 import ku_rum.backend.domain.user.domain.User;
+import ku_rum.backend.domain.user.domain.enums.AgreementStatus;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -35,7 +36,7 @@ class BookmarkTest {
     private User createUser(String username, String studentID) {
         Building building = createBuilding();
         Department department = Department.of("컴퓨터공학부", building);
-        return User.of(username, "kmw106933@konkuk.ac.kr",studentID, "password123", "202112322", department);
+        return User.of(username, "kmw106933@konkuk.ac.kr",studentID, "password123", "202112322", department, AgreementStatus.AGREED);
     }
 
     private Building createBuilding() {

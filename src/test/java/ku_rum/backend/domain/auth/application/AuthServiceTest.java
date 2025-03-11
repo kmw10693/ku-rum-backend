@@ -4,6 +4,7 @@ import io.jsonwebtoken.JwtException;
 import jakarta.servlet.http.HttpServletRequest;
 import ku_rum.backend.domain.auth.dto.request.LoginRequest;
 import ku_rum.backend.domain.auth.dto.request.ReissueRequest;
+import ku_rum.backend.domain.common.firebase.application.NotificationService;
 import ku_rum.backend.global.security.jwt.CustomUserDetails;
 import ku_rum.backend.global.security.jwt.JwtTokenAuthenticationFilter;
 import ku_rum.backend.global.security.jwt.JwtTokenProvider;
@@ -42,6 +43,9 @@ class AuthServiceTest {
 
     @Mock
     private TokenBlacklistService tokenBlacklistService;
+
+    @Mock
+    private NotificationService notificationService;
 
     @Test
     @DisplayName("로그인 성공 시 토큰을 반환한다.")
@@ -89,6 +93,7 @@ class AuthServiceTest {
         when(jwtTokenAuthenticationFilter.resolveToken(request)).thenReturn(accessToken);
         when(jwtTokenProvider.getUserId(accessToken)).thenReturn(userId);
         when(jwtTokenProvider.getExpiredTime(accessToken)).thenReturn(System.currentTimeMillis() + expirationTime);
+        doNothing().when(notificationService).deleteToken(userId);
 
         // when
         authService.logout(request);

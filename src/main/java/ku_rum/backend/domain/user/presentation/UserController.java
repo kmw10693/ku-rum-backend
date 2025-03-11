@@ -12,8 +12,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import static ku_rum.backend.domain.user.domain.UserMessage.SUCCESS_RESET_PASSWORD;
-import static ku_rum.backend.domain.user.domain.UserMessage.VALID_EMAIL_MESSAGE;
+import static ku_rum.backend.domain.user.domain.enums.UserMessage.SUCCESS_RESET_PASSWORD;
+import static ku_rum.backend.domain.user.domain.enums.UserMessage.VALID_EMAIL_MESSAGE;
 import static ku_rum.backend.global.support.response.status.BaseExceptionResponseStatus.SUCCESS_PROFILE_SET;
 
 @RestController

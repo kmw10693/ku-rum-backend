@@ -1,4 +1,4 @@
-package ku_rum.backend.domain.user.domain;
+package ku_rum.backend.domain.user.domain.enums;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;

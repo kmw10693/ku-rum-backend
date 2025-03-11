@@ -108,8 +108,7 @@ swaggerSources {
 // 6. openapi3 스펙 생성시 설정 정보
 openapi3 {
 	servers = [
-			{ url = "http://43.202.65.121:8111" },
-			{ url = "http://43.202.65.121:8112" }
+			{ url = "https://kuroom.shop" }
 	]
 	title = "API 문서"
 	description = "RestDocsWithSwagger Docs"
