@@ -24,7 +24,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 @WebAppConfiguration
 @SpringBootTest
 @Transactional
-public class BuildingSearchServcieTest {
+public class BuildingSearchServiceTest {
 
     @Autowired
     BuildingSearchService buildingSearchService;
