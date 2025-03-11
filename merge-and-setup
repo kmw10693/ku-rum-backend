@@ -1,0 +1,13 @@
+#!/bin/bash
+
+# upstream 브랜치로 머지
+git merge upstream/develop
+
+# 머지가 성공하면 setup_hooks.sh 실행
+if [ $? -eq 0 ]; then
+  echo "Merge 성공. setup_hooks.sh 실행 중..."
+  sh ./setup_hooks
+  echo "setup_hooks.sh 실행 완료"
+else
+  echo "Merge 실패. setup_hooks.sh 실행을 취소합니다."
+fi
