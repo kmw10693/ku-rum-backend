@@ -28,7 +28,6 @@ import java.util.stream.Collectors;
 
 import static ku_rum.backend.global.support.response.status.BaseExceptionResponseStatus.*;
 
-
 @Service
 @RequiredArgsConstructor
 @Slf4j
