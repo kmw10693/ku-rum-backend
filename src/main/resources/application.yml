@@ -2,7 +2,7 @@ spring:
   application:
     name: kurum
   profiles:
-    active: prod
+    active: lo
 
   thymeleaf:
     prefix: classpath:/templates/
