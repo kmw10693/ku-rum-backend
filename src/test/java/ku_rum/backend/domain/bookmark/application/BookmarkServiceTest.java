@@ -9,6 +9,7 @@ import ku_rum.backend.domain.notice.domain.NoticeStatus;
 import ku_rum.backend.domain.notice.domain.repository.NoticeRepository;
 import ku_rum.backend.domain.notice.dto.response.NoticeSimpleResponse;
 import ku_rum.backend.domain.user.domain.User;
+import ku_rum.backend.domain.user.domain.enums.AgreementStatus;
 import ku_rum.backend.domain.user.domain.repository.UserRepository;
 import ku_rum.backend.global.security.jwt.UserUtils;
 import org.junit.jupiter.api.AfterEach;
@@ -58,7 +59,7 @@ class BookmarkServiceTest {
         MockitoAnnotations.openMocks(this);
 
         // Mock 데이터 생성
-        user = User.of("123@naver.com", "kmw106933@konkuk.ac.kr","홍길동", "password", "20202020", null);
+        user = User.of("123@naver.com", "kmw106933@konkuk.ac.kr","홍길동", "password", "20202020", null, AgreementStatus.AGREED);
         notice = Notice.builder()
                 .title("Notice")
                 .url("https://konkuk.ac.kr")

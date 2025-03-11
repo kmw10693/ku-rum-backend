@@ -19,9 +19,13 @@ pipeline{
         }
         stage('Replace Prod Properties') {
             steps {
-                withCredentials([file(credentialsId: 'kurumprod', variable: 'kurumprod')]) {
+                withCredentials([
+                    file(credentialsId: 'kurumprod', variable: 'kurumprod'),
+                    file(credentialsId: 'firebase', variable: 'firebase')
+                ]) {
                     script {
                         sh 'cp $kurumprod ./src/main/resources/application-prod.yml'
+                        sh 'cp $firebase ./src/main/resources/kuroom-90fb5-firebase-adminsdk-fbsvc-f264f66c64.json'
                     }
                 }
             }

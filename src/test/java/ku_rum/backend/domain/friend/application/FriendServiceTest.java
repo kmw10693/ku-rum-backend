@@ -7,6 +7,7 @@ import ku_rum.backend.domain.friend.domain.FriendStatus;
 import ku_rum.backend.domain.friend.domain.repository.FriendRepository;
 import ku_rum.backend.domain.friend.dto.response.FriendListResponse;
 import ku_rum.backend.domain.user.domain.User;
+import ku_rum.backend.domain.user.domain.enums.AgreementStatus;
 import ku_rum.backend.domain.user.domain.repository.UserRepository;
 import ku_rum.backend.global.exception.friend.NoFriendsException;
 import ku_rum.backend.global.security.jwt.UserUtils;
@@ -56,8 +57,8 @@ class FriendServiceTest {
         BigDecimal longitude = BigDecimal.valueOf(342.2343434);
 
         Building building = Building.of("신공학관", 3L,"신공", 1L, latitude, longitude);
-        user = User.of("user1", "user1@example.com", "nickname1", "password", "123456", Department.of("CS", building));
-        friend = User.of("user2", "user2@example.com", "nickname2", "password", "654321", Department.of("Math", building));
+        user = User.of("user1", "user1@example.com", "nickname1", "password", "123456", Department.of("CS", building), AgreementStatus.AGREED);
+        friend = User.of("user2", "user2@example.com", "nickname2", "password", "654321", Department.of("Math", building), AgreementStatus.AGREED);
         friendEntity = Friend.of(user, friend, FriendStatus.PENDING);
 
         userUtilsMockedStatic = Mockito.mockStatic(UserUtils.class);
