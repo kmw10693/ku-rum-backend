@@ -1,10 +1,7 @@
 package ku_rum.backend.global.exception.handler;
 
 import jakarta.annotation.Priority;
-import ku_rum.backend.global.exception.user.DuplicateEmailException;
-import ku_rum.backend.global.exception.user.DuplicateStudentIdException;
-import ku_rum.backend.global.exception.user.MailSendException;
-import ku_rum.backend.global.exception.user.NoSuchUserException;
+import ku_rum.backend.global.exception.user.*;
 import ku_rum.backend.global.support.response.BaseErrorResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -33,6 +30,20 @@ public class UserExceptionControllerAdvice {
     }
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(DuplicateEmailException.class)
+    public BaseErrorResponse handleDuplicateEmailException(final DuplicateEmailException e) {
+        log.error("[handleDuplicateEmailException]");
+        return new BaseErrorResponse(DUPLICATE_EMAIL);
+    }
+
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(DuplicateLoginIdException.class)
+    public BaseErrorResponse handleDuplicateLoginIdException(final DuplicateLoginIdException e) {
+        log.error("[handleDuplicateLoginIdException]");
+        return new BaseErrorResponse(DUPLICATE_LOGIN);
+    }
+
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(DuplicateStudentIdException.class)
     public BaseErrorResponse handleDuplicateStudentIdException(final DuplicateStudentIdException e) {
         log.error("[handleDuplicateStudentIdException]");
@@ -40,10 +51,9 @@ public class UserExceptionControllerAdvice {
     }
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    @ExceptionHandler(DuplicateEmailException.class)
-    public BaseErrorResponse handleDuplicateEmailException(final DuplicateEmailException e) {
-        log.error("[handleDuplicateEmailException]");
-        return new BaseErrorResponse(DUPLICATE_EMAIL);
+    @ExceptionHandler(DuplicateNicknameException.class)
+    public BaseErrorResponse handleDuplicateNicknameException(final DuplicateNicknameException e) {
+        log.error("[handleDuplicateNicknameException]");
+        return new BaseErrorResponse(DUPLICATE_NICKNAME);
     }
-
 }

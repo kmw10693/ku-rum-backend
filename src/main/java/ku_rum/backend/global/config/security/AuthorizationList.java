@@ -20,8 +20,10 @@ public enum AuthorizationList {
             "/api/v1/mails/auth-codes",
             "/api/v1/mails/verification_codes",
             "/index.html",
-            "/"
-    )));
+            "/",
+            "/api/v1/users/check-id",
+            "/api/v1/users/validations"
+            )));
 
     private final List<String> authorities;
 
