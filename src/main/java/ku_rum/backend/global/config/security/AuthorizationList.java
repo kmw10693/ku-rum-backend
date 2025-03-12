@@ -14,7 +14,7 @@ public enum AuthorizationList {
             "/docs/**",
             "/swagger-ui/**",
             "/v3/api-docs/**",
-            "/api/v1/users/validations/loginId",
+            "/api/v1/users/validations/email",
             "/api/v1/users/weinlogin",
             "/api/v1/users/join",
             "/api/v1/mails/auth-codes",

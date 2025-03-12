@@ -48,7 +48,7 @@ class LoggingInterceptorTest {
         given(cachingRequest.getHeader(HttpHeaders.AUTHORIZATION)).willReturn("Bearer token");
         given(cachingRequest.getHeader("X-Forwarded-For")).willReturn("192.168.1.1");
 
-        byte[] content = "{\"test\":\"@konkuk.ac.kr\",\"loginId\":\"test123\",\"password\":\"test123\",\"studentId\":\"202112322\",\"department\":\"컴퓨터공학부\",\"nickname\":\"미미미누\"}".getBytes(StandardCharsets.UTF_8);
+        byte[] content = "{\"test\":\"@konkuk.ac.kr\",\"email\":\"test123\",\"password\":\"test123\",\"studentId\":\"202112322\",\"department\":\"컴퓨터공학부\",\"nickname\":\"미미미누\"}".getBytes(StandardCharsets.UTF_8);
         given(cachingRequest.getContentAsByteArray()).willReturn(content);  // Mock the body content
 
         given(objectMapper.readTree(content)).willReturn(new ObjectNode(JsonNodeFactory.instance));

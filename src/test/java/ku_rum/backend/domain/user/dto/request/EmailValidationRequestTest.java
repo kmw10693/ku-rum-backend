@@ -10,7 +10,7 @@ import org.junit.jupiter.params.provider.NullSource;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-class LoginIdValidationRequestTest {
+class EmailValidationRequestTest {
     private static Validator validator;
 
     @BeforeAll
@@ -25,7 +25,6 @@ class LoginIdValidationRequestTest {
         EmailValidationRequest loginIdValidationRequest = new EmailValidationRequest(email);
 
         assertThat(validator.validate(loginIdValidationRequest))
-                .anyMatch(violation -> violation.getMessage().equals("공백일 수 없습니다"));
+                .anyMatch(violation -> violation.getMessage().equals("이메일 입력은 필수입니다."));
     }
-
 }
