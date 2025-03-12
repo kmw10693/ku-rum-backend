@@ -81,7 +81,7 @@ class UserControllerTest extends RestDocsTestSupport {
                                         fieldWithPath("email")
                                                 .type(JsonType.STRING)
                                                 .description("멤버 이메일")
-                                                .attributes(constraints("@konkuk.ac.kr로 끝나야 합니다.")),
+                                                .attributes(constraints("유저의 이메일")),
                                         fieldWithPath("nickname")
                                                 .type(JsonType.STRING)
                                                 .description("멤버 닉네임")
