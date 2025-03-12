@@ -7,10 +7,11 @@ import ku_rum.backend.domain.department.domain.Department;
 import ku_rum.backend.domain.department.domain.repository.DepartmentRepository;
 import ku_rum.backend.domain.user.domain.User;
 import ku_rum.backend.domain.user.domain.repository.UserRepository;
-import ku_rum.backend.domain.common.mail.dto.request.LoginIdValidationRequest;
+import ku_rum.backend.domain.common.mail.dto.request.EmailValidationRequest;
 import ku_rum.backend.domain.user.dto.request.UserSaveRequest;
 import ku_rum.backend.domain.user.dto.response.UserSaveResponse;
 import ku_rum.backend.global.exception.user.DuplicateEmailException;
+import ku_rum.backend.global.exception.user.DuplicateLoginIdException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -73,7 +74,7 @@ class UserServiceTest {
     }
 
     @Test
-    @DisplayName("회원의 아이디가 이미 있는 경우 예외를 처리한다.")
+    @DisplayName("회원의 이메일이 이미 있는 경우 예외를 처리한다.")
     void validateEmail() {
         //given
         User user = User.builder()
@@ -87,11 +88,10 @@ class UserServiceTest {
 
         userRepository.save(user);
 
-        LoginIdValidationRequest loginIdValidationRequest = new LoginIdValidationRequest("kmw106933");
+        EmailValidationRequest emailValidationRequest = new EmailValidationRequest("kmw10693@konkuk.ac.kr");
 
         //when then
-        assertThatThrownBy(() -> userService.ValidateUserId(loginIdValidationRequest))
-                .isInstanceOf(DuplicateEmailException.class)
-                .hasMessage("이미 존재하는 아이디입니다.");
+        assertThatThrownBy(() -> userService.validateEmail(emailValidationRequest))
+                .isInstanceOf(DuplicateEmailException.class);
     }
 }

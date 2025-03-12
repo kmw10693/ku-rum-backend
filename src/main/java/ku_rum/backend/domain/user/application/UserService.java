@@ -2,7 +2,7 @@ package ku_rum.backend.domain.user.application;
 
 import ku_rum.backend.domain.department.domain.Department;
 import ku_rum.backend.domain.department.domain.repository.DepartmentRepository;
-import ku_rum.backend.domain.common.mail.dto.request.LoginIdValidationRequest;
+import ku_rum.backend.domain.common.mail.dto.request.EmailValidationRequest;
 import ku_rum.backend.domain.user.domain.User;
 import ku_rum.backend.domain.user.domain.repository.UserRepository;
 import ku_rum.backend.domain.user.dto.request.ProfileChangeRequest;
@@ -10,9 +10,7 @@ import ku_rum.backend.domain.user.dto.request.ResetAccountRequest;
 import ku_rum.backend.domain.user.dto.request.UserSaveRequest;
 import ku_rum.backend.domain.user.dto.response.UserSaveResponse;
 import ku_rum.backend.global.exception.department.NoSuchDepartmentException;
-import ku_rum.backend.global.exception.user.DuplicateEmailException;
-import ku_rum.backend.global.exception.user.DuplicateStudentIdException;
-import ku_rum.backend.global.exception.user.NoSuchUserException;
+import ku_rum.backend.global.exception.user.*;
 import ku_rum.backend.global.security.jwt.CustomUserDetails;
 import ku_rum.backend.global.security.jwt.UserUtils;
 import lombok.RequiredArgsConstructor;
@@ -55,30 +53,43 @@ public class UserService {
         user.setImageUrl(profileChangeRequest.imageUrl());
     }
 
-    private User getUser() {
-        Long memberId = UserUtils.getLongMemberId();
-        return userRepository.findUserById(memberId).orElseThrow(() -> new NoSuchUserException(NO_SUCH_USER));
+    public void validateEmail(final EmailValidationRequest emailValidationRequest) {
+        validateDuplicateEmail(emailValidationRequest.email());
     }
 
-    public void ValidateUserId(final LoginIdValidationRequest emailValidationRequest) {
-        validateDuplicateUserId(emailValidationRequest.loginId());
-    }
-
-    public void validateUserDetails(CustomUserDetails userDetails){
-        if (!userRepository.existsById(userDetails.getUserId())){
+    public void validateUserDetails(CustomUserDetails userDetails) {
+        if (!userRepository.existsById(userDetails.getUserId())) {
             throw new NoSuchUserException(NO_SUCH_USER);
         }
     }
 
+    public Boolean checkDuplicateId(final String value) {
+        return userRepository.existsByLoginId(value);
+    }
+
     private void validateUser(UserSaveRequest userSaveRequest) {
-        validateDuplicateUserId(userSaveRequest.email());
+        validateDuplicateEmail(userSaveRequest.email());
+        validateDuplicateLoginId(userSaveRequest.loginId());
         validateDuplicateStudentId(userSaveRequest.studentId());
+        validateNickname(userSaveRequest.nickname());
         validateDepartmentName(userSaveRequest.department());
     }
 
-    private void validateDuplicateUserId(final String userId) {
-        if (userRepository.existsByLoginId(userId)) {
-            throw new DuplicateEmailException(DUPLICATE_LOGIN);
+    private void validateDuplicateLoginId(final String loginId) {
+        if (userRepository.existsByLoginId(loginId)) {
+            throw new DuplicateLoginIdException(DUPLICATE_LOGIN);
+        }
+    }
+
+    private void validateNickname(final String nickname) {
+        if (userRepository.existsByNickname(nickname)) {
+            throw new DuplicateNicknameException(DUPLICATE_NICKNAME);
+        }
+    }
+
+    private void validateDuplicateEmail(final String email) {
+        if (userRepository.existsByEmail(email)) {
+            throw new DuplicateEmailException(DUPLICATE_EMAIL);
         }
     }
 
@@ -99,4 +110,8 @@ public class UserService {
                 .orElseThrow(() -> new NoSuchDepartmentException(NO_SUCH_DEPARTMENT));
     }
 
+    private User getUser() {
+        Long memberId = UserUtils.getLongMemberId();
+        return userRepository.findUserById(memberId).orElseThrow(() -> new NoSuchUserException(NO_SUCH_USER));
+    }
 }

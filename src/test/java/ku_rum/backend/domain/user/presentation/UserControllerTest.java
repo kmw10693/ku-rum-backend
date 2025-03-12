@@ -3,7 +3,7 @@ package ku_rum.backend.domain.user.presentation;
 import com.epages.restdocs.apispec.ResourceSnippetParameters;
 import ku_rum.backend.config.RestDocsTestSupport;
 import ku_rum.backend.domain.user.application.UserService;
-import ku_rum.backend.domain.common.mail.dto.request.LoginIdValidationRequest;
+import ku_rum.backend.domain.common.mail.dto.request.EmailValidationRequest;
 import ku_rum.backend.domain.user.domain.enums.AgreementStatus;
 import ku_rum.backend.domain.user.dto.request.ProfileChangeRequest;
 import ku_rum.backend.domain.user.dto.request.ResetAccountRequest;
@@ -15,6 +15,7 @@ import org.openqa.selenium.json.JsonType;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
+import org.springframework.restdocs.payload.JsonFieldType;
 import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.test.context.support.WithMockUser;
@@ -23,10 +24,11 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.transaction.annotation.Transactional;
 
 import static com.epages.restdocs.apispec.ResourceDocumentation.resource;
+import static org.mockito.BDDMockito.given;
 import static org.springframework.restdocs.headers.HeaderDocumentation.headerWithName;
-import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.patch;
-import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.post;
+import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.*;
 import static org.springframework.restdocs.payload.PayloadDocumentation.*;
+import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -115,11 +117,11 @@ class UserControllerTest extends RestDocsTestSupport {
     }
 
 
-    @DisplayName("아이디 중복을 확인한다.")
+    @DisplayName("이메일 중복을 확인한다.")
     @Test
     void validateEmail() throws Exception {
         //given
-        LoginIdValidationRequest loginIdValidationRequest = new LoginIdValidationRequest("kmw106933@naver.com");
+        EmailValidationRequest loginIdValidationRequest = new EmailValidationRequest("kmw106933@naver.com");
         //when then
         mockMvc.perform(post("/api/v1/users/validations")
                         .content(objectMapper.writeValueAsString(loginIdValidationRequest))
@@ -134,12 +136,12 @@ class UserControllerTest extends RestDocsTestSupport {
                 .andDo(restDocs.document(resource(
                         ResourceSnippetParameters.builder()
                                 .tag("유저 API")
-                                .description("아이디 중복 확인")
+                                .description("이메일 중복 확인")
                                 .requestFields(
-                                        fieldWithPath("loginId")
+                                        fieldWithPath("email")
                                                 .type(JsonType.STRING)
-                                                .description("멤버 아이디")
-                                                .attributes(constraints("아이디 입력은 필수입니다. 최소 6자 이상입니다."))
+                                                .description("멤버 이메일")
+                                                .attributes(constraints("중복 확인할 이메일"))
                                 )
                                 .responseFields(
                                         fieldWithPath("code")
@@ -248,5 +250,38 @@ class UserControllerTest extends RestDocsTestSupport {
                                                         .type(JsonType.STRING)
                                                         .description("성공 시 반환 메시지")
                                         ).build())));
+    }
+
+    @DisplayName("아이디 중복 여부를 확인한다.")
+    @Test
+    void checkDuplicateId() throws Exception {
+        // given
+        String testValue = "testUser";
+        given(userService.checkDuplicateId(testValue)).willReturn(true);
+
+        // when then
+        mockMvc.perform(get("/api/v1/users/check-id")
+                        .param("value", testValue)
+                        .contentType(MediaType.APPLICATION_JSON)
+                )
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.code").value("200"))
+                .andExpect(jsonPath("$.status").value("OK"))
+                .andExpect(jsonPath("$.message").value("OK"))
+                .andExpect(jsonPath("$.data").value(true))
+                .andDo(restDocs.document(resource(
+                        ResourceSnippetParameters.builder()
+                                .tag("유저 API")
+                                .description("아이디 중복 확인")
+                                .queryParameters(
+                                        parameterWithName("value").description("중복 확인할 아이디")
+                                )
+                                .responseFields(
+                                        fieldWithPath("code").type(JsonFieldType.NUMBER).description("응답 코드 (200)"),
+                                        fieldWithPath("status").type(JsonFieldType.STRING).description("응답 상태 (OK)"),
+                                        fieldWithPath("message").type(JsonFieldType.STRING).description("응답 메시지"),
+                                        fieldWithPath("data").type(JsonFieldType.BOOLEAN).description("중복 여부 (true: 중복, false: 사용 가능)")
+                                ).build())));
     }
 }

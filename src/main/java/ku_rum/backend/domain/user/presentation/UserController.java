@@ -4,7 +4,7 @@ import jakarta.validation.Valid;
 import ku_rum.backend.domain.user.dto.request.ProfileChangeRequest;
 import ku_rum.backend.domain.user.dto.request.ResetAccountRequest;
 import ku_rum.backend.domain.user.application.UserService;
-import ku_rum.backend.domain.common.mail.dto.request.LoginIdValidationRequest;
+import ku_rum.backend.domain.common.mail.dto.request.EmailValidationRequest;
 import ku_rum.backend.domain.user.dto.request.UserSaveRequest;
 import ku_rum.backend.domain.user.dto.response.UserSaveResponse;
 import ku_rum.backend.global.support.response.BaseResponse;
@@ -23,26 +23,62 @@ import static ku_rum.backend.global.support.response.status.BaseExceptionRespons
 public class UserController {
     private final UserService userService;
 
+    /**
+     * 회원 가입 API
+     *
+     * @param userSaveRequest
+     * @return
+     */
     @PostMapping
     public BaseResponse<UserSaveResponse> join(@RequestBody @Valid final UserSaveRequest userSaveRequest) {
         return BaseResponse.ok(userService.saveUser(userSaveRequest));
     }
 
+    /**
+     * 이메일 검증 API
+     *
+     * @param emailValidationRequest
+     * @return
+     */
     @PostMapping("/validations")
-    public BaseResponse<String> validateEmail(@RequestBody @Valid final LoginIdValidationRequest loginIdValidationRequest) {
-        userService.ValidateUserId(loginIdValidationRequest);
+    public BaseResponse<String> validateEmail(@RequestBody @Valid final EmailValidationRequest emailValidationRequest) {
+        userService.validateEmail(emailValidationRequest);
         return BaseResponse.ok(VALID_EMAIL_MESSAGE.getMessage());
     }
 
+    /**
+     * 비밀번호 초기화 API
+     *
+     * @param resetAccountRequest
+     * @return
+     */
     @PostMapping("/reset-account")
     public BaseResponse<String> resetAccount(@RequestBody @Valid final ResetAccountRequest resetAccountRequest) {
         userService.resetAccount(resetAccountRequest);
         return BaseResponse.ok(SUCCESS_RESET_PASSWORD.getMessage());
     }
 
+    /**
+     * 프로필 변경 API
+     *
+     * @param profileChangeRequest
+     * @return
+     */
     @PatchMapping("/profile")
     public BaseResponse<String> setProfile(@RequestBody @Valid final ProfileChangeRequest profileChangeRequest) {
         userService.setProfile(profileChangeRequest);
         return BaseResponse.ok(SUCCESS_PROFILE_SET.getMessage());
     }
+
+    /**
+     * 아이디 중복 확인 API
+     *
+     * @param value
+     * @return
+     */
+    @GetMapping("/check-id")
+    public BaseResponse<Boolean> checkDuplicateId(@RequestParam("value") final String value) {
+        return BaseResponse.ok(userService.checkDuplicateId(value));
+    }
+
 }

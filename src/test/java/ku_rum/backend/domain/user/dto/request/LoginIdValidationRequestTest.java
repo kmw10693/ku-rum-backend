@@ -2,7 +2,7 @@ package ku_rum.backend.domain.user.dto.request;
 
 import jakarta.validation.Validation;
 import jakarta.validation.Validator;
-import ku_rum.backend.domain.common.mail.dto.request.LoginIdValidationRequest;
+import ku_rum.backend.domain.common.mail.dto.request.EmailValidationRequest;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -20,12 +20,12 @@ class LoginIdValidationRequestTest {
 
     @ParameterizedTest
     @NullSource
-    @DisplayName("아이디에 빈 문자열이 들어온 경우 처리한다.")
+    @DisplayName("이메일에 빈 문자열이 들어온 경우 처리한다.")
     void blankEmail(String email) {
-        LoginIdValidationRequest loginIdValidationRequest = new LoginIdValidationRequest(email);
+        EmailValidationRequest loginIdValidationRequest = new EmailValidationRequest(email);
 
         assertThat(validator.validate(loginIdValidationRequest))
-                .anyMatch(violation -> violation.getMessage().equals("아이디 입력은 필수입니다. 최소 6자 이상입니다."));
+                .anyMatch(violation -> violation.getMessage().equals("공백일 수 없습니다"));
     }
 
 }
