@@ -6,7 +6,4 @@ import jakarta.validation.constraints.Size;
 public record EmailValidationRequest(
         @NotBlank String email
 ) {
-    public EmailValidationRequest(String email) {
-        this.email = email;
-    }
 }
