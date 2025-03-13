@@ -33,7 +33,7 @@ class MailControllerTest extends RestDocsTestSupport {
     @WithMockUser
     void authCode() throws Exception {
         //given
-        MailSendRequest mailSendRequest = new MailSendRequest("kmw10693@konkuk.ac.kr");
+        MailSendRequest mailSendRequest = new MailSendRequest("kmw10693@naver.com");
 
         //when then
         mockMvc.perform(post("/api/v1/mails/auth-codes")
@@ -78,7 +78,7 @@ class MailControllerTest extends RestDocsTestSupport {
     @WithMockUser
     void verificationCode() throws Exception {
         //given
-        MailVerificationRequest mailVerificationRequest = new MailVerificationRequest("kmw10693@konkuk.ac.kr", "1234");
+        MailVerificationRequest mailVerificationRequest = new MailVerificationRequest("kmw10693@naver.com", "1234");
 
         //when then
         mockMvc.perform(post("/api/v1/mails/verification_codes")

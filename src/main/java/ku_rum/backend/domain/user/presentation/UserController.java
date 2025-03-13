@@ -12,8 +12,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import static ku_rum.backend.domain.user.domain.enums.UserMessage.SUCCESS_RESET_PASSWORD;
-import static ku_rum.backend.domain.user.domain.enums.UserMessage.VALID_EMAIL_MESSAGE;
+import static ku_rum.backend.domain.user.domain.enums.UserMessage.*;
 import static ku_rum.backend.global.support.response.status.BaseExceptionResponseStatus.SUCCESS_PROFILE_SET;
 
 @RestController
@@ -60,7 +59,6 @@ public class UserController {
 
     /**
      * 프로필 변경 API
-     *
      * @param profileChangeRequest
      * @return
      */
@@ -72,7 +70,6 @@ public class UserController {
 
     /**
      * 아이디 중복 확인 API
-     *
      * @param value
      * @return
      */
@@ -81,4 +78,25 @@ public class UserController {
         return BaseResponse.ok(userService.checkDuplicateId(value));
     }
 
+    /**
+     * 닉네임 중복 확인 API
+     * @param value
+     * @return
+     */
+    @GetMapping("/check-nickname")
+    public BaseResponse<String> checkDuplicateNickname(@RequestParam("value") final String value) {
+        userService.checkDuplicateNickname(value);
+        return BaseResponse.ok(VALID_NICKNAME_MESSAGE.getMessage());
+    }
+
+    /**
+     * 학번 중복 확인 API
+     * @param value
+     * @return
+     */
+    @GetMapping("/check-studentId")
+    public BaseResponse<String> checkDuplicateStudentId(@RequestParam("value") final String value) {
+        userService.checkDuplicateStudentId(value);
+        return BaseResponse.ok(VALID_STUDENTID_MESSAGE.getMessage());
+    }
 }

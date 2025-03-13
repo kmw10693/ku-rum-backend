@@ -19,13 +19,13 @@ class MailSendRequestTest {
     }
 
     @ParameterizedTest
-    @CsvSource(value = {"kmw10693@naver.com:true", "kmw10693@konkuk.ac.kr:false", "kmw10693:true", "kmw10693@naver.com:true"}, delimiter = ':')
-    @DisplayName("이메일이 @konkuk.ac.kr로 끝나는지 검증한다.")
+    @CsvSource(value = {"kmw10693@naver.com:false", "kmw10693@konkuk.ac.kr:false", "kmw10693:true", "kmw10693@naver.com:false"}, delimiter = ':')
+    @DisplayName("이메일 형식으로 끝나는지 검증한다.")
     void blankEmail(String email, boolean flag) {
         MailSendRequest mailSendRequest = new MailSendRequest(email);
 
         assertThat(validator.validate(mailSendRequest).stream()
-                .anyMatch(violation -> violation.getMessage().equals("이메일의 끝자리는 @konkuk.ac.kr로 끝나야 합니다.")))
+                .anyMatch(violation -> violation.getMessage().equals("이메일 형식이 맞지 않습니다.")))
                 .isEqualTo(flag);
     }
 }
