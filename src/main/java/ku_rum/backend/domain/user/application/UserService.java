@@ -63,8 +63,16 @@ public class UserService {
         }
     }
 
+    public void checkDuplicateNickname(final String nickname) {
+        validateNickname(nickname);
+    }
+
     public Boolean checkDuplicateId(final String value) {
         return userRepository.existsByLoginId(value);
+    }
+
+    public void checkDuplicateStudentId(final String studentId) {
+        validateDuplicateStudentId(studentId);
     }
 
     private void validateUser(UserSaveRequest userSaveRequest) {

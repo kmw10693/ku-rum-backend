@@ -12,6 +12,8 @@ import ku_rum.backend.domain.user.dto.request.UserSaveRequest;
 import ku_rum.backend.domain.user.dto.response.UserSaveResponse;
 import ku_rum.backend.global.exception.user.DuplicateEmailException;
 import ku_rum.backend.global.exception.user.DuplicateLoginIdException;
+import ku_rum.backend.global.exception.user.DuplicateNicknameException;
+import ku_rum.backend.global.exception.user.DuplicateStudentIdException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -93,5 +95,45 @@ class UserServiceTest {
         //when then
         assertThatThrownBy(() -> userService.validateEmail(emailValidationRequest))
                 .isInstanceOf(DuplicateEmailException.class);
+    }
+
+    @Test
+    @DisplayName("회원의 닉네임이 이미 있는 경우 예외를 처리한다.")
+    void validateNickname() {
+        //given
+        User user = User.builder()
+                .loginId("kmw106933")
+                .email("kmw10693@konkuk.ac.kr")
+                .nickname("미미미누")
+                .password("password123")
+                .studentId("202112322")
+                .department(department)
+                .build();
+
+        userRepository.save(user);
+
+        //when then
+        assertThatThrownBy(() -> userService.checkDuplicateNickname("미미미누"))
+                .isInstanceOf(DuplicateNicknameException.class);
+    }
+
+    @Test
+    @DisplayName("회원의 학번이 이미 있는 경우 예외를 처리한다.")
+    void validateStudentId() {
+        //given
+        User user = User.builder()
+                .loginId("kmw106933")
+                .email("kmw10693@konkuk.ac.kr")
+                .nickname("미미미누")
+                .password("password123")
+                .studentId("202112322")
+                .department(department)
+                .build();
+
+        userRepository.save(user);
+
+        //when then
+        assertThatThrownBy(() -> userService.checkDuplicateStudentId("202112322"))
+                .isInstanceOf(DuplicateStudentIdException.class);
     }
 }

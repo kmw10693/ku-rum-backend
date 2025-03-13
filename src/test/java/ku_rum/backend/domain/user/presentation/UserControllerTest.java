@@ -24,7 +24,10 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.transaction.annotation.Transactional;
 
 import static com.epages.restdocs.apispec.ResourceDocumentation.resource;
+import static ku_rum.backend.domain.user.domain.enums.UserMessage.VALID_NICKNAME_MESSAGE;
+import static ku_rum.backend.domain.user.domain.enums.UserMessage.VALID_STUDENTID_MESSAGE;
 import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.doNothing;
 import static org.springframework.restdocs.headers.HeaderDocumentation.headerWithName;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.*;
 import static org.springframework.restdocs.payload.PayloadDocumentation.*;
@@ -282,6 +285,71 @@ class UserControllerTest extends RestDocsTestSupport {
                                         fieldWithPath("status").type(JsonFieldType.STRING).description("응답 상태 (OK)"),
                                         fieldWithPath("message").type(JsonFieldType.STRING).description("응답 메시지"),
                                         fieldWithPath("data").type(JsonFieldType.BOOLEAN).description("중복 여부 (true: 중복, false: 사용 가능)")
+                                ).build())));
+    }
+
+    @Test
+    @DisplayName("닉네임 중복 여부를 확인한다.")
+    void checkDuplicateNickname() throws Exception {
+        // given
+        String testNickname = "testNickname";
+        doNothing().when(userService).checkDuplicateNickname(testNickname);
+
+        // when & then
+        mockMvc.perform(get("/api/v1/users/check-nickname")
+                        .param("value", testNickname)
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.code").value("200"))
+                .andExpect(jsonPath("$.status").value("OK"))
+                .andExpect(jsonPath("$.message").value("OK"))
+                .andExpect(jsonPath("$.data").value(VALID_NICKNAME_MESSAGE.getMessage()))
+                .andDo(restDocs.document(resource(
+                        ResourceSnippetParameters.builder()
+                                .tag("유저 API")
+                                .description("닉네임 중복 확인")
+                                .queryParameters(
+                                        parameterWithName("value").description("중복 확인할 닉네임")
+                                )
+                                .responseFields(
+                                        fieldWithPath("code").type(JsonFieldType.NUMBER).description("응답 코드 (200)"),
+                                        fieldWithPath("status").type(JsonFieldType.STRING).description("응답 상태 (OK)"),
+                                        fieldWithPath("message").type(JsonFieldType.STRING).description("응답 메시지"),
+                                        fieldWithPath("data").type(JsonFieldType.STRING).description("유효한 닉네임 메시지")
+                                ).build())));
+    }
+
+    @Test
+    @DisplayName("학번 중복 여부를 확인한다.")
+    void checkDuplicateStudentId() throws Exception {
+        // given
+        String testStudentId = "2021123456";
+        doNothing().when(userService).checkDuplicateStudentId(testStudentId);
+
+
+        // when & then
+        mockMvc.perform(get("/api/v1/users/check-studentId")
+                        .param("value", testStudentId)
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.code").value("200"))
+                .andExpect(jsonPath("$.status").value("OK"))
+                .andExpect(jsonPath("$.message").value("OK"))
+                .andExpect(jsonPath("$.data").value(VALID_STUDENTID_MESSAGE.getMessage()))
+                .andDo(restDocs.document(resource(
+                        ResourceSnippetParameters.builder()
+                                .tag("유저 API")
+                                .description("학번 중복 확인")
+                                .queryParameters(
+                                        parameterWithName("value").description("중복 확인할 학번")
+                                )
+                                .responseFields(
+                                        fieldWithPath("code").type(JsonFieldType.NUMBER).description("응답 코드 (200)"),
+                                        fieldWithPath("status").type(JsonFieldType.STRING).description("응답 상태 (OK)"),
+                                        fieldWithPath("message").type(JsonFieldType.STRING).description("응답 메시지"),
+                                        fieldWithPath("data").type(JsonFieldType.STRING).description("유효한 학번 메시지")
                                 ).build())));
     }
 }

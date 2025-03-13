@@ -22,7 +22,9 @@ public enum AuthorizationList {
             "/index.html",
             "/",
             "/api/v1/users/check-id",
-            "/api/v1/users/validations"
+            "/api/v1/users/validations",
+            "/api/v1/users/check-nickname",
+            "/api/v1/users/check-studentId"
             )));
 
     private final List<String> authorities;
