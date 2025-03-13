@@ -25,6 +25,6 @@ class EmailValidationRequestTest {
         EmailValidationRequest loginIdValidationRequest = new EmailValidationRequest(email);
 
         assertThat(validator.validate(loginIdValidationRequest))
-                .anyMatch(violation -> violation.getMessage().equals("공백일 수 없습니다"));
+                .anyMatch(violation -> violation.getMessage().equals("공백일 수 없습니다."));
     }
 }
