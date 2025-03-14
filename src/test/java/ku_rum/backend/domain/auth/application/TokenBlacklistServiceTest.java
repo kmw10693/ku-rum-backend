@@ -1,8 +1,8 @@
 package ku_rum.backend.domain.auth.application;
 
 import ku_rum.backend.domain.auth.dto.request.ReissueRequest;
-import ku_rum.backend.global.config.redis.RedisUtil;
-import ku_rum.backend.global.security.jwt.CustomUserDetails;
+import ku_rum.backend.global.utils.RedisUtil;
+import ku_rum.backend.global.security.CustomUserDetails;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

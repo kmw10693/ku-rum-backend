@@ -1,14 +1,15 @@
 package ku_rum.backend.global.exception.building;
 
-import ku_rum.backend.global.support.response.status.BaseExceptionResponseStatus;
+import ku_rum.backend.global.support.status.BaseExceptionResponseStatus;
 import lombok.Getter;
 
 @Getter
 public class BuildingNotFoundException extends RuntimeException {
 
-  private BaseExceptionResponseStatus status;
-  public BuildingNotFoundException(BaseExceptionResponseStatus status) {
-    super(status.getMessage());
-    this.status = status;
-  }
+    private BaseExceptionResponseStatus status;
+
+    public BuildingNotFoundException(BaseExceptionResponseStatus status) {
+        super(status.getMessage());
+        this.status = status;
+    }
 }

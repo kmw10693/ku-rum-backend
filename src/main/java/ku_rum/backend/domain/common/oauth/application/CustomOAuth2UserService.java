@@ -4,7 +4,7 @@ import ku_rum.backend.domain.common.oauth.domain.OAuthAttributes;
 import ku_rum.backend.domain.common.oauth.domain.UserProfile;
 import ku_rum.backend.domain.user.domain.User;
 import ku_rum.backend.domain.user.domain.repository.UserRepository;
-import ku_rum.backend.global.security.jwt.CustomUserDetails;
+import ku_rum.backend.global.security.CustomUserDetails;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;

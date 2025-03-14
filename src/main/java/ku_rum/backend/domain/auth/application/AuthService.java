@@ -5,8 +5,10 @@ import jakarta.servlet.http.HttpServletRequest;
 import ku_rum.backend.domain.auth.dto.request.LoginRequest;
 import ku_rum.backend.domain.auth.dto.request.ReissueRequest;
 import ku_rum.backend.domain.common.firebase.application.NotificationService;
-import ku_rum.backend.global.security.jwt.*;
-import ku_rum.backend.global.security.jwt.dto.TokenResponse;
+import ku_rum.backend.global.security.CustomUserDetails;
+import ku_rum.backend.global.security.JwtTokenAuthenticationFilter;
+import ku_rum.backend.global.security.JwtTokenProvider;
+import ku_rum.backend.domain.user.dto.response.TokenResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -17,7 +19,7 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import static ku_rum.backend.global.support.response.status.BaseExceptionResponseStatus.MALFORMED_TOKEN;
+import static ku_rum.backend.global.support.status.BaseExceptionResponseStatus.MALFORMED_TOKEN;
 
 @Slf4j
 @Service

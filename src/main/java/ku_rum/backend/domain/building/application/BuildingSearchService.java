@@ -18,7 +18,7 @@ import ku_rum.backend.domain.menu.dto.response.MenuSimpleResponse;
 import ku_rum.backend.global.exception.building.BuildingNotFoundException;
 import ku_rum.backend.global.exception.category.CategoryNotExistException;
 import ku_rum.backend.global.exception.category.CategoryNotProvidingDetailException;
-import ku_rum.backend.global.support.response.status.BaseExceptionResponseStatus;
+import ku_rum.backend.global.support.status.BaseExceptionResponseStatus;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -26,7 +26,7 @@ import org.springframework.stereotype.Service;
 import java.util.*;
 import java.util.stream.Collectors;
 
-import static ku_rum.backend.global.support.response.status.BaseExceptionResponseStatus.*;
+import static ku_rum.backend.global.support.status.BaseExceptionResponseStatus.*;
 
 
 

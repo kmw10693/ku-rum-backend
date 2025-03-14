@@ -13,7 +13,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import static ku_rum.backend.domain.user.domain.enums.UserMessage.*;
-import static ku_rum.backend.global.support.response.status.BaseExceptionResponseStatus.SUCCESS_PROFILE_SET;
+import static ku_rum.backend.global.support.status.BaseExceptionResponseStatus.SUCCESS_PROFILE_SET;
 
 @RestController
 @RequestMapping("/api/v1/users")

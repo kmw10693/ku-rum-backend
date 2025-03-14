@@ -11,8 +11,8 @@ import ku_rum.backend.domain.user.domain.repository.UserRepository;
 import ku_rum.backend.global.exception.notice.DuplicateNoticeException;
 import ku_rum.backend.global.exception.notice.NoSuchNoticeException;
 import ku_rum.backend.global.exception.user.NoSuchUserException;
-import ku_rum.backend.global.support.response.status.BaseExceptionResponseStatus;
-import ku_rum.backend.global.security.jwt.UserUtils;
+import ku_rum.backend.global.support.status.BaseExceptionResponseStatus;
+import ku_rum.backend.global.utils.UserUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -20,8 +20,8 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static ku_rum.backend.global.support.response.status.BaseExceptionResponseStatus.DUPLICATE_NOTICE;
-import static ku_rum.backend.global.support.response.status.BaseExceptionResponseStatus.NO_SUCH_USER;
+import static ku_rum.backend.global.support.status.BaseExceptionResponseStatus.DUPLICATE_NOTICE;
+import static ku_rum.backend.global.support.status.BaseExceptionResponseStatus.NO_SUCH_USER;
 
 @Service
 @Transactional(readOnly = true)

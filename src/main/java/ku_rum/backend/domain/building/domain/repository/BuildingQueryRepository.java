@@ -15,7 +15,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 import java.util.Optional;
 
-import static ku_rum.backend.global.support.response.status.BaseExceptionResponseStatus.*;
+import static ku_rum.backend.global.support.status.BaseExceptionResponseStatus.*;
 
 
 @Repository

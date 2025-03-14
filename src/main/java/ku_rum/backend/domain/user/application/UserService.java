@@ -10,16 +10,17 @@ import ku_rum.backend.domain.user.dto.request.ResetAccountRequest;
 import ku_rum.backend.domain.user.dto.request.UserSaveRequest;
 import ku_rum.backend.domain.user.dto.response.UserSaveResponse;
 import ku_rum.backend.global.exception.department.NoSuchDepartmentException;
+import ku_rum.backend.global.exception.email.DuplicateEmailException;
 import ku_rum.backend.global.exception.user.*;
-import ku_rum.backend.global.security.jwt.CustomUserDetails;
-import ku_rum.backend.global.security.jwt.UserUtils;
+import ku_rum.backend.global.security.CustomUserDetails;
+import ku_rum.backend.global.utils.UserUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import static ku_rum.backend.global.support.response.status.BaseExceptionResponseStatus.*;
+import static ku_rum.backend.global.support.status.BaseExceptionResponseStatus.*;
 
 @Service
 @Transactional(readOnly = true)

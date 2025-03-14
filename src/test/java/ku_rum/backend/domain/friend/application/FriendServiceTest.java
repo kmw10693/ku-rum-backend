@@ -10,7 +10,7 @@ import ku_rum.backend.domain.user.domain.User;
 import ku_rum.backend.domain.user.domain.enums.AgreementStatus;
 import ku_rum.backend.domain.user.domain.repository.UserRepository;
 import ku_rum.backend.global.exception.friend.NoFriendsException;
-import ku_rum.backend.global.security.jwt.UserUtils;
+import ku_rum.backend.global.utils.UserUtils;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;

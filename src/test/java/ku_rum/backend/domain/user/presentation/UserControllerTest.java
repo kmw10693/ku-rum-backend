@@ -8,7 +8,7 @@ import ku_rum.backend.domain.user.domain.enums.AgreementStatus;
 import ku_rum.backend.domain.user.dto.request.ProfileChangeRequest;
 import ku_rum.backend.domain.user.dto.request.ResetAccountRequest;
 import ku_rum.backend.domain.user.dto.request.UserSaveRequest;
-import ku_rum.backend.global.security.jwt.CustomUserDetails;
+import ku_rum.backend.global.security.CustomUserDetails;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.json.JsonType;

@@ -1,8 +1,10 @@
 package ku_rum.backend.global.security.jwt;
 
-import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.JwtException;
-import ku_rum.backend.global.config.redis.RedisUtil;
+import ku_rum.backend.global.utils.RedisUtil;
+import ku_rum.backend.global.security.CustomUserDetails;
+import ku_rum.backend.global.security.JwtProperties;
+import ku_rum.backend.global.security.JwtTokenProvider;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -19,7 +21,6 @@ import java.util.Collections;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.verify;

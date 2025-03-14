@@ -1,16 +1,11 @@
 package ku_rum.backend.domain.common.firebase.application;
 
-import ku_rum.backend.domain.user.domain.repository.UserRepository;
-import ku_rum.backend.global.config.redis.RedisUtil;
-import ku_rum.backend.global.security.jwt.UserUtils;
+import ku_rum.backend.global.utils.RedisUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
-import java.util.concurrent.ConcurrentHashMap;
-
-import static ku_rum.backend.global.security.jwt.UserUtils.getLongMemberId;
+import static ku_rum.backend.global.utils.UserUtils.getLongMemberId;
 
 @Slf4j
 @Service
