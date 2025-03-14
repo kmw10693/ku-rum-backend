@@ -13,10 +13,11 @@
 
 
 ### CI/CD
-<img width="80%" alt="스크린샷 2025-03-01 오후 6 56 29" src="https://github.com/user-attachments/assets/688834db-852a-421f-9687-72e9232bf68a" />
+<img width="80%" alt="image" src="https://github.com/user-attachments/assets/bc53d74f-dc04-4066-9c5e-3773a82c992f" />
+
 
 ### 모니터링
-<img width="80%" alt="image" src="https://github.com/user-attachments/assets/110ac0fe-2c69-42ab-8cfd-c4b1f9c45168" />
+<img width="80%" alt="image" src="https://github.com/user-attachments/assets/fa89dbb1-5013-4693-87a1-ad21554920eb" />
 
 ## 기술 의사 결정
 
