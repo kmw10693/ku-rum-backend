@@ -17,7 +17,8 @@
 
 
 ### 모니터링
-<img width="80%" alt="image" src="https://github.com/user-attachments/assets/fa89dbb1-5013-4693-87a1-ad21554920eb" />
+<img width="80%" alt="image" src="https://github.com/user-attachments/assets/36a4488b-3db5-4cc2-91d0-9af329e0d002" />
+
 
 ## 기술 의사 결정
 
