@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-import static ku_rum.backend.global.support.response.status.BaseExceptionResponseStatus.CATEGORY_NAME_NOT_EXIST;
+import static ku_rum.backend.global.support.status.BaseExceptionResponseStatus.CATEGORY_NAME_NOT_EXIST;
 
 
 @Service

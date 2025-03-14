@@ -24,10 +24,21 @@ class UserSaveRequestTest {
     @NullAndEmptySource
     @DisplayName("회원가입 이메일에 빈 문자열이 들어오는 경우 처리한다.")
     void blankEmail(String email) {
-        UserSaveRequest userSaveRequest = new UserSaveRequest(email, "kmw10693@konkuk.ac.kr","password12", "202112322", "컴퓨터공학부", "미미미누", AgreementStatus.AGREED);
+        UserSaveRequest userSaveRequest = new UserSaveRequest(email, "kmw10693","password12", "202112322", "컴퓨터공학부", "미미미누", AgreementStatus.AGREED);
 
         assertThat(validator.validate(userSaveRequest))
                 .anyMatch(violation -> violation.getMessage().equals("이메일 입력은 필수입니다."));
+    }
+
+    @ParameterizedTest
+    @CsvSource(value = {"kmw10693:true", "kmw10693@naver.com:false"}, delimiter = ':')
+    @DisplayName("회원가입 이메일에 잘못된 이메일 형식이 온 경우 처리한다.")
+    void invalidEmail(String email, boolean flag) {
+        UserSaveRequest userSaveRequest = new UserSaveRequest(email, "kmw10693","password12", "202112322", "컴퓨터공학부", "미미미누", AgreementStatus.AGREED);
+
+        assertThat(validator.validate(userSaveRequest).stream()
+                .anyMatch(violation -> violation.getMessage().equals("이메일 형식이 맞지 않습니다.")))
+                .isEqualTo(flag);
     }
 
     @ParameterizedTest

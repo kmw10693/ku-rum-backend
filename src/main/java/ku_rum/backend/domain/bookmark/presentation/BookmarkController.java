@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-import static ku_rum.backend.global.support.response.status.BaseExceptionResponseStatus.BOOKMARK_SUCCESS;
+import static ku_rum.backend.global.support.status.BaseExceptionResponseStatus.BOOKMARK_SUCCESS;
 
 @RestController
 @RequestMapping("/api/v1/bookmarks")

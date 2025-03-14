@@ -4,7 +4,7 @@ import ku_rum.backend.domain.user.domain.repository.UserRepository;
 import ku_rum.backend.domain.common.mail.dto.request.MailSendRequest;
 import ku_rum.backend.domain.common.mail.dto.request.MailVerificationRequest;
 import ku_rum.backend.domain.common.mail.dto.response.MailVerificationResponse;
-import ku_rum.backend.global.exception.user.DuplicateEmailException;
+import ku_rum.backend.global.exception.email.DuplicateEmailException;
 import ku_rum.backend.global.exception.user.MailSendException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -22,7 +22,7 @@ import java.time.Duration;
 import java.util.Random;
 
 import static ku_rum.backend.domain.common.mail.domain.MailSendSetting.MAIL_SEND_INFO;
-import static ku_rum.backend.global.support.response.status.BaseExceptionResponseStatus.*;
+import static ku_rum.backend.global.support.status.BaseExceptionResponseStatus.*;
 
 @Slf4j
 @Service

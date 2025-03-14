@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import jakarta.servlet.http.HttpServletResponse;
 import ku_rum.backend.global.log.domain.ApiLog;
 import ku_rum.backend.global.log.domain.repository.ApiLogRepository;
+import ku_rum.backend.global.log.interceptior.LoggingInterceptor;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;

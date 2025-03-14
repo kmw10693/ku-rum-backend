@@ -1,7 +1,7 @@
 package ku_rum.backend.domain.common.firebase.application;
 
-import ku_rum.backend.global.config.redis.RedisUtil;
-import ku_rum.backend.global.security.jwt.UserUtils;
+import ku_rum.backend.global.utils.RedisUtil;
+import ku_rum.backend.global.utils.UserUtils;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -13,7 +13,6 @@ import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.test.context.ActiveProfiles;
 
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 

@@ -9,17 +9,13 @@ import ku_rum.backend.domain.category.dto.request.BuildindgCategoryRequest;
 import ku_rum.backend.domain.category.dto.response.CategoryDetailResponse;
 import ku_rum.backend.domain.user.application.UserService;
 import ku_rum.backend.global.support.response.BaseResponse;
-import ku_rum.backend.global.security.jwt.CustomUserDetails;
+import ku_rum.backend.global.security.CustomUserDetails;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
-
-import static ku_rum.backend.global.support.response.status.BaseExceptionResponseStatus.SUCCESS;
 
 @RestController
 @RequiredArgsConstructor

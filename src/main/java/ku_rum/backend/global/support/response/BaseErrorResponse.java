@@ -1,7 +1,7 @@
 package ku_rum.backend.global.support.response;
 
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-import ku_rum.backend.global.support.response.status.ResponseStatus;
+import ku_rum.backend.global.support.status.ResponseStatus;
 import lombok.Getter;
 import org.springframework.http.HttpStatus;
 

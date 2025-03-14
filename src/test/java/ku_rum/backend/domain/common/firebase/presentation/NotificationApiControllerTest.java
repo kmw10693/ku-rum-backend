@@ -1,5 +1,6 @@
 package ku_rum.backend.domain.common.firebase.presentation;
 
+import com.epages.restdocs.apispec.ResourceSnippetParameters;
 import ku_rum.backend.config.RestDocsTestSupport;
 import ku_rum.backend.domain.common.firebase.application.NotificationService;
 import org.junit.jupiter.api.DisplayName;
@@ -11,11 +12,14 @@ import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.ActiveProfiles;
 
+import static com.epages.restdocs.apispec.ResourceDocumentation.resource;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
+import static org.springframework.restdocs.headers.HeaderDocumentation.headerWithName;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.post;
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
 import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
+import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -42,12 +46,16 @@ class NotificationApiControllerTest extends RestDocsTestSupport {
                 .andDo(print())  // 요청과 응답을 출력
                 .andExpect(status().isOk())  // 상태 코드 200을 예상
                 .andDo(restDocs.document(
-                        responseFields(  // 응답 필드 설명
-                                fieldWithPath("code").description("성공 시 반환 코드 (200)"),
-                                fieldWithPath("status").description("성공 시 상태 값 (OK)"),
-                                fieldWithPath("message").description("성공 시 메시지 (사용자 토큰 서버에 저장 완료)"),
-                                fieldWithPath("data").description("성공 시 '사용자 토큰 서버에 저장 완료' 반환")
-                        )
-                ));
+                        resource(ResourceSnippetParameters.builder()
+                                        .tag("푸시알림 API")
+                                        .description("토큰 등록")
+                                        .requestHeaders(
+                                                headerWithName("Bearer").description("발급 받은 엑세스 토큰입니다."))
+                                .responseFields(  // 응답 필드 설명
+                                        fieldWithPath("code").description("성공 시 반환 코드 (200)"),
+                                        fieldWithPath("status").description("성공 시 상태 값 (OK)"),
+                                        fieldWithPath("message").description("성공 시 메시지 (사용자 토큰 서버에 저장 완료)"),
+                                        fieldWithPath("data").description("성공 시 '사용자 토큰 서버에 저장 완료' 반환")
+                                ).build())));
     }
 }
