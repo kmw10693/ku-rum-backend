@@ -1,6 +1,6 @@
 package ku_rum.backend.global.dataInit;
 
-import ku_rum.backend.domain.building.domain.Building;
+import ku_rum.backend.domain.building.domain.building.b;
 import ku_rum.backend.domain.building.domain.BuildingAbbrev;
 import org.springframework.stereotype.Component;
 
