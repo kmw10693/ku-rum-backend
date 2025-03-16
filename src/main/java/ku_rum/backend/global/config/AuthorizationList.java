@@ -20,7 +20,8 @@ public final class AuthorizationList {
             "/api/v1/mails/verification_codes",
             "/docs/**",
             "/swagger-ui/**",
-            "/v3/api-docs/**"
+            "/v3/api-docs/**",
+            "/actuator/**"
     );
 
     private AuthorizationList() {

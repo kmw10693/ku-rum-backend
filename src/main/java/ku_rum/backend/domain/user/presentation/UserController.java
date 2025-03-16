@@ -30,8 +30,6 @@ public class UserController {
      * @param userSaveRequest
      * @return
      */
-    @Timed("waves.user.time_1")
-    @Counted("waves.user.count_1")
     @PostMapping
     public BaseResponse<UserSaveResponse> join(@RequestBody @Valid final UserSaveRequest userSaveRequest) {
         return BaseResponse.ok(userService.saveUser(userSaveRequest));
@@ -43,8 +41,6 @@ public class UserController {
      * @param emailValidationRequest
      * @return
      */
-    @Timed("waves.user.time_2")
-    @Counted("waves.user.count_2")
     @PostMapping("/validations")
     public BaseResponse<String> validateEmail(@RequestBody @Valid final EmailValidationRequest emailValidationRequest) {
         userService.validateEmail(emailValidationRequest);
@@ -57,8 +53,6 @@ public class UserController {
      * @param resetAccountRequest
      * @return
      */
-    @Timed("waves.user.time_3")
-    @Counted("waves.user.count_3")
     @PostMapping("/reset-account")
     public BaseResponse<String> resetAccount(@RequestBody @Valid final ResetAccountRequest resetAccountRequest) {
         userService.resetAccount(resetAccountRequest);
@@ -70,8 +64,6 @@ public class UserController {
      * @param profileChangeRequest
      * @return
      */
-    @Timed("waves.user.time_4")
-    @Counted("waves.user.count_4")
     @PatchMapping("/profile")
     public BaseResponse<String> setProfile(@RequestBody @Valid final ProfileChangeRequest profileChangeRequest) {
         userService.setProfile(profileChangeRequest);
@@ -83,8 +75,6 @@ public class UserController {
      * @param value
      * @return
      */
-    @Timed("waves.user.time_5")
-    @Counted("waves.user.count_5")
     @GetMapping("/check-id")
     public BaseResponse<Boolean> checkDuplicateId(@RequestParam("value") final String value) {
         return BaseResponse.ok(userService.checkDuplicateId(value));
@@ -95,8 +85,6 @@ public class UserController {
      * @param value
      * @return
      */
-    @Timed("waves.user.time_6")
-    @Counted("waves.user.count_6")
     @GetMapping("/check-nickname")
     public BaseResponse<String> checkDuplicateNickname(@RequestParam("value") final String value) {
         userService.checkDuplicateNickname(value);
@@ -108,8 +96,6 @@ public class UserController {
      * @param value
      * @return
      */
-    @Timed("waves.user.time_7")
-    @Counted("waves.user.count_7")
     @GetMapping("/check-studentId")
     public BaseResponse<String> checkDuplicateStudentId(@RequestParam("value") final String value) {
         userService.checkDuplicateStudentId(value);
