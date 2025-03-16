@@ -1,5 +1,7 @@
 package ku_rum.backend.domain.user.application;
 
+import io.micrometer.core.annotation.Counted;
+import io.micrometer.core.annotation.Timed;
 import ku_rum.backend.domain.department.domain.Department;
 import ku_rum.backend.domain.department.domain.repository.DepartmentRepository;
 import ku_rum.backend.domain.common.mail.dto.request.EmailValidationRequest;
@@ -31,6 +33,8 @@ public class UserService {
     private final DepartmentRepository departmentRepository;
     private final PasswordEncoder passwordEncoder;
 
+    @Timed("waves.user.time_1")
+    @Counted("waves.user.count_1")
     @Transactional
     public UserSaveResponse saveUser(final UserSaveRequest userSaveRequest) {
         validateUser(userSaveRequest);
@@ -42,18 +46,24 @@ public class UserService {
         return UserSaveResponse.from(userRepository.save(user));
     }
 
+    @Timed("waves.user.time_3")
+    @Counted("waves.user.count_3")
     @Transactional
     public void resetAccount(final ResetAccountRequest resetAccountRequest) {
         User user = getUser();
         user.setPassword(passwordEncoder.encode(resetAccountRequest.password()));
     }
 
+    @Timed("waves.user.time_4")
+    @Counted("waves.user.count_4")
     @Transactional
     public void setProfile(final ProfileChangeRequest profileChangeRequest) {
         User user = getUser();
         user.setImageUrl(profileChangeRequest.imageUrl());
     }
 
+    @Timed("waves.user.time_2")
+    @Counted("waves.user.count_2")
     public void validateEmail(final EmailValidationRequest emailValidationRequest) {
         validateDuplicateEmail(emailValidationRequest.email());
     }
@@ -64,14 +74,20 @@ public class UserService {
         }
     }
 
+    @Timed("waves.user.time_6")
+    @Counted("waves.user.count_6")
     public void checkDuplicateNickname(final String nickname) {
         validateNickname(nickname);
     }
 
+    @Timed("waves.user.time_5")
+    @Counted("waves.user.count_5")
     public Boolean checkDuplicateId(final String value) {
         return userRepository.existsByLoginId(value);
     }
 
+    @Timed("waves.user.time_7")
+    @Counted("waves.user.count_7")
     public void checkDuplicateStudentId(final String studentId) {
         validateDuplicateStudentId(studentId);
     }
