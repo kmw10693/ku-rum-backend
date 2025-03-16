@@ -8,16 +8,20 @@ import ku_rum.backend.domain.department.domain.repository.DepartmentRepository;
 import ku_rum.backend.domain.user.domain.User;
 import ku_rum.backend.domain.user.domain.repository.UserRepository;
 import ku_rum.backend.domain.common.mail.dto.request.EmailValidationRequest;
+import ku_rum.backend.domain.user.dto.request.ResetAccountRequest;
 import ku_rum.backend.domain.user.dto.request.UserSaveRequest;
+import ku_rum.backend.domain.user.dto.response.LoginIdResponse;
 import ku_rum.backend.domain.user.dto.response.UserSaveResponse;
 import ku_rum.backend.global.exception.email.DuplicateEmailException;
 import ku_rum.backend.global.exception.user.DuplicateNicknameException;
 import ku_rum.backend.global.exception.user.DuplicateStudentIdException;
+import ku_rum.backend.global.exception.user.NoSuchUserException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.ActiveProfiles;
 
 import java.math.BigDecimal;
@@ -46,6 +50,9 @@ class UserServiceTest {
 
     private Department department;
 
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
     @BeforeEach
     void setUp() {
          building = Building.of("신공학관",3L, "신공", 3L, BigDecimal.valueOf(64.3423423), BigDecimal.valueOf(64.3423423));
@@ -71,7 +78,7 @@ class UserServiceTest {
         UserSaveResponse userSaveResponse = userService.saveUser(request);
 
         //then
-        assertThat(userSaveResponse.getId()).isNotNull();
+        assertThat(userSaveResponse.id()).isNotNull();
     }
 
     @Test
@@ -134,5 +141,69 @@ class UserServiceTest {
         //when then
         assertThatThrownBy(() -> userService.checkDuplicateStudentId("202112322"))
                 .isInstanceOf(DuplicateStudentIdException.class);
+    }
+
+    @Test
+    @DisplayName("이미 존재하는 이메일로 아이디를 가져오는 경우 성공한다.")
+    void getLoginId() {
+        //given
+        User user = User.builder()
+                .loginId("kmw106933")
+                .email("kmw10693@konkuk.ac.kr")
+                .nickname("미미미누")
+                .password("password123")
+                .studentId("202112322")
+                .department(department)
+                .build();
+
+        userRepository.save(user);
+
+        LoginIdResponse loginId = userService.getLoginId("kmw10693@konkuk.ac.kr");
+
+        //when then
+        assertThat(loginId.loginId()).isEqualTo("kmw106933");
+    }
+
+    @Test
+    @DisplayName("존재하지 않는 이메일로 아이디를 가져오는 경우 실패한다.")
+    void getLoginIdFail() {
+        //given
+        User user = User.builder()
+                .loginId("kmw106933")
+                .email("kmw10693@konkuk.ac.kr")
+                .nickname("미미미누")
+                .password("password123")
+                .studentId("202112322")
+                .department(department)
+                .build();
+
+        userRepository.save(user);
+
+
+        //when then
+        assertThatThrownBy(() -> userService.getLoginId("kmw106943@konkuk.ac.kr"))
+                .isInstanceOf(NoSuchUserException.class);
+    }
+
+    @Test
+    @DisplayName("비밀번호를 성공적으로 변경한다.")
+    void changeLoginIdSuccess() {
+        //given
+        User user = User.builder()
+                .loginId("kmw106933")
+                .email("kmw10693@konkuk.ac.kr")
+                .nickname("미미미누")
+                .password("password123")
+                .studentId("202112322")
+                .department(department)
+                .build();
+
+        userRepository.save(user);
+        ResetAccountRequest request = new ResetAccountRequest("kmw106933", "password1234");
+
+        //when
+        userService.resetAccount(request);
+        //then
+        assertThat(passwordEncoder.matches("password1234", user.getPassword())).isEqualTo(true);
     }
 }

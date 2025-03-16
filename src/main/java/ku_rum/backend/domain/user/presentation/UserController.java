@@ -6,6 +6,7 @@ import ku_rum.backend.domain.user.dto.request.ResetAccountRequest;
 import ku_rum.backend.domain.user.application.UserService;
 import ku_rum.backend.domain.common.mail.dto.request.EmailValidationRequest;
 import ku_rum.backend.domain.user.dto.request.UserSaveRequest;
+import ku_rum.backend.domain.user.dto.response.LoginIdResponse;
 import ku_rum.backend.domain.user.dto.response.UserSaveResponse;
 import ku_rum.backend.global.support.response.BaseResponse;
 import lombok.RequiredArgsConstructor;
@@ -46,7 +47,7 @@ public class UserController {
     }
 
     /**
-     * 비밀번호 초기화 API
+     * 기존 아이디로 비밀번호 초기화 API
      *
      * @param resetAccountRequest
      * @return
@@ -59,6 +60,7 @@ public class UserController {
 
     /**
      * 프로필 변경 API
+     *
      * @param profileChangeRequest
      * @return
      */
@@ -70,16 +72,19 @@ public class UserController {
 
     /**
      * 아이디 중복 확인 API
+     *
      * @param value
      * @return
      */
     @GetMapping("/check-id")
-    public BaseResponse<Boolean> checkDuplicateId(@RequestParam("value") final String value) {
-        return BaseResponse.ok(userService.checkDuplicateId(value));
+    public BaseResponse<String> checkDuplicateId(@RequestParam("value") final String value) {
+        userService.checkDuplicateId(value);
+        return BaseResponse.ok(VALID_LOGINID_MESSAGE.getMessage());
     }
 
     /**
      * 닉네임 중복 확인 API
+     *
      * @param value
      * @return
      */
@@ -91,6 +96,7 @@ public class UserController {
 
     /**
      * 학번 중복 확인 API
+     *
      * @param value
      * @return
      */
@@ -99,4 +105,17 @@ public class UserController {
         userService.checkDuplicateStudentId(value);
         return BaseResponse.ok(VALID_STUDENTID_MESSAGE.getMessage());
     }
+
+    /**
+     * 이메일로 아이디 가져오기 API
+     *
+     * @param email
+     * @return
+     */
+    @GetMapping("/loginId")
+    public BaseResponse<LoginIdResponse> getLoginId(@RequestParam("email") final String email) {
+        return BaseResponse.ok(userService.getLoginId(email));
+    }
 }
+
+

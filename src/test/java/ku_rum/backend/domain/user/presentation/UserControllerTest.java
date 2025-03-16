@@ -8,6 +8,7 @@ import ku_rum.backend.domain.user.domain.enums.AgreementStatus;
 import ku_rum.backend.domain.user.dto.request.ProfileChangeRequest;
 import ku_rum.backend.domain.user.dto.request.ResetAccountRequest;
 import ku_rum.backend.domain.user.dto.request.UserSaveRequest;
+import ku_rum.backend.domain.user.dto.response.LoginIdResponse;
 import ku_rum.backend.global.security.CustomUserDetails;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -24,10 +25,10 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.transaction.annotation.Transactional;
 
 import static com.epages.restdocs.apispec.ResourceDocumentation.resource;
-import static ku_rum.backend.domain.user.domain.enums.UserMessage.VALID_NICKNAME_MESSAGE;
-import static ku_rum.backend.domain.user.domain.enums.UserMessage.VALID_STUDENTID_MESSAGE;
+import static ku_rum.backend.domain.user.domain.enums.UserMessage.*;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.when;
 import static org.springframework.restdocs.headers.HeaderDocumentation.headerWithName;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.*;
 import static org.springframework.restdocs.payload.PayloadDocumentation.*;
@@ -167,13 +168,10 @@ class UserControllerTest extends RestDocsTestSupport {
     @WithMockUser
     void resetAccount() throws Exception {
         // given
-        ResetAccountRequest resetAccountRequest = new ResetAccountRequest("test1234");
-        CustomUserDetails userDetails = CustomUserDetails.of(1L, "testUser", AuthorityUtils.createAuthorityList("ROLE_USER"), "test12345");
+        ResetAccountRequest resetAccountRequest = new ResetAccountRequest("test1234", "test1234");
 
         // when then
         mockMvc.perform(post("/api/v1/users/reset-account")
-                        .header("Bearer", "eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyUEsiOjEsInJvbGVzIjoiUk9MRV9VU0VSIiwiaWF0IjoxNzQwMjQyNjQxLCJleHAiOjE3NDAyNDQ0NDF9.kLSMBLWdvIvrBpGJdOigSKjxMIab0cV06xFjSpwrq70")
-                        .with(SecurityMockMvcRequestPostProcessors.user(userDetails))
                         .content(objectMapper.writeValueAsString(resetAccountRequest))
                         .contentType(MediaType.APPLICATION_JSON)
                 )
@@ -183,10 +181,11 @@ class UserControllerTest extends RestDocsTestSupport {
                         ResourceSnippetParameters.builder()
                                 .tag("유저 API")
                                 .description("비밀번호 변경")
-                                .requestHeaders(
-                                        headerWithName("Bearer").description("발급 받은 엑세스 토큰입니다.")
-                                )
                                 .requestFields(
+                                        fieldWithPath("loginId")
+                                                .type(JsonType.STRING)
+                                                .description("비밀번호 변경할 아이디")
+                                                .attributes(constraints("비밀번호를 변경할 아이디입니다.")),
                                         fieldWithPath("password")
                                                 .type(JsonType.STRING)
                                                 .description("새로 변경할 비밀번호")
@@ -260,7 +259,7 @@ class UserControllerTest extends RestDocsTestSupport {
     void checkDuplicateId() throws Exception {
         // given
         String testValue = "testUser";
-        given(userService.checkDuplicateId(testValue)).willReturn(true);
+        doNothing().when(userService).checkDuplicateId(testValue);
 
         // when then
         mockMvc.perform(get("/api/v1/users/check-id")
@@ -272,7 +271,7 @@ class UserControllerTest extends RestDocsTestSupport {
                 .andExpect(jsonPath("$.code").value("200"))
                 .andExpect(jsonPath("$.status").value("OK"))
                 .andExpect(jsonPath("$.message").value("OK"))
-                .andExpect(jsonPath("$.data").value(true))
+                .andExpect(jsonPath("$.data").value(VALID_LOGINID_MESSAGE.getMessage()))
                 .andDo(restDocs.document(resource(
                         ResourceSnippetParameters.builder()
                                 .tag("유저 API")
@@ -284,7 +283,7 @@ class UserControllerTest extends RestDocsTestSupport {
                                         fieldWithPath("code").type(JsonFieldType.NUMBER).description("응답 코드 (200)"),
                                         fieldWithPath("status").type(JsonFieldType.STRING).description("응답 상태 (OK)"),
                                         fieldWithPath("message").type(JsonFieldType.STRING).description("응답 메시지"),
-                                        fieldWithPath("data").type(JsonFieldType.BOOLEAN).description("중복 여부 (true: 중복, false: 사용 가능)")
+                                        fieldWithPath("data").type(JsonFieldType.STRING).description("중복 여부 메시지")
                                 ).build())));
     }
 
@@ -350,6 +349,41 @@ class UserControllerTest extends RestDocsTestSupport {
                                         fieldWithPath("status").type(JsonFieldType.STRING).description("응답 상태 (OK)"),
                                         fieldWithPath("message").type(JsonFieldType.STRING).description("응답 메시지"),
                                         fieldWithPath("data").type(JsonFieldType.STRING).description("유효한 학번 메시지")
+                                ).build())));
+    }
+
+    @Test
+    @DisplayName("이메일로 로그인 아이디 조회 성공")
+    void getLoginId_Success() throws Exception {
+        // Given
+        String email = "test@example.com";
+        String loginId = "testUser";
+        LoginIdResponse response = new LoginIdResponse(loginId);
+
+        when(userService.getLoginId(email)).thenReturn(response);
+
+        // When & Then
+        mockMvc.perform(get("/api/v1/users/loginId")
+                        .param("email", email)
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.code").value("200"))
+                .andExpect(jsonPath("$.status").value("OK"))
+                .andExpect(jsonPath("$.message").value("OK"))
+                .andExpect(jsonPath("$.data.loginId").value(loginId))
+                .andDo(restDocs.document(resource(
+                        ResourceSnippetParameters.builder()
+                                .tag("유저 API")
+                                .description("이메일을 이용하여 로그인 아이디 조회")
+                                .queryParameters(
+                                        parameterWithName("email").description("조회할 유저의 이메일")
+                                )
+                                .responseFields(
+                                        fieldWithPath("code").type(JsonFieldType.NUMBER).description("응답 코드 (200)"),
+                                        fieldWithPath("status").type(JsonFieldType.STRING).description("응답 상태 (OK)"),
+                                        fieldWithPath("message").type(JsonFieldType.STRING).description("응답 메시지"),
+                                        fieldWithPath("data.loginId").type(JsonFieldType.STRING).description("조회된 로그인 아이디")
                                 ).build())));
     }
 }
