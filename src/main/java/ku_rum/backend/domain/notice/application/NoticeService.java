@@ -5,6 +5,7 @@ import ku_rum.backend.domain.notice.domain.NoticeCategory;
 import ku_rum.backend.domain.notice.domain.NoticeStatus;
 import ku_rum.backend.domain.notice.domain.repository.NoticeRepository;
 import ku_rum.backend.domain.notice.dto.response.NoticeSimpleResponse;
+import ku_rum.backend.domain.notice.dto.response.RecentSearchTerm;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.openqa.selenium.By;
@@ -33,6 +34,9 @@ public class NoticeService {
 
     @Qualifier("urlRedisTemplate")
     private final RedisTemplate<String, String> urlRedisTemplate;
+
+    @Qualifier("recentSearchRedisTemplate")
+    private final RedisTemplate<String, String> recentSearchRedisTemplate;
 
     private static final String NOTICE_REDIS_KEY_PREFIX = "konkuk:notice:";
 
@@ -157,7 +161,12 @@ public class NoticeService {
     /**
      * 제목으로 공지사항 검색
      */
-    public List<NoticeSimpleResponse> searchNoticesByTitle(String searchTerm) {
+    public List<NoticeSimpleResponse> searchNoticesByTitle(Long userId, String searchTerm) {
+        //최근 검색어는 최대 10개만 유지
+        String redisKey = "user:" + userId + ":recent-searches";
+        recentSearchRedisTemplate.opsForList().leftPush(redisKey, searchTerm.trim());
+        recentSearchRedisTemplate.opsForList().trim(redisKey, 0, 9);
+
         List<Notice> notices = noticeRepository.searchNoticesByTitle(searchTerm.trim());
         return notices.stream()
                 .map(NoticeSimpleResponse::new)
@@ -165,4 +174,17 @@ public class NoticeService {
     }
 
 
+    /**
+     * 유저 아이디로 최근 검색어 가져오기
+     */
+    public RecentSearchTerm getRecentSearchTerms(Long userId) {
+        String redisKey = "user:" + userId + ":recent-searches";
+        List<String> terms = recentSearchRedisTemplate.opsForList().range(redisKey, 0, 9);
+
+        if (terms == null) {
+            terms = List.of();
+        }
+
+        return new RecentSearchTerm(userId, terms);
+    }
 }

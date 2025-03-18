@@ -71,7 +71,7 @@ class NoticeServiceTest {
                 .thenReturn(List.of(notice));
 
         // when
-        List<NoticeSimpleResponse> result = noticeService.searchNoticesByTitle("Search");
+        List<NoticeSimpleResponse> result = noticeService.searchNoticesByTitle(1L,"Search");
 
         // then
         assertEquals(1, result.size());

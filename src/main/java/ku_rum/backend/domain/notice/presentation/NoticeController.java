@@ -3,13 +3,18 @@ package ku_rum.backend.domain.notice.presentation;
 import ku_rum.backend.domain.notice.application.NoticeService;
 import ku_rum.backend.domain.notice.domain.NoticeCategory;
 import ku_rum.backend.domain.notice.dto.response.NoticeSimpleResponse;
+import ku_rum.backend.domain.notice.dto.response.RecentSearchTerm;
+import ku_rum.backend.domain.user.application.UserService;
+import ku_rum.backend.global.security.CustomUserDetails;
 import ku_rum.backend.global.support.response.BaseResponse;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 import static ku_rum.backend.domain.notice.dto.response.CrawlingResponse.*;
+import static ku_rum.backend.global.utils.UserUtils.getLongMemberId;
 
 @RestController
 @RequestMapping("/api/v1/notices")
@@ -17,6 +22,7 @@ import static ku_rum.backend.domain.notice.dto.response.CrawlingResponse.*;
 public class NoticeController {
 
     private final NoticeService noticeService;
+    private final UserService userService;
 
     /**
      * 주어진 조건(작성일 기준)을 만족하는 건국대학교 공지사항을 모두 크롤링
@@ -44,7 +50,22 @@ public class NoticeController {
      * @return
      */
     @GetMapping("/search")
-    public BaseResponse<List<NoticeSimpleResponse>> searchNotices(@RequestParam(name = "searchTerm") String searchTerm) {
-        return BaseResponse.ok(noticeService.searchNoticesByTitle(searchTerm));
+    public BaseResponse<List<NoticeSimpleResponse>> searchNotices(@AuthenticationPrincipal CustomUserDetails userDetails, @RequestParam(name = "searchTerm") String searchTerm) {
+        userService.validateUserDetails(userDetails);
+        Long userId = getLongMemberId();
+        return BaseResponse.ok(noticeService.searchNoticesByTitle(userId,searchTerm));
+    }
+
+
+    /**
+     * 최근 검색어 목록 5개 가져오기
+     * @param userDetails
+     * @return
+     */
+    @GetMapping("/")
+    public BaseResponse<RecentSearchTerm> searchTerms(@AuthenticationPrincipal CustomUserDetails userDetails){
+        userService.validateUserDetails(userDetails);
+        Long userId = getLongMemberId();
+        return BaseResponse.ok(noticeService.getRecentSearchTerms(userId));
     }
 }
