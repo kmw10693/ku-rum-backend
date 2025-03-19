@@ -14,21 +14,21 @@ public record BuildingResponse(
         BigDecimal longitude
 ) {
 
-  @QueryProjection
-  public BuildingResponse {
+    @QueryProjection
+    public BuildingResponse {
 
-  }
+    }
 
 
 
-  public static BuildingResponse of(Building building) {
-    return new BuildingResponse(
-            building.getId(),
-            building.getName(),
-            building.getNumber(),
-            building.getAbbreviation(),
-            building.getLatitude(),
-            building.getLongitude()
-    );
-  }
+    public static BuildingResponse of(Building building) {
+        return new BuildingResponse(
+                building.getId(),
+                building.getName(),
+                building.getNumber(),
+                building.getAbbreviation(),
+                building.getLatitude(),
+                building.getLongitude()
+        );
+    }
 }

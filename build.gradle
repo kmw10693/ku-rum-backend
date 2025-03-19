@@ -180,6 +180,13 @@ dependencies {
 
 	//FireBase
 	implementation 'com.google.firebase:firebase-admin:6.8.1'
+
+	//actuator
+	implementation 'org.springframework.boot:spring-boot-starter-actuator'
+
+	//micrometer
+	implementation 'io.micrometer:micrometer-registry-prometheus'
+
 }
 
 

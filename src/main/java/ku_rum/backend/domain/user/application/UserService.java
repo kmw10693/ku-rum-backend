@@ -65,6 +65,7 @@ public class UserService {
         User user = userQueryService.getUserByEmail(email);
         log.info("로그인 ID 조회 완료: loginId={}", user.getLoginId());
         return LoginIdResponse.of(user.getLoginId());
+
     }
 
     @Transactional

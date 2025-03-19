@@ -1,3 +1,4 @@
+/*
 package ku_rum.backend.domain.common.firebase.application;
 
 import com.google.auth.oauth2.GoogleCredentials;
@@ -31,3 +32,4 @@ public class FCMInitializer {
         }
     }
 }
+*/
