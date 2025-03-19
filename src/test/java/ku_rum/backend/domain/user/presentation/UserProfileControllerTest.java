@@ -92,7 +92,6 @@ public class UserProfileControllerTest extends RestDocsTestSupport {
 
         // when then
         mockMvc.perform(post("/api/v1/users/reset-account")
-                        .header("Bearer", "eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyUEsiOjEsInJvbGVzIjoiUk9MRV9VU0VSIiwiaWF0IjoxNzQwMjQyNjQxLCJleHAiOjE3NDAyNDQ0NDF9.kLSMBLWdvIvrBpGJdOigSKjxMIab0cV06xFjSpwrq70")
                         .content(objectMapper.writeValueAsString(resetAccountRequest))
                         .contentType(MediaType.APPLICATION_JSON)
                 )
@@ -102,9 +101,6 @@ public class UserProfileControllerTest extends RestDocsTestSupport {
                         ResourceSnippetParameters.builder()
                                 .tag("유저 API")
                                 .description("비밀번호 변경")
-                                .requestHeaders(
-                                        headerWithName("Bearer").description("발급 받은 엑세스 토큰입니다.")
-                                )
                                 .requestFields(
                                         fieldWithPath("loginId")
                                                 .type(JsonType.STRING)
