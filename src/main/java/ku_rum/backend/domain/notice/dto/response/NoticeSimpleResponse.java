@@ -21,4 +21,12 @@ public class NoticeSimpleResponse {
         this.category = notice.getNoticeCategory().getText();
         this.isImportant = notice.getNoticeStatus().isImportant();
     }
+
+    public NoticeSimpleResponse(String url, String title, String date, String category, boolean isImportant) {
+        this.url = url;
+        this.title = title;
+        this.date = date;
+        this.category = category;
+        this.isImportant = isImportant;
+    }
 }
