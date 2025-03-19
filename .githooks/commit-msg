@@ -18,7 +18,7 @@ if [ -n "$issue_number" ] && ! echo "$commit_message" | grep -q "$issue_number";
   # 커밋 메시지 끝에 이슈 번호 추가
   commit_message=$(echo "$commit_message" | sed "s/$/($issue_number)/")
   echo "$commit_message" > "$1"
-  echo "이슈 번호 '$issue_number'가 커밋 메시지에 자동으로 추가되었습니다."
+  echo "이슈 번호 '$issue_number'가 커밋 메시지에 자동으로 추가 되었습니다."
 fi
 
 # 형식 검증: 접두사(feat:, fix: 등) 포함 + 이슈 번호(#숫자) 포함 + 50자 이하

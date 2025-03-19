@@ -1,15 +1,10 @@
 package ku_rum.backend.domain.user.presentation;
 
-import io.micrometer.core.annotation.Counted;
-import io.micrometer.core.annotation.Timed;
 import jakarta.validation.Valid;
 import ku_rum.backend.domain.user.application.UserValidator;
-import ku_rum.backend.domain.user.dto.request.ProfileChangeRequest;
-import ku_rum.backend.domain.user.dto.request.ResetAccountRequest;
 import ku_rum.backend.domain.user.application.UserService;
 import ku_rum.backend.domain.common.mail.dto.request.EmailValidationRequest;
 import ku_rum.backend.domain.user.dto.request.UserSaveRequest;
-import ku_rum.backend.domain.user.dto.response.LoginIdResponse;
 import ku_rum.backend.domain.user.dto.response.UserSaveResponse;
 import ku_rum.backend.global.support.response.BaseResponse;
 import lombok.RequiredArgsConstructor;
@@ -17,7 +12,6 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import static ku_rum.backend.domain.user.domain.UserMessage.*;
-import static ku_rum.backend.global.support.status.BaseExceptionResponseStatus.SUCCESS_PROFILE_SET;
 
 @RestController
 @RequestMapping("/api/v1/users")
