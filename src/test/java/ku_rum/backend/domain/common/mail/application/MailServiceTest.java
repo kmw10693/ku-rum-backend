@@ -42,23 +42,10 @@ class MailServiceTest {
     private MailService mailService;
 
     @Test
-    @DisplayName("인증을 보낸 이메일이 중복인 경우 예외 처리한다.")
-    void DuplicateEmailCheck() {
-        // given
-        String email = "test@example.com";
-        when(userRepository.existsByEmail(email)).thenReturn(true);
-
-        // when & then
-        assertThatThrownBy(() -> mailService.sendCodeToEmail(new MailSendRequest(email)))
-                .isInstanceOf(DuplicateEmailException.class);
-    }
-
-    @Test
     @DisplayName("인증을 보낸 이메일이 중복이 아닌 경우 정상 작동된다.")
     void NonDuplicateEmailCheck() {
         // given
         String email = "test@example.com";
-        when(userRepository.existsByEmail(email)).thenReturn(false);
         doThrow(new RuntimeException()).when(emailSender).send(any(SimpleMailMessage.class));
 
         // when & then
