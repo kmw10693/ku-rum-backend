@@ -50,8 +50,6 @@ public class MailService {
 
     @Async
     public void sendCodeToEmail(final MailSendRequest mailSendRequest) {
-        validateDuplicateEmail(mailSendRequest.email());
-
         String title = MAIL_SEND_INFO.getTITLE();
         String authCode = this.createCode();
 
