@@ -58,7 +58,7 @@ public class NoticeController {
 
 
     /**
-     * 최근 검색어 목록 5개 가져오기
+     * 최근 검색어 목록 10개 가져오기
      * @param userDetails
      * @return
      */

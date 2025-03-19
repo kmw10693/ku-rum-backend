@@ -7,6 +7,8 @@ import ku_rum.backend.global.utils.RedisUtil;
 import ku_rum.backend.domain.user.dto.response.TokenResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
@@ -30,6 +32,7 @@ public class JwtTokenProvider {
 
     private final JwtProperties jwtProperties;
     private final RedisUtil redisUtil;
+
     private SecretKey secretKey;
 
     @PostConstruct
