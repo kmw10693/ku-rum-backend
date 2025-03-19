@@ -31,7 +31,7 @@ public class BuildingSearchServiceTest {
 
     @DisplayName("성공")
     @Nested
-    class Success{
+    class Success {
         @DisplayName("학교의 모든 건물정보를 출력")
         @Test
         public void viewAll_success() throws Exception {
@@ -78,7 +78,7 @@ public class BuildingSearchServiceTest {
 
         @DisplayName("full text로 검색어 결과 출력")
         @Test
-        public void viewAvailableTextNameList_success() throws Exception{
+        public void viewAvailableTextNameList_success() throws Exception {
             //given
             String text = "cu";
             List<BuildingResponse> buildingResponseList = buildingSearchService.searchAvailableText(text);
@@ -86,22 +86,22 @@ public class BuildingSearchServiceTest {
             //when then
             assertAll(
                     () -> assertEquals(3, buildingResponseList.size()),
-                    () -> assertEquals( buildingResponseList.stream()
-                            .allMatch(building ->
-                                    building.buildingAbbreviation().toLowerCase()
-                                            .contains("cu".toLowerCase())),
+                    () -> assertEquals(buildingResponseList.stream()
+                                    .allMatch(building ->
+                                            building.buildingAbbreviation().toLowerCase()
+                                                    .contains("cu".toLowerCase())),
                             true),
-                    () -> assertEquals( buildingResponseList.stream()
-                            .allMatch(building ->
-                                    building.buildingName().toLowerCase()
-                                            .contains("cu".toLowerCase())),
+                    () -> assertEquals(buildingResponseList.stream()
+                                    .allMatch(building ->
+                                            building.buildingName().toLowerCase()
+                                                    .contains("cu".toLowerCase())),
                             true)
             );
         }
 
         @DisplayName("디테일 반환하는 카테고리의 디테일 정보 출력")
         @Test
-        public void viewBuildingByCategoryInBuilding_success() throws Exception{
+        public void viewBuildingByCategoryInBuilding_success() throws Exception {
             //given
             Long buildingId = 36L;
             String text = "학생 식당";
@@ -110,14 +110,14 @@ public class BuildingSearchServiceTest {
             //when then
             assertAll(
                     () -> assertEquals(9, categoryDetailResponse.detailList().size()),
-                    () -> assertEquals( categoryDetailResponse.category(),text)
+                    () -> assertEquals(categoryDetailResponse.category(), text)
             );
         }
     }
 
     @DisplayName("실패")
     @Nested
-    class Failure{
+    class Failure {
         @DisplayName("존재하지 않는 건물번호로 입력으로 건물정보 출력 실패")
         @Test
         public void viewBuildingByNumber_failure() throws Exception {
@@ -149,14 +149,14 @@ public class BuildingSearchServiceTest {
             String name = "점점점";
 
             //when then
-            assertThatThrownBy(() ->  buildingSearchService.viewBuildingByCategory(name))
+            assertThatThrownBy(() -> buildingSearchService.viewBuildingByCategory(name))
                     .isInstanceOf(CategoryNotExistException.class)
                     .hasMessageContaining(CATEGORY_NAME_NOT_EXIST.getMessage());
         }
 
         @DisplayName("full text로 검색어 결과 출력 - 실패")
         @Test
-        public void viewAvailableTextNameList_failure() throws Exception{
+        public void viewAvailableTextNameList_failure() throws Exception {
             //given
             String text = "1111";
 
@@ -171,7 +171,7 @@ public class BuildingSearchServiceTest {
 
         @DisplayName("디테일 반환하는 카테고리의 디테일 정보 출력 - 실패")
         @Test
-        public void viewBuildingByCategoryInBuilding_failure() throws Exception{
+        public void viewBuildingByCategoryInBuilding_failure() throws Exception {
             //given
             Long buildingId = 34L;
             String text = "레레레";
@@ -182,5 +182,5 @@ public class BuildingSearchServiceTest {
                     .isInstanceOf(CategoryNotProvidingDetailException.class)
                     .hasMessageContaining(CATEGORYNAME_NOT_PROVIDING_DETAIL.getMessage());
         }
-}
+    }
 }

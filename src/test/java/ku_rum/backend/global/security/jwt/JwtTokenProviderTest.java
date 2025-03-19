@@ -1,7 +1,7 @@
 package ku_rum.backend.global.security.jwt;
 
 import io.jsonwebtoken.JwtException;
-import ku_rum.backend.global.utils.RedisUtil;
+import ku_rum.backend.global.utils.RedisUtils;
 import ku_rum.backend.global.security.CustomUserDetails;
 import ku_rum.backend.global.security.JwtProperties;
 import ku_rum.backend.global.security.JwtTokenProvider;
@@ -29,7 +29,7 @@ import static org.mockito.Mockito.verify;
 class JwtTokenProviderTest {
 
     @Mock
-    private RedisUtil redisUtil;
+    private RedisUtils redisUtil;
 
     @InjectMocks
     private JwtTokenProvider jwtTokenProvider;

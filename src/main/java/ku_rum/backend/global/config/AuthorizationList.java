@@ -21,6 +21,8 @@ public final class AuthorizationList {
             "/docs/**",
             "/swagger-ui/**",
             "/v3/api-docs/**",
+            "/api/v1/users/loginId",
+            "/api/v1/users/reset-account",
             "/actuator/**"
     );
 

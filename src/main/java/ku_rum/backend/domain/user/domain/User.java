@@ -2,7 +2,6 @@ package ku_rum.backend.domain.user.domain;
 
 import jakarta.persistence.*;
 import ku_rum.backend.domain.department.domain.Department;
-import ku_rum.backend.domain.user.domain.enums.AgreementStatus;
 import ku_rum.backend.global.support.type.BaseEntity;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -14,7 +13,7 @@ import org.hibernate.annotations.Where;
 import java.util.ArrayList;
 import java.util.List;
 
-import static ku_rum.backend.domain.user.domain.enums.UserRole.*;
+import static ku_rum.backend.domain.user.domain.UserRole.*;
 
 @Getter
 @Entity
@@ -57,12 +56,16 @@ public class User extends BaseEntity {
 
     private boolean active;
 
-    public void setPassword(String password) {
+    public void changePassword(String password) {
         this.password = password;
     }
 
-    public void setImageUrl(String imageUrl) {
+    public void changeImage(String imageUrl) {
         this.imageUrl = imageUrl;
+    }
+
+    public void changeNickname(String nickname) {
+        this.nickname = nickname;
     }
 
     @Builder

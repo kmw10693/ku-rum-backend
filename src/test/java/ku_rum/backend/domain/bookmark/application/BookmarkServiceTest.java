@@ -9,7 +9,7 @@ import ku_rum.backend.domain.notice.domain.NoticeStatus;
 import ku_rum.backend.domain.notice.domain.repository.NoticeRepository;
 import ku_rum.backend.domain.notice.dto.response.NoticeSimpleResponse;
 import ku_rum.backend.domain.user.domain.User;
-import ku_rum.backend.domain.user.domain.enums.AgreementStatus;
+import ku_rum.backend.domain.user.domain.AgreementStatus;
 import ku_rum.backend.domain.user.domain.repository.UserRepository;
 import ku_rum.backend.global.utils.UserUtils;
 import org.junit.jupiter.api.AfterEach;

@@ -57,4 +57,11 @@ public class UserExceptionControllerAdvice {
         log.error("[handleDuplicateNicknameException]");
         return new BaseErrorResponse(DUPLICATE_NICKNAME);
     }
+
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(InvalidPasswordException.class)
+    public BaseErrorResponse handleInvalidPasswordException(final InvalidPasswordException e) {
+        log.error("[handleDuplicateNicknameException]");
+        return new BaseErrorResponse(INVALID_PASSWORD);
+    }
 }
