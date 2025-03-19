@@ -1,4 +1,4 @@
-package ku_rum.backend.domain.user.domain.enums;
+package ku_rum.backend.domain.user.domain;
 
 public enum AgreementStatus {
     AGREED, DISAGREED

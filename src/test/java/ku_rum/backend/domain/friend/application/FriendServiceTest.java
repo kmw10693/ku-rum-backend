@@ -7,7 +7,7 @@ import ku_rum.backend.domain.friend.domain.FriendStatus;
 import ku_rum.backend.domain.friend.domain.repository.FriendRepository;
 import ku_rum.backend.domain.friend.dto.response.FriendListResponse;
 import ku_rum.backend.domain.user.domain.User;
-import ku_rum.backend.domain.user.domain.enums.AgreementStatus;
+import ku_rum.backend.domain.user.domain.AgreementStatus;
 import ku_rum.backend.domain.user.domain.repository.UserRepository;
 import ku_rum.backend.global.exception.friend.NoFriendsException;
 import ku_rum.backend.global.utils.UserUtils;

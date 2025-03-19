@@ -38,6 +38,7 @@ public enum BaseExceptionResponseStatus implements ResponseStatus {
     DUPLICATE_EMAIL(305, HttpStatus.BAD_REQUEST, "이미 존재하는 이메일입니다."),
     DUPLICATE_NICKNAME(306, HttpStatus.BAD_REQUEST, "이미 존재하는 닉네임입니다."),
     NO_SUCH_LOGINID(307, HttpStatus.BAD_REQUEST, "존재하지 않는 아이디입니다."),
+    INVALID_PASSWORD(308, HttpStatus.BAD_REQUEST, "비밀번호가 일치하지 않습니다."),
 
 
     /**

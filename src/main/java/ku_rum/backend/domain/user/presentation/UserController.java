@@ -1,6 +1,7 @@
 package ku_rum.backend.domain.user.presentation;
 
 import jakarta.validation.Valid;
+import ku_rum.backend.domain.user.application.UserValidator;
 import ku_rum.backend.domain.user.dto.request.ProfileChangeRequest;
 import ku_rum.backend.domain.user.dto.request.ResetAccountRequest;
 import ku_rum.backend.domain.user.application.UserService;
@@ -13,7 +14,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import static ku_rum.backend.domain.user.domain.enums.UserMessage.*;
+import static ku_rum.backend.domain.user.domain.UserMessage.*;
 import static ku_rum.backend.global.support.status.BaseExceptionResponseStatus.SUCCESS_PROFILE_SET;
 
 @RestController
@@ -22,6 +23,7 @@ import static ku_rum.backend.global.support.status.BaseExceptionResponseStatus.S
 @Validated
 public class UserController {
     private final UserService userService;
+    private final UserValidator userValidator;
 
     /**
      * 회원 가입 API
@@ -42,32 +44,8 @@ public class UserController {
      */
     @PostMapping("/validations")
     public BaseResponse<String> validateEmail(@RequestBody @Valid final EmailValidationRequest emailValidationRequest) {
-        userService.validateEmail(emailValidationRequest);
+        userValidator.validateDuplicateEmail(emailValidationRequest.email());
         return BaseResponse.ok(VALID_EMAIL_MESSAGE.getMessage());
-    }
-
-    /**
-     * 기존 아이디로 비밀번호 초기화 API
-     *
-     * @param resetAccountRequest
-     * @return
-     */
-    @PostMapping("/reset-account")
-    public BaseResponse<String> resetAccount(@RequestBody @Valid final ResetAccountRequest resetAccountRequest) {
-        userService.resetAccount(resetAccountRequest);
-        return BaseResponse.ok(SUCCESS_RESET_PASSWORD.getMessage());
-    }
-
-    /**
-     * 프로필 변경 API
-     *
-     * @param profileChangeRequest
-     * @return
-     */
-    @PatchMapping("/profile")
-    public BaseResponse<String> setProfile(@RequestBody @Valid final ProfileChangeRequest profileChangeRequest) {
-        userService.setProfile(profileChangeRequest);
-        return BaseResponse.ok(SUCCESS_PROFILE_SET.getMessage());
     }
 
     /**
@@ -78,7 +56,7 @@ public class UserController {
      */
     @GetMapping("/check-id")
     public BaseResponse<String> checkDuplicateId(@RequestParam("value") final String value) {
-        userService.checkDuplicateId(value);
+        userValidator.validateDuplicateLoginId(value);
         return BaseResponse.ok(VALID_LOGINID_MESSAGE.getMessage());
     }
 
@@ -90,7 +68,7 @@ public class UserController {
      */
     @GetMapping("/check-nickname")
     public BaseResponse<String> checkDuplicateNickname(@RequestParam("value") final String value) {
-        userService.checkDuplicateNickname(value);
+        userValidator.validateNickname(value);
         return BaseResponse.ok(VALID_NICKNAME_MESSAGE.getMessage());
     }
 
@@ -102,20 +80,10 @@ public class UserController {
      */
     @GetMapping("/check-studentId")
     public BaseResponse<String> checkDuplicateStudentId(@RequestParam("value") final String value) {
-        userService.checkDuplicateStudentId(value);
+        userValidator.validateDuplicateStudentId(value);
         return BaseResponse.ok(VALID_STUDENTID_MESSAGE.getMessage());
     }
 
-    /**
-     * 이메일로 아이디 가져오기 API
-     *
-     * @param email
-     * @return
-     */
-    @GetMapping("/loginId")
-    public BaseResponse<LoginIdResponse> getLoginId(@RequestParam("email") final String email) {
-        return BaseResponse.ok(userService.getLoginId(email));
-    }
 }
 
 

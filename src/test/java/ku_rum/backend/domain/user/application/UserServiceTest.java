@@ -8,6 +8,7 @@ import ku_rum.backend.domain.department.domain.repository.DepartmentRepository;
 import ku_rum.backend.domain.user.domain.User;
 import ku_rum.backend.domain.user.domain.repository.UserRepository;
 import ku_rum.backend.domain.common.mail.dto.request.EmailValidationRequest;
+import ku_rum.backend.domain.user.dto.request.NicknameChangeRequest;
 import ku_rum.backend.domain.user.dto.request.ResetAccountRequest;
 import ku_rum.backend.domain.user.dto.request.UserSaveRequest;
 import ku_rum.backend.domain.user.dto.response.LoginIdResponse;
@@ -16,15 +17,26 @@ import ku_rum.backend.global.exception.email.DuplicateEmailException;
 import ku_rum.backend.global.exception.user.DuplicateNicknameException;
 import ku_rum.backend.global.exception.user.DuplicateStudentIdException;
 import ku_rum.backend.global.exception.user.NoSuchUserException;
+import ku_rum.backend.global.security.CustomUserDetails;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.authority.AuthorityUtils;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.test.context.support.WithMockUser;
+import org.springframework.security.test.context.support.WithUserDetails;
 import org.springframework.test.context.ActiveProfiles;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -53,13 +65,16 @@ class UserServiceTest {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
+    @Autowired
+    private UserValidator userValidator;
+
     @BeforeEach
     void setUp() {
-         building = Building.of("신공학관",3L, "신공", 3L, BigDecimal.valueOf(64.3423423), BigDecimal.valueOf(64.3423423));
-         buildingRepository.save(building);
+        building = Building.of("신공학관", 3L, "신공", 3L, BigDecimal.valueOf(64.3423423), BigDecimal.valueOf(64.3423423));
+        buildingRepository.save(building);
 
-         department = Department.of("컴퓨터공학부", building);
-         departmentRepository.save(department);
+        department = Department.of("컴퓨터공학부", building);
+        departmentRepository.save(department);
     }
 
     @Test
@@ -99,7 +114,7 @@ class UserServiceTest {
         EmailValidationRequest emailValidationRequest = new EmailValidationRequest("kmw10693@konkuk.ac.kr");
 
         //when then
-        assertThatThrownBy(() -> userService.validateEmail(emailValidationRequest))
+        assertThatThrownBy(() -> userValidator.validateDuplicateEmail(emailValidationRequest.email()))
                 .isInstanceOf(DuplicateEmailException.class);
     }
 
@@ -119,7 +134,7 @@ class UserServiceTest {
         userRepository.save(user);
 
         //when then
-        assertThatThrownBy(() -> userService.checkDuplicateNickname("미미미누"))
+        assertThatThrownBy(() -> userValidator.validateNickname("미미미누"))
                 .isInstanceOf(DuplicateNicknameException.class);
     }
 
@@ -139,7 +154,7 @@ class UserServiceTest {
         userRepository.save(user);
 
         //when then
-        assertThatThrownBy(() -> userService.checkDuplicateStudentId("202112322"))
+        assertThatThrownBy(() -> userValidator.validateDuplicateStudentId("202112322"))
                 .isInstanceOf(DuplicateStudentIdException.class);
     }
 
@@ -193,17 +208,46 @@ class UserServiceTest {
                 .loginId("kmw106933")
                 .email("kmw10693@konkuk.ac.kr")
                 .nickname("미미미누")
+                .password(passwordEncoder.encode("password123"))
+                .studentId("202112322")
+                .department(department)
+                .build();
+
+        userRepository.save(user);
+        System.out.println(user.getPassword());
+        ResetAccountRequest request = new ResetAccountRequest("kmw106933", "password123", "password1234");
+
+        //when
+        userService.resetAccount(request);
+        //then
+        assertThat(passwordEncoder.matches("password1234", user.getPassword())).isEqualTo(true);
+    }
+
+    @Test
+    @DisplayName("닉네임 성공적으로 변경한다.")
+    @Transactional
+    void changeNicknameSuccess() {
+        //given
+
+        User user = User.builder()
+                .loginId("kmw106933")
+                .email("kmw10693@konkuk.ac.kr")
+                .nickname("미미미누")
                 .password("password123")
                 .studentId("202112322")
                 .department(department)
                 .build();
 
         userRepository.save(user);
-        ResetAccountRequest request = new ResetAccountRequest("kmw106933", "password1234");
+
+        CustomUserDetails userDetails = CustomUserDetails.of(user.getId(), "testUser", AuthorityUtils.createAuthorityList("ROLE_USER"), "test12345");
+        UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
+        SecurityContextHolder.getContext().setAuthentication(auth);
+        NicknameChangeRequest request = new NicknameChangeRequest("abcd1234");
 
         //when
-        userService.resetAccount(request);
+        userService.changeNickname(request);
         //then
-        assertThat(passwordEncoder.matches("password1234", user.getPassword())).isEqualTo(true);
+        assertThat(user.getNickname()).isEqualTo("abcd1234");
     }
 }

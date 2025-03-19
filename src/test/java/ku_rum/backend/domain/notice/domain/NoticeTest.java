@@ -3,17 +3,14 @@ package ku_rum.backend.domain.notice.domain;
 import ku_rum.backend.domain.building.domain.Building;
 import ku_rum.backend.domain.department.domain.Department;
 import ku_rum.backend.domain.user.domain.User;
-import ku_rum.backend.domain.user.domain.enums.AgreementStatus;
-import org.assertj.core.api.Assertions;
+import ku_rum.backend.domain.user.domain.AgreementStatus;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import java.math.BigDecimal;
 
 import static ku_rum.backend.domain.notice.domain.NoticeStatus.*;
-import static ku_rum.backend.domain.notice.domain.QNotice.notice;
 import static org.assertj.core.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.*;
 
 class NoticeTest {
 

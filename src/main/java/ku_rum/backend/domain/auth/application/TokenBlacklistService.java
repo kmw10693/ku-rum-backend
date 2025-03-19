@@ -1,7 +1,7 @@
 package ku_rum.backend.domain.auth.application;
 
 import ku_rum.backend.domain.auth.dto.request.ReissueRequest;
-import ku_rum.backend.global.utils.RedisUtil;
+import ku_rum.backend.global.utils.RedisUtils;
 import ku_rum.backend.global.security.CustomUserDetails;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -15,7 +15,7 @@ import java.time.Duration;
 @Transactional(readOnly = true)
 @Slf4j
 public class TokenBlacklistService {
-    private final RedisUtil redisUtil;
+    private final RedisUtils redisUtil;
 
     public boolean validateRefreshTokenInRedis(ReissueRequest reissueRequest, CustomUserDetails principal) {
         Long userId = principal.getUserId();

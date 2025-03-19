@@ -2,7 +2,6 @@ package ku_rum.backend.domain.user.domain;
 
 import ku_rum.backend.domain.building.domain.Building;
 import ku_rum.backend.domain.department.domain.Department;
-import ku_rum.backend.domain.user.domain.enums.AgreementStatus;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 

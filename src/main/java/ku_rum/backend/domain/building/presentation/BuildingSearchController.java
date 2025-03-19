@@ -8,6 +8,7 @@ import ku_rum.backend.domain.building.application.BuildingSearchService;
 import ku_rum.backend.domain.category.dto.request.BuildindgCategoryRequest;
 import ku_rum.backend.domain.category.dto.response.CategoryDetailResponse;
 import ku_rum.backend.domain.user.application.UserService;
+import ku_rum.backend.domain.user.application.UserValidator;
 import ku_rum.backend.global.support.response.BaseResponse;
 import ku_rum.backend.global.security.CustomUserDetails;
 import lombok.RequiredArgsConstructor;
@@ -24,7 +25,7 @@ import java.util.List;
 public class BuildingSearchController {
 
   private final BuildingSearchService buildingSearchService;
-  private final UserService userService;
+  private final UserValidator userValidator;
 
   /**
    * 작성자: 이혜리
@@ -34,7 +35,7 @@ public class BuildingSearchController {
    */
   @GetMapping
   public BaseResponse<List<BuildingResponse>> viewAll(@AuthenticationPrincipal CustomUserDetails userDetails) {
-    userService.validateUserDetails(userDetails);
+    userValidator.validateUserDetails(userDetails);
     List<BuildingResponse> resultList = buildingSearchService.findAllBuildings();
     return BaseResponse.ok(resultList);
   }
@@ -50,7 +51,7 @@ public class BuildingSearchController {
   public BaseResponse<BuildingResponse> viewBuildingByNumber(@AuthenticationPrincipal CustomUserDetails userDetails,
                                                              @RequestParam("number")@NotNull @Min(1)  Long number)
   {
-    userService.validateUserDetails(userDetails);
+    userValidator.validateUserDetails(userDetails);
     BuildingResponse result = buildingSearchService.viewBuildingByNumber(number);
     return BaseResponse.ok(result);
   }
@@ -66,7 +67,7 @@ public class BuildingSearchController {
   public BaseResponse<BuildingResponse> viewBuildingByName(@AuthenticationPrincipal CustomUserDetails userDetails,
                                                            @RequestParam("name")@NotNull String name)
   {
-    userService.validateUserDetails(userDetails);
+    userValidator.validateUserDetails(userDetails);
     BuildingResponse result = buildingSearchService.viewBuildingByName(name.trim());
     return BaseResponse.ok(result);
   }
@@ -81,7 +82,7 @@ public class BuildingSearchController {
   @GetMapping("/category")
   public BaseResponse<List<BuildingResponse>> viewBuildingByCategory(@AuthenticationPrincipal CustomUserDetails userDetails,
                                                    @PathParam("category") String category){
-    userService.validateUserDetails(userDetails);
+    userValidator.validateUserDetails(userDetails);
     List<BuildingResponse> resultList = buildingSearchService.viewBuildingByCategory(category.trim());
     return BaseResponse.ok(resultList);
   }
@@ -98,7 +99,7 @@ public class BuildingSearchController {
   public BaseResponse<List<BuildingResponse>> viewAvailableTextNameList(@AuthenticationPrincipal CustomUserDetails userDetails,
                                                                         @PathParam("text") String text)
   {
-    userService.validateUserDetails(userDetails);
+    userValidator.validateUserDetails(userDetails);
     List<BuildingResponse> resultList = buildingSearchService.searchAvailableText(text);
     return BaseResponse.ok(resultList);
   }
@@ -116,7 +117,7 @@ public class BuildingSearchController {
           @AuthenticationPrincipal CustomUserDetails userDetails,
           @RequestBody BuildindgCategoryRequest  request
   ){
-    userService.validateUserDetails(userDetails);
+    userValidator.validateUserDetails(userDetails);
     CategoryDetailResponse categoryDetailResponse = buildingSearchService.viewBuildingDetailByCategory(request.category(), request.buildingId());
     return BaseResponse.ok(categoryDetailResponse);
   }

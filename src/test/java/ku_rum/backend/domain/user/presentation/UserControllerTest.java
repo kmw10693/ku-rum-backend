@@ -4,7 +4,8 @@ import com.epages.restdocs.apispec.ResourceSnippetParameters;
 import ku_rum.backend.config.RestDocsTestSupport;
 import ku_rum.backend.domain.user.application.UserService;
 import ku_rum.backend.domain.common.mail.dto.request.EmailValidationRequest;
-import ku_rum.backend.domain.user.domain.enums.AgreementStatus;
+import ku_rum.backend.domain.user.application.UserValidator;
+import ku_rum.backend.domain.user.domain.AgreementStatus;
 import ku_rum.backend.domain.user.dto.request.ProfileChangeRequest;
 import ku_rum.backend.domain.user.dto.request.ResetAccountRequest;
 import ku_rum.backend.domain.user.dto.request.UserSaveRequest;
@@ -13,6 +14,7 @@ import ku_rum.backend.global.security.CustomUserDetails;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.json.JsonType;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
@@ -25,8 +27,7 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.transaction.annotation.Transactional;
 
 import static com.epages.restdocs.apispec.ResourceDocumentation.resource;
-import static ku_rum.backend.domain.user.domain.enums.UserMessage.*;
-import static org.mockito.BDDMockito.given;
+import static ku_rum.backend.domain.user.domain.UserMessage.*;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.when;
 import static org.springframework.restdocs.headers.HeaderDocumentation.headerWithName;
@@ -47,6 +48,9 @@ class UserControllerTest extends RestDocsTestSupport {
 
     @MockBean
     private UserDetailsService userDetailsService;
+
+    @MockBean
+    private UserValidator userValidator;
 
     @DisplayName("신규 유저를 생성한다.")
     @Test
@@ -164,50 +168,6 @@ class UserControllerTest extends RestDocsTestSupport {
     }
 
     @Test
-    @DisplayName("비밀번호를 변경한다.")
-    @WithMockUser
-    void resetAccount() throws Exception {
-        // given
-        ResetAccountRequest resetAccountRequest = new ResetAccountRequest("test1234", "test1234");
-
-        // when then
-        mockMvc.perform(post("/api/v1/users/reset-account")
-                        .content(objectMapper.writeValueAsString(resetAccountRequest))
-                        .contentType(MediaType.APPLICATION_JSON)
-                )
-                .andDo(print())
-                .andExpect(status().isOk())
-                .andDo(restDocs.document(resource(
-                        ResourceSnippetParameters.builder()
-                                .tag("유저 API")
-                                .description("비밀번호 변경")
-                                .requestFields(
-                                        fieldWithPath("loginId")
-                                                .type(JsonType.STRING)
-                                                .description("비밀번호 변경할 아이디")
-                                                .attributes(constraints("비밀번호를 변경할 아이디입니다.")),
-                                        fieldWithPath("password")
-                                                .type(JsonType.STRING)
-                                                .description("새로 변경할 비밀번호")
-                                                .attributes(constraints("새로 변경할 비밀번호입니다."))
-                                )
-                                .responseFields(
-                                        fieldWithPath("code")
-                                                .type(JsonType.NUMBER)
-                                                .description("성공시 반환 코드 (200)"),
-                                        fieldWithPath("status")
-                                                .type(JsonType.STRING)
-                                                .description("성공시 상태 값 (OK)"),
-                                        fieldWithPath("message")
-                                                .type(JsonType.STRING)
-                                                .description("성공 시 메시지 값 (OK)"),
-                                        fieldWithPath("data")
-                                                .type(JsonType.STRING)
-                                                .description("성공 시 '아이디/비밀번호가 변경되었습니다.' 반환")
-                                ).build())));
-    }
-
-    @Test
     @DisplayName("프로필 이미지를 변경한다.")
     @WithMockUser
     void changeProfile() throws Exception {
@@ -259,7 +219,7 @@ class UserControllerTest extends RestDocsTestSupport {
     void checkDuplicateId() throws Exception {
         // given
         String testValue = "testUser";
-        doNothing().when(userService).checkDuplicateId(testValue);
+        doNothing().when(userValidator).validateDuplicateLoginId(testValue);
 
         // when then
         mockMvc.perform(get("/api/v1/users/check-id")
@@ -292,7 +252,7 @@ class UserControllerTest extends RestDocsTestSupport {
     void checkDuplicateNickname() throws Exception {
         // given
         String testNickname = "testNickname";
-        doNothing().when(userService).checkDuplicateNickname(testNickname);
+        doNothing().when(userValidator).validateNickname(testNickname);
 
         // when & then
         mockMvc.perform(get("/api/v1/users/check-nickname")
@@ -324,7 +284,7 @@ class UserControllerTest extends RestDocsTestSupport {
     void checkDuplicateStudentId() throws Exception {
         // given
         String testStudentId = "2021123456";
-        doNothing().when(userService).checkDuplicateStudentId(testStudentId);
+        doNothing().when(userValidator).validateDuplicateStudentId(testStudentId);
 
 
         // when & then
