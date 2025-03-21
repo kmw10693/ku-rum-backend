@@ -52,25 +52,25 @@ class MailControllerTest extends RestDocsTestSupport {
                                         .tag("메일 API")
                                         .description("이메일 인증 요청")
                                         .requestFields(
-                                fieldWithPath("email")
-                                        .type(JsonType.STRING)
-                                        .description("건국대학교 웹메일")
-                                        .attributes(constraints("이메일의 끝자리는 @konkuk.ac.kr로 끝나야 합니다."))
-                        )
+                                                fieldWithPath("email")
+                                                        .type(JsonType.STRING)
+                                                        .description("건국대학교 웹메일")
+                                                        .attributes(constraints("이메일 형식을 지켜야 합니다."))
+                                        )
                                         .responseFields(
-                                fieldWithPath("code")
-                                        .type(JsonType.STRING)
-                                        .description("성공시 반환 코드 (200)"),
-                                fieldWithPath("status")
-                                        .type(JsonType.STRING)
-                                        .description("성공시 상태 값 (OK)"),
-                                fieldWithPath("message")
-                                        .type(JsonType.STRING)
-                                        .description("성공 시 메시지 (OK)"),
-                                fieldWithPath("data")
-                                        .type(JsonType.STRING)
-                                        .description("성공 시 '메일이 성공적으로 전송되었습니다.' 반환합니다.")
-                        ).build())));
+                                                fieldWithPath("code")
+                                                        .type(JsonType.STRING)
+                                                        .description("성공시 반환 코드 (200)"),
+                                                fieldWithPath("status")
+                                                        .type(JsonType.STRING)
+                                                        .description("성공시 상태 값 (OK)"),
+                                                fieldWithPath("message")
+                                                        .type(JsonType.STRING)
+                                                        .description("성공 시 메시지 (OK)"),
+                                                fieldWithPath("data")
+                                                        .type(JsonType.STRING)
+                                                        .description("성공 시 '메일이 성공적으로 전송되었습니다.' 반환합니다.")
+                                        ).build())));
     }
 
     @DisplayName("이메일 인증 코드를 검증한다.")
@@ -78,7 +78,7 @@ class MailControllerTest extends RestDocsTestSupport {
     @WithMockUser
     void verificationCode() throws Exception {
         //given
-        MailVerificationRequest mailVerificationRequest = new MailVerificationRequest("kmw10693@naver.com", "1234");
+        MailVerificationRequest mailVerificationRequest = new MailVerificationRequest("kmw10693@naver.com", "123456");
 
         //when then
         mockMvc.perform(post("/api/v1/mails/verification_codes")
@@ -90,31 +90,35 @@ class MailControllerTest extends RestDocsTestSupport {
                 .andExpect(jsonPath("$.code").value("200"))
                 .andExpect(jsonPath("$.status").value("OK"))
                 .andExpect(jsonPath("$.message").value("OK"))
+                .andExpect(jsonPath("$.data.verified").value(true))
                 .andDo(restDocs.document(
                         resource(
                                 ResourceSnippetParameters.builder()
                                         .tag("메일 API")
                                         .description("이메일 인증 코드 검증")
                                         .requestFields(
-                                fieldWithPath("email")
-                                        .type(JsonType.STRING)
-                                        .description("건국대학교 웹메일")
-                                        .attributes(constraints("이메일의 끝자리는 @konkuk.ac.kr로 끝나야 합니다.")),
-                                fieldWithPath("code")
-                                        .type(JsonType.STRING)
-                                        .description("건국대학교 웹메일")
-                                        .attributes(constraints("사용자가 받은 인증코드를 입력받습니다."))
-                        )
+                                                fieldWithPath("email")
+                                                        .type(JsonType.STRING)
+                                                        .description("건국대학교 웹메일")
+                                                        .attributes(constraints("이메일 형식을 지켜야 합니다.")),
+                                                fieldWithPath("code")
+                                                        .type(JsonType.STRING)
+                                                        .description("건국대학교 웹메일")
+                                                        .attributes(constraints("사용자가 받은 인증코드를 입력받습니다."))
+                                        )
                                         .responseFields(
-                                fieldWithPath("code")
-                                        .type(JsonType.NUMBER)
-                                        .description("성공시 반환 코드 (200)"),
-                                fieldWithPath("status")
-                                        .type(JsonType.STRING)
-                                        .description("올바른 인증코드 시 상태 값 (OK)"),
-                                fieldWithPath("message")
-                                        .type(JsonType.STRING)
-                                        .description("올바른 인증코드 시 메시지 (OK)")
-                        ).build())));
+                                                fieldWithPath("code")
+                                                        .type(JsonType.NUMBER)
+                                                        .description("성공시 반환 코드 (200)"),
+                                                fieldWithPath("status")
+                                                        .type(JsonType.STRING)
+                                                        .description("올바른 인증코드 시 상태 값 (OK)"),
+                                                fieldWithPath("message")
+                                                        .type(JsonType.STRING)
+                                                        .description("올바른 인증코드 시 메시지 (OK)"),
+                                                fieldWithPath("data.verified")
+                                                        .type(JsonType.BOOLEAN)
+                                                        .description("인증 성공 여부")
+                                        ).build())));
     }
 }

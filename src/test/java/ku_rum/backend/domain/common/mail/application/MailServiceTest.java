@@ -1,10 +1,9 @@
 package ku_rum.backend.domain.common.mail.application;
 
+import ku_rum.backend.domain.common.mail.domain.MailAuth;
+import ku_rum.backend.domain.common.mail.domain.repository.MailAuthRepository;
 import ku_rum.backend.domain.common.mail.dto.request.MailSendRequest;
 import ku_rum.backend.domain.common.mail.dto.request.MailVerificationRequest;
-import ku_rum.backend.domain.common.mail.dto.response.MailVerificationResponse;
-import ku_rum.backend.domain.user.domain.repository.UserRepository;
-import ku_rum.backend.global.exception.email.DuplicateEmailException;
 import ku_rum.backend.global.exception.user.MailSendException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -12,16 +11,17 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.data.redis.core.ValueOperations;
-import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import java.time.Duration;
+import java.time.LocalDateTime;
+import java.util.Optional;
+
+import static org.junit.Assert.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.doThrow;
-import static org.mockito.Mockito.when;
+import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class MailServiceTest {
@@ -30,68 +30,69 @@ class MailServiceTest {
     private JavaMailSender emailSender;
 
     @Mock
-    private UserRepository userRepository;
+    private MailSenderService mailSenderService;
 
     @Mock
-    private RedisTemplate<String, String> redisTemplate;
-
-    @Mock
-    private ValueOperations<String, String> valueOperations;
+    private MailAuthRepository mailAuthRepository;
 
     @InjectMocks
     private MailService mailService;
 
     @Test
-    @DisplayName("인증을 보낸 이메일이 중복이 아닌 경우 정상 작동된다.")
-    void NonDuplicateEmailCheck() {
+    @DisplayName("이메일 인증 코드 전송 - 성공")
+    void sendCodeToEmail_success() {
         // given
-        String email = "test@example.com";
-        doThrow(new RuntimeException()).when(emailSender).send(any(SimpleMailMessage.class));
+        MailSendRequest request = new MailSendRequest("test@example.com");
+        MailAuth mailAuth = MailAuth.create(request.email(), 6);
 
-        // when & then
-        assertThatThrownBy(() -> mailService.sendCodeToEmail(new MailSendRequest(email)))
-                .isInstanceOf(MailSendException.class);
+        // when
+        mailService.sendCodeToEmail(request);
+
+        // then
+        verify(mailSenderService, times(1)).send(eq(request.email()), anyString(), anyString());
+        verify(mailAuthRepository, times(1)).save(any(MailAuth.class), any(Duration.class));
     }
 
     @Test
     @DisplayName("이메일 인증 코드 검증 - 성공")
-    void codeVerifySuccess() {
+    void verifyCode_success() {
         // given
         String email = "test@example.com";
-        String authCode = "123456";
-        String key = "auth_code:" + email;
+        String validCode = "123456";
+        MailVerificationRequest request = new MailVerificationRequest(email, validCode);
+        MailAuth mailAuth = MailAuth.of(email, validCode);
 
-        when(userRepository.existsByEmail(email)).thenReturn(false);
-        when(redisTemplate.opsForValue()).thenReturn(valueOperations);
-        when(valueOperations.get(any())).thenReturn(authCode);
-        when(redisTemplate.hasKey(any())).thenReturn(true);
+        given(mailAuthRepository.findByEmail(email)).willReturn(Optional.of(mailAuth));
 
-        mailService.sendCodeToEmail(new MailSendRequest(email));
-
-        // when
-        MailVerificationResponse response = mailService.verifiedCode(new MailVerificationRequest(email, authCode));
-
-        // then
-        assertThat(response.isVerified()).isTrue();
+        // when & then
+        assertDoesNotThrow(() -> mailService.verifyCode(request));
     }
 
     @Test
-    @DisplayName("이메일 인증 코드 검증 - 실패")
-    void codeVerifyFailure() {
+    @DisplayName("이메일 인증 코드 검증 - 실패 (잘못된 코드)")
+    void verifyCode_invalidCode_fail() {
         // given
         String email = "test@example.com";
-        String wrongAuthCode = "654321";
-        String key = "auth_code:" + email;
+        String invalidCode = "999999";
+        MailVerificationRequest request = new MailVerificationRequest(email, invalidCode);
+        MailAuth mailAuth = MailAuth.of(email, "123456");
 
-        when(userRepository.existsByEmail(email)).thenReturn(false);
-        when(redisTemplate.opsForValue()).thenReturn(valueOperations);
-        when(valueOperations.get(any())).thenReturn("123456");
-        when(redisTemplate.hasKey(any())).thenReturn(true);
+        given(mailAuthRepository.findByEmail(email)).willReturn(Optional.of(mailAuth));
 
-        // when
-        MailVerificationResponse response = mailService.verifiedCode(new MailVerificationRequest(email, wrongAuthCode));
+        // when & then
+        assertThrows(MailSendException.class, () -> mailService.verifyCode(request));
+    }
 
-        // then
-        assertThat(response.isVerified()).isFalse();
+    @Test
+    @DisplayName("이메일 인증 코드 검증 - 실패 (인증 코드 없음)")
+    void verifyCode_notFound_fail() {
+        // given
+        String email = "test@example.com";
+        MailVerificationRequest request = new MailVerificationRequest(email, "123456");
+
+        given(mailAuthRepository.findByEmail(email)).willReturn(Optional.empty());
+
+        // when & then
+        assertThrows(MailSendException.class, () -> mailService.verifyCode(request));
     }
 }

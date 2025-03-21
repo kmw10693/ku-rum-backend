@@ -7,7 +7,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public enum MailSendSetting {
     MAIL_SEND_INFO("쿠룸 이메일 인증 번호",
-            4,
+            6,
             "AuthCode ",
             1800000,
             "메일이 성공적으로 전송되었습니다.");
