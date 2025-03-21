@@ -1,8 +1,6 @@
 package ku_rum.backend.domain.common.mail.dto.request;
 
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.*;
 
 public record MailVerificationRequest(
 
@@ -11,6 +9,7 @@ public record MailVerificationRequest(
         String email,
 
         @NotNull(message = "인증코드 입력은 필수입니다.")
+        @Size(min = 6, max = 6)
         String code) {
 
     public MailVerificationRequest(String email, String code) {

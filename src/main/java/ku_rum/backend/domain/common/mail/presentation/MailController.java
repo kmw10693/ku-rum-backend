@@ -27,7 +27,8 @@ public class MailController {
 
     @PostMapping("/verification_codes")
     public BaseResponse<MailVerificationResponse> verificationCode(@RequestBody @Valid final MailVerificationRequest mailVerificationRequest) {
-        return BaseResponse.ok(mailService.verifiedCode(mailVerificationRequest));
+        mailService.verifyCode(mailVerificationRequest);
+        return BaseResponse.ok(MailVerificationResponse.of(true));
     }
 
 }
