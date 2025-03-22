@@ -10,4 +10,5 @@ public record CategoryDetailResponse<T> (
         Long floor,
         List<T> detailList
 ){
+
 }

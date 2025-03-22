@@ -2,7 +2,7 @@ package ku_rum.backend.domain.user.dto.request;
 
 import jakarta.validation.Validation;
 import jakarta.validation.Validator;
-import ku_rum.backend.domain.user.domain.enums.AgreementStatus;
+import ku_rum.backend.domain.user.domain.AgreementStatus;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.params.ParameterizedTest;
