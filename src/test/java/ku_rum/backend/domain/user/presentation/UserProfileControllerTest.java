@@ -5,7 +5,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import ku_rum.backend.config.RestDocsTestSupport;
 import ku_rum.backend.domain.user.application.UserService;
 import ku_rum.backend.domain.user.dto.request.NicknameChangeRequest;
-import ku_rum.backend.domain.user.dto.request.ResetAccountRequest;
+import ku_rum.backend.domain.user.dto.request.InitiatePasswordResetRequest;
+import ku_rum.backend.domain.user.dto.request.ResetPasswordRequest;
 import ku_rum.backend.global.security.CustomUserDetails;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -88,11 +89,11 @@ public class UserProfileControllerTest extends RestDocsTestSupport {
     @WithMockUser
     void resetAccount() throws Exception {
         // given
-        ResetAccountRequest resetAccountRequest = new ResetAccountRequest("user123", "test1234", "test12345");
+        InitiatePasswordResetRequest initiatePasswordResetRequest = new InitiatePasswordResetRequest("user123", "test12345");
 
         // when then
-        mockMvc.perform(post("/api/v1/users/reset-account")
-                        .content(objectMapper.writeValueAsString(resetAccountRequest))
+        mockMvc.perform(post("/api/v1/users/password-reset/initiate")
+                        .content(objectMapper.writeValueAsString(initiatePasswordResetRequest))
                         .contentType(MediaType.APPLICATION_JSON)
                 )
                 .andDo(print())
@@ -100,12 +101,58 @@ public class UserProfileControllerTest extends RestDocsTestSupport {
                 .andDo(restDocs.document(resource(
                         ResourceSnippetParameters.builder()
                                 .tag("유저 API")
-                                .description("비밀번호 변경")
+                                .description("로그인 전 비밀번호 변경")
                                 .requestFields(
                                         fieldWithPath("loginId")
                                                 .type(JsonType.STRING)
                                                 .description("비밀번호 변경할 아이디")
                                                 .attributes(constraints("비밀번호를 변경할 아이디입니다.")),
+                                        fieldWithPath("newPassword")
+                                                .type(JsonType.STRING)
+                                                .description("새 비밀번호")
+                                                .attributes(constraints("새 비밀번호입니다."))
+                                )
+                                .responseFields(
+                                        fieldWithPath("code")
+                                                .type(JsonType.NUMBER)
+                                                .description("성공시 반환 코드 (200)"),
+                                        fieldWithPath("status")
+                                                .type(JsonType.STRING)
+                                                .description("성공시 상태 값 (OK)"),
+                                        fieldWithPath("message")
+                                                .type(JsonType.STRING)
+                                                .description("성공 시 메시지 값 (OK)"),
+                                        fieldWithPath("data")
+                                                .type(JsonType.STRING)
+                                                .description("성공 시 '아이디/비밀번호가 변경되었습니다.' 반환")
+                                ).build())));
+    }
+
+    @Test
+    @DisplayName("기존 아이디로 비밀번호를 변경한다.")
+    @WithMockUser
+    void passwordReset() throws Exception {
+        // given
+        ResetPasswordRequest resetPasswordRequest = new ResetPasswordRequest("test1234", "test12345");
+        CustomUserDetails userDetails = CustomUserDetails.of(1L, "testUser", AuthorityUtils.createAuthorityList("ROLE_USER"), "test12345");
+
+        // when then
+        mockMvc.perform(post("/api/v1/users/password-reset")
+                        .header("Bearer", "eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyUEsiOjEsInJvbGVzIjoiUk9MRV9VU0VSIiwiaWF0IjoxNzQwMjQyNjQxLCJleHAiOjE3NDAyNDQ0NDF9.kLSMBLWdvIvrBpGJdOigSKjxMIab0cV06xFjSpwrq70")
+                        .with(SecurityMockMvcRequestPostProcessors.user(userDetails))
+                        .content(objectMapper.writeValueAsString(resetPasswordRequest))
+                        .contentType(MediaType.APPLICATION_JSON)
+                )
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andDo(restDocs.document(resource(
+                        ResourceSnippetParameters.builder()
+                                .tag("유저 API")
+                                .description("로그인 후 비밀번호 변경")
+                                .requestHeaders(
+                                        headerWithName("Bearer").description("발급 받은 엑세스 토큰입니다. Authorization 헤더에 토큰을 넣어주세요. 앞에 Bearer를 붙혀야 합니다.")
+                                )
+                                .requestFields(
                                         fieldWithPath("prevPassword")
                                                 .type(JsonType.STRING)
                                                 .description("기존 비밀번호")

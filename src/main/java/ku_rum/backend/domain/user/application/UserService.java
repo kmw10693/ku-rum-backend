@@ -4,10 +4,7 @@ import ku_rum.backend.domain.department.application.DepartmentQueryService;
 import ku_rum.backend.domain.department.domain.Department;
 import ku_rum.backend.domain.user.domain.User;
 import ku_rum.backend.domain.user.domain.repository.UserRepository;
-import ku_rum.backend.domain.user.dto.request.NicknameChangeRequest;
-import ku_rum.backend.domain.user.dto.request.ProfileChangeRequest;
-import ku_rum.backend.domain.user.dto.request.ResetAccountRequest;
-import ku_rum.backend.domain.user.dto.request.UserSaveRequest;
+import ku_rum.backend.domain.user.dto.request.*;
 import ku_rum.backend.domain.user.dto.response.LoginIdResponse;
 import ku_rum.backend.domain.user.dto.response.UserSaveResponse;
 import ku_rum.backend.global.exception.user.*;
@@ -44,12 +41,20 @@ public class UserService {
     }
 
     @Transactional
-    public void resetAccount(final ResetAccountRequest resetAccountRequest) {
-        log.info("계정 초기화 요청: loginId={}", resetAccountRequest.loginId());
-        User user = userQueryService.getUserByLoginId(resetAccountRequest.loginId());
-        userValidator.validatePassword(resetAccountRequest.prevPassword(), user.getPassword());
-        user.changePassword(passwordEncoder.encode(resetAccountRequest.newPassword()));
-        log.info("계정 비밀번호 변경 완료: loginId={}", resetAccountRequest.loginId());
+    public void initiatePasswordReset(final InitiatePasswordResetRequest initiatePasswordResetRequest) {
+        log.info("계정 초기화 요청: loginId={}", initiatePasswordResetRequest.loginId());
+        User user = userQueryService.getUserByLoginId(initiatePasswordResetRequest.loginId());
+        user.changePassword(passwordEncoder.encode(initiatePasswordResetRequest.newPassword()));
+        log.info("계정 비밀번호 변경 완료: loginId={}", initiatePasswordResetRequest.loginId());
+    }
+
+    @Transactional
+    public void resetPassword(final ResetPasswordRequest resetPasswordRequest) {
+        log.info("기존 계정 비밀번호 변경 요청");
+        User user = getUser();
+        userValidator.validatePassword(resetPasswordRequest.prevPassword(), user.getPassword());
+        user.changePassword(passwordEncoder.encode(resetPasswordRequest.newPassword()));
+        log.info("계정 비밀번호 변경 완료: loginId={}", user.getLoginId());
     }
 
     @Transactional
