@@ -1,8 +1,8 @@
 package ku_rum.backend.domain.notice.domain;
 
 import ku_rum.backend.domain.notice.application.NoticeService;
-import ku_rum.backend.domain.notice.dto.response.RecentSearchTerm;
-import ku_rum.backend.domain.notice.presentation.NoticeRecentController;
+import ku_rum.backend.domain.notice.presentation.NoticeCrawlController;
+import ku_rum.backend.domain.user.application.UserService;
 import ku_rum.backend.global.log.domain.repository.ApiLogRepository;
 import ku_rum.backend.global.security.CustomUserDetails;
 import ku_rum.backend.global.security.JwtTokenProvider;
@@ -25,25 +25,30 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.List;
 
-import static org.mockito.ArgumentMatchers.any;
+import static ku_rum.backend.domain.notice.dto.response.CrawlingResponse.START_CRAWLING;
 import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.verify;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.user;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @ExtendWith(SpringExtension.class)
 @AutoConfigureRestDocs
-@WebMvcTest(NoticeRecentController.class)
+@WebMvcTest(NoticeCrawlController.class)
 @ActiveProfiles("test")
-class NoticeRecentControllerTest {
+class NoticeCrawlControllerTest {
 
     @Autowired
     private MockMvc mockMvc;
 
     @MockBean
     private NoticeService noticeService;
+
+    @MockBean
+    private UserService userService;
 
     @MockBean
     private JwtTokenProvider jwtTokenProvider;
@@ -62,22 +67,22 @@ class NoticeRecentControllerTest {
         given(customUserDetails.getUserId()).willReturn(1L);
 
         SecurityContext securityContext = SecurityContextHolder.createEmptyContext();
-        securityContext.setAuthentication(new org.springframework.security.authentication.UsernamePasswordAuthenticationToken(customUserDetails, null, customUserDetails.getAuthorities()));
+        securityContext.setAuthentication(new org.springframework.security.authentication.UsernamePasswordAuthenticationToken(customUserDetails, null, List.of()));
         SecurityContextHolder.setContext(securityContext);
     }
 
-    @DisplayName("최근 검색어 목록 조회 테스트")
+    @DisplayName("건국대학교 공지사항 크롤링 요청 테스트")
     @Test
     @WithMockUser(username = "testUser", roles = "USER")
-    void searchTerms() throws Exception {
-        RecentSearchTerm mockResponse = new RecentSearchTerm(1L, List.of("검색어1", "검색어2"));
-        given(noticeService.getRecentSearchTerms(any())).willReturn(mockResponse);
+    void crawlKonkukNotices() throws Exception {
+        doNothing().when(noticeService).crawlAndSaveKonkukNotices();
 
-        mockMvc.perform(get("/api/v1/notices/recent")
+        mockMvc.perform(post("/api/v1/notices/crawl/konkuk")
                         .with(user(customUserDetails)))
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.data.searchedList[0]").value("검색어1"))
-                .andExpect(jsonPath("$.data.searchedList[1]").value("검색어2"));
+                .andExpect(jsonPath("$.data").value(START_CRAWLING.getMessage()));
+
+        verify(noticeService, Mockito.times(1)).crawlAndSaveKonkukNotices();
     }
 }

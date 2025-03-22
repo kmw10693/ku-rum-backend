@@ -8,11 +8,12 @@ import ku_rum.backend.global.security.CustomUserDetails;
 import ku_rum.backend.global.support.response.BaseResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
-
-import static ku_rum.backend.domain.notice.dto.response.CrawlingResponse.START_CRAWLING;
 
 @RestController
 @RequestMapping("/api/v1/notices")
@@ -20,7 +21,6 @@ import static ku_rum.backend.domain.notice.dto.response.CrawlingResponse.START_C
 public class NoticeViewController {
 
     private final NoticeService noticeService;
-    private final UserService userService;
 
     /**
      * 공지사항 제목을 통한 검색
@@ -39,9 +39,10 @@ public class NoticeViewController {
      * @return
      */
     @GetMapping
-    public BaseResponse<List<NoticeSimpleResponse>> getNoticesByCategory(@RequestParam(name = "category") NoticeCategory category) {
+    public BaseResponse<List<NoticeSimpleResponse>> getNoticesByCategory(@AuthenticationPrincipal CustomUserDetails userDetails, @RequestParam(name = "category") String category) {
         return BaseResponse.ok(noticeService.findNoticesByCategory(category));
     }
+
 
 
 }

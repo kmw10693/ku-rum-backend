@@ -9,7 +9,7 @@ import ku_rum.backend.domain.category.dto.response.CategoryDetailResponse;
 import ku_rum.backend.domain.menu.dto.response.MenuSimpleResponse;
 import ku_rum.backend.domain.user.application.UserService;
 import ku_rum.backend.domain.user.application.UserValidator;
-import ku_rum.backend.global.utils.RedisUtils;
+import ku_rum.backend.global.utils.RedisUtil;
 import ku_rum.backend.global.log.domain.repository.ApiLogRepository;
 import ku_rum.backend.global.security.JwtTokenProvider;
 import org.junit.jupiter.api.DisplayName;
@@ -51,7 +51,7 @@ class BuildingSearchControllerTest extends RestDocsTestSupport {
     private JwtTokenProvider jwtTokenProvider;
 
     @MockBean
-    private RedisUtils redisUtil;
+    private RedisUtil redisUtil;
 
     @MockBean
     private ApiLogRepository apiLogRepository;

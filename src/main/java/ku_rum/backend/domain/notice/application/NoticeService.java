@@ -93,8 +93,8 @@ public class NoticeService {
                 String link = noticeElement.findElement(By.cssSelector("td.td-subject a")).getAttribute("href");
                 String date = noticeElement.findElement(By.cssSelector("td.td-date")).getText();
 
-                // 날짜가 2024년으로 시작하지 않으면 건너뜀 (일단 크롤링 너무 오래걸려서 걸어둠..후에 삭제)
-                if (!date.startsWith("2024")) {
+                // 날짜가 2025년으로 시작하지 않으면 건너뜀 (일단 크롤링 너무 오래걸려서 걸어둠..후에 삭제)
+                if (!date.startsWith("2025")) {
                     log.info("2024년 공지가 아님: {}", title);
                     return false;
                 }
@@ -158,8 +158,10 @@ public class NoticeService {
     /**
      * 카테고리별 공지사항 조회
      */
-    public List<NoticeSimpleResponse> findNoticesByCategory(NoticeCategory category) {
-        List<Notice> notices = noticeRepository.findByNoticeCategory(category);
+    public List<NoticeSimpleResponse> findNoticesByCategory(String category) {
+        NoticeCategory noticeCategory = NoticeCategory.findByName(category);
+
+        List<Notice> notices = noticeRepository.findByNoticeCategory(noticeCategory);
         return notices.stream()
                 .map(NoticeSimpleResponse::new)
                 .toList();

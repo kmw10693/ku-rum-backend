@@ -48,7 +48,7 @@ class NoticeServiceTest {
                 .thenReturn(List.of(notice));
 
         // when
-        List<NoticeSimpleResponse> result = noticeService.findNoticesByCategory(NoticeCategory.AFFAIR);
+        List<NoticeSimpleResponse> result = noticeService.findNoticesByCategory("학사");
 
         // then
         assertEquals(1, result.size());
