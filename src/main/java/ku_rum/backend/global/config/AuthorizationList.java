@@ -23,7 +23,8 @@ public final class AuthorizationList {
             "/v3/api-docs/**",
             "/api/v1/users/loginId",
             "/api/v1/users/reset-account",
-            "/actuator/**"
+            "/actuator/**",
+            "/api/v1/users/password-reset/initiate"
     );
 
     private AuthorizationList() {
