@@ -23,19 +23,6 @@ import static ku_rum.backend.global.utils.UserUtils.getLongMemberId;
 public class NoticeRecentController {
 
     private final NoticeService noticeService;
-    private final UserService userService;
-
-    /**
-     * 공지사항 제목을 통한 검색
-     * @param searchTerm
-     * @return
-     */
-    @GetMapping("/search")
-    public BaseResponse<List<NoticeSimpleResponse>> searchNotices(@AuthenticationPrincipal CustomUserDetails userDetails, @RequestParam(name = "searchTerm") String searchTerm) {
-        Long userId = userDetails.getUserId();
-        return BaseResponse.ok(noticeService.searchNoticesByTitle(userId,searchTerm));
-    }
-
 
     /**
      * 최근 검색어 목록 10개 가져오기

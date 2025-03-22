@@ -1,21 +1,17 @@
 package ku_rum.backend.domain.notice.presentation;
 
 import ku_rum.backend.domain.notice.application.NoticeService;
-import ku_rum.backend.domain.notice.domain.NoticeCategory;
-import ku_rum.backend.domain.notice.dto.response.NoticeSimpleResponse;
 import ku_rum.backend.domain.user.application.UserService;
 import ku_rum.backend.global.support.response.BaseResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 import static ku_rum.backend.domain.notice.dto.response.CrawlingResponse.START_CRAWLING;
 
 @RestController
 @RequestMapping("/api/v1/notices")
 @RequiredArgsConstructor
-public class NoticeController {
+public class NoticeCrawlController {
 
     private final NoticeService noticeService;
     private final UserService userService;
@@ -28,16 +24,6 @@ public class NoticeController {
     public BaseResponse<String> crawlKonkukNotices() { //redis에 저장해두고 redis에 없으면 db에 저장을 한 (key에다가 공지사항 url링크 저장)
         noticeService.crawlAndSaveKonkukNotices();
         return BaseResponse.ok(START_CRAWLING.getMessage());
-    }
-
-    /**
-     * 카테고리별 공지사항 조회
-     * @param category
-     * @return
-     */
-    @GetMapping
-    public BaseResponse<List<NoticeSimpleResponse>> getNoticesByCategory(@RequestParam(name = "category") NoticeCategory category) {
-        return BaseResponse.ok(noticeService.findNoticesByCategory(category));
     }
 
 
