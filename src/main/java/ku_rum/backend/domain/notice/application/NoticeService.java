@@ -24,6 +24,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.Duration;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @Slf4j
@@ -168,16 +169,24 @@ public class NoticeService {
      * 제목으로 공지사항 검색
      */
     public List<NoticeSimpleResponse> searchNoticesByTitle(Long userId, String searchTerm) {
-        //최근 검색어는 최대 10개만 유지
+        // 최근 검색어는 최대 10개만 유지
         String redisKey = "user:" + userId + ":recent-searches";
         recentSearchRedisTemplate.opsForList().leftPush(redisKey, searchTerm.trim());
         recentSearchRedisTemplate.opsForList().trim(redisKey, 0, 9);
 
         List<Notice> notices = noticeRepository.searchNoticesByTitle(searchTerm.trim());
+
         return notices.stream()
-                .map(NoticeSimpleResponse::new)
+                .map(notice -> NoticeSimpleResponse.builder()
+                        .url(notice.getUrl())
+                        .title(notice.getTitle())
+                        .date(notice.getDate())
+                        .category(notice.getNoticeCategory().getText())
+                        .isImportant(notice.getNoticeStatus().isImportant())
+                        .build())
                 .toList();
     }
+
 
 
     /**
@@ -185,12 +194,10 @@ public class NoticeService {
      */
     public RecentSearchTerm getRecentSearchTerms(Long userId) {
         String redisKey = "user:" + userId + ":recent-searches";
-        List<String> terms = recentSearchRedisTemplate.opsForList().range(redisKey, 0, 9);
 
-        if (terms == null) {
-            terms = List.of();
-        }
+        Optional<List<String>> terms = Optional.ofNullable(recentSearchRedisTemplate.opsForList().range(redisKey, 0, 9));
 
-        return new RecentSearchTerm(userId, terms);
+        return RecentSearchTerm.of(userId, terms.orElse(List.of()));
     }
+
 }

@@ -32,8 +32,7 @@ public class NoticeRecentController {
      */
     @GetMapping("/search")
     public BaseResponse<List<NoticeSimpleResponse>> searchNotices(@AuthenticationPrincipal CustomUserDetails userDetails, @RequestParam(name = "searchTerm") String searchTerm) {
-        userService.validateUserDetails(userDetails);
-        Long userId = getLongMemberId();
+        Long userId = userDetails.getUserId();
         return BaseResponse.ok(noticeService.searchNoticesByTitle(userId,searchTerm));
     }
 
@@ -45,8 +44,7 @@ public class NoticeRecentController {
      */
     @GetMapping("/")
     public BaseResponse<RecentSearchTerm> searchTerms(@AuthenticationPrincipal CustomUserDetails userDetails){
-        userService.validateUserDetails(userDetails);
-        Long userId = getLongMemberId();
+        Long userId = userDetails.getUserId();
         return BaseResponse.ok(noticeService.getRecentSearchTerms(userId));
     }
 }

@@ -7,4 +7,7 @@ public record RecentSearchTerm(
         List<String> searchedList
 ) {
 
+    public static RecentSearchTerm of(Long userId, List<String> searchedList) {
+        return new RecentSearchTerm(userId, searchedList);
+    }
 }

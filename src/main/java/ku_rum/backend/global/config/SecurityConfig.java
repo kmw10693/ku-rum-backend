@@ -1,15 +1,13 @@
 package ku_rum.backend.global.config;
 
 import ku_rum.backend.domain.user.domain.repository.UserRepository;
-import ku_rum.backend.global.utils.RedisUtils;
 import ku_rum.backend.global.security.CustomUserDetails;
 import ku_rum.backend.global.security.JwtTokenAuthenticationFilter;
 import ku_rum.backend.global.security.JwtTokenProvider;
+import ku_rum.backend.global.utils.RedisUtil;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.ProviderManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
@@ -37,7 +35,7 @@ import static ku_rum.backend.global.support.status.BaseExceptionResponseStatus.N
 @RequiredArgsConstructor
 public class SecurityConfig {
     private final JwtTokenProvider jwtTokenProvider;
-    private final RedisUtils redisUtil;
+    private final RedisUtil redisUtil;
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {

@@ -2,6 +2,7 @@ package ku_rum.backend.domain.notice.dto.response;
 
 import ku_rum.backend.domain.notice.domain.Notice;
 import ku_rum.backend.domain.notice.domain.NoticeStatus;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -22,6 +23,7 @@ public class NoticeSimpleResponse {
         this.isImportant = notice.getNoticeStatus().isImportant();
     }
 
+    @Builder
     public NoticeSimpleResponse(String url, String title, String date, String category, boolean isImportant) {
         this.url = url;
         this.title = title;
