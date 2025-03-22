@@ -6,7 +6,6 @@ import ku_rum.backend.domain.notice.domain.NoticeStatus;
 import ku_rum.backend.domain.notice.domain.repository.NoticeRepository;
 import ku_rum.backend.domain.notice.dto.response.NoticeSimpleResponse;
 import ku_rum.backend.domain.notice.dto.response.RecentSearchTerm;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
@@ -15,6 +14,7 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.scheduling.annotation.Async;
@@ -27,16 +27,22 @@ import java.util.List;
 
 @Service
 @Slf4j
-@RequiredArgsConstructor
 public class NoticeService {
 
     private final NoticeRepository noticeRepository;
-
-    @Qualifier("urlRedisTemplate")
     private final RedisTemplate<String, String> urlRedisTemplate;
-
-    @Qualifier("recentSearchRedisTemplate")
     private final RedisTemplate<String, String> recentSearchRedisTemplate;
+
+    @Autowired
+    public NoticeService(
+            NoticeRepository noticeRepository,
+            @Qualifier("urlRedisTemplate") RedisTemplate<String, String> urlRedisTemplate,
+            @Qualifier("recentSearchRedisTemplate") RedisTemplate<String, String> recentSearchRedisTemplate
+    ) {
+        this.noticeRepository = noticeRepository;
+        this.urlRedisTemplate = urlRedisTemplate;
+        this.recentSearchRedisTemplate = recentSearchRedisTemplate;
+    }
 
     private static final String NOTICE_REDIS_KEY_PREFIX = "konkuk:notice:";
 

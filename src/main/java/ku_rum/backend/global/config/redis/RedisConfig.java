@@ -5,7 +5,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.data.redis.connection.RedisStandaloneConfiguration;
 import org.springframework.data.redis.connection.lettuce.LettuceConnectionFactory;
-
 @Configuration
 public class RedisConfig {
 
@@ -16,17 +15,13 @@ public class RedisConfig {
     private int port;
 
     public RedisConnectionFactory redisConnectionFactory(int dbIndex) {
-        // RedisStandaloneConfiguration 설정
-        final RedisStandaloneConfiguration redisStandaloneConfiguration = new RedisStandaloneConfiguration();
+        RedisStandaloneConfiguration redisStandaloneConfiguration = new RedisStandaloneConfiguration();
         redisStandaloneConfiguration.setHostName(host);
         redisStandaloneConfiguration.setPort(port);
-        redisStandaloneConfiguration.setDatabase(dbIndex);
+        redisStandaloneConfiguration.setDatabase(dbIndex); // DB 인덱스 설정
 
-        // LettuceConnectionFactory 생성
         LettuceConnectionFactory lettuceConnectionFactory = new LettuceConnectionFactory(redisStandaloneConfiguration);
-
-        // LettuceConnectionFactory 초기화
-        lettuceConnectionFactory.start();
+        lettuceConnectionFactory.afterPropertiesSet(); // 올바르게 초기화
         return lettuceConnectionFactory;
     }
 }
