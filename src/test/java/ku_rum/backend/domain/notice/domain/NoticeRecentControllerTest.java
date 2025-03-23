@@ -1,5 +1,7 @@
 package ku_rum.backend.domain.notice.domain;
 
+import com.epages.restdocs.apispec.ResourceSnippetParameters;
+import ku_rum.backend.config.RestDocsTestSupport;
 import ku_rum.backend.domain.notice.application.NoticeService;
 import ku_rum.backend.domain.notice.dto.response.RecentSearchTerm;
 import ku_rum.backend.domain.notice.presentation.NoticeRecentController;
@@ -28,6 +30,7 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.List;
 
+import static com.epages.restdocs.apispec.ResourceDocumentation.resource;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
@@ -44,7 +47,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureRestDocs
 @WebMvcTest(NoticeRecentController.class)
 @ActiveProfiles("test")
-class NoticeRecentControllerTest {
+class NoticeRecentControllerTest  extends RestDocsTestSupport {
 
     @Autowired
     private MockMvc mockMvc;
@@ -87,17 +90,18 @@ class NoticeRecentControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.data.searchedList[0]").value("검색어1"))
                 .andExpect(jsonPath("$.data.searchedList[1]").value("검색어2"))
-                .andDo(document("notice-recent-search",
-                        preprocessRequest(prettyPrint()),
-                        preprocessResponse(prettyPrint()),
-                        responseFields(
-                                fieldWithPath("status").type(JsonFieldType.STRING).description("요청 성공 여부"),
-                                fieldWithPath("code").type(JsonFieldType.NUMBER).description("응답 코드"),
-                                fieldWithPath("message").type(JsonFieldType.STRING).description("응답 메시지"),
-                                fieldWithPath("data.userId").type(JsonFieldType.NUMBER).description("사용자 ID"),
-                                fieldWithPath("data.searchedList").type(JsonFieldType.ARRAY).description("최근 검색어 목록"),
-                                fieldWithPath("data.searchedList[]").type(JsonFieldType.ARRAY).description("검색어")
-                        )
-                ));
+                .andDo(restDocs.document(
+                        resource(
+                                ResourceSnippetParameters.builder()
+                                        .tag("공지사항 API")
+                                        .description("최근 검색 단어 불러오기")
+                                        .responseFields(
+                                            fieldWithPath("status").type(JsonFieldType.STRING).description("요청 성공 여부"),
+                                            fieldWithPath("code").type(JsonFieldType.NUMBER).description("응답 코드"),
+                                            fieldWithPath("message").type(JsonFieldType.STRING).description("응답 메시지"),
+                                            fieldWithPath("data.userId").type(JsonFieldType.NUMBER).description("사용자 ID"),
+                                            fieldWithPath("data.searchedList").type(JsonFieldType.ARRAY).description("최근 검색어 목록"),
+                                            fieldWithPath("data.searchedList[]").type(JsonFieldType.ARRAY).description("검색어")
+                                        ).build())));
     }
 }
