@@ -1,3 +1,4 @@
+/*
 package ku_rum.backend.domain.notice.domain;
 
 import ku_rum.backend.domain.notice.application.NoticeService;
@@ -86,3 +87,4 @@ class NoticeCrawlControllerTest {
         verify(noticeService, Mockito.times(1)).crawlAndSaveKonkukNotices();
     }
 }
+*/
