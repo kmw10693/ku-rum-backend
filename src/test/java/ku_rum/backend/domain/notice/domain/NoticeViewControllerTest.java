@@ -1,6 +1,7 @@
 package ku_rum.backend.domain.notice.domain;
 
 import com.epages.restdocs.apispec.ResourceSnippetParameters;
+import ku_rum.backend.config.RestDocsTestSupport;
 import ku_rum.backend.domain.notice.application.NoticeService;
 import ku_rum.backend.domain.notice.dto.response.NoticeSimpleResponse;
 import ku_rum.backend.domain.notice.presentation.NoticeViewController;
@@ -12,7 +13,6 @@ import ku_rum.backend.global.utils.RedisUtil;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mockito;
 import org.openqa.selenium.json.JsonType;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,7 +23,6 @@ import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.Arrays;
@@ -35,7 +34,7 @@ import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.when;
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.user;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -43,7 +42,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureRestDocs
 @WebMvcTest(NoticeViewController.class)
 @ActiveProfiles("test")
-public class NoticeViewControllerTest {
+public class NoticeViewControllerTest extends RestDocsTestSupport {
 
     @Autowired
     private MockMvc mockMvc;
@@ -106,7 +105,7 @@ public class NoticeViewControllerTest {
                                                 fieldWithPath("data[].title").type(JsonType.STRING).description("공지사항 제목"),
                                                 fieldWithPath("data[].date").type(JsonType.STRING).description("공지사항 날짜"),
                                                 fieldWithPath("data[].category").type(JsonType.STRING).description("공지사항 카테고리"),
-                                                fieldWithPath("data[].isImportant").type(JsonType.BOOLEAN).description("중요 공지 여부")
+                                                fieldWithPath("data[].important").type(JsonType.BOOLEAN).description("중요 공지 여부")
                                         ).build())));
     }
 
@@ -154,7 +153,7 @@ public class NoticeViewControllerTest {
                                                 fieldWithPath("data[].title").type(JsonType.STRING).description("공지사항 제목"),
                                                 fieldWithPath("data[].date").type(JsonType.STRING).description("공지사항 날짜"),
                                                 fieldWithPath("data[].category").type(JsonType.STRING).description("공지사항 카테고리"),
-                                                fieldWithPath("data[].isImportant").type(JsonType.BOOLEAN).description("중요 공지 여부")
+                                                fieldWithPath("data[].important").type(JsonType.BOOLEAN).description("중요 공지 여부")
                                         ).build())));
     }
 }

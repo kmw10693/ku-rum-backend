@@ -16,6 +16,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.MediaType;
+import org.springframework.restdocs.RestDocumentationExtension;
+import org.springframework.restdocs.payload.JsonFieldType;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.test.context.support.WithMockUser;
@@ -27,13 +30,17 @@ import java.util.List;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
+import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
+import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get;
+import static org.springframework.restdocs.operation.preprocess.Preprocessors.*;
+import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
+import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.user;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@ExtendWith(SpringExtension.class)
+@ExtendWith({SpringExtension.class, RestDocumentationExtension.class})
 @AutoConfigureRestDocs
 @WebMvcTest(NoticeRecentController.class)
 @ActiveProfiles("test")
@@ -74,10 +81,23 @@ class NoticeRecentControllerTest {
         given(noticeService.getRecentSearchTerms(any())).willReturn(mockResponse);
 
         mockMvc.perform(get("/api/v1/notices/recent")
-                        .with(user(customUserDetails)))
+                        .with(user(customUserDetails))
+                        .accept(MediaType.APPLICATION_JSON))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.data.searchedList[0]").value("검색어1"))
-                .andExpect(jsonPath("$.data.searchedList[1]").value("검색어2"));
+                .andExpect(jsonPath("$.data.searchedList[1]").value("검색어2"))
+                .andDo(document("notice-recent-search",
+                        preprocessRequest(prettyPrint()),
+                        preprocessResponse(prettyPrint()),
+                        responseFields(
+                                fieldWithPath("status").type(JsonFieldType.STRING).description("요청 성공 여부"),
+                                fieldWithPath("code").type(JsonFieldType.NUMBER).description("응답 코드"),
+                                fieldWithPath("message").type(JsonFieldType.STRING).description("응답 메시지"),
+                                fieldWithPath("data.userId").type(JsonFieldType.NUMBER).description("사용자 ID"),
+                                fieldWithPath("data.searchedList").type(JsonFieldType.ARRAY).description("최근 검색어 목록"),
+                                fieldWithPath("data.searchedList[]").type(JsonFieldType.ARRAY).description("검색어")
+                        )
+                ));
     }
 }
