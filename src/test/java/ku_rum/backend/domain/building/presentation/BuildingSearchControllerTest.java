@@ -8,6 +8,8 @@ import ku_rum.backend.domain.category.domain.Category;
 import ku_rum.backend.domain.category.dto.response.CategoryDetailResponse;
 import ku_rum.backend.domain.menu.dto.response.MenuSimpleResponse;
 import ku_rum.backend.domain.user.application.UserService;
+import ku_rum.backend.global.batch.BatchScheduler;
+import ku_rum.backend.global.config.WebConfig;
 import ku_rum.backend.domain.user.application.UserValidator;
 import ku_rum.backend.global.utils.RedisUtils;
 import ku_rum.backend.global.log.domain.repository.ApiLogRepository;
@@ -15,6 +17,9 @@ import ku_rum.backend.global.security.JwtTokenProvider;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.json.JsonType;
+import org.springframework.batch.core.explore.JobExplorer;
+import org.springframework.batch.core.launch.JobOperator;
+import org.springframework.batch.core.repository.JobRepository;
 import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -59,18 +64,31 @@ class BuildingSearchControllerTest extends RestDocsTestSupport {
     @MockBean
     private UserValidator userValidator;
 
-    @DisplayName("학교의 모든 건물정보를 출력한다.")
-    @Test
-    @WithMockUser
-    void viewAll() throws Exception {
-        // given (Mock 데이터 설정)
-        List<BuildingResponse> mockBuildings = List.of(
-                new BuildingResponse(16L, "공학관", 21L, "공",
-                        BigDecimal.valueOf(37.5418220000000), BigDecimal.valueOf(127.0788450000000)),
-                new BuildingResponse(1L, "경영관", 2L, "경영",
-                        BigDecimal.valueOf(37.5444190000000), BigDecimal.valueOf(127.0763700000000))
-        );
-        given(buildingSearchService.findAllBuildings()).willReturn(mockBuildings);
+  @MockBean
+  private BatchScheduler batchScheduler;
+
+  @MockBean
+  private JobRepository jobRepository;
+
+  @MockBean
+  private JobExplorer jobExplorer;
+
+  @MockBean
+  private JobOperator jobOperator;
+
+
+@DisplayName("학교의 모든 건물정보를 출력한다.")
+@Test
+@WithMockUser
+void viewAll() throws Exception {
+    // given (Mock 데이터 설정)
+    List<BuildingResponse> mockBuildings = List.of(
+            new BuildingResponse(16L, "공학관", 21L, "공",
+                    BigDecimal.valueOf(37.5418220000000), BigDecimal.valueOf(127.0788450000000)),
+            new BuildingResponse(1L, "경영관", 2L, "경영",
+                    BigDecimal.valueOf(37.5444190000000), BigDecimal.valueOf(127.0763700000000))
+    );
+    given(buildingSearchService.findAllBuildings()).willReturn(mockBuildings);
 
         //when then
         mockMvc.perform(get("/api/v1/building/search")

@@ -5,12 +5,14 @@ import ku_rum.backend.domain.building.domain.repository.BuildingRepository;
 import ku_rum.backend.domain.department.domain.Department;
 import ku_rum.backend.domain.department.domain.repository.DepartmentRepository;
 import ku_rum.backend.domain.user.domain.User;
+import ku_rum.backend.global.batch.BatchScheduler;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -33,6 +35,9 @@ class UserRepositoryTest {
 
     @Autowired
     private DepartmentRepository departmentRepository;
+
+    @MockBean
+    private BatchScheduler batchScheduler;
 
     @BeforeEach
     void setup() {

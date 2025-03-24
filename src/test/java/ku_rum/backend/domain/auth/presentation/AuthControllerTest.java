@@ -5,6 +5,8 @@ import ku_rum.backend.config.RestDocsTestSupport;
 import ku_rum.backend.domain.auth.application.AuthService;
 import ku_rum.backend.domain.auth.dto.request.LoginRequest;
 import ku_rum.backend.domain.auth.dto.request.ReissueRequest;
+import ku_rum.backend.global.batch.BatchScheduler;
+import ku_rum.backend.global.security.jwt.dto.TokenResponse;
 import ku_rum.backend.domain.user.dto.response.TokenResponse;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -32,6 +34,9 @@ class AuthControllerTest extends RestDocsTestSupport {
 
     @MockBean
     private AuthService authService;
+
+    @MockBean
+    private BatchScheduler batchScheduler;
 
     @DisplayName("로그인을 진행한다.")
     @Test

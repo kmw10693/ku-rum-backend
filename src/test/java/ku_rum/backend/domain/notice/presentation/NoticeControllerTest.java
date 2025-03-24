@@ -7,6 +7,7 @@ import ku_rum.backend.domain.notice.domain.Notice;
 import ku_rum.backend.domain.notice.domain.NoticeCategory;
 import ku_rum.backend.domain.notice.domain.NoticeStatus;
 import ku_rum.backend.domain.notice.dto.response.NoticeSimpleResponse;
+import ku_rum.backend.global.batch.BatchScheduler;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.json.JsonType;
@@ -40,6 +41,9 @@ class NoticeControllerTest extends RestDocsTestSupport {
 
     @MockBean
     private NoticeService noticeService;
+
+    @MockBean
+    private BatchScheduler batchScheduler;
 
 //    @DisplayName("공지사항 크롤링 성공")
 //    @Test
