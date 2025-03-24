@@ -3,6 +3,7 @@ package ku_rum.backend.domain.common.firebase.presentation;
 import com.epages.restdocs.apispec.ResourceSnippetParameters;
 import ku_rum.backend.config.RestDocsTestSupport;
 import ku_rum.backend.domain.common.firebase.application.NotificationService;
+import ku_rum.backend.global.batch.BatchScheduler;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
@@ -29,6 +30,9 @@ class NotificationApiControllerTest extends RestDocsTestSupport {
 
     @MockBean
     private NotificationService notificationService;
+
+    @MockBean
+    private BatchScheduler batchScheduler;
 
     @Test
     @DisplayName("사용자 토큰을 서버에 저장한다.")

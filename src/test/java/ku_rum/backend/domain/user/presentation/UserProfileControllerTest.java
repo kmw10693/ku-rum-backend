@@ -3,10 +3,12 @@ package ku_rum.backend.domain.user.presentation;
 import com.epages.restdocs.apispec.ResourceSnippetParameters;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import ku_rum.backend.config.RestDocsTestSupport;
+import ku_rum.backend.domain.auth.application.TokenBlacklistService;
 import ku_rum.backend.domain.user.application.UserService;
 import ku_rum.backend.domain.user.dto.request.NicknameChangeRequest;
 import ku_rum.backend.domain.user.dto.request.InitiatePasswordResetRequest;
 import ku_rum.backend.domain.user.dto.request.ResetPasswordRequest;
+import ku_rum.backend.global.batch.BatchScheduler;
 import ku_rum.backend.global.security.CustomUserDetails;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -40,6 +42,12 @@ public class UserProfileControllerTest extends RestDocsTestSupport {
 
     @MockBean
     private UserService userService;
+
+    @MockBean
+    private BatchScheduler batchScheduler;
+
+    @MockBean
+    private TokenBlacklistService tokenBlacklistService;
 
     @Test
     @DisplayName("닉네임 변경 성공")
