@@ -6,12 +6,17 @@ import ku_rum.backend.domain.user.domain.User;
 import ku_rum.backend.domain.user.domain.AgreementStatus;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.test.context.ActiveProfiles;
 
 import java.math.BigDecimal;
 
 import static ku_rum.backend.domain.notice.domain.NoticeStatus.*;
 import static org.assertj.core.api.Assertions.*;
 
+@ExtendWith(MockitoExtension.class)
+@ActiveProfiles("test")
 class NoticeTest {
 
     @DisplayName("공지 생성 시 유저, 학과 정보를 넣어준다.")

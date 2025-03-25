@@ -94,7 +94,7 @@ public class NoticeService {
                 String date = noticeElement.findElement(By.cssSelector("td.td-date")).getText();
 
                 // 날짜가 2025년으로 시작하지 않으면 건너뜀 (일단 크롤링 너무 오래걸려서 걸어둠..후에 삭제)
-                if (!date.startsWith("2025")) {
+                if (!date.startsWith("2024")) {
                     log.info("2024년 공지가 아님: {}", title);
                     return false;
                 }

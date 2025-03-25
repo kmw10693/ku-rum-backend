@@ -17,6 +17,7 @@ import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.restdocs.RestDocumentationExtension;
@@ -43,14 +44,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@ExtendWith({SpringExtension.class, RestDocumentationExtension.class})
-@AutoConfigureRestDocs
-@WebMvcTest(NoticeRecentController.class)
+@SpringBootTest
 @ActiveProfiles("test")
 class NoticeRecentControllerTest  extends RestDocsTestSupport {
-
-    @Autowired
-    private MockMvc mockMvc;
 
     @MockBean
     private NoticeService noticeService;
@@ -100,8 +96,7 @@ class NoticeRecentControllerTest  extends RestDocsTestSupport {
                                             fieldWithPath("code").type(JsonFieldType.NUMBER).description("응답 코드"),
                                             fieldWithPath("message").type(JsonFieldType.STRING).description("응답 메시지"),
                                             fieldWithPath("data.userId").type(JsonFieldType.NUMBER).description("사용자 ID"),
-                                            fieldWithPath("data.searchedList").type(JsonFieldType.ARRAY).description("최근 검색어 목록"),
-                                            fieldWithPath("data.searchedList[]").type(JsonFieldType.ARRAY).description("검색어")
+                                            fieldWithPath("data.searchedList").type(JsonFieldType.ARRAY).description("최근 검색어 목록")
                                         ).build())));
     }
 }
