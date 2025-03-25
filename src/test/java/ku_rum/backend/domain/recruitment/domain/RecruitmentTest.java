@@ -1,9 +1,11 @@
 package ku_rum.backend.domain.recruitment.domain;
 
 import jakarta.persistence.EntityManager;
+import ku_rum.backend.domain.notice.domain.repository.NoticeRepositoryImpl;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 import org.springframework.test.context.ActiveProfiles;
 
@@ -17,6 +19,9 @@ public class RecruitmentTest {
 
     @Autowired
     private EntityManager entityManager;
+
+    @MockBean
+    private NoticeRepositoryImpl noticeRepositoryImpl;
 
     private Recruitment createSampleRecruitment() {
         return Recruitment.of(
