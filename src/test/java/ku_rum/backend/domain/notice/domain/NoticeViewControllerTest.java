@@ -5,6 +5,7 @@ import ku_rum.backend.config.RestDocsTestSupport;
 import ku_rum.backend.domain.notice.application.NoticeService;
 import ku_rum.backend.domain.notice.dto.response.NoticeSimpleResponse;
 import ku_rum.backend.domain.user.application.UserService;
+import ku_rum.backend.global.batch.BatchConfig;
 import ku_rum.backend.global.log.domain.repository.ApiLogRepository;
 import ku_rum.backend.global.security.CustomUserDetails;
 import ku_rum.backend.global.security.JwtTokenProvider;
@@ -13,6 +14,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
+import org.springframework.batch.core.launch.JobLauncher;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
@@ -44,6 +46,12 @@ public class NoticeViewControllerTest extends RestDocsTestSupport {
 
     @MockBean
     private NoticeService noticeService;
+
+    @MockBean
+    private BatchConfig batchConfig;
+
+    @MockBean
+    private JobLauncher jobLauncher;
 
     @MockBean
     private JwtTokenProvider jwtTokenProvider;
@@ -132,13 +140,14 @@ public class NoticeViewControllerTest extends RestDocsTestSupport {
                 )
         );
 
-        when(noticeService.findNoticesByCategory(NoticeCategory.AFFAIR,5)).thenReturn(mockNotices);
+        when(noticeService.findNoticesByCategory(NoticeCategory.AFFAIR, 5)).thenReturn(mockNotices);
 
         mockMvc.perform(get("/api/v1/notices")
                         .param("category", NoticeCategory.AFFAIR.toString())
-                        .param("page", "1")
+                        .param("page", "5")
                         .with(user(customUserDetails))
                         .accept(MediaType.APPLICATION_JSON))
+                        .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.data[0].url").value("https://example.com/notice1"))
                 .andExpect(jsonPath("$.data[0].title").value("[대학일자리+] 2025년 졸업생 맞춤형 취업컨설팅 & 잡매칭 프로그램"))

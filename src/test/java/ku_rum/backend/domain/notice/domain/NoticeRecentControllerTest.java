@@ -4,6 +4,7 @@ import com.epages.restdocs.apispec.ResourceSnippetParameters;
 import ku_rum.backend.config.RestDocsTestSupport;
 import ku_rum.backend.domain.notice.application.NoticeService;
 import ku_rum.backend.domain.notice.dto.response.RecentSearchTerm;
+import ku_rum.backend.global.batch.BatchConfig;
 import ku_rum.backend.global.log.domain.repository.ApiLogRepository;
 import ku_rum.backend.global.security.CustomUserDetails;
 import ku_rum.backend.global.security.JwtTokenProvider;
@@ -12,10 +13,12 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
+import org.springframework.batch.core.launch.JobLauncher;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.restdocs.payload.JsonFieldType;
+import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.test.context.support.WithMockUser;
@@ -35,10 +38,17 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @SpringBootTest
 @ActiveProfiles("test")
+@EnableScheduling
 class NoticeRecentControllerTest  extends RestDocsTestSupport {
 
     @MockBean
     private NoticeService noticeService;
+
+    @MockBean
+    private BatchConfig batchConfig;
+
+    @MockBean
+    private JobLauncher jobLauncher;
 
     @MockBean
     private JwtTokenProvider jwtTokenProvider;
