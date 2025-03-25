@@ -10,6 +10,7 @@ import ku_rum.backend.domain.user.dto.request.ProfileChangeRequest;
 import ku_rum.backend.domain.user.dto.request.UserSaveRequest;
 import ku_rum.backend.domain.user.dto.response.LoginIdResponse;
 import ku_rum.backend.global.security.CustomUserDetails;
+import ku_rum.backend.global.batch.BatchScheduler;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.json.JsonType;
@@ -43,6 +44,9 @@ class UserControllerTest extends RestDocsTestSupport {
 
     @MockBean
     private UserService userService;
+
+    @MockBean
+    private BatchScheduler batchScheduler;
 
     @MockBean
     private UserDetailsService userDetailsService;

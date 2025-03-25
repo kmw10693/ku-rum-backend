@@ -5,6 +5,7 @@ import ku_rum.backend.config.RestDocsTestSupport;
 import ku_rum.backend.domain.common.mail.application.MailService;
 import ku_rum.backend.domain.common.mail.dto.request.MailSendRequest;
 import ku_rum.backend.domain.common.mail.dto.request.MailVerificationRequest;
+import ku_rum.backend.global.batch.BatchScheduler;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.json.JsonType;
@@ -27,6 +28,9 @@ class MailControllerTest extends RestDocsTestSupport {
 
     @MockBean
     private MailService mailService;
+
+    @MockBean
+    private BatchScheduler batchScheduler;
 
     @DisplayName("이메일 인증 요청을 보낸다.")
     @Test

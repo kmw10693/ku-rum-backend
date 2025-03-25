@@ -13,6 +13,7 @@ import ku_rum.backend.domain.user.dto.request.InitiatePasswordResetRequest;
 import ku_rum.backend.domain.user.dto.request.UserSaveRequest;
 import ku_rum.backend.domain.user.dto.response.LoginIdResponse;
 import ku_rum.backend.domain.user.dto.response.UserSaveResponse;
+import ku_rum.backend.global.batch.BatchScheduler;
 import ku_rum.backend.global.exception.email.DuplicateEmailException;
 import ku_rum.backend.global.exception.user.DuplicateNicknameException;
 import ku_rum.backend.global.exception.user.DuplicateStudentIdException;
@@ -23,6 +24,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -50,6 +52,9 @@ class UserServiceTest {
 
     @Autowired
     private BuildingRepository buildingRepository;
+
+    @MockBean
+    private BatchScheduler batchScheduler;
 
     private Building building;
 

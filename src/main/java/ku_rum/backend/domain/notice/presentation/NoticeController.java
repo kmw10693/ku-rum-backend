@@ -19,32 +19,24 @@ public class NoticeController {
     private final NoticeService noticeService;
 
     /**
-     * 주어진 조건(작성일 기준)을 만족하는 건국대학교 공지사항을 모두 크롤링
-     * @return 성공메시지
-     */
-    @PostMapping("/crawl/konkuk")
-    public BaseResponse<String> crawlKonkukNotices() { //redis에 저장해두고 redis에 없으면 db에 저장을 한 (key에다가 공지사항 url링크 저장)
-        noticeService.crawlAndSaveKonkukNotices();
-        return BaseResponse.ok(START_CRAWLING.getMessage());
-    }
-
-    /**
-     * 카테고리별 공지사항 조회
-     * @param category
+     * 카테고리별 공지사항 조회 (페이징 처리)
+     * @param category, page(page는 1부터)
      * @return
      */
     @GetMapping
-    public BaseResponse<List<NoticeSimpleResponse>> getNoticesByCategory(@RequestParam(name = "category") NoticeCategory category) {
-        return BaseResponse.ok(noticeService.findNoticesByCategory(category));
+    public BaseResponse<List<NoticeSimpleResponse>> getNoticesByCategory(@RequestParam(name = "category") NoticeCategory category,
+                                                                         @RequestParam(name = "page") int page) {
+        return BaseResponse.ok(noticeService.findNoticesByCategory(category, page));
     }
 
     /**
-     * 공지사항 제목을 통한 검색
-     * @param searchTerm
+     * 공지사항 제목을 통한 검색 (페이징 처리)
+     * @param searchTerm, page(page는 1부터)
      * @return
      */
     @GetMapping("/search")
-    public BaseResponse<List<NoticeSimpleResponse>> searchNotices(@RequestParam(name = "searchTerm") String searchTerm) {
-        return BaseResponse.ok(noticeService.searchNoticesByTitle(searchTerm));
+    public BaseResponse<List<NoticeSimpleResponse>> searchNotices(@RequestParam(name = "searchTerm") String searchTerm,
+                                                                  @RequestParam(name = "page") int page) {
+        return BaseResponse.ok(noticeService.searchNoticesByTitle(searchTerm, page));
     }
 }

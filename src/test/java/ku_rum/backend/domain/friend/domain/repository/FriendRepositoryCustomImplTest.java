@@ -5,12 +5,14 @@ import ku_rum.backend.domain.building.domain.Building;
 import ku_rum.backend.domain.department.domain.Department;
 import ku_rum.backend.domain.friend.domain.Friend;
 import ku_rum.backend.domain.friend.domain.FriendStatus;
+import ku_rum.backend.domain.notice.domain.repository.NoticeRepositoryImpl;
 import ku_rum.backend.domain.user.domain.User;
 import ku_rum.backend.global.config.JpaAuditingConfig;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.FilterType;
 import org.springframework.test.context.ActiveProfiles;
@@ -33,6 +35,9 @@ public class FriendRepositoryCustomImplTest {
 
     @Autowired
     private FriendRepositoryCustomImpl friendRepositoryCustom;
+
+    @MockBean
+    private NoticeRepositoryImpl noticeRepository;
 
     @Test
     void findFriends_친구_목록_조회() {

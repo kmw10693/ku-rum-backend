@@ -1,16 +1,23 @@
 package ku_rum.backend.domain.building.service;
 
+import ku_rum.backend.domain.auth.application.AuthService;
+import ku_rum.backend.domain.auth.application.TokenBlacklistService;
 import ku_rum.backend.domain.building.application.BuildingSearchService;
 import ku_rum.backend.domain.building.dto.response.BuildingResponse;
+import ku_rum.backend.domain.building.presentation.BuildingSearchController;
 import ku_rum.backend.domain.category.dto.response.CategoryDetailResponse;
+import ku_rum.backend.domain.common.firebase.application.NotificationService;
 import ku_rum.backend.global.exception.building.BuildingNotFoundException;
 import ku_rum.backend.global.exception.category.CategoryNotExistException;
 import ku_rum.backend.global.exception.category.CategoryNotProvidingDetailException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -23,6 +30,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @WebAppConfiguration
 @SpringBootTest
+@ActiveProfiles("local")
 @Transactional
 public class BuildingSearchServiceTest {
 

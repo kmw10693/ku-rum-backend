@@ -3,6 +3,7 @@ package ku_rum.backend.domain.recruitment.presentation;
 import com.epages.restdocs.apispec.ResourceSnippetParameters;
 import ku_rum.backend.config.RestDocsTestSupport;
 import ku_rum.backend.domain.recruitment.application.RecruitmentService;
+import ku_rum.backend.global.batch.BatchScheduler;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.json.JsonType;
@@ -27,6 +28,9 @@ class RecruitmentControllerTest extends RestDocsTestSupport {
 
     @MockBean
     private RecruitmentService recruitmentService;
+
+    @MockBean
+    private BatchScheduler batchScheduler;
 
     @DisplayName("공지 크롤링 API")
     @Test
