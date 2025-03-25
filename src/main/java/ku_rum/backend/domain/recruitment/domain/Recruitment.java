@@ -15,7 +15,7 @@ public class Recruitment extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(length = 1024, nullable = false, unique = true)
+    @Column(length = 300, nullable = false, unique = true)
     private String url;
 
     @Column(nullable = false)

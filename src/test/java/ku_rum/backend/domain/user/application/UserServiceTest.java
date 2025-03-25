@@ -9,10 +9,11 @@ import ku_rum.backend.domain.user.domain.User;
 import ku_rum.backend.domain.user.domain.repository.UserRepository;
 import ku_rum.backend.domain.common.mail.dto.request.EmailValidationRequest;
 import ku_rum.backend.domain.user.dto.request.NicknameChangeRequest;
-import ku_rum.backend.domain.user.dto.request.ResetAccountRequest;
+import ku_rum.backend.domain.user.dto.request.InitiatePasswordResetRequest;
 import ku_rum.backend.domain.user.dto.request.UserSaveRequest;
 import ku_rum.backend.domain.user.dto.response.LoginIdResponse;
 import ku_rum.backend.domain.user.dto.response.UserSaveResponse;
+import ku_rum.backend.global.batch.BatchScheduler;
 import ku_rum.backend.global.exception.email.DuplicateEmailException;
 import ku_rum.backend.global.exception.user.DuplicateNicknameException;
 import ku_rum.backend.global.exception.user.DuplicateStudentIdException;
@@ -21,22 +22,16 @@ import ku_rum.backend.global.security.CustomUserDetails;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.authority.AuthorityUtils;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.test.context.support.WithMockUser;
-import org.springframework.security.test.context.support.WithUserDetails;
 import org.springframework.test.context.ActiveProfiles;
 
 import java.math.BigDecimal;
-import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -57,6 +52,9 @@ class UserServiceTest {
 
     @Autowired
     private BuildingRepository buildingRepository;
+
+    @MockBean
+    private BatchScheduler batchScheduler;
 
     private Building building;
 
@@ -215,10 +213,10 @@ class UserServiceTest {
 
         userRepository.save(user);
         System.out.println(user.getPassword());
-        ResetAccountRequest request = new ResetAccountRequest("kmw106933", "password123", "password1234");
+        InitiatePasswordResetRequest request = new InitiatePasswordResetRequest("kmw106933", "password1234");
 
         //when
-        userService.resetAccount(request);
+        userService.initiatePasswordReset(request);
         //then
         assertThat(passwordEncoder.matches("password1234", user.getPassword())).isEqualTo(true);
     }

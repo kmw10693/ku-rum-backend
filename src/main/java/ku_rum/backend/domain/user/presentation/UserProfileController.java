@@ -4,7 +4,8 @@ import jakarta.validation.Valid;
 import ku_rum.backend.domain.user.application.UserService;
 import ku_rum.backend.domain.user.dto.request.NicknameChangeRequest;
 import ku_rum.backend.domain.user.dto.request.ProfileChangeRequest;
-import ku_rum.backend.domain.user.dto.request.ResetAccountRequest;
+import ku_rum.backend.domain.user.dto.request.InitiatePasswordResetRequest;
+import ku_rum.backend.domain.user.dto.request.ResetPasswordRequest;
 import ku_rum.backend.domain.user.dto.response.LoginIdResponse;
 import ku_rum.backend.global.support.response.BaseResponse;
 import lombok.RequiredArgsConstructor;
@@ -46,24 +47,36 @@ public class UserProfileController {
     }
 
     /**
-     * 기존 아이디로 비밀번호 초기화 API
-     *
-     * @param resetAccountRequest
-     * @return
-     */
-    @PostMapping("/reset-account")
-    public BaseResponse<String> resetAccount(@RequestBody @Valid final ResetAccountRequest resetAccountRequest) {
-        userService.resetAccount(resetAccountRequest);
-        return BaseResponse.ok(SUCCESS_RESET_PASSWORD.getMessage());
-    }
-
-    /**
      * 닉네임 변경 API
+     *
      * @return
      */
     @PatchMapping("/nickname")
     public BaseResponse<String> setProfile(@RequestBody @Valid final NicknameChangeRequest nicknameChangeRequest) {
         userService.changeNickname(nicknameChangeRequest);
         return BaseResponse.ok(SUCCESS_CHANGE_NICKNAME.getMessage());
+    }
+
+    /**
+     * 로그인 전 아이디로 비밀번호 초기화 API
+     *
+     * @param initiatePasswordResetRequest
+     * @return
+     */
+    @PostMapping("/password-reset/initiate")
+    public BaseResponse<String> initiatePasswordReset(@RequestBody @Valid final InitiatePasswordResetRequest initiatePasswordResetRequest) {
+        userService.initiatePasswordReset(initiatePasswordResetRequest);
+        return BaseResponse.ok(SUCCESS_RESET_PASSWORD.getMessage());
+    }
+
+    /**
+     * 로그인 후 아이디로 비밀번호 초기화 API
+     *
+     * @return
+     */
+    @PostMapping("/password-reset")
+    public BaseResponse<String> resetPassword(@RequestBody @Valid final ResetPasswordRequest resetPasswordRequest) {
+        userService.resetPassword(resetPasswordRequest);
+        return BaseResponse.ok(SUCCESS_RESET_PASSWORD.getMessage());
     }
 }

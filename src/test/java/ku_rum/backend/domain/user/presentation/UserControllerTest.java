@@ -7,14 +7,13 @@ import ku_rum.backend.domain.common.mail.dto.request.EmailValidationRequest;
 import ku_rum.backend.domain.user.application.UserValidator;
 import ku_rum.backend.domain.user.domain.AgreementStatus;
 import ku_rum.backend.domain.user.dto.request.ProfileChangeRequest;
-import ku_rum.backend.domain.user.dto.request.ResetAccountRequest;
 import ku_rum.backend.domain.user.dto.request.UserSaveRequest;
 import ku_rum.backend.domain.user.dto.response.LoginIdResponse;
 import ku_rum.backend.global.security.CustomUserDetails;
+import ku_rum.backend.global.batch.BatchScheduler;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.json.JsonType;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
@@ -45,6 +44,9 @@ class UserControllerTest extends RestDocsTestSupport {
 
     @MockBean
     private UserService userService;
+
+    @MockBean
+    private BatchScheduler batchScheduler;
 
     @MockBean
     private UserDetailsService userDetailsService;

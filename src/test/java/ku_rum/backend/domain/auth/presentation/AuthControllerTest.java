@@ -6,6 +6,7 @@ import ku_rum.backend.domain.auth.application.AuthService;
 import ku_rum.backend.domain.auth.dto.request.LoginRequest;
 import ku_rum.backend.domain.auth.dto.request.ReissueRequest;
 import ku_rum.backend.domain.user.dto.response.TokenResponse;
+import ku_rum.backend.global.batch.BatchScheduler;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -16,6 +17,7 @@ import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.transaction.annotation.Transactional;
+import org.testcontainers.shaded.org.yaml.snakeyaml.tokens.Token;
 
 import static com.epages.restdocs.apispec.ResourceDocumentation.resource;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.patch;
@@ -32,6 +34,9 @@ class AuthControllerTest extends RestDocsTestSupport {
 
     @MockBean
     private AuthService authService;
+
+    @MockBean
+    private BatchScheduler batchScheduler;
 
     @DisplayName("로그인을 진행한다.")
     @Test

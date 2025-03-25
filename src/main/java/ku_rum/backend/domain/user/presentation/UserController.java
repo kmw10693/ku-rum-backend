@@ -79,7 +79,6 @@ public class UserController {
         userValidator.validateDuplicateStudentId(value);
         return BaseResponse.ok(VALID_STUDENTID_MESSAGE.getMessage());
     }
-
 }
 
 

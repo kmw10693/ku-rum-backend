@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.JsonNodeFactory;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import jakarta.servlet.http.HttpServletResponse;
+import ku_rum.backend.domain.notice.domain.repository.NoticeRepositoryImpl;
 import ku_rum.backend.global.log.domain.ApiLog;
 import ku_rum.backend.global.log.domain.repository.ApiLogRepository;
 import ku_rum.backend.global.log.interceptior.LoggingInterceptor;
@@ -13,6 +14,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpHeaders;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.mock.web.MockHttpServletResponse;
@@ -35,6 +37,9 @@ class LoggingInterceptorTest {
 
     @Mock
     private ObjectMapper objectMapper;
+
+    @MockBean
+    private NoticeRepositoryImpl noticeRepository;
 
     @Test
     void afterCompletion_정상적인_요청이면_로그가_저장된다() throws Exception {
