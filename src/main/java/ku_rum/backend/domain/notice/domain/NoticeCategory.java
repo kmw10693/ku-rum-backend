@@ -3,6 +3,8 @@ package ku_rum.backend.domain.notice.domain;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
+import java.util.Map;
+
 @Getter
 @RequiredArgsConstructor
 public enum NoticeCategory {
@@ -30,9 +32,24 @@ public enum NoticeCategory {
     EMPLOYMENT("채용", "https://www.konkuk.ac.kr/konkuk/19564/subview.do",
             "#menu19564_obj13644 > div._fnctWrap > form:nth-child(2) > div > table > tbody > tr", "#menu19564_obj13644 > div._fnctWrap > form:nth-child(3) > div > div > a._listNext");
 
-
     private final String text;
-    private final String url; //각 카테고리별 크롤링할 url
-    private final String selector; //공지사항 selector
+    private final String url;
+    private final String selector;
     private final String nextButtonSelector;
+
+    private static final Map<String, NoticeCategory> CATEGORY_MAP =
+            Map.ofEntries(
+                    Map.entry(AFFAIR.text, AFFAIR),
+                    Map.entry(SCHOLARSHIP.text, SCHOLARSHIP),
+                    Map.entry(STARTUP.text, STARTUP),
+                    Map.entry(INTERNATIONAL.text, INTERNATIONAL),
+                    Map.entry(STUDENT.text, STUDENT),
+                    Map.entry(GENERAL.text, GENERAL),
+                    Map.entry(INDUSTRY_ACADEMIC.text, INDUSTRY_ACADEMIC),
+                    Map.entry(EMPLOYMENT.text, EMPLOYMENT)
+            );
+
+    public static NoticeCategory findByName(String category) {
+        return CATEGORY_MAP.get(category);
+    }
 }

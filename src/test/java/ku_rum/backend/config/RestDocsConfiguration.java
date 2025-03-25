@@ -9,6 +9,7 @@ import static org.springframework.restdocs.operation.preprocess.Preprocessors.*;
 
 @TestConfiguration
 public class RestDocsConfiguration {
+
     @Bean
     public RestDocumentationResultHandler restDocumentationResultHandler() {
         return MockMvcRestDocumentationWrapper.document(

@@ -17,8 +17,8 @@ public class NoticeRepositoryImpl implements NoticeRepositoryCustom {
     private final JPAQueryFactory queryFactory;
     private final QNotice qNotice = QNotice.notice;
 
-//    @Query("SELECT n FROM Notice n WHERE LOWER(n.title) LIKE LOWER(CONCAT('%', :searchTerm, '%'))")
-//    List<Notice> searchNoticesByTitle(@Param("searchTerm") String searchTerm);
+    //    @Query("SELECT n FROM Notice n WHERE LOWER(n.title) LIKE LOWER(CONCAT('%', :searchTerm, '%'))")
+    //    List<Notice> searchNoticesByTitle(@Param("searchTerm") String searchTerm);
     //를 Querydsl로 리팩토링해보자!
     public List<Notice> searchNoticesByTitle(String searchTerm) {   //해당 검색어로 모든 공지사항 결과 가져오는 쿼리
         return queryFactory

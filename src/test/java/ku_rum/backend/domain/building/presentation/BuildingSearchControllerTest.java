@@ -11,7 +11,7 @@ import ku_rum.backend.domain.user.application.UserService;
 import ku_rum.backend.global.batch.BatchScheduler;
 import ku_rum.backend.global.config.WebConfig;
 import ku_rum.backend.domain.user.application.UserValidator;
-import ku_rum.backend.global.utils.RedisUtils;
+import ku_rum.backend.global.utils.RedisUtil;
 import ku_rum.backend.global.log.domain.repository.ApiLogRepository;
 import ku_rum.backend.global.security.JwtTokenProvider;
 import org.junit.jupiter.api.DisplayName;
@@ -22,6 +22,7 @@ import org.springframework.batch.core.launch.JobOperator;
 import org.springframework.batch.core.repository.JobRepository;
 import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
@@ -41,8 +42,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@AutoConfigureRestDocs
-@WebMvcTest(BuildingSearchController.class)
+@SpringBootTest
 @ActiveProfiles("test")
 class BuildingSearchControllerTest extends RestDocsTestSupport {
 
@@ -56,7 +56,7 @@ class BuildingSearchControllerTest extends RestDocsTestSupport {
     private JwtTokenProvider jwtTokenProvider;
 
     @MockBean
-    private RedisUtils redisUtil;
+    private RedisUtil redisUtil;
 
     @MockBean
     private ApiLogRepository apiLogRepository;

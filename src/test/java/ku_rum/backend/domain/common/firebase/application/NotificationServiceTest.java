@@ -1,6 +1,6 @@
 package ku_rum.backend.domain.common.firebase.application;
 
-import ku_rum.backend.global.utils.RedisUtils;
+import ku_rum.backend.global.utils.RedisUtil;
 import ku_rum.backend.global.utils.UserUtils;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -21,7 +21,7 @@ import static org.mockito.Mockito.verify;
 class NotificationServiceTest {
 
     @Mock
-    private RedisUtils redisUtil;  // RedisUtil Mock 객체
+    private RedisUtil redisUtil;  // RedisUtil Mock 객체
 
     @InjectMocks
     private NotificationService notificationService;  // 테스트 대상 객체

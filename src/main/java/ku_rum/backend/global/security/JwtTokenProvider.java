@@ -3,8 +3,8 @@ package ku_rum.backend.global.security;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
 import jakarta.annotation.PostConstruct;
-import ku_rum.backend.global.utils.RedisUtils;
 import ku_rum.backend.domain.user.dto.response.TokenResponse;
+import ku_rum.backend.global.utils.RedisUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -29,7 +29,8 @@ public class JwtTokenProvider {
     private static final String AUTHORITIES_KEY = "roles";
 
     private final JwtProperties jwtProperties;
-    private final RedisUtils redisUtil;
+    private final RedisUtil redisUtil;
+
     private SecretKey secretKey;
 
     @PostConstruct

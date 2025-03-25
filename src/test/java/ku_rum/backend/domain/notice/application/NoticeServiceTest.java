@@ -13,6 +13,8 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.test.context.ActiveProfiles;
+import org.springframework.data.redis.core.ListOperations;
+import org.springframework.data.redis.core.RedisTemplate;
 
 import java.util.List;
 
@@ -27,6 +29,10 @@ class NoticeServiceTest {
 
     @Mock
     private NoticeRepository noticeRepository;
+
+    @Mock
+    private RedisTemplate<String, String> recentSearchRedisTemplate; // @Mock으로 변경
+
 
     @BeforeEach
     void setUp() {
@@ -71,8 +77,12 @@ class NoticeServiceTest {
         when(noticeRepository.searchNoticesByTitleWithPaging("Search", 0, 20))
                 .thenReturn(List.of(notice));
 
+        // recentSearchRedisTemplate의 동작을 mock 처리
+        ListOperations<String, String> mockListOperations = mock(ListOperations.class);
+        when(recentSearchRedisTemplate.opsForList()).thenReturn(mockListOperations);
+
         // when
-        List<NoticeSimpleResponse> result = noticeService.searchNoticesByTitle("Search", 1);
+        List<NoticeSimpleResponse> result = noticeService.searchNoticesByTitle(1L,"Search", 1);
 
         // then
         assertEquals(1, result.size());

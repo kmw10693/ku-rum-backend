@@ -1,7 +1,7 @@
 package ku_rum.backend.domain.auth.application;
 
 import ku_rum.backend.domain.auth.dto.request.ReissueRequest;
-import ku_rum.backend.global.utils.RedisUtils;
+import ku_rum.backend.global.utils.RedisUtil;
 import ku_rum.backend.global.security.CustomUserDetails;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -24,7 +24,7 @@ class TokenBlacklistServiceTest {
     private TokenBlacklistService tokenBlacklistService;
 
     @Mock
-    private RedisUtils redisUtil;
+    private RedisUtil redisUtil;
 
     @Test
     @DisplayName("Redis에 저장된 리프레시 토큰과 요청 토큰이 일치하면 검증 성공")

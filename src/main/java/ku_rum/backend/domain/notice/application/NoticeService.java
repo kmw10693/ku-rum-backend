@@ -2,32 +2,164 @@ package ku_rum.backend.domain.notice.application;
 
 import ku_rum.backend.domain.notice.domain.Notice;
 import ku_rum.backend.domain.notice.domain.NoticeCategory;
+import ku_rum.backend.domain.notice.domain.NoticeStatus;
 import ku_rum.backend.domain.notice.domain.repository.NoticeRepository;
 import ku_rum.backend.domain.notice.dto.response.NoticeSimpleResponse;
+import ku_rum.backend.domain.notice.dto.response.RecentSearchTerm;
 import ku_rum.backend.global.exception.notice.InvalidPageException;
-import ku_rum.backend.global.support.status.BaseExceptionResponseStatus;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeOptions;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.scheduling.annotation.Async;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.time.Duration;
 import java.util.List;
+import java.util.Optional;
 
-import static ku_rum.backend.global.support.status.BaseExceptionResponseStatus.*;
+import static ku_rum.backend.global.support.status.BaseExceptionResponseStatus.INVALID_PAGE;
 
 @Service
 @Slf4j
-@RequiredArgsConstructor
 public class NoticeService {
-
-    private final NoticeRepository noticeRepository;
 
     private final int PAGE_SIZE = 20;       //한 페이지에 들어갈 공지사항 개수 (추후에 논의)
 
-    @Qualifier("urlRedisTemplate")
+    private final NoticeRepository noticeRepository;
     private final RedisTemplate<String, String> urlRedisTemplate;
+    private final RedisTemplate<String, String> recentSearchRedisTemplate;
+
+    @Autowired
+    public NoticeService(
+            NoticeRepository noticeRepository,
+            @Qualifier("urlRedisTemplate") RedisTemplate<String, String> urlRedisTemplate,
+            @Qualifier("recentSearchRedisTemplate") RedisTemplate<String, String> recentSearchRedisTemplate
+    ) {
+        this.noticeRepository = noticeRepository;
+        this.urlRedisTemplate = urlRedisTemplate;
+        this.recentSearchRedisTemplate = recentSearchRedisTemplate;
+    }
+
+    private static final String NOTICE_REDIS_KEY_PREFIX = "konkuk:notice:";
+
+    @Async
+    @Scheduled(fixedRate = 600000) //10분마다 실행
+    @Transactional
+    public void crawlAndSaveKonkukNotices() {
+        WebDriver driver = null;
+
+        try {
+            ChromeOptions chromeOptions = new ChromeOptions();
+            chromeOptions.addArguments("--headless");
+            chromeOptions.addArguments("--no-sandbox");
+            driver = new ChromeDriver(chromeOptions);
+
+            for (NoticeCategory category : NoticeCategory.values()) {
+                String url = category.getUrl();
+                driver.get(url);
+                log.info("크롤링 시작: {}", category.getUrl());
+
+                boolean continueCrawling = true;
+                while (continueCrawling) {
+                    continueCrawling = goToNextButton(category, driver, crawlAndSave(category, driver));
+                }
+            }
+        } finally {
+            driver.quit();
+        }
+    }
+
+    private boolean crawlAndSave(NoticeCategory category, WebDriver driver) {
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+
+        // 페이지가 완전히 로드될 때까지 대기
+        wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector(category.getSelector())));
+
+        List<WebElement> noticeList = driver.findElements(By.cssSelector(category.getSelector()));
+
+        if (noticeList.isEmpty()) {
+            log.warn("공지사항을 찾지 못했습니다: {}", category.getUrl());
+            return false;
+        }
+
+        for (WebElement noticeElement : noticeList) {
+            try {
+                String title = noticeElement.findElement(By.cssSelector("td.td-subject > a > strong")).getText();
+                String link = noticeElement.findElement(By.cssSelector("td.td-subject a")).getAttribute("href");
+                String date = noticeElement.findElement(By.cssSelector("td.td-date")).getText();
+
+                // 날짜가 2025년으로 시작하지 않으면 건너뜀 (일단 크롤링 너무 오래걸려서 걸어둠..후에 삭제)
+                if (!date.startsWith("2024")) {
+                    log.info("2024년 공지가 아님: {}", title);
+                    return false;
+                }
+
+                // Redis에 이미 저장된 URL인지 확인
+                String redisKey = NOTICE_REDIS_KEY_PREFIX + link;
+                if (Boolean.TRUE.equals(urlRedisTemplate.hasKey(redisKey))) {
+                    log.info("이미 저장된 공지사항: {}", link);
+                    continue;
+                }
+
+                // 새 공지사항이면 데이터베이스에 저장
+                Notice notice = Notice.of(title, link, date, category, isImportantNotice(noticeElement) ? NoticeStatus.IMPORTANT : NoticeStatus.GENERAL);
+
+                log.info("새로운 2024년 공지사항 저장: {}", title);
+                noticeRepository.save(notice);
+                urlRedisTemplate.opsForValue().set(redisKey, link);
+
+            } catch (Exception e) {
+                log.error("공지사항 저장 중 오류 발생", e);
+            }
+        }
+        return true;
+    }
+
+
+
+    private boolean goToNextButton(NoticeCategory category, WebDriver driver, boolean continueCrawling) {
+        try {
+            WebElement nextButton = driver.findElements(By.cssSelector(category.getNextButtonSelector()))
+                    .stream()
+                    .filter(WebElement::isDisplayed)
+                    .filter(WebElement::isEnabled)
+                    .findFirst()
+                    .orElse(null);
+
+            if (nextButton != null) {
+                nextButton.click();
+                // 페이지 로드 대기
+                Thread.sleep(800);
+            } else {
+                continueCrawling = false;
+            }
+        } catch (Exception e) {
+            continueCrawling = false;
+            e.printStackTrace();
+        }
+        return continueCrawling;
+    }
+
+    private boolean isImportantNotice(WebElement noticeElement) {
+        try {
+            WebElement importantSpan = noticeElement.findElement(By.cssSelector("td.td-num > span"));
+            log.info(importantSpan.getText());
+            return importantSpan != null;
+        } catch (Exception e) {
+            return false; // span이 없으면 일반 공지로 간주
+        }
+    }
 
     /**
      * 카테고리별 공지사항 조회
@@ -46,16 +178,40 @@ public class NoticeService {
     /**
      * 제목으로 공지사항 검색
      */
-    //todo paging 예외처리
-    public List<NoticeSimpleResponse> searchNoticesByTitle(String searchTerm, int page) {
+    public List<NoticeSimpleResponse> searchNoticesByTitle(Long userId, String searchTerm, int page) {
+        // 최근 검색어는 최대 10개만 유지
+        String redisKey = "user:" + userId + ":recent-searches";
+        recentSearchRedisTemplate.opsForList().leftPush(redisKey, searchTerm.trim());
+        recentSearchRedisTemplate.opsForList().trim(redisKey, 0, 9);
 
         validatePage(page);
 
         List<Notice> notices = noticeRepository.searchNoticesByTitleWithPaging(searchTerm.trim(), page - 1, PAGE_SIZE);
+
         return notices.stream()
-                .map(NoticeSimpleResponse::new)
+                .map(notice -> NoticeSimpleResponse.builder()
+                        .url(notice.getUrl())
+                        .title(notice.getTitle())
+                        .date(notice.getDate())
+                        .category(notice.getNoticeCategory().getText())
+                        .isImportant(notice.getNoticeStatus().isImportant())
+                        .build())
                 .toList();
     }
+
+
+
+    /**
+     * 유저 아이디로 최근 검색어 가져오기
+     */
+    public RecentSearchTerm getRecentSearchTerms(Long userId) {
+        String redisKey = "user:" + userId + ":recent-searches";
+
+        Optional<List<String>> terms = Optional.ofNullable(recentSearchRedisTemplate.opsForList().range(redisKey, 0, 9));
+
+        return RecentSearchTerm.of(userId, terms.orElse(List.of()));
+    }
+
 
     private static void validatePage(int page) {
         //요청으로 들어온 page는 1부터 시작해야 함

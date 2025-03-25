@@ -38,7 +38,6 @@ public class RestDocsTestSupport {
         return new Attributes.Attribute("constraints", value);
     }
 
-
     @BeforeEach
     void setUp(final WebApplicationContext context,
                final RestDocumentationContextProvider provider) {
