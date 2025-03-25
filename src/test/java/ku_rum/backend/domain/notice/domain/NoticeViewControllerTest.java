@@ -27,6 +27,7 @@ import java.util.List;
 
 import static com.epages.restdocs.apispec.ResourceDocumentation.resource;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.when;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get;
@@ -77,10 +78,11 @@ public class NoticeViewControllerTest extends RestDocsTestSupport {
                 new NoticeSimpleResponse("https://example.com/notice2", "공지 제목 2", "2025-03-19", "중요", true)
         );
 
-        given(noticeService.searchNoticesByTitle(any(), any())).willReturn(mockResponse);
+        given(noticeService.searchNoticesByTitle(any(Long.class), any(String.class), anyInt())).willReturn(mockResponse);
 
         mockMvc.perform(get("/api/v1/notices/search")
                         .param("searchTerm", "공지")
+                        .param("page", "1")
                         .with(user(customUserDetails))
                         .accept(MediaType.APPLICATION_JSON))
                 .andDo(print())
@@ -92,7 +94,8 @@ public class NoticeViewControllerTest extends RestDocsTestSupport {
                                 .tag("공지사항 API")
                                 .description("공지사항 제목을 통한 검색")
                                 .queryParameters(
-                                        parameterWithName("searchTerm").description("검색할 공지사항 제목 (필수)")
+                                        parameterWithName("searchTerm").description("검색할 공지사항 제목 (필수)"),
+                                        parameterWithName("page").description("검색할 페이지 번호 (필수)")
                                 )
                                 .responseFields(
                                 fieldWithPath("code").type(JsonFieldType.NUMBER).description("성공시 반환 코드 (200)"),
@@ -129,10 +132,11 @@ public class NoticeViewControllerTest extends RestDocsTestSupport {
                 )
         );
 
-        when(noticeService.findNoticesByCategory("취창업")).thenReturn(mockNotices);
+        when(noticeService.findNoticesByCategory(NoticeCategory.AFFAIR,5)).thenReturn(mockNotices);
 
         mockMvc.perform(get("/api/v1/notices")
-                        .param("category", "취창업")
+                        .param("category", NoticeCategory.AFFAIR.toString())
+                        .param("page", "1")
                         .with(user(customUserDetails))
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
@@ -145,7 +149,8 @@ public class NoticeViewControllerTest extends RestDocsTestSupport {
                                 .tag("공지사항 API")
                                 .description("공지사항 카테고리별 검색")
                                 .queryParameters(
-                                        parameterWithName("category").description("조회할 공지사항 카테고리 (필수)")
+                                        parameterWithName("category").description("조회할 공지사항 카테고리 (필수)"),
+                                        parameterWithName("page").description("검색할 페이지 번호 (필수)")
                                 )
                                 .responseFields(
                                     fieldWithPath("code").type(JsonFieldType.NUMBER).description("응답 코드"),

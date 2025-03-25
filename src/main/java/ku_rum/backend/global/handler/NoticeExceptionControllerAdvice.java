@@ -1,6 +1,7 @@
 package ku_rum.backend.global.handler;
 
 import jakarta.annotation.Priority;
+import ku_rum.backend.global.exception.notice.InvalidPageException;
 import ku_rum.backend.global.exception.notice.NoSuchNoticeException;
 import ku_rum.backend.global.support.response.BaseErrorResponse;
 import lombok.extern.slf4j.Slf4j;
@@ -9,6 +10,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+import static ku_rum.backend.global.support.status.BaseExceptionResponseStatus.INVALID_PAGE;
 import static ku_rum.backend.global.support.status.BaseExceptionResponseStatus.NO_SUCH_NOTICE;
 
 @Slf4j
@@ -21,5 +23,12 @@ public class NoticeExceptionControllerAdvice {
     public BaseErrorResponse handleNoSuchNoticeException(final NoSuchNoticeException e) {
         log.error("[NoSuchNoticeException]");
         return new BaseErrorResponse(NO_SUCH_NOTICE);
+    }
+
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(InvalidPageException.class)
+    public BaseErrorResponse handleInvalidPageException(final InvalidPageException e) {
+        log.error("[InvalidPageException]");
+        return new BaseErrorResponse(INVALID_PAGE);
     }
 }

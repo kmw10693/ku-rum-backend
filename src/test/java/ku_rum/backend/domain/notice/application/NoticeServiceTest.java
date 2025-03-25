@@ -11,6 +11,7 @@ import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.data.redis.core.ListOperations;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -50,11 +51,11 @@ class NoticeServiceTest {
                 .noticeStatus(NoticeStatus.GENERAL)
                 .build();
 
-        when(noticeRepository.findByNoticeCategory(NoticeCategory.AFFAIR))
+        when(noticeRepository.findByNoticeCategoryOrderByDateDesc(NoticeCategory.AFFAIR, PageRequest.of(0, 20)))
                 .thenReturn(List.of(notice));
 
         // when
-        List<NoticeSimpleResponse> result = noticeService.findNoticesByCategory("학사");
+        List<NoticeSimpleResponse> result = noticeService.findNoticesByCategory(NoticeCategory.AFFAIR, 1);
 
         // then
         assertEquals(1, result.size());
@@ -73,8 +74,7 @@ class NoticeServiceTest {
                 .noticeStatus(NoticeStatus.GENERAL)
                 .build();
 
-        // mock noticeRepository의 동작 설정
-        when(noticeRepository.searchNoticesByTitle("Search"))
+        when(noticeRepository.searchNoticesByTitleWithPaging("Search", 0, 20))
                 .thenReturn(List.of(notice));
 
         // recentSearchRedisTemplate의 동작을 mock 처리
@@ -82,7 +82,7 @@ class NoticeServiceTest {
         when(recentSearchRedisTemplate.opsForList()).thenReturn(mockListOperations);
 
         // when
-        List<NoticeSimpleResponse> result = noticeService.searchNoticesByTitle(1L, "Search");
+        List<NoticeSimpleResponse> result = noticeService.searchNoticesByTitle(1L,"Search", 1);
 
         // then
         assertEquals(1, result.size());
