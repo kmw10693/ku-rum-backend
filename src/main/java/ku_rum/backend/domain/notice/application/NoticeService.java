@@ -36,7 +36,7 @@ import static ku_rum.backend.global.support.status.BaseExceptionResponseStatus.I
 @RequiredArgsConstructor
 public class NoticeService {
 
-    private final int PAGE_SIZE = 20;       //한 페이지에 들어갈 공지사항 개수 (추후에 논의)
+    private static final int PAGE_SIZE = 20;       //한 페이지에 들어갈 공지사항 개수 (추후에 논의)
 
     private final NoticeRepository noticeRepository;
     private final RedisTemplate<String, String> recentSearchRedisTemplate;
@@ -44,7 +44,6 @@ public class NoticeService {
     /**
      * 카테고리별 공지사항 조회
      */
-    //todo paging 예외처리
     public List<NoticeSimpleResponse> findNoticesByCategory(NoticeCategory category, int page) {
 
         validatePage(page);
