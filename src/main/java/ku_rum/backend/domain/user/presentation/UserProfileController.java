@@ -2,7 +2,6 @@ package ku_rum.backend.domain.user.presentation;
 
 import jakarta.validation.Valid;
 import ku_rum.backend.domain.common.image.application.ImageStorageService;
-import ku_rum.backend.domain.common.image.dto.response.ImageResponse;
 import ku_rum.backend.domain.user.application.UserService;
 import ku_rum.backend.domain.user.dto.request.NicknameChangeRequest;
 import ku_rum.backend.domain.user.dto.request.ProfileChangeRequest;
@@ -81,5 +80,14 @@ public class UserProfileController {
     public BaseResponse<String> resetPassword(@RequestBody @Valid final ResetPasswordRequest resetPasswordRequest) {
         userService.resetPassword(resetPasswordRequest);
         return BaseResponse.ok(SUCCESS_RESET_PASSWORD.getMessage());
+    }
+
+    /**
+     * 탈퇴 API
+     */
+    @DeleteMapping("/deactivate")
+    public BaseResponse<String> deactivate() {
+        userService.deactivate();
+        return BaseResponse.ok(SUCCESS_DEACTIVATE.getMessage());
     }
 }

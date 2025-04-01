@@ -84,4 +84,11 @@ public class UserService {
         log.debug("현재 사용자 조회: userId={}", memberId);
         return userRepository.findUserById(memberId).orElseThrow(() -> new NoSuchUserException(NO_SUCH_USER));
     }
+
+    @Transactional
+    public void deactivate() {
+        User user = getUser();
+        log.info("사용자 탈퇴 명령");
+        user.deactivate();
+    }
 }

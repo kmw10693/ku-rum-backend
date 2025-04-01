@@ -12,7 +12,9 @@ public enum UserMessage {
     VALID_NICKNAME_MESSAGE("올바른 닉네임 입니다."),
     VALID_STUDENTID_MESSAGE("올바른 학번 입니다."),
     VALID_LOGINID_MESSAGE("올바른 아이디 입니다."),
-    SUCCESS_CHANGE_NICKNAME("닉네임이 변경되었습니다.");
+    SUCCESS_CHANGE_NICKNAME("닉네임이 변경되었습니다."),
+    SUCCESS_DEACTIVATE("탈퇴가 완료되었습니다.");
+
 
     private final String message;
 }

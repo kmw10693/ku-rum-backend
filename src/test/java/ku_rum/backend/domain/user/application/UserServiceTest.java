@@ -248,4 +248,32 @@ class UserServiceTest {
         //then
         assertThat(user.getNickname()).isEqualTo("abcd1234");
     }
+
+    @Test
+    @DisplayName("회원 탈퇴를 성공적으로 진행한다.")
+    @Transactional
+    void deactivateUserSuccess() {
+        //given
+
+        User user = User.builder()
+                .loginId("kmw106933")
+                .email("kmw10693@konkuk.ac.kr")
+                .nickname("미미미누")
+                .password("password123")
+                .studentId("202112322")
+                .department(department)
+                .build();
+
+        userRepository.save(user);
+
+        CustomUserDetails userDetails = CustomUserDetails.of(user.getId(), "testUser", AuthorityUtils.createAuthorityList("ROLE_USER"), "test12345");
+        UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
+        SecurityContextHolder.getContext().setAuthentication(auth);
+
+        //when
+        userService.deactivate();
+        //then
+        assertThat(user.isActive()).isEqualTo(false);
+    }
+
 }

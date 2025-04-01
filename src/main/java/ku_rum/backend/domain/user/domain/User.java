@@ -19,7 +19,7 @@ import static ku_rum.backend.domain.user.domain.UserRole.*;
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name = "users")
-@SQLDelete(sql = "UPDATE users SET active = true WHERE id = ?")
+@SQLDelete(sql = "UPDATE users SET active = false WHERE id = ?")
 @Where(clause = "active = true")
 public class User extends BaseEntity {
 
@@ -56,6 +56,10 @@ public class User extends BaseEntity {
 
     private boolean active;
 
+    public boolean isActive() {
+        return active;
+    }
+
     public void changePassword(String password) {
         this.password = password;
     }
@@ -67,6 +71,8 @@ public class User extends BaseEntity {
     public void changeNickname(String nickname) {
         this.nickname = nickname;
     }
+
+    public void deactivate() { this.active = false; }
 
     @Builder
     private User(String loginId, String email, String nickname, String password, String studentId, Department department, AgreementStatus agreementStatus) {

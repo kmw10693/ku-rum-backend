@@ -25,11 +25,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import static com.epages.restdocs.apispec.ResourceDocumentation.resource;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.*;
 import static org.springframework.restdocs.headers.HeaderDocumentation.headerWithName;
-import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.patch;
-import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.post;
+import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.*;
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -184,5 +182,48 @@ public class UserProfileControllerTest extends RestDocsTestSupport {
                                                 .type(JsonType.STRING)
                                                 .description("성공 시 '아이디/비밀번호가 변경되었습니다.' 반환")
                                 ).build())));
+    }
+
+    @Test
+    @DisplayName("사용자가 계정을 탈퇴한다.")
+    @WithMockUser(username = "testUser", roles = {"USER"})
+    void deactivateUser() throws Exception {
+        // when & then
+        mockMvc.perform(delete("/api/v1/users/deactivate")
+                        .header("Authorization", "Bearer eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyUEsiOjEsInJvbGVzIjoiUk9MRV9VU0VSIiwiaWF0IjoxNzQwMjQyNjQxLCJleHAiOjE3NDAyNDQ0NDF9.kLSMBLWdvIvrBpGJdOigSKjxMIab0cV06xFjSpwrq70")
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.code").value(200)) // 성공 코드 확인
+                .andExpect(jsonPath("$.status").value("OK")) // 상태 값 확인
+                .andExpect(jsonPath("$.message").value("OK")) // 반환 메시지 확인
+                .andExpect(jsonPath("$.data").value("탈퇴가 완료되었습니다.")) // 반환 데이터 없음 확인
+                .andDo(restDocs.document(
+                        resource(ResourceSnippetParameters.builder()
+                                .tag("유저 API")
+                                .description("회원 탈퇴 API (soft delete)")
+                                .requestHeaders(
+                                        headerWithName("Authorization")
+                                                .description("발급 받은 액세스 토큰 (Bearer {token})")
+                                )
+                                .responseFields(
+                                        fieldWithPath("code")
+                                                .type(JsonType.NUMBER)
+                                                .description("성공 시 반환 코드 (200)"),
+                                        fieldWithPath("status")
+                                                .type(JsonType.STRING)
+                                                .description("성공 시 상태 값 (OK)"),
+                                        fieldWithPath("message")
+                                                .type(JsonType.STRING)
+                                                .description("성공 시 메시지 값 (회원 탈퇴가 완료되었습니다.)"),
+                                        fieldWithPath("data")
+                                                .type(JsonType.STRING)
+                                                .description("성공 시 메시지 값 (회원 탈퇴가 완료되었습니다.)")
+                                ).build()
+                        )
+                ));
+
+        // userService.deactivate()가 호출되었는지 검증
+        verify(userService, times(1)).deactivate();
     }
 }
