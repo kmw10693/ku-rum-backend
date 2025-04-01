@@ -18,6 +18,6 @@ public class ImageController {
 
     @GetMapping("/{fileName}")
     public BaseResponse<ImageResponse> getUrl(@PathVariable(name = "fileName") String fileName) {
-        return BaseResponse.ok(imageStorageService.getPresignedUrl("images", fileName));
+        return BaseResponse.ok(imageStorageService.getPresignedUrl(fileName));
     }
 }

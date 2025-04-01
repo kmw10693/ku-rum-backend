@@ -47,7 +47,7 @@ class ImageControllerTest extends RestDocsTestSupport {
         String imageUrl = "https://s3.amazonaws.com/bucket-name/images/test-image.png";
         ImageResponse response = ImageResponse.from(imageUrl, presignedUrl);
 
-        when(imageStorageService.getPresignedUrl("images", fileName)).thenReturn(response);
+        when(imageStorageService.getPresignedUrl(fileName)).thenReturn(response);
 
         // when & then
         mockMvc.perform(get("/api/v1/images/{fileName}", fileName)
