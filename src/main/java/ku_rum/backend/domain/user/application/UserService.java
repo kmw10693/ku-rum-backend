@@ -89,6 +89,6 @@ public class UserService {
     public void deactivate() {
         User user = getUser();
         log.info("사용자 탈퇴 명령");
-        user.deactivate();
+        userRepository.delete(user);
     }
 }

@@ -37,8 +37,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 @SpringBootTest
-@Transactional
 @ActiveProfiles("test")
+@Transactional
 class UserServiceTest {
 
     @Autowired
@@ -223,7 +223,6 @@ class UserServiceTest {
 
     @Test
     @DisplayName("닉네임 성공적으로 변경한다.")
-    @Transactional
     void changeNicknameSuccess() {
         //given
 
@@ -245,16 +244,15 @@ class UserServiceTest {
 
         //when
         userService.changeNickname(request);
+
         //then
         assertThat(user.getNickname()).isEqualTo("abcd1234");
     }
 
     @Test
     @DisplayName("회원 탈퇴를 성공적으로 진행한다.")
-    @Transactional
     void deactivateUserSuccess() {
         //given
-
         User user = User.builder()
                 .loginId("kmw106933")
                 .email("kmw10693@konkuk.ac.kr")
@@ -265,6 +263,7 @@ class UserServiceTest {
                 .build();
 
         userRepository.save(user);
+        userRepository.flush();
 
         CustomUserDetails userDetails = CustomUserDetails.of(user.getId(), "testUser", AuthorityUtils.createAuthorityList("ROLE_USER"), "test12345");
         UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
@@ -272,8 +271,12 @@ class UserServiceTest {
 
         //when
         userService.deactivate();
-        //then
-        assertThat(user.isActive()).isEqualTo(false);
+        userRepository.flush();
+
+        User prevUser = userRepository.findById(user.getId()).orElse(null);
+
+        // then
+        assertThat(prevUser.isActive()).isEqualTo(false);
     }
 
 }
