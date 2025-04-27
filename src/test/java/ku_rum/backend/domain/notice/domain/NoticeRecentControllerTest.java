@@ -3,6 +3,7 @@ package ku_rum.backend.domain.notice.domain;
 import com.epages.restdocs.apispec.ResourceSnippetParameters;
 import ku_rum.backend.config.RestDocsTestSupport;
 import ku_rum.backend.domain.notice.application.NoticeService;
+import ku_rum.backend.domain.notice.dto.response.NoticeSimpleResponse;
 import ku_rum.backend.domain.notice.dto.response.RecentSearchTerm;
 import ku_rum.backend.global.batch.BatchConfig;
 import ku_rum.backend.global.domain.repository.ApiLogRepository;
@@ -98,4 +99,50 @@ class NoticeRecentControllerTest  extends RestDocsTestSupport {
                                             fieldWithPath("data.searchedList").type(JsonFieldType.ARRAY).description("최근 검색어 목록")
                                         ).build())));
     }
+
+    @DisplayName("최근 공지사항 5개 조회 테스트")
+    @Test
+    @WithMockUser(username = "testUser", roles = "USER")
+    void recent5Notices() throws Exception {
+        // Mock 데이터 준비
+        List<NoticeSimpleResponse> mockResponse = List.of(
+                new NoticeSimpleResponse("https://www.konkuk.ac.kr/bbs/konkuk/243/1142471/artclView.do", "2025. 3. 1.자 강사/비전임 2차 공개채용 최종합격자 발표", "2025.01.24", "채용", false),
+                new NoticeSimpleResponse("https://www.konkuk.ac.kr/bbs/konkuk/243/1148491/artclView.do", "건국대학교 교수학습센터 전문직(연구행정직) 채용 공고", "2025.04.11", "채용", false),
+                new NoticeSimpleResponse("https://www.konkuk.ac.kr/bbs/konkuk/243/1148581/artclView.do", "수의과대학 행정지원직 채용 공고", "2025.04.14", "채용", false),
+                new NoticeSimpleResponse("https://www.konkuk.ac.kr/bbs/konkuk/243/1148795/artclView.do", "건국대학교 경영대학 행정실 행정지원직 채용 공고", "2025.04.17", "채용", false),
+                new NoticeSimpleResponse("https://www.konkuk.ac.kr/bbs/konkuk/243/1148862/artclView.do", "건국대학교 법학전문대학원 직원(행정지원직) 채용", "2025.04.18", "채용", false)
+        );
+
+        given(noticeService.getRecent5Notices()).willReturn(mockResponse);
+
+        mockMvc.perform(get("/api/v1/notices/recent/5notices")
+                        .with(user(customUserDetails))
+                        .accept(MediaType.APPLICATION_JSON))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.data[0].title").value("2025. 3. 1.자 강사/비전임 2차 공개채용 최종합격자 발표"))
+                .andExpect(jsonPath("$.data[1].title").value("건국대학교 교수학습센터 전문직(연구행정직) 채용 공고"))
+                .andExpect(jsonPath("$.data.length()").value(5))
+                .andDo(restDocs.document(
+                        resource(
+                                ResourceSnippetParameters.builder()
+                                        .tag("공지사항 API")
+                                        .description("최근 공지사항 5개 가져오기")
+                                        .responseFields(
+                                                fieldWithPath("status").type(JsonFieldType.STRING).description("요청 성공 여부"),
+                                                fieldWithPath("code").type(JsonFieldType.NUMBER).description("응답 코드"),
+                                                fieldWithPath("message").type(JsonFieldType.STRING).description("응답 메시지"),
+                                                fieldWithPath("data[].url").type(JsonFieldType.STRING).description("공지사항 URL"),
+                                                fieldWithPath("data[].title").type(JsonFieldType.STRING).description("공지사항 제목"),
+                                                fieldWithPath("data[].date").type(JsonFieldType.STRING).description("공지사항 날짜"),
+                                                fieldWithPath("data[].category").type(JsonFieldType.STRING).description("공지사항 카테고리"),
+                                                fieldWithPath("data[].important").type(JsonFieldType.BOOLEAN).description("중요 공지 여부")
+                                        )
+                                        .build()
+                        )
+                ));
+    }
+
+
+
 }
