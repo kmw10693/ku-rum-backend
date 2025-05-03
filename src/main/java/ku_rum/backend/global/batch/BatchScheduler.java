@@ -24,7 +24,7 @@ public class BatchScheduler {
     private final JobLauncher jobLauncher;
     private final BatchConfig batchConfig;
 
-    @PostConstruct // 애플리케이션 실행 후 한 번 실행
+    // @PostConstruct // 애플리케이션 실행 후 한 번 실행
     public void runJobOnStartup() {
         log.info("🚀 애플리케이션 실행 직후 배치 실행");
         runJob();
