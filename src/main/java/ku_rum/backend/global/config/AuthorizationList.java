@@ -25,7 +25,8 @@ public final class AuthorizationList {
             "/api/v1/users/reset-account",
             "/actuator/**",
             "/api/v1/users/password-reset/initiate",
-            "/api/v1/images/**"
+            "/api/v1/images/**",
+            "/api/v1/notices/recent/5notices"
     );
 
     private AuthorizationList() {

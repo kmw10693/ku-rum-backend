@@ -2,6 +2,7 @@ package ku_rum.backend.domain.notice.domain.repository;
 
 import ku_rum.backend.domain.notice.domain.Notice;
 import ku_rum.backend.domain.notice.domain.NoticeCategory;
+import ku_rum.backend.domain.notice.dto.response.NoticeSimpleResponse;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -24,4 +25,8 @@ public interface NoticeRepository extends JpaRepository<Notice, String>, NoticeR
     Optional<Notice> findByUrl(String link);
 
     boolean existsByUrl(String url);
+
+    @Query("SELECT n FROM Notice n ORDER BY n.createdAt DESC")
+    List<Notice> findByCreatedAtDesc(Pageable pageable);
+
 }

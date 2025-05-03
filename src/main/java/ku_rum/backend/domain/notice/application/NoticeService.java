@@ -99,4 +99,12 @@ public class NoticeService {
         }
     }
 
+    public List<NoticeSimpleResponse> getRecent5Notices() {
+        List<Notice> noticeList = noticeRepository.findByCreatedAtDesc(PageRequest.of(0, 5));
+
+        return noticeList.stream()
+                .map(e -> new NoticeSimpleResponse(e))
+                .toList();
+    }
+
 }

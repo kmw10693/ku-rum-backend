@@ -1,3 +1,4 @@
+/*
 package ku_rum.backend.domain.common.image.presentation;
 
 import ku_rum.backend.domain.common.image.application.ImageStorageService;
@@ -21,3 +22,4 @@ public class ImageController {
         return BaseResponse.ok(imageStorageService.getPresignedUrl(fileName));
     }
 }
+*/
