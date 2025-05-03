@@ -1,3 +1,4 @@
+/*
 package ku_rum.backend.global.dataInit;
 
 import ku_rum.backend.domain.category.domain.Category;
@@ -31,4 +32,4 @@ public class CategoryInitializer {
     );
     return categories;
   }
-}
+}*/

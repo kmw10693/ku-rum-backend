@@ -1,3 +1,4 @@
+/*
 package ku_rum.backend.global.dataInit;
 
 import ku_rum.backend.domain.building.domain.Building;
@@ -98,4 +99,4 @@ public class DepartmentInitializer {
     Arrays.stream(departmentTypes)
             .forEach(type -> departments.add(Department.of(type.name(), building)));
   }
-}
+}*/

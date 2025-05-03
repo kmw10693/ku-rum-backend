@@ -1,3 +1,4 @@
+/*
 package ku_rum.backend.global.dataInit;
 
 import ku_rum.backend.domain.building.domain.Building;
@@ -62,4 +63,4 @@ public class BuildingCategoryInitializer {
 
         return buildingCategories;
     }
-}
+}*/

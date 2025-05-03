@@ -1,3 +1,4 @@
+/*
 package ku_rum.backend.global.dataInit;
 
 import ku_rum.backend.domain.building.domain.Building;
@@ -313,4 +314,4 @@ public class BuildingInitializer {
 
     return buildings;
   }
-}
+}*/
