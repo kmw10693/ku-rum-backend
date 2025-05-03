@@ -8,7 +8,6 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.SQLDelete;
-import org.hibernate.annotations.Where;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,8 +18,7 @@ import static ku_rum.backend.domain.user.domain.UserRole.*;
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name = "users")
-@SQLDelete(sql = "UPDATE users SET active = true WHERE id = ?")
-@Where(clause = "active = true")
+@SQLDelete(sql = "UPDATE users SET active = false WHERE id = ?")
 public class User extends BaseEntity {
 
     @Id
@@ -54,7 +52,7 @@ public class User extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private AgreementStatus agreementStatus;
 
-    private boolean active;
+    private boolean active = true;
 
     public void changePassword(String password) {
         this.password = password;
@@ -77,7 +75,6 @@ public class User extends BaseEntity {
         this.studentId = studentId;
         this.department = department;
         this.roles.add(USER.getRole());
-        this.active = true;
         this.agreementStatus = agreementStatus;
     }
 
