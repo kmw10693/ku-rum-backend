@@ -57,8 +57,8 @@ class FriendServiceTest {
         BigDecimal longitude = BigDecimal.valueOf(342.2343434);
 
         Building building = Building.of("신공학관", 3L,"신공", 1L, latitude, longitude);
-        user = User.of("user1", "user1@example.com", "nickname1", "password", "123456", Department.of("CS", building), AgreementStatus.AGREED);
-        friend = User.of("user2", "user2@example.com", "nickname2", "password", "654321", Department.of("Math", building), AgreementStatus.AGREED);
+        user = User.of("user1", "user1@example.com", "nickname1", "password", "123456", Department.of("CS", building), AgreementStatus.AGREED, null);
+        friend = User.of("user2", "user2@example.com", "nickname2", "password", "654321", Department.of("Math", building), AgreementStatus.AGREED, null);
         friendEntity = Friend.of(user, friend, FriendStatus.PENDING);
 
         userUtilsMockedStatic = Mockito.mockStatic(UserUtil.class);

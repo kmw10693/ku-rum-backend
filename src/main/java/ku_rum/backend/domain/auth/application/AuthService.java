@@ -5,6 +5,10 @@ import jakarta.servlet.http.HttpServletRequest;
 import ku_rum.backend.domain.auth.dto.request.LoginRequest;
 import ku_rum.backend.domain.auth.dto.request.ReissueRequest;
 import ku_rum.backend.domain.common.firebase.application.NotificationService;
+import ku_rum.backend.domain.oauth.handler.TempTokenProvider;
+import ku_rum.backend.domain.user.domain.User;
+import ku_rum.backend.domain.user.domain.repository.UserRepository;
+import ku_rum.backend.global.exception.user.NoSuchUserException;
 import ku_rum.backend.global.security.CustomUserDetails;
 import ku_rum.backend.global.security.JwtTokenAuthenticationFilter;
 import ku_rum.backend.global.security.JwtTokenProvider;
@@ -19,7 +23,7 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import static ku_rum.backend.global.support.status.BaseExceptionResponseStatus.MALFORMED_TOKEN;
+import static ku_rum.backend.global.support.status.BaseExceptionResponseStatus.*;
 
 @Slf4j
 @Service
@@ -32,6 +36,8 @@ public class AuthService {
     private final JwtTokenAuthenticationFilter jwtTokenAuthenticationFilter;
     private final TokenBlacklistService tokenBlacklistService;
     private final NotificationService notificationService;
+    private final TempTokenProvider tempTokenProvider;
+    private final UserRepository userRepository;
 
     public TokenResponse login(LoginRequest authRequest) {
         try {
@@ -78,5 +84,21 @@ public class AuthService {
         jwtTokenProvider.validateToken(token);
         log.trace("");
         return token;
+    }
+
+    public TokenResponse exchangeToken(String tempToken) {
+        Long userId = tempTokenProvider.resolveUserId(tempToken);
+        tempTokenProvider.invalidateTempToken(tempToken);
+
+        // 유저 조회
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new NoSuchUserException(NO_SUCH_USER));
+
+        // Authentication 객체로 변환
+        CustomUserDetails userDetails = CustomUserDetails.from(user);
+        Authentication authentication = new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities());
+
+        // JWT 발급
+        return jwtTokenProvider.createToken(authentication);
     }
 }

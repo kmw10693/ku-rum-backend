@@ -1,5 +1,8 @@
 package ku_rum.backend.global.config;
 
+import ku_rum.backend.domain.oauth.application.CustomOAuth2UserService;
+import ku_rum.backend.domain.oauth.handler.HttpCookieOAuth2AuthorizationRequestRepository;
+import ku_rum.backend.domain.oauth.handler.OAuth2AuthenticationSuccessHandler;
 import ku_rum.backend.domain.user.domain.repository.UserRepository;
 import ku_rum.backend.global.utill.RedisUtil;
 import ku_rum.backend.global.security.CustomUserDetails;
@@ -11,6 +14,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.ProviderManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
@@ -36,16 +40,27 @@ import static ku_rum.backend.global.support.status.BaseExceptionResponseStatus.N
 public class SecurityConfig {
     private final JwtTokenProvider jwtTokenProvider;
     private final RedisUtil redisUtil;
+    private final CustomOAuth2UserService customOAuth2UserService;
+    private final OAuth2AuthenticationSuccessHandler oAuth2AuthenticationSuccessHandler;
+    private final HttpCookieOAuth2AuthorizationRequestRepository httpCookieOAuth2AuthorizationRequestRepository;
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        http.cors(AbstractHttpConfigurer::disable);
+        http.cors(Customizer.withDefaults());
         http.csrf(AbstractHttpConfigurer::disable);
         http.formLogin(AbstractHttpConfigurer::disable);
         http.httpBasic(AbstractHttpConfigurer::disable);
         http.authorizeHttpRequests((auth) -> auth
                 .requestMatchers(AuthorizationList.getAuthorizedEndpoints()).permitAll()
                 .anyRequest().authenticated());
+        http.oauth2Login(oauth2 -> oauth2
+                .authorizationEndpoint(authorization -> authorization
+                        .baseUri("/oauth2/authorization")
+                        .authorizationRequestRepository(httpCookieOAuth2AuthorizationRequestRepository))
+                .userInfoEndpoint(userInfo -> userInfo
+                        .userService(customOAuth2UserService))
+                .successHandler(oAuth2AuthenticationSuccessHandler)
+        ).oauth2Client(Customizer.withDefaults());
         http.addFilterBefore(new JwtTokenAuthenticationFilter(jwtTokenProvider, redisUtil), UsernamePasswordAuthenticationFilter.class);
         http.sessionManagement((session) -> session
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS));

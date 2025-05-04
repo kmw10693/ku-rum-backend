@@ -11,6 +11,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
+import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.test.context.ActiveProfiles;
 
 import static com.epages.restdocs.apispec.ResourceDocumentation.resource;
@@ -33,6 +34,9 @@ class NotificationApiControllerTest extends RestDocsTestSupport {
 
     @MockBean
     private BatchScheduler batchScheduler;
+
+    @MockBean
+    private SecurityFilterChain securityFilterChain;
 
     @Test
     @DisplayName("사용자 토큰을 서버에 저장한다.")

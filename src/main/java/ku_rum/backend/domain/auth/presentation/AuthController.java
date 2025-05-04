@@ -33,4 +33,12 @@ public class AuthController {
     public BaseResponse<TokenResponse> reissue(@Valid @RequestBody ReissueRequest reissueRequest) {
         return BaseResponse.ok(authService.reissue(reissueRequest));
     }
+
+    /**
+     * 임시 토큰 처리 후, 엑세스, 리프레시 토큰 발급
+     */
+    @PostMapping("/token")
+    public BaseResponse<TokenResponse> exchangeToken(@RequestParam String tempToken) {
+        return BaseResponse.ok(authService.exchangeToken(tempToken));
+    }
 }
