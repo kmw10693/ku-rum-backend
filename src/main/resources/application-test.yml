@@ -23,6 +23,10 @@ spring:
       port: 6379
       host: localhost
 
+  batch:
+    job:
+      enabled: false
+
 
 # JWT 설정
 secret:
@@ -46,4 +50,3 @@ cloud:
     bucket: kuroom
   stack:
     auto: false
-

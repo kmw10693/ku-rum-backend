@@ -1,6 +1,7 @@
 package ku_rum.backend.global.handler;
 
 import jakarta.annotation.Priority;
+import ku_rum.backend.global.exception.oauth.OAuthAuthorizeException;
 import ku_rum.backend.global.support.response.BaseErrorResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -10,6 +11,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import static ku_rum.backend.global.support.status.BaseExceptionResponseStatus.LOGIN_ERROR;
+import static ku_rum.backend.global.support.status.BaseExceptionResponseStatus.OAUTH_ERROR;
 
 @Slf4j
 @Priority(0)
@@ -21,5 +23,12 @@ public class AuthExceptionControllerAdvice {
     public BaseErrorResponse handleBadCredentialsException(final BadCredentialsException e) {
         log.error("[handleBadCredentialsException]");
         return new BaseErrorResponse(LOGIN_ERROR);
+    }
+
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    @ExceptionHandler(OAuthAuthorizeException.class)
+    public BaseErrorResponse OAuthAuthorizeException(final OAuthAuthorizeException e) {
+        log.error("[OAuthAuthorizeException]");
+        return new BaseErrorResponse(OAUTH_ERROR);
     }
 }

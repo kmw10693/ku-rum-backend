@@ -22,6 +22,7 @@ import org.springframework.restdocs.payload.JsonFieldType;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.test.context.support.WithMockUser;
+import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.test.context.ActiveProfiles;
 
 import java.util.Arrays;
@@ -46,6 +47,9 @@ public class NoticeViewControllerTest extends RestDocsTestSupport {
 
     @MockBean
     private NoticeService noticeService;
+
+    @MockBean
+    private SecurityFilterChain securityFilterChain;
 
     @MockBean
     private BatchConfig batchConfig;

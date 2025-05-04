@@ -23,6 +23,7 @@ import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors;
+import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -45,6 +46,9 @@ class UserControllerTest extends RestDocsTestSupport {
 
     @MockBean
     private UserService userService;
+
+    @MockBean
+    private SecurityFilterChain securityFilterChain;
 
     @MockBean
     private BatchScheduler batchScheduler;

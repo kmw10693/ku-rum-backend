@@ -91,6 +91,8 @@ public enum BaseExceptionResponseStatus implements ResponseStatus {
     EXPIRED_TOKEN(1005, HttpStatus.UNAUTHORIZED, "만료된 토큰입니다."),
     TOKEN_MISMATCH(1006, HttpStatus.UNAUTHORIZED, "로그인 정보가 토큰 정보와 일치하지 않습니다."),
     LOGIN_ERROR(1007, HttpStatus.UNAUTHORIZED, "잘못된 아이디/비밀번호입니다."),
+    OAUTH_ERROR(1008, HttpStatus.UNAUTHORIZED, "잘못된 임시 토큰입니다."),
+
 
     /**
      * 1100: Wein

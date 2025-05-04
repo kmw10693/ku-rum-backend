@@ -1,6 +1,7 @@
 package ku_rum.backend.domain.notice.domain;
 
 import com.epages.restdocs.apispec.ResourceSnippetParameters;
+import ku_rum.backend.BackendApplication;
 import ku_rum.backend.config.RestDocsTestSupport;
 import ku_rum.backend.domain.notice.application.NoticeService;
 import ku_rum.backend.domain.notice.dto.response.NoticeSimpleResponse;
@@ -15,6 +16,8 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.batch.core.launch.JobLauncher;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
+import org.springframework.boot.autoconfigure.data.mongo.MongoDataAutoConfiguration;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
@@ -23,6 +26,7 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.test.context.support.WithMockUser;
+import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.test.context.ActiveProfiles;
 
 import java.util.List;
@@ -44,6 +48,9 @@ class NoticeRecentControllerTest  extends RestDocsTestSupport {
 
     @MockBean
     private NoticeService noticeService;
+
+    @MockBean
+    private SecurityFilterChain securityFilterChain;
 
     @MockBean
     private BatchConfig batchConfig;

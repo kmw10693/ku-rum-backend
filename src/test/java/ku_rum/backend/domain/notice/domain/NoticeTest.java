@@ -25,7 +25,7 @@ class NoticeTest {
         //given
         Building building = createBuilding();
         Department department = getDepartment(building);
-        User user = User.of("사용자1", "kmw106933@konkuk.ac.kr","미미미누", "password123", "202112322", department, AgreementStatus.AGREED);
+        User user = User.of("사용자1", "kmw106933@konkuk.ac.kr","미미미누", "password123", "202112322", department, AgreementStatus.AGREED, null);
 
         //when
         Notice notice = Notice.of("가나다라", "naver.com/abc123", "2024-11-07", NoticeCategory.AFFAIR, GENERAL);
@@ -41,7 +41,7 @@ class NoticeTest {
         //given
         Building building = createBuilding();
         Department department = getDepartment(building);
-        User user = User.of("사용자1", "kmw106933@konkuk.ac.kr","미미미누", "password123", "202112322", department, AgreementStatus.AGREED);
+        User user = User.of("사용자1", "kmw106933@konkuk.ac.kr","미미미누", "password123", "202112322", department, AgreementStatus.AGREED, null);
 
         //when
         Notice notice = Notice.of("가나다라", "naver.com/abc123", "2024-11-07", NoticeCategory.AFFAIR, GENERAL);

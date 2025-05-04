@@ -11,10 +11,12 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.openqa.selenium.json.JsonType;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
+import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.transaction.annotation.Transactional;
 import org.testcontainers.shaded.org.yaml.snakeyaml.tokens.Token;
@@ -23,6 +25,7 @@ import static com.epages.restdocs.apispec.ResourceDocumentation.resource;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.patch;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.post;
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
+import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -34,6 +37,9 @@ class AuthControllerTest extends RestDocsTestSupport {
 
     @MockBean
     private AuthService authService;
+
+    @MockBean
+    private SecurityFilterChain securityFilterChain;
 
     @MockBean
     private BatchScheduler batchScheduler;
@@ -187,5 +193,55 @@ class AuthControllerTest extends RestDocsTestSupport {
                                         .type(JsonType.STRING)
                                         .description("리프레시 토큰 만료 기간")
                         ).build())));
+    }
+
+    @DisplayName("임시 토큰을 엑세스/리프레시 토큰으로 교환한다")
+    @Test
+    @WithMockUser
+    void exchangeToken() throws Exception {
+        // given
+        String tempToken = "temporary_token_value";
+        TokenResponse tokenResponse = TokenResponse.of(
+                "accessToken",
+                "refreshToken",
+                1800000L,
+                604800000L
+        );
+
+        Mockito.when(authService.exchangeToken(tempToken)).thenReturn(tokenResponse);
+
+        // when & then
+        mockMvc.perform(post("/api/v1/auth/token?tempToken=" + tempToken)
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.code").value("200"))
+                .andExpect(jsonPath("$.status").value("OK"))
+                .andExpect(jsonPath("$.message").value("OK"))
+                .andExpect(jsonPath("$.data.accessToken").value("accessToken"))
+                .andExpect(jsonPath("$.data.refreshToken").value("refreshToken"))
+                .andExpect(jsonPath("$.data.accessExpireIn").value(1800000L))
+                .andExpect(jsonPath("$.data.refreshExpireIn").value(604800000L))
+                .andDo(restDocs.document(
+                        resource(
+                                ResourceSnippetParameters.builder()
+                                        .tag("권한 API")
+                                        .description("임시 토큰/엑세스 토큰 교환")
+                                        .queryParameters(
+                                                parameterWithName("tempToken")
+                                                        .description("임시 토큰")
+                                        )
+                                        .responseFields(
+                                                fieldWithPath("code").description("성공시 반환 코드 (200)"),
+                                                fieldWithPath("status").description("성공시 상태 값 (OK)"),
+                                                fieldWithPath("message").description("성공 시 메시지 (OK)"),
+                                                fieldWithPath("data.accessToken").description("엑세스 토큰"),
+                                                fieldWithPath("data.refreshToken").description("리프레시 토큰"),
+                                                fieldWithPath("data.accessExpireIn").description("엑세스 토큰 만료 기간"),
+                                                fieldWithPath("data.refreshExpireIn").description("리프레시 토큰 만료 기간")
+                                        )
+                                        .build()
+                        )
+                ));
     }
 }
