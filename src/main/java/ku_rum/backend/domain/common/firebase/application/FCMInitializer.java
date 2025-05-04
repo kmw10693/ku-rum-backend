@@ -11,10 +11,12 @@ import org.springframework.stereotype.Service;
 import java.io.IOException;
 
 
-@Service
-@Slf4j
+/*@Service
+@Slf4j*/
+/*
 public class FCMInitializer {
-    private static final String FIREBASE_CONFIG_PATH = "firebase-key.json";
+*/
+    /*private static final String FIREBASE_CONFIG_PATH = "firebase-key.json";
 
     @PostConstruct
     public void init() {
@@ -29,5 +31,5 @@ public class FCMInitializer {
             log.error("Firebase application couldn't been initialized {}", e.getMessage());
             throw new RuntimeException(e);
         }
-    }
-}
+    }*/
+//}
