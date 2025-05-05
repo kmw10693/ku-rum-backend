@@ -57,7 +57,7 @@ class MailControllerTest extends RestDocsTestSupport {
                 .andDo(restDocs.document(
                         resource(
                                 ResourceSnippetParameters.builder()
-                                        .tag("메일 API")
+                                        .tag("메일 관련 API")
                                         .description("이메일 인증 요청")
                                         .requestFields(
                                                 fieldWithPath("email")
@@ -102,7 +102,7 @@ class MailControllerTest extends RestDocsTestSupport {
                 .andDo(restDocs.document(
                         resource(
                                 ResourceSnippetParameters.builder()
-                                        .tag("메일 API")
+                                        .tag("메일 관련 API")
                                         .description("이메일 인증 코드 검증")
                                         .requestFields(
                                                 fieldWithPath("email")

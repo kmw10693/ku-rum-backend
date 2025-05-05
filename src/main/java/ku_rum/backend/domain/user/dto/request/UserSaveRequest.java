@@ -20,14 +20,13 @@ public record UserSaveRequest(
     public UserSaveRequest {
     }
 
-    public static User newUser(UserSaveRequest userSaveRequest, Department department, String password) {
+    public static User newUser(UserSaveRequest userSaveRequest, String password) {
         return User.builder()
                 .loginId(userSaveRequest.loginId())
                 .nickname(userSaveRequest.nickname())
                 .email(userSaveRequest.email())
                 .password(password)
                 .studentId(userSaveRequest.studentId())
-                .department(department)
                 .agreementStatus(userSaveRequest.agreementStatus)
                 .build();
     }

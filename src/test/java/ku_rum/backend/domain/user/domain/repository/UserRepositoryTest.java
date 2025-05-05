@@ -57,7 +57,6 @@ class UserRepositoryTest {
                 .nickname("미미미누")
                 .password("password123")
                 .studentId("202112322")
-                .department(department)
                 .build();
     }
 

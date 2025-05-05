@@ -96,7 +96,7 @@ class NoticeRecentControllerTest  extends RestDocsTestSupport {
                 .andDo(restDocs.document(
                         resource(
                                 ResourceSnippetParameters.builder()
-                                        .tag("공지사항 API")
+                                        .tag("공지사항 관련 API")
                                         .description("최근 검색 단어 불러오기")
                                         .responseFields(
                                             fieldWithPath("status").type(JsonFieldType.STRING).description("요청 성공 여부"),
@@ -133,7 +133,7 @@ class NoticeRecentControllerTest  extends RestDocsTestSupport {
                 .andDo(restDocs.document(
                         resource(
                                 ResourceSnippetParameters.builder()
-                                        .tag("공지사항 API")
+                                        .tag("공지사항 관련 API")
                                         .description("최근 공지사항 5개 가져오기")
                                         .responseFields(
                                                 fieldWithPath("status").type(JsonFieldType.STRING).description("요청 성공 여부"),

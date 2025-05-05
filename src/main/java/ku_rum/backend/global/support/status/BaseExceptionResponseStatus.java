@@ -46,6 +46,8 @@ public enum BaseExceptionResponseStatus implements ResponseStatus {
      * 400: Department
      */
     NO_SUCH_DEPARTMENT(400, HttpStatus.BAD_REQUEST, "존재하지 않는 학과명입니다."),
+    DUPLICATE_DEPARTMENT(400, HttpStatus.BAD_REQUEST, "중복된 학과명입니다."),
+
 
     /**
      * 500: Building 오류

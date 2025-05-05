@@ -43,10 +43,6 @@ public class User extends BaseEntity {
 
     private String imageUrl;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "department_id")
-    private Department department;
-
     @ElementCollection
     private List<String> roles = new ArrayList<>();
 
@@ -71,14 +67,13 @@ public class User extends BaseEntity {
     }
 
     @Builder
-    private User(String loginId, String oauthId, String email, String nickname, String password, String studentId, Department department, AgreementStatus agreementStatus, ProviderType providerType) {
+    private User(String loginId, String oauthId, String email, String nickname, String password, String studentId, AgreementStatus agreementStatus, ProviderType providerType) {
         this.loginId = loginId;
         this.oauthId = oauthId;
         this.email = email;
         this.nickname = nickname;
         this.password = password;
         this.studentId = studentId;
-        this.department = department;
         this.roles.add(USER.getRole());
         this.agreementStatus = agreementStatus;
         this.providerType = providerType;
@@ -91,7 +86,6 @@ public class User extends BaseEntity {
                 .nickname(nickname)
                 .password(password)
                 .studentId(studentId)
-                .department(department)
                 .agreementStatus(agreementStatus)
                 .providerType(providerType)
                 .build();

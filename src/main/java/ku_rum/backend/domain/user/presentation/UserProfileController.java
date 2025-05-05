@@ -3,10 +3,7 @@ package ku_rum.backend.domain.user.presentation;
 
 import jakarta.validation.Valid;
 import ku_rum.backend.domain.user.application.UserService;
-import ku_rum.backend.domain.user.dto.request.NicknameChangeRequest;
-import ku_rum.backend.domain.user.dto.request.InitiatePasswordResetRequest;
-import ku_rum.backend.domain.user.dto.request.ProfileChangeRequest;
-import ku_rum.backend.domain.user.dto.request.ResetPasswordRequest;
+import ku_rum.backend.domain.user.dto.request.*;
 import ku_rum.backend.domain.user.dto.response.LoginIdResponse;
 import ku_rum.backend.global.support.response.BaseResponse;
 import lombok.RequiredArgsConstructor;
@@ -95,6 +92,24 @@ public class UserProfileController {
     public BaseResponse<String> deactivate() {
         userService.deactivate();
         return BaseResponse.ok(SUCCESS_DEACTIVATE.getMessage());
+    }
+
+    /**
+     * 학과 추가 API
+     */
+    @PostMapping("/department")
+    public BaseResponse<String> addDepartment(@RequestBody @Valid final DepartmentRequest departmentRequest) {
+        userService.addDepartment(departmentRequest.department());
+        return BaseResponse.ok("학과 추가에 성공하였습니다.");
+    }
+
+    /**
+     * 학과 삭제 API
+     */
+    @DeleteMapping("/department")
+    public BaseResponse<String> deleteDepartment(@RequestBody @Valid final DepartmentRequest departmentRequest) {
+        userService.deleteDepartment(departmentRequest.department());
+        return BaseResponse.ok("학과 삭제에 성공하였습니다.");
     }
 }
 

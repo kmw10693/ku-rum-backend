@@ -55,7 +55,7 @@ class NotificationApiControllerTest extends RestDocsTestSupport {
                 .andExpect(status().isOk())  // 상태 코드 200을 예상
                 .andDo(restDocs.document(
                         resource(ResourceSnippetParameters.builder()
-                                        .tag("푸시알림 API")
+                                        .tag("푸시알림 관련 API")
                                         .description("토큰 등록")
                                         .requestHeaders(
                                                 headerWithName("Bearer").description("발급 받은 엑세스 토큰입니다."))
