@@ -54,7 +54,7 @@ class RecruitmentControllerTest extends RestDocsTestSupport {
                 .andDo(restDocs.document(
                         resource(
                                 ResourceSnippetParameters.builder()
-                                        .tag("공지사항 API")
+                                        .tag("공지사항 관련 API")
                                         .description("취업 공지 크롤링")
                                         .responseFields(
                                 fieldWithPath("code")

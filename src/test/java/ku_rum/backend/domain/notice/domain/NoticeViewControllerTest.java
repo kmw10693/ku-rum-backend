@@ -103,7 +103,7 @@ public class NoticeViewControllerTest extends RestDocsTestSupport {
                 .andExpect(jsonPath("$.data[1].title").value("공지 제목 2"))
                 .andDo(restDocs.document(resource(
                         ResourceSnippetParameters.builder()
-                                .tag("공지사항 API")
+                                .tag("공지사항 관련 API")
                                 .description("공지사항 제목을 통한 검색")
                                 .queryParameters(
                                         parameterWithName("searchTerm").description("검색할 공지사항 제목 (필수)"),
@@ -159,7 +159,7 @@ public class NoticeViewControllerTest extends RestDocsTestSupport {
                 .andExpect(jsonPath("$.data[0].category").value("취창업"))
                 .andDo(restDocs.document(resource(
                         ResourceSnippetParameters.builder()
-                                .tag("공지사항 API")
+                                .tag("공지사항 관련 API")
                                 .description("공지사항 카테고리별 검색")
                                 .queryParameters(
                                         parameterWithName("category").description("조회할 공지사항 카테고리 (필수)"),

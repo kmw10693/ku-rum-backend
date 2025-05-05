@@ -1,6 +1,7 @@
 package ku_rum.backend.global.handler;
 
 import jakarta.annotation.Priority;
+import ku_rum.backend.global.exception.department.DuplicateDepartmentException;
 import ku_rum.backend.global.exception.department.NoSuchDepartmentException;
 import ku_rum.backend.global.support.response.BaseErrorResponse;
 import lombok.extern.slf4j.Slf4j;
@@ -22,4 +23,11 @@ public class DepartmentExceptionControllerAdvice {
         log.error("[handleNoSuchDepartmentException]");
         return new BaseErrorResponse(NO_SUCH_DEPARTMENT);
     }
+
+    /*@ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(DuplicateDepartmentException.class)
+    public BaseErrorResponse DuplicateDepartmentException(final DuplicateDepartmentException e) {
+        log.error("[DuplicateDepartmentException]");
+        return new BaseErrorResponse(DUPLCATE);
+    }*/
 }

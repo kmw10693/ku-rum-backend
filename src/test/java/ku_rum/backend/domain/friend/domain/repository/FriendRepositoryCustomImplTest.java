@@ -53,7 +53,6 @@ public class FriendRepositoryCustomImplTest {
                 .nickname("User One")
                 .password("password")
                 .studentId("2023001")
-                .department(department)
                 .build();
         User user2 = User.builder()
                 .loginId("user2")
@@ -61,7 +60,6 @@ public class FriendRepositoryCustomImplTest {
                 .nickname("User Two")
                 .password("password")
                 .studentId("2023002")
-                .department(department)
                 .build();
         User user3 = User.builder()
                 .loginId("user3")
@@ -69,7 +67,6 @@ public class FriendRepositoryCustomImplTest {
                 .nickname("User Three")
                 .password("password")
                 .studentId("2023003")
-                .department(department)
                 .build();
 
         entityManager.persist(user1);
@@ -106,7 +103,6 @@ public class FriendRepositoryCustomImplTest {
                 .nickname("User One")
                 .password("password")
                 .studentId("2023001")
-                .department(department)
                 .build();
         User user2 = User.builder()
                 .loginId("user2")
@@ -114,7 +110,6 @@ public class FriendRepositoryCustomImplTest {
                 .nickname("User Two")
                 .password("password")
                 .studentId("2023002")
-                .department(department)
                 .build();
 
         entityManager.persist(user1);
@@ -145,7 +140,6 @@ public class FriendRepositoryCustomImplTest {
                 .nickname("User One")
                 .password("password")
                 .studentId("2023001")
-                .department(department)
                 .build();
         User user2 = User.builder()
                 .loginId("user2")
@@ -153,7 +147,6 @@ public class FriendRepositoryCustomImplTest {
                 .nickname("User Two")
                 .password("password")
                 .studentId("2023002")
-                .department(department)
                 .build();
 
         entityManager.persist(user1);
@@ -184,7 +177,6 @@ public class FriendRepositoryCustomImplTest {
                 .nickname("User One")
                 .password("password")
                 .studentId("2023001")
-                .department(department)
                 .build();
         User user2 = User.builder()
                 .loginId("user2")
@@ -192,7 +184,6 @@ public class FriendRepositoryCustomImplTest {
                 .nickname("User Two")
                 .password("password")
                 .studentId("2023002")
-                .department(department)
                 .build();
         User user3 = User.builder()
                 .loginId("user3")
@@ -200,7 +191,6 @@ public class FriendRepositoryCustomImplTest {
                 .nickname("User Three")
                 .password("password")
                 .studentId("2023003")
-                .department(department)
                 .build();
 
         entityManager.persist(user1);

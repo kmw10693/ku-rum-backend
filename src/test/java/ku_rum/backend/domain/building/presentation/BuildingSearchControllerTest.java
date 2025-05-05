@@ -121,7 +121,7 @@ class BuildingSearchControllerTest extends RestDocsTestSupport {
                 .andDo(restDocs.document(
                         resource(
                                 ResourceSnippetParameters.builder()
-                                        .tag("빌딩 API")
+                                        .tag("빌딩 관련 API")
                                         .description("모든 건물 정보 출력")
                                         .responseFields(
                                                 fieldWithPath("code")
@@ -191,7 +191,7 @@ class BuildingSearchControllerTest extends RestDocsTestSupport {
                 .andDo(restDocs.document(
                         resource(
                                 ResourceSnippetParameters.builder()
-                                        .tag("빌딩 API")
+                                        .tag("빌딩 관련 API")
                                         .description("특정 건물번호로 건물 정보 출력")
                                         .responseFields(
                                                 fieldWithPath("code")
@@ -259,7 +259,7 @@ class BuildingSearchControllerTest extends RestDocsTestSupport {
                 .andDo(restDocs.document(
                         resource(
                                 ResourceSnippetParameters.builder()
-                                        .tag("빌딩 API")
+                                        .tag("빌딩 관련 API")
                                         .description("건물이름/줄임말로 건물정보 검색")
                                         .responseFields(
                                                 fieldWithPath("code")
@@ -333,7 +333,7 @@ class BuildingSearchControllerTest extends RestDocsTestSupport {
                 .andDo(restDocs.document(
                         resource(
                                 ResourceSnippetParameters.builder()
-                                        .tag("빌딩 API")
+                                        .tag("빌딩 관련 API")
                                         .description("특정 카테고리명으로 건물정보 검색")
                                         .responseFields(
                                                 fieldWithPath("code")
@@ -406,7 +406,7 @@ class BuildingSearchControllerTest extends RestDocsTestSupport {
                 .andDo(restDocs.document(
                         resource(
                                 ResourceSnippetParameters.builder()
-                                        .tag("빌딩 API")
+                                        .tag("빌딩 관련 API")
                                         .description("특정 카테고리명으로 건물정보 검색")
                                         .responseFields(
                                                 fieldWithPath("code")
@@ -490,7 +490,7 @@ class BuildingSearchControllerTest extends RestDocsTestSupport {
                 .andDo(restDocs.document(
                         resource(
                                 ResourceSnippetParameters.builder()
-                                        .tag("빌딩 API")
+                                        .tag("빌딩 관련 API")
                                         .description("특정 카테고리명으로 디테일 정보 보기")
                                         .responseFields(
                                                 fieldWithPath("code")

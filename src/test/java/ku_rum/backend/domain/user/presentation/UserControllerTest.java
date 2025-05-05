@@ -89,7 +89,7 @@ class UserControllerTest extends RestDocsTestSupport {
                 .andExpect(jsonPath("$.message").value("OK"))
                 .andDo(restDocs.document(resource(
                         ResourceSnippetParameters.builder()
-                                .tag("유저 API")
+                                .tag("멤버 관련 API")
                                 .description("신규 유저 생성")
                                 .requestFields(
                                         fieldWithPath("loginId")
@@ -153,7 +153,7 @@ class UserControllerTest extends RestDocsTestSupport {
                 .andExpect(jsonPath("$.data").value("올바른 이메일 입니다."))
                 .andDo(restDocs.document(resource(
                         ResourceSnippetParameters.builder()
-                                .tag("유저 API")
+                                .tag("멤버 관련 API")
                                 .description("이메일 중복 확인")
                                 .requestFields(
                                         fieldWithPath("email")
@@ -197,7 +197,7 @@ class UserControllerTest extends RestDocsTestSupport {
                 .andDo(restDocs.document(
                         resource(
                                 ResourceSnippetParameters.builder()
-                                        .tag("유저 API")
+                                        .tag("프로필 관련 API")
                                         .description("프로필 이미지 변경")
                                         .requestHeaders(
                                                 headerWithName("Bearer").description("발급 받은 엑세스 토큰입니다.")
@@ -244,7 +244,7 @@ class UserControllerTest extends RestDocsTestSupport {
                 .andExpect(jsonPath("$.data").value(VALID_LOGINID_MESSAGE.getMessage()))
                 .andDo(restDocs.document(resource(
                         ResourceSnippetParameters.builder()
-                                .tag("유저 API")
+                                .tag("멤버 관련 API")
                                 .description("아이디 중복 확인")
                                 .queryParameters(
                                         parameterWithName("value").description("중복 확인할 아이디")
@@ -276,7 +276,7 @@ class UserControllerTest extends RestDocsTestSupport {
                 .andExpect(jsonPath("$.data").value(VALID_NICKNAME_MESSAGE.getMessage()))
                 .andDo(restDocs.document(resource(
                         ResourceSnippetParameters.builder()
-                                .tag("유저 API")
+                                .tag("멤버 관련 API")
                                 .description("닉네임 중복 확인")
                                 .queryParameters(
                                         parameterWithName("value").description("중복 확인할 닉네임")
@@ -309,7 +309,7 @@ class UserControllerTest extends RestDocsTestSupport {
                 .andExpect(jsonPath("$.data").value(VALID_STUDENTID_MESSAGE.getMessage()))
                 .andDo(restDocs.document(resource(
                         ResourceSnippetParameters.builder()
-                                .tag("유저 API")
+                                .tag("멤버 관련 API")
                                 .description("학번 중복 확인")
                                 .queryParameters(
                                         parameterWithName("value").description("중복 확인할 학번")
@@ -344,7 +344,7 @@ class UserControllerTest extends RestDocsTestSupport {
                 .andExpect(jsonPath("$.data.loginId").value(loginId))
                 .andDo(restDocs.document(resource(
                         ResourceSnippetParameters.builder()
-                                .tag("유저 API")
+                                .tag("멤버 관련 API")
                                 .description("이메일을 이용하여 로그인 아이디 조회")
                                 .queryParameters(
                                         parameterWithName("email").description("조회할 유저의 이메일")

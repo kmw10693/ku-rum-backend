@@ -1,12 +1,18 @@
 package ku_rum.backend.domain.user.application;
 
 import ku_rum.backend.domain.department.application.DepartmentQueryService;
+import ku_rum.backend.domain.department.application.UserDepartmentService;
 import ku_rum.backend.domain.department.domain.Department;
+import ku_rum.backend.domain.department.domain.UserDepartment;
+import ku_rum.backend.domain.department.domain.repository.DepartmentRepository;
+import ku_rum.backend.domain.department.domain.repository.UserDepartmentRepository;
 import ku_rum.backend.domain.user.domain.User;
 import ku_rum.backend.domain.user.domain.repository.UserRepository;
 import ku_rum.backend.domain.user.dto.request.*;
 import ku_rum.backend.domain.user.dto.response.LoginIdResponse;
 import ku_rum.backend.domain.user.dto.response.UserSaveResponse;
+import ku_rum.backend.global.exception.department.DuplicateDepartmentException;
+import ku_rum.backend.global.exception.department.NoSuchDepartmentException;
 import ku_rum.backend.global.exception.user.*;
 import ku_rum.backend.global.utill.UserUtil;
 import lombok.RequiredArgsConstructor;
@@ -27,6 +33,9 @@ public class UserService {
     private final UserValidator userValidator;
     private final UserQueryService userQueryService;
     private final DepartmentQueryService departmentQueryService;
+    private final UserDepartmentRepository userDepartmentRepository;
+    private final DepartmentRepository departmentRepository;
+    private final UserDepartmentService userDepartmentService;
 
     @Transactional
     public UserSaveResponse saveUser(final UserSaveRequest userSaveRequest) {
@@ -35,7 +44,9 @@ public class UserService {
 
         Department department = departmentQueryService.getDepartment(userSaveRequest);
 
-        User user = UserSaveRequest.newUser(userSaveRequest, department, passwordEncoder.encode(userSaveRequest.password()));
+        User user = UserSaveRequest.newUser(userSaveRequest, passwordEncoder.encode(userSaveRequest.password()));
+        userDepartmentService.addDeptToUser(user, department);
+
         log.info("사용자 저장 완료: ID={}", userSaveRequest.loginId());
         return UserSaveResponse.from(userRepository.save(user));
     }
@@ -90,5 +101,30 @@ public class UserService {
         User user = getUser();
         log.info("사용자 탈퇴 명령");
         userRepository.delete(user);
+    }
+
+    @Transactional
+    public void addDepartment(final String department) {
+        User user = getUser();
+        Department departmentEntity = departmentRepository.findFirstByName(department)
+                .orElseThrow(() -> new NoSuchDepartmentException(NO_SUCH_DEPARTMENT));
+        if (userDepartmentRepository.existsByUserIdAndDepartmentId(user.getId(), departmentEntity.getId())) {
+            throw new DuplicateDepartmentException(DUPLICATE_DEPARTMENT);
+        }
+        userDepartmentRepository.save(UserDepartment.of(user, departmentEntity));
+    }
+
+    @Transactional
+    public void deleteDepartment(final String department) {
+        Department dept = departmentRepository.findFirstByName(department)
+                .orElseThrow(() -> new NoSuchDepartmentException(NO_SUCH_DEPARTMENT));
+
+        int deleted = userDepartmentRepository.deleteByUserIdAndDepartmentId(
+                getUser().getId(), dept.getId()
+        );
+
+        if (deleted == 0) {
+            throw new NoSuchDepartmentException(NO_SUCH_DEPARTMENT);
+        }
     }
 }

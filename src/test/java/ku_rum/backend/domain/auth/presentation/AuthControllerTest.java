@@ -70,7 +70,7 @@ class AuthControllerTest extends RestDocsTestSupport {
                 .andDo(restDocs.document(
                         resource(
                                 ResourceSnippetParameters.builder()
-                                        .tag("권한 API")
+                                        .tag("권한 관련 API")
                                         .description("로그인")
                                         .requestFields(
                                 fieldWithPath("loginId")
@@ -124,7 +124,7 @@ class AuthControllerTest extends RestDocsTestSupport {
                 .andDo(restDocs.document(
                         resource(
                                 ResourceSnippetParameters.builder()
-                                        .tag("권한 API")
+                                        .tag("권한 관련 API")
                                         .description("로그아웃")
                                         .responseFields(
                                 fieldWithPath("code")
@@ -163,7 +163,7 @@ class AuthControllerTest extends RestDocsTestSupport {
                 .andDo(restDocs.document(
                         resource(
                                 ResourceSnippetParameters.builder()
-                                        .tag("권한 API")
+                                        .tag("권한 관련 API")
                                         .description("토큰 재발급")
                                         .requestFields(
                                 fieldWithPath("refreshToken")
@@ -225,7 +225,7 @@ class AuthControllerTest extends RestDocsTestSupport {
                 .andDo(restDocs.document(
                         resource(
                                 ResourceSnippetParameters.builder()
-                                        .tag("권한 API")
+                                        .tag("권한 관련 API")
                                         .description("임시 토큰/엑세스 토큰 교환")
                                         .queryParameters(
                                                 parameterWithName("tempToken")

@@ -108,7 +108,6 @@ class UserServiceTest {
                 .nickname("미미미누")
                 .password("password123")
                 .studentId("202112322")
-                .department(department)
                 .build();
 
         userRepository.save(user);
@@ -130,7 +129,6 @@ class UserServiceTest {
                 .nickname("미미미누")
                 .password("password123")
                 .studentId("202112322")
-                .department(department)
                 .build();
 
         userRepository.save(user);
@@ -150,7 +148,6 @@ class UserServiceTest {
                 .nickname("미미미누")
                 .password("password123")
                 .studentId("202112322")
-                .department(department)
                 .build();
 
         userRepository.save(user);
@@ -170,7 +167,6 @@ class UserServiceTest {
                 .nickname("미미미누")
                 .password("password123")
                 .studentId("202112322")
-                .department(department)
                 .build();
 
         userRepository.save(user);
@@ -191,7 +187,6 @@ class UserServiceTest {
                 .nickname("미미미누")
                 .password("password123")
                 .studentId("202112322")
-                .department(department)
                 .build();
 
         userRepository.save(user);
@@ -212,7 +207,6 @@ class UserServiceTest {
                 .nickname("미미미누")
                 .password(passwordEncoder.encode("password123"))
                 .studentId("202112322")
-                .department(department)
                 .build();
 
         userRepository.save(user);
@@ -236,7 +230,6 @@ class UserServiceTest {
                 .nickname("미미미누")
                 .password("password123")
                 .studentId("202112322")
-                .department(department)
                 .build();
 
         userRepository.save(user);
@@ -263,7 +256,6 @@ class UserServiceTest {
                 .nickname("미미미누")
                 .password("password123")
                 .studentId("202112322")
-                .department(department)
                 .build();
 
         userRepository.save(user);
