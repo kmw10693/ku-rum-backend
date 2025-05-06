@@ -1,6 +1,7 @@
 package ku_rum.backend.domain.department.domain;
 
 import ku_rum.backend.domain.building.domain.Building;
+import ku_rum.backend.domain.college.domain.College;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -15,10 +16,11 @@ class DepartmentTest {
     @Test
     void registeredDepartment() {
         //given
+        College college = College.of("공과대학");
         Building building = createBuilding();
 
         //when
-        Department department = Department.of("컴퓨터공학부", building);
+        Department department = Department.of("컴퓨터공학부", building, college);
 
         //then
         assertThat(department.getBuilding()).isEqualTo(building);
@@ -29,10 +31,11 @@ class DepartmentTest {
     void registeredDepartmentWithName() {
         //given
         Building building = createBuilding();
+        College college = College.of("공과대학");
         String Deptname = "컴퓨터공학부";
 
         //when
-        Department department = Department.of(Deptname, building);
+        Department department = Department.of(Deptname, building, college);
 
         //then
         assertThat(department.getName()).isEqualTo(Deptname);
