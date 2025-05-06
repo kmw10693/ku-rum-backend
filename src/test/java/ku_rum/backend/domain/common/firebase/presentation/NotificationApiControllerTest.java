@@ -47,7 +47,7 @@ class NotificationApiControllerTest extends RestDocsTestSupport {
 
         // when & then
         mockMvc.perform(post("/api/v1/push/register")
-                        .header("Bearer", "eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyUEsiOjEsInJvbGVzIjoiUk9MRV9VU0VSIiwiaWF0IjoxNzQwMjQyNjQxLCJleHAiOjE3NDAyNDQ0NDF9.kLSMBLWdvIvrBpGJdOigSKjxMIab0cV06xFjSpwrq70")
+                        .header("Authorization", "Bearer eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyUEsiOjEsInJvbGVzIjoiUk9MRV9VU0VSIiwiaWF0IjoxNzQwMjQyNjQxLCJleHAiOjE3NDAyNDQ0NDF9.kLSMBLWdvIvrBpGJdOigSKjxMIab0cV06xFjSpwrq70")
                         .content(token)  // 요청 본문에 토큰을 넣음
                         .contentType(MediaType.APPLICATION_JSON)  // JSON 형식으로 요청
                 )
@@ -58,7 +58,7 @@ class NotificationApiControllerTest extends RestDocsTestSupport {
                                         .tag("푸시알림 관련 API")
                                         .description("토큰 등록")
                                         .requestHeaders(
-                                                headerWithName("Bearer").description("발급 받은 엑세스 토큰입니다."))
+                                                headerWithName("Authorization").description("발급 받은 엑세스 토큰입니다."))
                                 .responseFields(  // 응답 필드 설명
                                         fieldWithPath("code").description("성공 시 반환 코드 (200)"),
                                         fieldWithPath("status").description("성공 시 상태 값 (OK)"),

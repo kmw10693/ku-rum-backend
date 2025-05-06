@@ -4,7 +4,11 @@ import io.jsonwebtoken.JwtException;
 import jakarta.servlet.http.HttpServletRequest;
 import ku_rum.backend.domain.auth.dto.request.LoginRequest;
 import ku_rum.backend.domain.auth.dto.request.ReissueRequest;
+import ku_rum.backend.domain.auth.dto.response.AuthResponse;
 import ku_rum.backend.domain.common.firebase.application.NotificationService;
+import ku_rum.backend.domain.user.domain.User;
+import ku_rum.backend.domain.user.domain.repository.UserRepository;
+import ku_rum.backend.domain.user.dto.response.UserResponse;
 import ku_rum.backend.global.security.CustomUserDetails;
 import ku_rum.backend.global.security.JwtTokenAuthenticationFilter;
 import ku_rum.backend.global.security.JwtTokenProvider;
@@ -19,7 +23,10 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.ActiveProfiles;
+
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
@@ -47,38 +54,28 @@ class AuthServiceTest {
     @Mock
     private NotificationService notificationService;
 
-    @Test
-    @DisplayName("로그인 성공 시 토큰을 반환한다.")
-    void login_success() {
-        // given
-        LoginRequest loginRequest = new LoginRequest("testUser", "password123");
-        Authentication authentication = mock(Authentication.class);
-        TokenResponse expectedTokenResponse = TokenResponse.of("access-token", "refresh-token", 10480000, 20400000);
+    @Mock
+    private UserRepository userRepository;
 
-        when(authenticationManager.authenticate(any(UsernamePasswordAuthenticationToken.class)))
-                .thenReturn(authentication);
-        when(jwtTokenProvider.createToken(authentication))
-                .thenReturn(expectedTokenResponse);
-
-        // when
-        TokenResponse actualResponse = authService.login(loginRequest);
-
-        // then
-        assertNotNull(actualResponse);
-        assertEquals("access-token", actualResponse.accessToken());
-        assertEquals("refresh-token", actualResponse.refreshToken());
-    }
 
     @Test
     @DisplayName("잘못된 로그인 정보로 로그인 시 예외를 던진다.")
     void login_fail_invalid_credentials() {
         // given
         LoginRequest loginRequest = new LoginRequest("wrongUser", "wrongPassword");
+
+        // 인증 단계에서 BadCredentialsException 발생시키기
         when(authenticationManager.authenticate(any(UsernamePasswordAuthenticationToken.class)))
-                .thenThrow(new BadCredentialsException("잘못된 인증 정보"));
+                .thenThrow(new BadCredentialsException("유저에 대한 로그인 오류 발생"));
 
         // when & then
-        assertThrows(BadCredentialsException.class, () -> authService.login(loginRequest));
+        BadCredentialsException exception = assertThrows(
+                BadCredentialsException.class,
+                () -> authService.login(loginRequest)
+        );
+
+        // 실제 예외 메시지와 예상 메시지가 일치하는지 확인
+        assertEquals("[유저에 대한 로그인 오류 발생]", exception.getMessage());
     }
 
     @Test

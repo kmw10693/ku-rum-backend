@@ -1,4 +1,5 @@
 /*
+
 package ku_rum.backend.global.dataInit;
 
 import jakarta.annotation.PostConstruct;
@@ -80,3 +81,4 @@ public class DataLoader implements ApplicationRunner {
     }
 }
 */
+

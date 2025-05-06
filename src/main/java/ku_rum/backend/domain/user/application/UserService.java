@@ -55,6 +55,11 @@ public class UserService {
     public void initiatePasswordReset(final InitiatePasswordResetRequest initiatePasswordResetRequest) {
         log.info("계정 초기화 요청: loginId={}", initiatePasswordResetRequest.loginId());
         User user = userQueryService.getUserByLoginId(initiatePasswordResetRequest.loginId());
+
+        if (passwordEncoder.matches(initiatePasswordResetRequest.newPassword(), user.getPassword())) {
+            throw new InvalidPasswordException(PREV_NEW_EQUAL_EXCEPTION);
+        }
+
         user.changePassword(passwordEncoder.encode(initiatePasswordResetRequest.newPassword()));
         log.info("계정 비밀번호 변경 완료: loginId={}", initiatePasswordResetRequest.loginId());
     }
@@ -64,6 +69,10 @@ public class UserService {
         log.info("기존 계정 비밀번호 변경 요청");
         User user = getUser();
         userValidator.validatePassword(resetPasswordRequest.prevPassword(), user.getPassword());
+
+        if (resetPasswordRequest.newPassword().equals(resetPasswordRequest.prevPassword())) {
+            throw new InvalidPasswordException(PREV_NEW_EQUAL_EXCEPTION);
+        }
         user.changePassword(passwordEncoder.encode(resetPasswordRequest.newPassword()));
         log.info("계정 비밀번호 변경 완료: loginId={}", user.getLoginId());
     }
@@ -87,6 +96,10 @@ public class UserService {
     @Transactional
     public void changeNickname(final NicknameChangeRequest nicknameChangeRequest) {
         User user = getUser();
+
+        if (isNicknameDuplicate(nicknameChangeRequest.nickname())) {
+            throw new DuplicateNicknameException(DUPLICATE_NICKNAME);
+        }
         user.changeNickname(nicknameChangeRequest.nickname());
     }
 
@@ -126,5 +139,9 @@ public class UserService {
         if (deleted == 0) {
             throw new NoSuchDepartmentException(NO_SUCH_DEPARTMENT);
         }
+    }
+
+    private boolean isNicknameDuplicate(String nickname) {
+        return userRepository.existsByNickname(nickname);
     }
 }

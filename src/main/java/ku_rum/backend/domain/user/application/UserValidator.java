@@ -69,7 +69,7 @@ public class UserValidator {
 
     public void validatePassword(final String rawPassword, final String encodedPassword) {
         if (!passwordEncoder.matches(rawPassword, encodedPassword)) {
-            throw new InvalidPasswordException(INVALID_PASSWORD);
+            throw new InvalidPasswordException(PREV_PASSWORD_EXCEPTION);
         }
     }
 }

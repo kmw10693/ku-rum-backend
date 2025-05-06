@@ -66,7 +66,7 @@ public class UserProfileControllerTest extends RestDocsTestSupport {
 
         // When & Then
         mockMvc.perform(patch("/api/v1/users/nickname")
-                        .header("Bearer", "eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyUEsiOjEsInJvbGVzIjoiUk9MRV9VU0VSIiwiaWF0IjoxNzQwMjQyNjQxLCJleHAiOjE3NDAyNDQ0NDF9.kLSMBLWdvIvrBpGJdOigSKjxMIab0cV06xFjSpwrq70")
+                        .header("Authorization", "Bearer eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyUEsiOjEsInJvbGVzIjoiUk9MRV9VU0VSIiwiaWF0IjoxNzQwMjQyNjQxLCJleHAiOjE3NDAyNDQ0NDF9.kLSMBLWdvIvrBpGJdOigSKjxMIab0cV06xFjSpwrq70")
                         .with(SecurityMockMvcRequestPostProcessors.user(userDetails))
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(requestBody))
@@ -81,7 +81,7 @@ public class UserProfileControllerTest extends RestDocsTestSupport {
                                 .tag("프로필 관련 API")
                                 .description("닉네임 변경 API")
                                 .requestHeaders(
-                                        headerWithName("Bearer").description("발급 받은 엑세스 토큰입니다.")
+                                        headerWithName("Authorization").description("발급 받은 엑세스 토큰입니다.")
                                 )
                                 .requestFields(
                                         fieldWithPath("nickname").type(JsonFieldType.STRING).description("변경할 닉네임")
@@ -152,7 +152,7 @@ public class UserProfileControllerTest extends RestDocsTestSupport {
 
         // when then
         mockMvc.perform(post("/api/v1/users/password-reset")
-                        .header("Bearer", "eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyUEsiOjEsInJvbGVzIjoiUk9MRV9VU0VSIiwiaWF0IjoxNzQwMjQyNjQxLCJleHAiOjE3NDAyNDQ0NDF9.kLSMBLWdvIvrBpGJdOigSKjxMIab0cV06xFjSpwrq70")
+                        .header("Authorization", "Bearer eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyUEsiOjEsInJvbGVzIjoiUk9MRV9VU0VSIiwiaWF0IjoxNzQwMjQyNjQxLCJleHAiOjE3NDAyNDQ0NDF9.kLSMBLWdvIvrBpGJdOigSKjxMIab0cV06xFjSpwrq70")
                         .with(SecurityMockMvcRequestPostProcessors.user(userDetails))
                         .content(objectMapper.writeValueAsString(resetPasswordRequest))
                         .contentType(MediaType.APPLICATION_JSON)
@@ -164,7 +164,7 @@ public class UserProfileControllerTest extends RestDocsTestSupport {
                                 .tag("프로필 관련 API")
                                 .description("로그인 후 비밀번호 변경")
                                 .requestHeaders(
-                                        headerWithName("Bearer").description("발급 받은 엑세스 토큰입니다. Authorization 헤더에 토큰을 넣어주세요. 앞에 Bearer를 붙혀야 합니다.")
+                                        headerWithName("Authorization").description("발급 받은 엑세스 토큰입니다. Authorization 헤더에 토큰을 넣어주세요. 앞에 Bearer를 붙혀야 합니다.")
                                 )
                                 .requestFields(
                                         fieldWithPath("prevPassword")
@@ -198,7 +198,7 @@ public class UserProfileControllerTest extends RestDocsTestSupport {
     void deactivateUser() throws Exception {
         // when & then
         mockMvc.perform(delete("/api/v1/users/deactivate")
-                        .header("Bearer", "eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyUEsiOjEsInJvbGVzIjoiUk9MRV9VU0VSIiwiaWF0IjoxNzQwMjQyNjQxLCJleHAiOjE3NDAyNDQ0NDF9.kLSMBLWdvIvrBpGJdOigSKjxMIab0cV06xFjSpwrq70")
+                        .header("Authorization", "Bearer eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyUEsiOjEsInJvbGVzIjoiUk9MRV9VU0VSIiwiaWF0IjoxNzQwMjQyNjQxLCJleHAiOjE3NDAyNDQ0NDF9.kLSMBLWdvIvrBpGJdOigSKjxMIab0cV06xFjSpwrq70")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andDo(print())
                 .andExpect(status().isOk())
@@ -208,10 +208,10 @@ public class UserProfileControllerTest extends RestDocsTestSupport {
                 .andExpect(jsonPath("$.data").value("탈퇴가 완료되었습니다.")) // 반환 데이터 없음 확인
                 .andDo(restDocs.document(
                         resource(ResourceSnippetParameters.builder()
-                                .tag("프로필 관련 API")
+                                .tag("권한 관련 API")
                                 .description("회원 탈퇴 API")
                                 .requestHeaders(
-                                        headerWithName("Bearer")
+                                        headerWithName("Authorization")
                                                 .description("발급 받은 액세스 토큰 (Bearer {token})")
                                 )
                                 .responseFields(
@@ -245,7 +245,7 @@ public class UserProfileControllerTest extends RestDocsTestSupport {
 
         // when & then
         mockMvc.perform(post("/api/v1/users/department")
-                        .header("Bearer", "eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyUEsiOjEsInJvbGVzIjoiUk9MRV9VU0VSIiwiaWF0IjoxNzQwMjQyNjQxLCJleHAiOjE3NDAyNDQ0NDF9.kLSMBLWdvIvrBpGJdOigSKjxMIab0cV06xFjSpwrq70")
+                        .header("Authorization", "Bearer eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyUEsiOjEsInJvbGVzIjoiUk9MRV9VU0VSIiwiaWF0IjoxNzQwMjQyNjQxLCJleHAiOjE3NDAyNDQ0NDF9.kLSMBLWdvIvrBpGJdOigSKjxMIab0cV06xFjSpwrq70")
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(req))
@@ -257,7 +257,7 @@ public class UserProfileControllerTest extends RestDocsTestSupport {
                                 .tag("프로필 관련 API")
                                 .description("학과 추가 API")
                                 .requestHeaders(
-                                        headerWithName("Bearer").description("발급 받은 액세스 토큰 (Bearer {token})")
+                                        headerWithName("Authorization").description("발급 받은 액세스 토큰 (Bearer {token})")
                                 )
                                 .requestFields(
                                         fieldWithPath("department")
@@ -285,7 +285,7 @@ public class UserProfileControllerTest extends RestDocsTestSupport {
 
         // when & then
         mockMvc.perform(delete("/api/v1/users/department")
-                        .header("Bearer", "eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyUEsiOjEsInJvbGVzIjoiUk9MRV9VU0VSIiwiaWF0IjoxNzQwMjQyNjQxLCJleHAiOjE3NDAyNDQ0NDF9.kLSMBLWdvIvrBpGJdOigSKjxMIab0cV06xFjSpwrq70")
+                        .header("Authorization", "Bearer eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyUEsiOjEsInJvbGVzIjoiUk9MRV9VU0VSIiwiaWF0IjoxNzQwMjQyNjQxLCJleHAiOjE3NDAyNDQ0NDF9.kLSMBLWdvIvrBpGJdOigSKjxMIab0cV06xFjSpwrq70")
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(req))
@@ -297,7 +297,7 @@ public class UserProfileControllerTest extends RestDocsTestSupport {
                                 .tag("프로필 관련 API")
                                 .description("학과 삭제 API")
                                 .requestHeaders(
-                                        headerWithName("Bearer").description("발급 받은 액세스 토큰 (Bearer {token})")
+                                        headerWithName("Authorization").description("발급 받은 액세스 토큰 (Bearer {token})")
                                 )
                                 .requestFields(
                                         fieldWithPath("department")
