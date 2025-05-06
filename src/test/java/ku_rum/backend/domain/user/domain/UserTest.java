@@ -1,6 +1,7 @@
 package ku_rum.backend.domain.user.domain;
 
 import ku_rum.backend.domain.building.domain.Building;
+import ku_rum.backend.domain.college.domain.College;
 import ku_rum.backend.domain.department.domain.Department;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -28,7 +29,8 @@ class UserTest {
 
     private Department getDepartment(Building building) {
         String Deptname = "컴퓨터공학부";
-        Department department = Department.of(Deptname, building);
+        College college = College.of("공과대학");
+        Department department = Department.of(Deptname, building, college);
         return department;
     }
 

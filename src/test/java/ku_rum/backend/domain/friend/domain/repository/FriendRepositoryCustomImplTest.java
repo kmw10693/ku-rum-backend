@@ -2,6 +2,7 @@ package ku_rum.backend.domain.friend.domain.repository;
 
 import jakarta.persistence.EntityManager;
 import ku_rum.backend.domain.building.domain.Building;
+import ku_rum.backend.domain.college.domain.College;
 import ku_rum.backend.domain.department.domain.Department;
 import ku_rum.backend.domain.friend.domain.Friend;
 import ku_rum.backend.domain.friend.domain.FriendStatus;
@@ -42,9 +43,11 @@ public class FriendRepositoryCustomImplTest {
     @Test
     void findFriends_친구_목록_조회() {
         // Given
+        College college = College.of("공과대학");
         Building building = Building.of("신공학관", 3L,"신공", 1L, BigDecimal.valueOf(234.3), BigDecimal.valueOf(342.23));
         entityManager.persist(building);
-        Department department = Department.of("컴퓨터공학부", building);
+        entityManager.persist(college);
+        Department department = Department.of("컴퓨터공학부", building, college);
         entityManager.persist(department);
 
         User user1 = User.builder()
@@ -93,8 +96,10 @@ public class FriendRepositoryCustomImplTest {
     void existFriends_친구_존재여부() {
         // Given
         Building building = Building.of("신공학관", 3L,"신공", 1L, BigDecimal.valueOf(234.3), BigDecimal.valueOf(342.23));
+        College college = College.of("공과대학");
         entityManager.persist(building);
-        Department department = Department.of("컴퓨터공학부", building);
+        entityManager.persist(college);
+        Department department = Department.of("컴퓨터공학부", building, college);
         entityManager.persist(department);
 
         User user1 = User.builder()
@@ -130,8 +135,10 @@ public class FriendRepositoryCustomImplTest {
     void existFriends_친구_존재하지않음() {
         // Given
         Building building = Building.of("신공학관", 3L,"신공", 1L, BigDecimal.valueOf(234.3), BigDecimal.valueOf(342.23));
+        College college = College.of("공과대학");
         entityManager.persist(building);
-        Department department = Department.of("컴퓨터공학부", building);
+        entityManager.persist(college);
+        Department department = Department.of("컴퓨터공학부", building, college);
         entityManager.persist(department);
 
         User user1 = User.builder()
@@ -167,8 +174,10 @@ public class FriendRepositoryCustomImplTest {
     void findOriginFriends_친구_상태조회() {
         // Given
         Building building = Building.of("신공학관", 3L,"신공", 1L, BigDecimal.valueOf(234.3), BigDecimal.valueOf(342.23));
+        College college = College.of("공과대학");
         entityManager.persist(building);
-        Department department = Department.of("컴퓨터공학부", building);
+        entityManager.persist(college);
+        Department department = Department.of("컴퓨터공학부", building, college);
         entityManager.persist(department);
 
         User user1 = User.builder()
