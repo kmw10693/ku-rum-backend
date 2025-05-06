@@ -187,7 +187,7 @@ class UserControllerTest extends RestDocsTestSupport {
 
         // when then
         mockMvc.perform(patch("/api/v1/users/profile")
-                        .header("Bearer", "eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyUEsiOjEsInJvbGVzIjoiUk9MRV9VU0VSIiwiaWF0IjoxNzQwMjQyNjQxLCJleHAiOjE3NDAyNDQ0NDF9.kLSMBLWdvIvrBpGJdOigSKjxMIab0cV06xFjSpwrq70")
+                        .header("Authorization", "Bearer eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyUEsiOjEsInJvbGVzIjoiUk9MRV9VU0VSIiwiaWF0IjoxNzQwMjQyNjQxLCJleHAiOjE3NDAyNDQ0NDF9.kLSMBLWdvIvrBpGJdOigSKjxMIab0cV06xFjSpwrq70")
                         .with(SecurityMockMvcRequestPostProcessors.user(userDetails))
                         .content(objectMapper.writeValueAsString(profileChangeRequest))
                         .contentType(MediaType.APPLICATION_JSON)
@@ -200,7 +200,7 @@ class UserControllerTest extends RestDocsTestSupport {
                                         .tag("프로필 관련 API")
                                         .description("프로필 이미지 변경")
                                         .requestHeaders(
-                                                headerWithName("Bearer").description("발급 받은 엑세스 토큰입니다.")
+                                                headerWithName("Authorization").description("발급 받은 엑세스 토큰입니다.")
                                         )
                                         .requestFields(
                                                 fieldWithPath("imageUrl")

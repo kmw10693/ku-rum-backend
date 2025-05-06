@@ -4,15 +4,18 @@ import io.jsonwebtoken.JwtException;
 import jakarta.servlet.http.HttpServletRequest;
 import ku_rum.backend.domain.auth.dto.request.LoginRequest;
 import ku_rum.backend.domain.auth.dto.request.ReissueRequest;
+import ku_rum.backend.domain.auth.dto.response.AuthResponse;
 import ku_rum.backend.domain.common.firebase.application.NotificationService;
 import ku_rum.backend.domain.oauth.handler.TempTokenProvider;
 import ku_rum.backend.domain.user.domain.User;
 import ku_rum.backend.domain.user.domain.repository.UserRepository;
+import ku_rum.backend.domain.user.dto.response.UserResponse;
 import ku_rum.backend.global.exception.user.NoSuchUserException;
 import ku_rum.backend.global.security.CustomUserDetails;
 import ku_rum.backend.global.security.JwtTokenAuthenticationFilter;
 import ku_rum.backend.global.security.JwtTokenProvider;
 import ku_rum.backend.domain.user.dto.response.TokenResponse;
+import ku_rum.backend.global.utill.UserUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -20,6 +23,7 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -39,14 +43,17 @@ public class AuthService {
     private final TempTokenProvider tempTokenProvider;
     private final UserRepository userRepository;
 
-    public TokenResponse login(LoginRequest authRequest) {
+    public AuthResponse login(LoginRequest authRequest) {
         try {
-            Authentication authenticate = authenticationManager.authenticate(
-                    new UsernamePasswordAuthenticationToken(authRequest.loginId(),
-                            authRequest.password()));
-            return jwtTokenProvider.createToken(authenticate);
+            Authentication authenticate = authenticateUser(authRequest);
+            CustomUserDetails customUserDetails = getCustomUserDetails(authenticate);
+
+            User user = getUser(customUserDetails);
+            validateUser(user);
+            return AuthResponse.of(jwtTokenProvider.createToken(authenticate), buildUserResponse(user));
+
         } catch (AuthenticationException e) {
-            log.error("유저에 대한 로그인 오류 발생: {}", authRequest.loginId(), e);
+            log.error("로그인 오류 발생: {}", authRequest.loginId(), e);
             throw new BadCredentialsException("[유저에 대한 로그인 오류 발생]");
         }
     }
@@ -75,6 +82,20 @@ public class AuthService {
         throw new JwtException(MALFORMED_TOKEN.getMessage());
     }
 
+    public AuthResponse exchangeToken(String tempToken) {
+        Long userId = tempTokenProvider.resolveUserId(tempToken);
+        tempTokenProvider.invalidateTempToken(tempToken);
+
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new NoSuchUserException(NO_SUCH_USER));
+
+        CustomUserDetails userDetails = CustomUserDetails.from(user);
+        Authentication authentication = new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities());
+
+        // AuthResponse 반환
+        return new AuthResponse(jwtTokenProvider.createToken(authentication), buildUserResponse(user));
+    }
+
     private long getExpiredAccessTokenTime(String token) {
         return jwtTokenProvider.getExpiredTime(token) - System.currentTimeMillis();
     }
@@ -86,19 +107,34 @@ public class AuthService {
         return token;
     }
 
-    public TokenResponse exchangeToken(String tempToken) {
-        Long userId = tempTokenProvider.resolveUserId(tempToken);
-        tempTokenProvider.invalidateTempToken(tempToken);
+    private Authentication authenticateUser(LoginRequest authRequest) {
+        return authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(authRequest.loginId(), authRequest.password()));
+    }
 
-        // 유저 조회
-        User user = userRepository.findById(userId)
+    private CustomUserDetails getCustomUserDetails(Authentication authenticate) {
+        return (CustomUserDetails) authenticate.getPrincipal();
+    }
+
+    private void validateUser(User user) {
+        if (!user.isActive()) {
+            throw new NoSuchUserException(DELETED_MEMBER);
+        }
+    }
+
+    private User getUser(CustomUserDetails customUserDetails) {
+        return userRepository.findUserById(customUserDetails.getUserId())
                 .orElseThrow(() -> new NoSuchUserException(NO_SUCH_USER));
+    }
 
-        // Authentication 객체로 변환
-        CustomUserDetails userDetails = CustomUserDetails.from(user);
-        Authentication authentication = new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities());
-
-        // JWT 발급
-        return jwtTokenProvider.createToken(authentication);
+    private UserResponse buildUserResponse(User user) {
+        return UserResponse.of(
+                user.getId(),
+                user.getOauthId(),
+                user.getLoginId(),
+                user.getEmail(),
+                user.getNickname(),
+                user.getStudentId(),
+                user.getImageUrl());
     }
 }

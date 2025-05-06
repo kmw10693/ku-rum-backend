@@ -40,6 +40,9 @@ public enum BaseExceptionResponseStatus implements ResponseStatus {
     NO_SUCH_LOGINID(307, HttpStatus.BAD_REQUEST, "존재하지 않는 아이디입니다."),
     INVALID_PASSWORD(308, HttpStatus.BAD_REQUEST, "비밀번호가 일치하지 않습니다."),
     INVALID_AUTH_CODE(309, HttpStatus.BAD_REQUEST, "메일 코드 인증에 오류가 발생했습니다."),
+    PREV_PASSWORD_EXCEPTION(310, HttpStatus.BAD_REQUEST, "기존 비밀번호가 일치하지 않습니다."),
+    PREV_NEW_EQUAL_EXCEPTION(311, HttpStatus.BAD_REQUEST, "기존 비밀번호와 새 비밀번호가 일치할 수 없습니다"),
+    DELETED_MEMBER(312, HttpStatus.BAD_REQUEST, "탈퇴한 사용자입니다."),
 
 
     /**

@@ -67,7 +67,7 @@ public class User extends BaseEntity {
     }
 
     @Builder
-    private User(String loginId, String oauthId, String email, String nickname, String password, String studentId, AgreementStatus agreementStatus, ProviderType providerType) {
+    private User(String loginId, String oauthId, String email, String nickname, String password, String studentId, AgreementStatus agreementStatus, ProviderType providerType, String imageUrl) {
         this.loginId = loginId;
         this.oauthId = oauthId;
         this.email = email;
@@ -76,6 +76,7 @@ public class User extends BaseEntity {
         this.studentId = studentId;
         this.roles.add(USER.getRole());
         this.agreementStatus = agreementStatus;
+        this.imageUrl = imageUrl;
         this.providerType = providerType;
     }
 
