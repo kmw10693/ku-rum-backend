@@ -1,21 +1,20 @@
-/*
-package ku_rum.backend.global.dataInit;
+package ku_rum.backend.global.dataInit2;
 
 import ku_rum.backend.domain.building.domain.Building;
-import ku_rum.backend.domain.building.domain.BuildingAbbrev;
+import ku_rum.backend.domain.building.model.BuildingAbbrev;
 import org.springframework.stereotype.Component;
-
 import java.math.BigDecimal;
 import java.util.ArrayList;
 
 @Component
 public class BuildingInitializer {
   public static ArrayList<Building> initialize() {
+
     ArrayList<Building> buildings = new ArrayList<>();
 
     buildings.add(
             Building.of(
-                    BuildingAbbrev.행정.getOriginalName(),
+                    BuildingAbbrev.행정.getOriginalname(),
                     1L,
                     BuildingAbbrev.행정.name(),
                     BigDecimal.valueOf(37.543075),
@@ -25,7 +24,7 @@ public class BuildingInitializer {
     //건물
     buildings.add(
             Building.of(
-                    BuildingAbbrev.경영.getOriginalName(),
+                    BuildingAbbrev.경영.getOriginalname(),
                     2L,
                     BuildingAbbrev.경영.name(),
                     BigDecimal.valueOf(37.544419),
@@ -33,7 +32,7 @@ public class BuildingInitializer {
     );
     buildings.add(
             Building.of(
-                    BuildingAbbrev.상허관.getOriginalName(),
+                    BuildingAbbrev.상허관.getOriginalname(),
                     3L,
                     BuildingAbbrev.상허관.name(),
                     BigDecimal.valueOf(37.544292),
@@ -41,7 +40,7 @@ public class BuildingInitializer {
     );
     buildings.add(
             Building.of(
-                    BuildingAbbrev.사.getOriginalName(),
+                    BuildingAbbrev.사.getOriginalname(),
                     4L,
                     BuildingAbbrev.사.name(),
                     BigDecimal.valueOf(37.544073),
@@ -49,7 +48,7 @@ public class BuildingInitializer {
     );
     buildings.add(
             Building.of(
-                    BuildingAbbrev.예.getOriginalName(),
+                    BuildingAbbrev.예.getOriginalname(),
                     5L,
                     BuildingAbbrev.예.name(),
                     BigDecimal.valueOf(37.544419),
@@ -57,7 +56,7 @@ public class BuildingInitializer {
     );
     buildings.add(
             Building.of(
-                    BuildingAbbrev.언어원.getOriginalName(),
+                    BuildingAbbrev.언어원.getOriginalname(),
                     6L,
                     BuildingAbbrev.언어원.name(),
                     BigDecimal.valueOf(37.542497),
@@ -65,7 +64,7 @@ public class BuildingInitializer {
     );
     buildings.add(
             Building.of(
-                    BuildingAbbrev.박물관.getOriginalName(),
+                    BuildingAbbrev.박물관.getOriginalname(),
                     7L,
                     BuildingAbbrev.박물관.name(),
                     BigDecimal.valueOf(37.542373),
@@ -74,7 +73,7 @@ public class BuildingInitializer {
     );
     buildings.add(
             Building.of(
-                    BuildingAbbrev.종강.getOriginalName(),
+                    BuildingAbbrev.종강.getOriginalname(),
                     8L,
                     BuildingAbbrev.종강.name(),
                     BigDecimal.valueOf(37.542260),
@@ -82,7 +81,7 @@ public class BuildingInitializer {
     );
     buildings.add(
             Building.of(
-                    BuildingAbbrev.도서관.getOriginalName(),
+                    BuildingAbbrev.도서관.getOriginalname(),
                     9L,
                     BuildingAbbrev.도서관.name(),
                     BigDecimal.valueOf(37.541939),
@@ -90,7 +89,7 @@ public class BuildingInitializer {
     );
     buildings.add(
             Building.of(
-                    BuildingAbbrev.의.getOriginalName(),
+                    BuildingAbbrev.의.getOriginalname(),
                     10L,
                     BuildingAbbrev.의.name(),
                     BigDecimal.valueOf(37.541443),
@@ -98,7 +97,7 @@ public class BuildingInitializer {
     );
     buildings.add(
             Building.of(
-                    BuildingAbbrev.생.getOriginalName(),
+                    BuildingAbbrev.생.getOriginalname(),
                     11L,
                     BuildingAbbrev.생.name(),
                     BigDecimal.valueOf(37.541004),
@@ -106,7 +105,7 @@ public class BuildingInitializer {
     );
     buildings.add(
             Building.of(
-                    BuildingAbbrev.동.getOriginalName(),
+                    BuildingAbbrev.동.getOriginalname(),
                     12L,
                     BuildingAbbrev.동.name(),
                     BigDecimal.valueOf(37.540242),
@@ -114,7 +113,7 @@ public class BuildingInitializer {
     );
     buildings.add(
             Building.of(
-                    BuildingAbbrev.입학.getOriginalName(),
+                    BuildingAbbrev.입학.getOriginalname(),
                     13L,
                     BuildingAbbrev.입학.name(),
                     BigDecimal.valueOf(37.540323),
@@ -122,7 +121,7 @@ public class BuildingInitializer {
     );
     buildings.add(
             Building.of(
-                    BuildingAbbrev.산학.getOriginalName(),
+                    BuildingAbbrev.산학.getOriginalname(),
                     14L,
                     BuildingAbbrev.산학.name(),
                     BigDecimal.valueOf(37.539701),
@@ -130,7 +129,7 @@ public class BuildingInitializer {
     );
     buildings.add(
             Building.of(
-                    BuildingAbbrev.수.getOriginalName(),
+                    BuildingAbbrev.수.getOriginalname(),
                     15L,
                     BuildingAbbrev.수.name(),
                     BigDecimal.valueOf(37.539294),
@@ -138,7 +137,7 @@ public class BuildingInitializer {
     );
     buildings.add(
             Building.of(
-                    BuildingAbbrev.새.getOriginalName(),
+                    BuildingAbbrev.새.getOriginalname(),
                     16L,
                     BuildingAbbrev.새.name(),
                     BigDecimal.valueOf(37.543549),
@@ -146,7 +145,7 @@ public class BuildingInitializer {
     );
     buildings.add(
             Building.of(
-                    BuildingAbbrev.건.getOriginalName(),
+                    BuildingAbbrev.건.getOriginalname(),
                     17L,
                     BuildingAbbrev.건.name(),
                     BigDecimal.valueOf(37.543391),
@@ -154,7 +153,7 @@ public class BuildingInitializer {
     );
     buildings.add(
             Building.of(
-                    BuildingAbbrev.부.getOriginalName(),
+                    BuildingAbbrev.부.getOriginalname(),
                     18L,
                     BuildingAbbrev.부.name(),
                     BigDecimal.valueOf(37.543443),
@@ -162,7 +161,7 @@ public class BuildingInitializer {
     );
     buildings.add(
             Building.of(
-                    BuildingAbbrev.문.getOriginalName(),
+                    BuildingAbbrev.문.getOriginalname(),
                     19L,
                     BuildingAbbrev.문.name(),
                     BigDecimal.valueOf(37.542422),
@@ -170,7 +169,7 @@ public class BuildingInitializer {
     );
     buildings.add(
             Building.of(
-                    BuildingAbbrev.학생회관.getOriginalName(),
+                    BuildingAbbrev.학생회관.getOriginalname(),
                     20L,
                     BuildingAbbrev.학생회관.name(),
                     BigDecimal.valueOf(37.541873),
@@ -178,7 +177,7 @@ public class BuildingInitializer {
     );
     buildings.add(
             Building.of(
-                    BuildingAbbrev.공.getOriginalName(),
+                    BuildingAbbrev.공.getOriginalname(),
                     21L,
                     BuildingAbbrev.공.name(),
                     BigDecimal.valueOf(37.541822),
@@ -186,7 +185,7 @@ public class BuildingInitializer {
     );
     buildings.add(
             Building.of(
-                    BuildingAbbrev.신공.getOriginalName(),
+                    BuildingAbbrev.신공.getOriginalname(),
                     22L,
                     BuildingAbbrev.신공.name(),
                     BigDecimal.valueOf(37.540579),
@@ -194,7 +193,7 @@ public class BuildingInitializer {
     );
     buildings.add(
             Building.of(
-                    BuildingAbbrev.이.getOriginalName(),
+                    BuildingAbbrev.이.getOriginalname(),
                     23L,
                     BuildingAbbrev.이.name(),
                     BigDecimal.valueOf(37.541646),
@@ -202,7 +201,7 @@ public class BuildingInitializer {
     );
     buildings.add(
             Building.of(
-                    BuildingAbbrev.창.getOriginalName(),
+                    BuildingAbbrev.창.getOriginalname(),
                     24L,
                     BuildingAbbrev.창.name(),
                     BigDecimal.valueOf(37.540757),
@@ -210,7 +209,7 @@ public class BuildingInitializer {
     );
     buildings.add(
             Building.of(
-                    BuildingAbbrev.KU기술혁신관.getOriginalName(),
+                    BuildingAbbrev.KU기술혁신관.getOriginalname(),
                     25L,
                     BuildingAbbrev.KU기술혁신관.name(),
                     BigDecimal.valueOf(37.539690),
@@ -218,100 +217,13 @@ public class BuildingInitializer {
     );
     buildings.add(
             Building.of(
-                    BuildingAbbrev.기숙사.getOriginalName(),
+                    BuildingAbbrev.기숙사.getOriginalname(),
                     26L,
                     BuildingAbbrev.기숙사.name(),
                     BigDecimal.valueOf(37.539474),
                     BigDecimal.valueOf(127.078203))
     );
-    //카테고리
-    //레스티오
-    buildings.add(//27
-            Building.of(
-                    BuildingAbbrev.레스티오_동생대점.getOriginalName(),
-                    0L,
-                    BuildingAbbrev.레스티오_동생대점.name(),
-                    BigDecimal.valueOf(37.540222),
-                    BigDecimal.valueOf(127.073524))
-    );
-    buildings.add(//28
-            Building.of(
-                    BuildingAbbrev.레스티오_공대점.getOriginalName(),
-                    0L,
-                    BuildingAbbrev.레스티오_공대점.name(),
-                    BigDecimal.valueOf(37.541620),
-                    BigDecimal.valueOf(127.078732))
-    );
-    //카페_1984
-    buildings.add(//29
-            Building.of(
-                    BuildingAbbrev.카페_1984_학생회관점.getOriginalName(),
-                    0L,
-                    BuildingAbbrev.카페_1984_학생회관점.name(),
-                    BigDecimal.valueOf(37.541840),
-                    BigDecimal.valueOf(127.077815))
-    );
-    buildings.add(//30
-            Building.of(
-                    BuildingAbbrev.카페_1984_도서관점.getOriginalName(),
-                    0L,
-                    BuildingAbbrev.카페_1984_도서관점.name(),
-                    BigDecimal.valueOf(37.541927),
-                    BigDecimal.valueOf(127.073876))
-    );
-    buildings.add(//31
-            Building.of(
-                    BuildingAbbrev.CU_학생회관점.getOriginalName(),
-                    0L,
-                    BuildingAbbrev.CU_학생회관점.name(),
-                    BigDecimal.valueOf(37.541797),
-                    BigDecimal.valueOf(127.078266))
-    );
-    //CU
-    buildings.add(//32
-            Building.of(
-                    BuildingAbbrev.CU_도서관점.getOriginalName(),
-                    0L,
-                    BuildingAbbrev.CU_도서관점.name(),
-                    BigDecimal.valueOf(37.541994),
-                    BigDecimal.valueOf(127.074035))
-    );
-    //학생식당
-    buildings.add(//33
-            Building.of(
-                    BuildingAbbrev.학생식당_학생회관점.getOriginalName(),
-                    0L,
-                    BuildingAbbrev.학생식당_학생회관점.name(),
-                    BigDecimal.valueOf(37.541994),
-                    BigDecimal.valueOf(127.074035))
-    );
-    buildings.add(//34
-            Building.of(
-                    BuildingAbbrev.학생식당_도서관점.getOriginalName(),
-                    0L,
-                    BuildingAbbrev.학생식당_도서관점.name(),
-                    BigDecimal.valueOf(37.541994),
-                    BigDecimal.valueOf(127.074035))
-    );
-    buildings.add(//35
-            Building.of(
-                    BuildingAbbrev.학생식당_기숙사점.getOriginalName(),
-                    0L,
-                    BuildingAbbrev.학생식당_기숙사점.name(),
-                    BigDecimal.valueOf(37.541994),
-                    BigDecimal.valueOf(127.074035))
-    );
-    //KHUB
-    //KCUBE
-    buildings.add(//36
-            Building.of(
-                    BuildingAbbrev.KCUBE_공학관.getOriginalName(),
-                    0L,
-                    BuildingAbbrev.KCUBE_공학관.name(),
-                    BigDecimal.valueOf(37.541994),
-                    BigDecimal.valueOf(127.074035))
-    );
 
     return buildings;
   }
-}*/
+}

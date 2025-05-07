@@ -1,4 +1,4 @@
-package ku_rum.backend.global.dataInit;
+package ku_rum.backend.global.dataInit2;
 
 import ku_rum.backend.domain.college.domain.College;
 import org.springframework.stereotype.Component;
