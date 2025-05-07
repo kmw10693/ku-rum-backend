@@ -5,11 +5,8 @@ import ku_rum.backend.config.RestDocsTestSupport;
 import ku_rum.backend.domain.building.application.BuildingSearchService;
 import ku_rum.backend.domain.building.dto.response.BuildingResponse;
 import ku_rum.backend.domain.category.domain.Category;
-import ku_rum.backend.domain.category.dto.response.CategoryDetailResponse;
-import ku_rum.backend.domain.menu.dto.response.MenuSimpleResponse;
 import ku_rum.backend.domain.user.application.UserService;
 import ku_rum.backend.domain.user.application.UserValidator;
-import ku_rum.backend.global.batch.BatchScheduler;
 import ku_rum.backend.global.utill.RedisUtil;
 import ku_rum.backend.global.domain.repository.ApiLogRepository;
 import ku_rum.backend.global.security.JwtTokenProvider;
@@ -21,7 +18,6 @@ import org.springframework.batch.core.explore.JobExplorer;
 import org.springframework.batch.core.launch.JobLauncher;
 import org.springframework.batch.core.launch.JobOperator;
 import org.springframework.batch.core.repository.JobRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -29,7 +25,6 @@ import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.ActiveProfiles;
 
-import javax.sql.DataSource;
 import java.math.BigDecimal;
 import java.util.List;
 
