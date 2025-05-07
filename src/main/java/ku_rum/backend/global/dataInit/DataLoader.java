@@ -1,36 +1,32 @@
-/*
-
 package ku_rum.backend.global.dataInit;
 
 import jakarta.annotation.PostConstruct;
 import ku_rum.backend.domain.building.domain.Building;
-import ku_rum.backend.domain.category.domain.repository.BuildingCategoryRepository;
-import ku_rum.backend.domain.building.domain.repository.BuildingRepository;
-import ku_rum.backend.domain.category.domain.Category;
-import ku_rum.backend.domain.category.domain.repository.CategoryRepository;
+import ku_rum.backend.domain.building.repository.BuildingViewRepository;
 import ku_rum.backend.domain.college.domain.College;
 import ku_rum.backend.domain.college.domain.repository.CollegeRepository;
 import ku_rum.backend.domain.department.domain.Department;
 import ku_rum.backend.domain.department.domain.repository.DepartmentRepository;
-import ku_rum.backend.domain.menu.domain.repository.MenuRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.List;
+
 
 @Component
 @RequiredArgsConstructor
 public class DataLoader implements ApplicationRunner {
-    private final BuildingRepository buildingRepository;
-    private final CategoryRepository categoryRepository;
-    private final BuildingCategoryRepository buildingCategoryRepository;
-    private final MenuRepository menuRepository;
-    private final DepartmentRepository departmentRepository;
+    private final BuildingViewRepository buildingViewRepository;
+    private final BuildingInitializer buildingInitializer;
+
     private final CollegeRepository collegeRepository;
+    private final CollegeInitializer collegeInitializer;
+
+    private final DepartmentRepository departmentRepository;
+    private final DepartmentInitializer departmentInitializer;
 
     @PostConstruct
     public void init() {
@@ -40,45 +36,37 @@ public class DataLoader implements ApplicationRunner {
     @Override
     @Transactional
     public void run(ApplicationArguments args) throws Exception {
-        // 건물 데이터 초기화
-        if (buildingRepository.count() == 0) {
-            List<Building> savedBuildings = buildingRepository.saveAll(BuildingInitializer.initialize());
+        List<Building> savedBuildings;
+        List<College> savedColleges;
+        List<Department> savedDepartments;
 
-            // 단과대학 데이터 초기화
-            if (collegeRepository.count() == 0) {
-                List<College> savedColleges = collegeRepository.saveAll(CollegeInitializer.initialize());
+        //빌딩 정보 반환
+        if (buildingViewRepository.count() == 0) {
+            savedBuildings = buildingViewRepository.saveAll(buildingInitializer.initialize());
+        }else{
+            savedBuildings = buildingViewRepository.findAll();
+        }
 
-                // 카테고리 데이터 초기화
-                if (categoryRepository.count() == 0) {
-                    List<Category> savedCategories = categoryRepository.saveAll(CategoryInitializer.initialize());
+        //단과대 정보 반환
+        if (collegeRepository.count() == 0){
+            savedColleges = collegeRepository.saveAll(collegeInitializer.initialize());
+            System.out.println("Colleges saved1: " + savedColleges.size());  // Debug log to confirm
 
-                    // 학과 데이터 초기화
-                    if (departmentRepository.count() == 0) {
-                        List<Department> savedDepartments = departmentRepository.saveAll(
-                                DepartmentInitializer.initialize(savedBuildings, savedColleges)
-                        );
+        }else{
+            savedColleges = collegeRepository.findAll();
+            System.out.println("Colleges saved2: " + savedColleges.size());  // Debug log to confirm
 
-                        // 건물-카테고리 관계 초기화
-                        if (buildingCategoryRepository.count() == 0) {
-                            buildingCategoryRepository.saveAll(
-                                    BuildingCategoryInitializer.initialize(
-                                            new ArrayList<>(savedBuildings),
-                                            new ArrayList<>(savedCategories)
-                                    )
-                            );
-                        }
+        }
 
-                        // 메뉴 데이터 초기화
-                        if (menuRepository.count() == 0) {
-                            menuRepository.saveAll(
-                                    MenuInitializer.initializer(new ArrayList<>(savedCategories))
-                            );
-                        }
-                    }
-                }
-            }
+        //학과 정보 반환
+        if (departmentRepository.count() == 0){
+            savedDepartments = departmentRepository.saveAll(departmentInitializer.initialize(savedBuildings, savedColleges));
+            System.out.println("departments saved1: " + savedDepartments.size());  // Debug log to confirm
+
+        }else{
+            savedDepartments = departmentRepository.findAll();
+            System.out.println("departments saved2: " + savedDepartments.size());  // Debug log to confirm
+
         }
     }
 }
-*/
-

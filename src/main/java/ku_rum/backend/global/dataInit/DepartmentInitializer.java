@@ -1,4 +1,4 @@
-package ku_rum.backend.global.dataInit2;
+package ku_rum.backend.global.dataInit;
 
 import ku_rum.backend.domain.building.domain.Building;
 import ku_rum.backend.domain.college.domain.College;
