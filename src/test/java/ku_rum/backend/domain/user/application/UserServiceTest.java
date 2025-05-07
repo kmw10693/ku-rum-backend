@@ -3,6 +3,8 @@ package ku_rum.backend.domain.user.application;
 import jakarta.transaction.Transactional;
 import ku_rum.backend.domain.building.domain.Building;
 import ku_rum.backend.domain.building.domain.repository.BuildingRepository;
+import ku_rum.backend.domain.college.domain.College;
+import ku_rum.backend.domain.college.domain.repository.CollegeRepository;
 import ku_rum.backend.domain.department.domain.Department;
 import ku_rum.backend.domain.department.domain.repository.DepartmentRepository;
 import ku_rum.backend.domain.user.domain.User;
@@ -29,6 +31,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.test.context.ActiveProfiles;
 
 import java.math.BigDecimal;
@@ -53,10 +56,18 @@ class UserServiceTest {
     @Autowired
     private BuildingRepository buildingRepository;
 
+    @Autowired
+    private CollegeRepository collegeRepository;
+
+    @MockBean
+    private SecurityFilterChain securityFilterChain;
+
     @MockBean
     private BatchScheduler batchScheduler;
 
     private Building building;
+
+    private College college;
 
     private Department department;
 
@@ -69,9 +80,11 @@ class UserServiceTest {
     @BeforeEach
     void setUp() {
         building = Building.of("신공학관", 3L, "신공", 3L, BigDecimal.valueOf(64.3423423), BigDecimal.valueOf(64.3423423));
+        college = College.of("공과대학");
         buildingRepository.save(building);
+        collegeRepository.save(college);
 
-        department = Department.of("컴퓨터공학부", building);
+        department = Department.of("컴퓨터공학부", building, college);
         departmentRepository.save(department);
     }
 
@@ -104,7 +117,6 @@ class UserServiceTest {
                 .nickname("미미미누")
                 .password("password123")
                 .studentId("202112322")
-                .department(department)
                 .build();
 
         userRepository.save(user);
@@ -126,7 +138,6 @@ class UserServiceTest {
                 .nickname("미미미누")
                 .password("password123")
                 .studentId("202112322")
-                .department(department)
                 .build();
 
         userRepository.save(user);
@@ -146,7 +157,6 @@ class UserServiceTest {
                 .nickname("미미미누")
                 .password("password123")
                 .studentId("202112322")
-                .department(department)
                 .build();
 
         userRepository.save(user);
@@ -166,7 +176,6 @@ class UserServiceTest {
                 .nickname("미미미누")
                 .password("password123")
                 .studentId("202112322")
-                .department(department)
                 .build();
 
         userRepository.save(user);
@@ -187,7 +196,6 @@ class UserServiceTest {
                 .nickname("미미미누")
                 .password("password123")
                 .studentId("202112322")
-                .department(department)
                 .build();
 
         userRepository.save(user);
@@ -208,7 +216,6 @@ class UserServiceTest {
                 .nickname("미미미누")
                 .password(passwordEncoder.encode("password123"))
                 .studentId("202112322")
-                .department(department)
                 .build();
 
         userRepository.save(user);
@@ -232,7 +239,6 @@ class UserServiceTest {
                 .nickname("미미미누")
                 .password("password123")
                 .studentId("202112322")
-                .department(department)
                 .build();
 
         userRepository.save(user);
@@ -259,7 +265,6 @@ class UserServiceTest {
                 .nickname("미미미누")
                 .password("password123")
                 .studentId("202112322")
-                .department(department)
                 .build();
 
         userRepository.save(user);

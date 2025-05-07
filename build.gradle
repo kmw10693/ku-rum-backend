@@ -3,7 +3,7 @@ import org.hidetake.gradle.swagger.generator.GenerateSwaggerUI
 
 buildscript {
 	ext {
-		restdocsApiSpecVersion = '0.17.1' // restdocsApiSpecVersion 버전 변수 설정
+		restdocsApiSpecVersion = '0.18.2' // restdocsApiSpecVersion 버전 변수 설정
 	}
 }
 
@@ -111,9 +111,9 @@ openapi3 {
 			{ url = "https://kuroom.shop" },
 			{ url = "http://localhost:8080" }
 	]
-	title = "API 문서"
-	description = "RestDocsWithSwagger Docs"
-	version = "0.0.1"
+	title = "쿠룸 백엔드 API 문서"
+	description = "RestDocs를 이용한 Swagger API 문서입니다."
+	version = "1.0"
 	format = "yaml"
 }
 
@@ -213,7 +213,7 @@ tasks.withType(GenerateSwaggerUI) {
 	doFirst {
 		def swaggerUIFile = file("${openapi3.outputDirectory}/openapi3.yaml")
 
-		def securitySchemesContent =  "  securitySchemes:\n" +  \
+	/*	def securitySchemesContent =  "  securitySchemes:\n" +  \
                                       "    APIKey:\n" +  \
                                       "      type: apiKey\n" +  \
                                       "      name: Authorization\n" +  \
@@ -221,7 +221,7 @@ tasks.withType(GenerateSwaggerUI) {
                                       "security:\n" +
 				"  - APIKey: []  # Apply the security scheme here"
 
-		swaggerUIFile.append securitySchemesContent
+		swaggerUIFile.append securitySchemesContent*/
 	}
 }
 

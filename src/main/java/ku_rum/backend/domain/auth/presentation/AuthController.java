@@ -5,6 +5,7 @@ import jakarta.validation.Valid;
 import ku_rum.backend.domain.auth.application.AuthService;
 import ku_rum.backend.domain.auth.dto.request.LoginRequest;
 import ku_rum.backend.domain.auth.dto.request.ReissueRequest;
+import ku_rum.backend.domain.auth.dto.response.AuthResponse;
 import ku_rum.backend.global.support.response.BaseResponse;
 import ku_rum.backend.domain.user.dto.response.TokenResponse;
 import lombok.RequiredArgsConstructor;
@@ -19,7 +20,7 @@ public class AuthController {
     private final AuthService authService;
 
     @PostMapping("/login")
-    public BaseResponse<TokenResponse> login(@Valid @RequestBody LoginRequest authRequest) {
+    public BaseResponse<AuthResponse> login(@Valid @RequestBody LoginRequest authRequest) {
         return BaseResponse.ok(authService.login(authRequest));
     }
 
@@ -32,5 +33,13 @@ public class AuthController {
     @PatchMapping("/reissue")
     public BaseResponse<TokenResponse> reissue(@Valid @RequestBody ReissueRequest reissueRequest) {
         return BaseResponse.ok(authService.reissue(reissueRequest));
+    }
+
+    /**
+     * 임시 토큰 처리 후, 엑세스, 리프레시 토큰 발급
+     */
+    @PostMapping("/token")
+    public BaseResponse<AuthResponse> exchangeToken(@RequestParam String authCode) {
+        return BaseResponse.ok(authService.exchangeToken(authCode));
     }
 }

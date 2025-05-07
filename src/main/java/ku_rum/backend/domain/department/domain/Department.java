@@ -2,6 +2,7 @@ package ku_rum.backend.domain.department.domain;
 
 import jakarta.persistence.*;
 import ku_rum.backend.domain.building.domain.Building;
+import ku_rum.backend.domain.college.domain.College;
 import ku_rum.backend.global.support.type.BaseEntity;
 import lombok.*;
 
@@ -22,16 +23,22 @@ public class Department extends BaseEntity {
     @JoinColumn(name = "buliding_id", nullable = false)
     private Building building;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "college_id")
+    private College college;
+
     @Builder
-    private Department(String name, Building building) {
+    private Department(String name, Building building, College college) {
         this.name = name;
         this.building = building;
+        this.college = college;
     }
 
-    public static Department of(String name, Building building) {
+    public static Department of(String name, Building building, College college) {
         return Department.builder()
                 .name(name)
                 .building(building)
+                .college(college)
                 .build();
     }
 }

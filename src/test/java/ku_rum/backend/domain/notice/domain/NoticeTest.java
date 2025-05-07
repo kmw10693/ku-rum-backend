@@ -1,6 +1,7 @@
 package ku_rum.backend.domain.notice.domain;
 
 import ku_rum.backend.domain.building.domain.Building;
+import ku_rum.backend.domain.college.domain.College;
 import ku_rum.backend.domain.department.domain.Department;
 import ku_rum.backend.domain.user.domain.User;
 import ku_rum.backend.domain.user.domain.AgreementStatus;
@@ -25,7 +26,7 @@ class NoticeTest {
         //given
         Building building = createBuilding();
         Department department = getDepartment(building);
-        User user = User.of("사용자1", "kmw106933@konkuk.ac.kr","미미미누", "password123", "202112322", department, AgreementStatus.AGREED);
+        User user = User.of("사용자1", "kmw106933@konkuk.ac.kr","미미미누", "password123", "202112322", department, AgreementStatus.AGREED, null);
 
         //when
         Notice notice = Notice.of("가나다라", "naver.com/abc123", "2024-11-07", NoticeCategory.AFFAIR, GENERAL);
@@ -41,7 +42,7 @@ class NoticeTest {
         //given
         Building building = createBuilding();
         Department department = getDepartment(building);
-        User user = User.of("사용자1", "kmw106933@konkuk.ac.kr","미미미누", "password123", "202112322", department, AgreementStatus.AGREED);
+        User user = User.of("사용자1", "kmw106933@konkuk.ac.kr","미미미누", "password123", "202112322", department, AgreementStatus.AGREED, null);
 
         //when
         Notice notice = Notice.of("가나다라", "naver.com/abc123", "2024-11-07", NoticeCategory.AFFAIR, GENERAL);
@@ -52,7 +53,8 @@ class NoticeTest {
 
     private Department getDepartment(Building building) {
         String Deptname = "컴퓨터공학부";
-        Department department = Department.of(Deptname, building);
+        College college = College.of("공과대학");
+        Department department = Department.of(Deptname, building, college);
         return department;
     }
 

@@ -11,6 +11,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
+import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.test.context.ActiveProfiles;
 
 import static com.epages.restdocs.apispec.ResourceDocumentation.resource;
@@ -28,6 +29,9 @@ class RecruitmentControllerTest extends RestDocsTestSupport {
 
     @MockBean
     private RecruitmentService recruitmentService;
+
+    @MockBean
+    private SecurityFilterChain securityFilterChain;
 
     @MockBean
     private BatchScheduler batchScheduler;
@@ -50,7 +54,7 @@ class RecruitmentControllerTest extends RestDocsTestSupport {
                 .andDo(restDocs.document(
                         resource(
                                 ResourceSnippetParameters.builder()
-                                        .tag("공지사항 API")
+                                        .tag("공지사항 관련 API")
                                         .description("취업 공지 크롤링")
                                         .responseFields(
                                 fieldWithPath("code")

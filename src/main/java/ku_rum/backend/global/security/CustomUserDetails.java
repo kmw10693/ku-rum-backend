@@ -7,24 +7,35 @@ import lombok.ToString;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.oauth2.core.user.OAuth2User;
 
 import java.util.Collection;
+import java.util.Map;
 
 @Getter
 @NoArgsConstructor
 @ToString
-public class CustomUserDetails implements UserDetails {
+public class CustomUserDetails implements UserDetails, OAuth2User {
     private Long userId;
     private String username;
     private String email;
     private Collection<? extends GrantedAuthority> roles;
     private String password;
+    private Map<String, Object> attributes;
 
     private CustomUserDetails(Long userId, String username, Collection<? extends GrantedAuthority> role, String password) {
         this.userId = userId;
         this.username = username;
         this.email = email;
         this.roles = role;
+        this.password = password;
+    }
+
+    private CustomUserDetails(Long userId, String username, String email, Collection<? extends GrantedAuthority> roles, String password) {
+        this.userId = userId;
+        this.username = username;
+        this.email = email;
+        this.roles = roles;
         this.password = password;
     }
 
@@ -46,12 +57,10 @@ public class CustomUserDetails implements UserDetails {
         );
     }
 
-    private CustomUserDetails(Long userId, String username, String email, Collection<? extends GrantedAuthority> roles, String password) {
-        this.userId = userId;
-        this.username = username;
-        this.email = email;
-        this.roles = roles;
-        this.password = password;
+    public static CustomUserDetails create(User user, Map<String, Object> attributes) {
+        CustomUserDetails from = from(user);
+        from.changeAttributes(attributes);
+        return from;
     }
 
     @Override
@@ -67,5 +76,19 @@ public class CustomUserDetails implements UserDetails {
     @Override
     public String getUsername() {
         return username;
+    }
+
+    @Override
+    public Map<String, Object> getAttributes() {
+        return attributes;
+    }
+
+    @Override
+    public String getName() {
+        return username;
+    }
+
+    private void changeAttributes(Map<String, Object> attributes) {
+        this.attributes = attributes;
     }
 }

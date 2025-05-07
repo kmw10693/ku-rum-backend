@@ -13,6 +13,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
+import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.test.context.ActiveProfiles;
 
 import static com.epages.restdocs.apispec.ResourceDocumentation.resource;
@@ -28,6 +29,9 @@ class MailControllerTest extends RestDocsTestSupport {
 
     @MockBean
     private MailService mailService;
+
+    @MockBean
+    private SecurityFilterChain securityFilterChain;
 
     @MockBean
     private BatchScheduler batchScheduler;
@@ -53,7 +57,7 @@ class MailControllerTest extends RestDocsTestSupport {
                 .andDo(restDocs.document(
                         resource(
                                 ResourceSnippetParameters.builder()
-                                        .tag("메일 API")
+                                        .tag("메일 관련 API")
                                         .description("이메일 인증 요청")
                                         .requestFields(
                                                 fieldWithPath("email")
@@ -98,7 +102,7 @@ class MailControllerTest extends RestDocsTestSupport {
                 .andDo(restDocs.document(
                         resource(
                                 ResourceSnippetParameters.builder()
-                                        .tag("메일 API")
+                                        .tag("메일 관련 API")
                                         .description("이메일 인증 코드 검증")
                                         .requestFields(
                                                 fieldWithPath("email")

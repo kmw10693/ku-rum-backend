@@ -1,6 +1,7 @@
 package ku_rum.backend.domain.friend.domain;
 
 import ku_rum.backend.domain.building.domain.Building;
+import ku_rum.backend.domain.college.domain.College;
 import ku_rum.backend.domain.department.domain.Department;
 import ku_rum.backend.domain.user.domain.User;
 import ku_rum.backend.domain.user.domain.AgreementStatus;
@@ -31,8 +32,9 @@ class FriendTest {
 
     private User createUser(String username, String studentID) {
         Building building = createBuilding();
-        Department department = Department.of("컴퓨터공학부", building);
-        return User.of(username, "kmw106933@konkuk.ac.kr", studentID, "password123", "202112322", department, AgreementStatus.AGREED);
+        College college = College.of("공과대학");
+        Department department = Department.of("컴퓨터공학부", building, college);
+        return User.of(username, "kmw106933@konkuk.ac.kr", studentID, "password123", "202112322", department, AgreementStatus.AGREED, null);
     }
 
     private Building createBuilding() {

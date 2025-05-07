@@ -24,6 +24,11 @@ public class RedisUtil {
         log.debug("레디스에 키, 값 저장 완료");
     }
 
+    public void setRedisData(String key, String value, long expireMillis) {
+        redisTemplate.opsForValue().set(key, value,  Duration.ofMillis(expireMillis));
+        log.debug("레디스에 키, 값 저장 완료");
+    }
+
     public void deleteRedisData(String key) {
         redisTemplate.delete(key);
         log.info("레디스에 키 삭제 완료");

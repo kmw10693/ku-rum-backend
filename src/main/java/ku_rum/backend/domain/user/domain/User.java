@@ -2,11 +2,10 @@ package ku_rum.backend.domain.user.domain;
 
 import jakarta.persistence.*;
 import ku_rum.backend.domain.department.domain.Department;
+import ku_rum.backend.domain.oauth.domain.OAuth2MemberInfo;
+import ku_rum.backend.domain.oauth.domain.ProviderType;
 import ku_rum.backend.global.support.type.BaseEntity;
-import lombok.AccessLevel;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.hibernate.annotations.SQLDelete;
 
 import java.util.ArrayList;
@@ -25,26 +24,24 @@ public class User extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false, length = 20, unique = true)
+    private String oauthId;
+
+    @Column(length = 20, unique = true)
     private String loginId;
 
-    @Column(nullable = false, unique = true)
+    @Column(unique = true)
     private String email;
 
-    @Column(nullable = false, length = 50, unique = true)
+    @Column(length = 50)
     private String nickname;
 
     @Column(length = 128)
     private String password;
 
-    @Column(nullable = false, length = 15)
+    @Column(length = 15)
     private String studentId;
 
     private String imageUrl;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "department_id", nullable = false)
-    private Department department;
 
     @ElementCollection
     private List<String> roles = new ArrayList<>();
@@ -53,6 +50,9 @@ public class User extends BaseEntity {
     private AgreementStatus agreementStatus;
 
     private boolean active = true;
+
+    @Enumerated(EnumType.STRING)
+    private ProviderType providerType;
 
     public void changePassword(String password) {
         this.password = password;
@@ -67,26 +67,37 @@ public class User extends BaseEntity {
     }
 
     @Builder
-    private User(String loginId, String email, String nickname, String password, String studentId, Department department, AgreementStatus agreementStatus) {
+    private User(String loginId, String oauthId, String email, String nickname, String password, String studentId, AgreementStatus agreementStatus, ProviderType providerType, String imageUrl) {
         this.loginId = loginId;
+        this.oauthId = oauthId;
         this.email = email;
         this.nickname = nickname;
         this.password = password;
         this.studentId = studentId;
-        this.department = department;
         this.roles.add(USER.getRole());
         this.agreementStatus = agreementStatus;
+        this.imageUrl = imageUrl;
+        this.providerType = providerType;
     }
 
-    public static User of(String loginId, String email, String nickname, String password, String studentId, Department department, AgreementStatus agreementStatus) {
+    public static User of(String loginId, String email, String nickname, String password, String studentId, Department department, AgreementStatus agreementStatus, ProviderType providerType) {
         return User.builder()
                 .loginId(loginId)
                 .email(email)
                 .nickname(nickname)
                 .password(password)
                 .studentId(studentId)
-                .department(department)
                 .agreementStatus(agreementStatus)
+                .providerType(providerType)
+                .build();
+    }
+
+    public static User createMemberWithOAuthInfo(OAuth2MemberInfo memberInfo, ProviderType providerType) {
+        return User.builder()
+                .oauthId(memberInfo.getId())
+                .nickname(memberInfo.getName())
+                .email(memberInfo.getEmail())
+                .providerType(providerType) // enum 변환
                 .build();
     }
 }
