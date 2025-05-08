@@ -2,16 +2,19 @@ package ku_rum.backend.domain.user.presentation;
 
 import com.epages.restdocs.apispec.ResourceSnippetParameters;
 import ku_rum.backend.config.RestDocsTestSupport;
+import ku_rum.backend.domain.common.mail.dto.request.EmailValidationRequest;
+import ku_rum.backend.domain.friend.application.FriendManageService;
+import ku_rum.backend.domain.friend.domain.repository.FriendBlockRepository;
 import ku_rum.backend.domain.notice.domain.repository.NoticeRepositoryImpl;
 import ku_rum.backend.domain.user.application.UserService;
-import ku_rum.backend.domain.common.mail.dto.request.EmailValidationRequest;
 import ku_rum.backend.domain.user.application.UserValidator;
 import ku_rum.backend.domain.user.domain.AgreementStatus;
 import ku_rum.backend.domain.user.dto.request.ProfileChangeRequest;
 import ku_rum.backend.domain.user.dto.request.UserSaveRequest;
 import ku_rum.backend.domain.user.dto.response.LoginIdResponse;
-import ku_rum.backend.global.security.CustomUserDetails;
 import ku_rum.backend.global.batch.BatchScheduler;
+import ku_rum.backend.global.domain.repository.ApiLogRepository;
+import ku_rum.backend.global.security.CustomUserDetails;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.json.JsonType;
@@ -33,7 +36,7 @@ import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.when;
 import static org.springframework.restdocs.headers.HeaderDocumentation.headerWithName;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.*;
-import static org.springframework.restdocs.payload.PayloadDocumentation.*;
+import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
 import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -61,6 +64,15 @@ class UserControllerTest extends RestDocsTestSupport {
 
     @MockBean
     private NoticeRepositoryImpl noticeRepository;
+
+    @MockBean
+    private ApiLogRepository apiLogRepository;
+
+    @MockBean
+    private FriendManageService friendManageService;
+
+    @MockBean
+    private FriendBlockRepository friendBlockRepository;
 
     @DisplayName("신규 유저를 생성한다.")
     @Test

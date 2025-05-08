@@ -1,12 +1,14 @@
 package ku_rum.backend.domain.user.application;
 
 import ku_rum.backend.domain.department.application.DepartmentValidator;
-import ku_rum.backend.domain.department.domain.repository.DepartmentRepository;
 import ku_rum.backend.domain.user.domain.repository.UserRepository;
 import ku_rum.backend.domain.user.dto.request.UserSaveRequest;
-import ku_rum.backend.global.exception.department.NoSuchDepartmentException;
 import ku_rum.backend.global.exception.email.DuplicateEmailException;
-import ku_rum.backend.global.exception.user.*;
+import ku_rum.backend.global.exception.global.GlobalException;
+import ku_rum.backend.global.exception.user.DuplicateLoginIdException;
+import ku_rum.backend.global.exception.user.DuplicateNicknameException;
+import ku_rum.backend.global.exception.user.DuplicateStudentIdException;
+import ku_rum.backend.global.exception.user.NoSuchUserException;
 import ku_rum.backend.global.security.CustomUserDetails;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -69,7 +71,7 @@ public class UserValidator {
 
     public void validatePassword(final String rawPassword, final String encodedPassword) {
         if (!passwordEncoder.matches(rawPassword, encodedPassword)) {
-            throw new InvalidPasswordException(PREV_PASSWORD_EXCEPTION);
+            throw new GlobalException(PREV_PASSWORD_EXCEPTION);
         }
     }
 }
