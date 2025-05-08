@@ -1,4 +1,4 @@
-package ku_rum.backend.domain.building.model;
+package ku_rum.backend.domain.building.domain.model;
 
 import lombok.Getter;
 

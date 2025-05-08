@@ -1,4 +1,4 @@
-package ku_rum.backend.domain.building.api;
+package ku_rum.backend.domain.building.presentation;
 
 import ku_rum.backend.domain.building.dto.response.BuildingViewResponse;
 import ku_rum.backend.domain.building.application.BuildingViewService;
@@ -11,7 +11,7 @@ import java.util.*;
 @RestController
 @RequestMapping("/api/v1/buildings")
 @RequiredArgsConstructor
-public class BuildingViewApi {
+public class BuildingViewController {
 
     private final BuildingViewService buildingViewService;
 

@@ -1,7 +1,7 @@
 package ku_rum.backend.global.dataInit;
 
 import ku_rum.backend.domain.building.domain.Building;
-import ku_rum.backend.domain.building.model.BuildingAbbrev;
+import ku_rum.backend.domain.building.domain.model.BuildingAbbrev;
 import org.springframework.stereotype.Component;
 import java.math.BigDecimal;
 import java.util.ArrayList;

@@ -4,9 +4,8 @@ import ku_rum.backend.domain.category.domain.Category;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import static ku_rum.backend.domain.category.domain.CategoryType.STUDENT_CAFETERIA;
+import static ku_rum.backend.domain.category.domain.model.CategoryType.STUDENT_CAFETERIA;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
 
 class MenuTest {
 

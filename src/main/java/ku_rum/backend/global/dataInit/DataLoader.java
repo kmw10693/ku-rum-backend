@@ -2,7 +2,9 @@ package ku_rum.backend.global.dataInit;
 
 import jakarta.annotation.PostConstruct;
 import ku_rum.backend.domain.building.domain.Building;
-import ku_rum.backend.domain.building.repository.BuildingViewRepository;
+import ku_rum.backend.domain.building.domain.repository.BuildingViewRepository;
+import ku_rum.backend.domain.category.domain.Category;
+import ku_rum.backend.domain.category.domain.repository.CategoryViewRepository;
 import ku_rum.backend.domain.college.domain.College;
 import ku_rum.backend.domain.college.domain.repository.CollegeRepository;
 import ku_rum.backend.domain.department.domain.Department;
@@ -28,6 +30,9 @@ public class DataLoader implements ApplicationRunner {
     private final DepartmentRepository departmentRepository;
     private final DepartmentInitializer departmentInitializer;
 
+    private final CategoryViewRepository categoryViewRepository;
+    private final CategoryInitializer categoryInitializer;
+
     @PostConstruct
     public void init() {
         System.out.println("DataLoader 실행됨!");
@@ -39,6 +44,7 @@ public class DataLoader implements ApplicationRunner {
         List<Building> savedBuildings;
         List<College> savedColleges;
         List<Department> savedDepartments;
+        List<Category> savedCategories;
 
         //빌딩 정보 반환
         if (buildingViewRepository.count() == 0) {
@@ -50,22 +56,33 @@ public class DataLoader implements ApplicationRunner {
         //단과대 정보 반환
         if (collegeRepository.count() == 0){
             savedColleges = collegeRepository.saveAll(collegeInitializer.initialize());
-            System.out.println("Colleges saved1: " + savedColleges.size());  // Debug log to confirm
+            System.out.println("Colleges saved1: " + savedColleges.size());
 
         }else{
             savedColleges = collegeRepository.findAll();
-            System.out.println("Colleges saved2: " + savedColleges.size());  // Debug log to confirm
+            System.out.println("Colleges saved2: " + savedColleges.size());
 
         }
 
         //학과 정보 반환
         if (departmentRepository.count() == 0){
             savedDepartments = departmentRepository.saveAll(departmentInitializer.initialize(savedBuildings, savedColleges));
-            System.out.println("departments saved1: " + savedDepartments.size());  // Debug log to confirm
+            System.out.println("departments saved1: " + savedDepartments.size());
 
         }else{
             savedDepartments = departmentRepository.findAll();
-            System.out.println("departments saved2: " + savedDepartments.size());  // Debug log to confirm
+            System.out.println("departments saved2: " + savedDepartments.size());
+
+        }
+
+        //카테고리 정보 반환
+        if (categoryViewRepository.count() == 0){
+            savedCategories = categoryViewRepository.saveAll(categoryInitializer.initialize());
+            System.out.println("categories saved1: " + savedCategories.size());
+
+        }else{
+            savedCategories = categoryViewRepository.findAll();
+            System.out.println("categories saved2: " + savedCategories.size());
 
         }
     }

@@ -3,7 +3,7 @@ package ku_rum.backend.domain.building.application;
 
 import ku_rum.backend.domain.building.domain.Building;
 import ku_rum.backend.domain.building.dto.response.BuildingViewResponse;
-import ku_rum.backend.domain.building.repository.BuildingViewRepository;
+import ku_rum.backend.domain.building.domain.repository.BuildingViewRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
