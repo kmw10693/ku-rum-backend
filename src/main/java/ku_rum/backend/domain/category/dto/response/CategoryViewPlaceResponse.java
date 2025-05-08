@@ -14,7 +14,7 @@ public record CategoryViewPlaceResponse(
 ) {
     public static CategoryViewPlaceResponse from(Place place) {
         return new CategoryViewPlaceResponse(
-                place.getPlaceId(),
+                place.getId(),
                 place.getName(),
                 place.getLatitude(),
                 place.getLongitude(),

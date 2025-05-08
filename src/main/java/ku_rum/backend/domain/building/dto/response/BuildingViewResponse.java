@@ -14,7 +14,7 @@ public record BuildingViewResponse(
 ) {
     public static BuildingViewResponse from(Building building) {
         return new BuildingViewResponse(
-                building.getBuildingId(),
+                building.getId(),
                 building.getAbbreviation(),
                 building.getName(),
                 building.getNumber(),
