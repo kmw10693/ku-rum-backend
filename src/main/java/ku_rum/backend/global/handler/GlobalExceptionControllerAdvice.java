@@ -3,6 +3,7 @@ package ku_rum.backend.global.handler;
 import com.github.dockerjava.api.exception.BadRequestException;
 import com.github.dockerjava.api.exception.InternalServerErrorException;
 import jakarta.validation.ConstraintViolationException;
+import ku_rum.backend.global.exception.global.GlobalException;
 import ku_rum.backend.global.support.response.BaseErrorResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.hibernate.TypeMismatchException;
@@ -87,4 +88,10 @@ public class GlobalExceptionControllerAdvice {
         return new BaseErrorResponse(METHOD_ARGUMENT_ERROR.getStatus(), errorMessage);
     }
 
+    @ExceptionHandler(GlobalException.class)
+    public BaseErrorResponse handleGlobalException(final GlobalException e) {
+        log.error("errorCode : {}, errorMessage : {}", e.getStatus().getCode(), e.getStatus().getMessage());
+
+        return new BaseErrorResponse(e.getStatus());
+    }
 }

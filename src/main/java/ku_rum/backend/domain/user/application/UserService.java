@@ -13,6 +13,7 @@ import ku_rum.backend.domain.user.dto.response.LoginIdResponse;
 import ku_rum.backend.domain.user.dto.response.UserSaveResponse;
 import ku_rum.backend.global.exception.department.DuplicateDepartmentException;
 import ku_rum.backend.global.exception.department.NoSuchDepartmentException;
+import ku_rum.backend.global.exception.global.GlobalException;
 import ku_rum.backend.global.exception.user.*;
 import ku_rum.backend.global.utill.UserUtil;
 import lombok.RequiredArgsConstructor;
@@ -57,7 +58,7 @@ public class UserService {
         User user = userQueryService.getUserByLoginId(initiatePasswordResetRequest.loginId());
 
         if (passwordEncoder.matches(initiatePasswordResetRequest.newPassword(), user.getPassword())) {
-            throw new InvalidPasswordException(PREV_NEW_EQUAL_EXCEPTION);
+            throw new GlobalException(PREV_NEW_EQUAL_EXCEPTION);
         }
 
         user.changePassword(passwordEncoder.encode(initiatePasswordResetRequest.newPassword()));
@@ -71,7 +72,7 @@ public class UserService {
         userValidator.validatePassword(resetPasswordRequest.prevPassword(), user.getPassword());
 
         if (resetPasswordRequest.newPassword().equals(resetPasswordRequest.prevPassword())) {
-            throw new InvalidPasswordException(PREV_NEW_EQUAL_EXCEPTION);
+            throw new GlobalException(PREV_NEW_EQUAL_EXCEPTION);
         }
         user.changePassword(passwordEncoder.encode(resetPasswordRequest.newPassword()));
         log.info("계정 비밀번호 변경 완료: loginId={}", user.getLoginId());
