@@ -6,6 +6,10 @@ import ku_rum.backend.domain.auth.dto.request.LoginRequest;
 import ku_rum.backend.domain.auth.dto.request.ReissueRequest;
 import ku_rum.backend.domain.auth.dto.response.AuthResponse;
 import ku_rum.backend.domain.common.firebase.application.NotificationService;
+import ku_rum.backend.domain.department.application.UserDepartmentService;
+import ku_rum.backend.domain.department.domain.UserDepartment;
+import ku_rum.backend.domain.department.domain.repository.UserDepartmentRepository;
+import ku_rum.backend.domain.department.dto.DepartmentResponse;
 import ku_rum.backend.domain.oauth.handler.TempTokenProvider;
 import ku_rum.backend.domain.user.domain.User;
 import ku_rum.backend.domain.user.domain.repository.UserRepository;
@@ -27,6 +31,9 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 import static ku_rum.backend.global.support.status.BaseExceptionResponseStatus.*;
 
 @Slf4j
@@ -42,6 +49,7 @@ public class AuthService {
     private final NotificationService notificationService;
     private final TempTokenProvider tempTokenProvider;
     private final UserRepository userRepository;
+    private final UserDepartmentRepository userDepartmentRepository;
 
     public AuthResponse login(LoginRequest authRequest) {
         try {
@@ -128,6 +136,12 @@ public class AuthService {
     }
 
     private UserResponse buildUserResponse(User user) {
+        List<UserDepartment> byUserId = userDepartmentRepository.findByUserId(user.getId());
+        List<DepartmentResponse> list = byUserId.stream()
+                .map(UserDepartment::getDepartment)
+                .map(DepartmentResponse::of)
+                .toList();
+
         return UserResponse.of(
                 user.getId(),
                 user.getOauthId(),
@@ -135,6 +149,7 @@ public class AuthService {
                 user.getEmail(),
                 user.getNickname(),
                 user.getStudentId(),
-                user.getImageUrl());
+                user.getImageUrl(),
+                list);
     }
 }
