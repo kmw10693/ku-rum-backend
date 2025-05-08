@@ -9,6 +9,8 @@ import ku_rum.backend.domain.college.domain.College;
 import ku_rum.backend.domain.college.domain.repository.CollegeRepository;
 import ku_rum.backend.domain.department.domain.Department;
 import ku_rum.backend.domain.department.domain.repository.DepartmentRepository;
+import ku_rum.backend.domain.place.domain.Place;
+import ku_rum.backend.domain.place.domain.repository.PlaceViewRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
@@ -33,6 +35,9 @@ public class DataLoader implements ApplicationRunner {
     private final CategoryViewRepository categoryViewRepository;
     private final CategoryInitializer categoryInitializer;
 
+    private final PlaceViewRepository placeViewRepository;
+    private final PlaceInitializer placeInitializer;
+
     @PostConstruct
     public void init() {
         System.out.println("DataLoader 실행됨!");
@@ -45,6 +50,7 @@ public class DataLoader implements ApplicationRunner {
         List<College> savedColleges;
         List<Department> savedDepartments;
         List<Category> savedCategories;
+        List<Place> savedPlaces;
 
         //빌딩 정보 반환
         if (buildingViewRepository.count() == 0) {
@@ -83,6 +89,17 @@ public class DataLoader implements ApplicationRunner {
         }else{
             savedCategories = categoryViewRepository.findAll();
             System.out.println("categories saved2: " + savedCategories.size());
+
+        }
+
+        //장소 정보 반환
+        if (placeViewRepository.count() == 0){
+            savedPlaces = placeViewRepository.saveAll(placeInitializer.initialize(savedBuildings, savedCategories));
+            System.out.println("places saved1: " + savedPlaces.size());
+
+        }else{
+            savedPlaces = placeViewRepository.findAll();
+            System.out.println("places saved2: " + savedPlaces.size());
 
         }
     }
