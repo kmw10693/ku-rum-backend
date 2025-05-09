@@ -2,6 +2,7 @@ package ku_rum.backend.domain.building.presentation;
 
 import ku_rum.backend.domain.building.dto.response.BuildingViewResponse;
 import ku_rum.backend.domain.building.application.BuildingViewService;
+import ku_rum.backend.global.support.response.BaseResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -22,8 +23,8 @@ public class BuildingViewController {
      * @return
      */
     @GetMapping("/search/{number}")
-    public ResponseEntity<BuildingViewResponse> getBuildingByNumber(@PathVariable("number") Integer number) {
-        return ResponseEntity.ok(buildingViewService.getBuildingByNumber(number));
+    public BaseResponse<BuildingViewResponse> getBuildingByNumber(@PathVariable("number") Integer number) {
+        return BaseResponse.ok(buildingViewService.getBuildingByNumber(number));
     }
 
     /**
@@ -33,10 +34,10 @@ public class BuildingViewController {
      * @return
      */
     @GetMapping("/search")
-    public ResponseEntity<List<BuildingViewResponse>> searchBuildings(
+    public BaseResponse<List<BuildingViewResponse>> searchBuildings(
             @RequestParam(name = "name") String name
     ) {
-        return ResponseEntity.ok(buildingViewService.searchBuildings(name));
+        return BaseResponse.ok(buildingViewService.searchBuildings(name));
     }
 
 

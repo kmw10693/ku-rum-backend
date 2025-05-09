@@ -44,7 +44,7 @@ public class FriendRepositoryCustomImplTest {
     void findFriends_친구_목록_조회() {
         // Given
         College college = College.of("공과대학");
-        Building building = Building.of("신공학관", 3L,"신공", 1L, BigDecimal.valueOf(234.3), BigDecimal.valueOf(342.23));
+        Building building = Building.of("신공학관", 3L,"신공",  BigDecimal.valueOf(234.3), BigDecimal.valueOf(342.23));
         entityManager.persist(building);
         entityManager.persist(college);
         Department department = Department.of("컴퓨터공학부", building, college);
@@ -95,7 +95,7 @@ public class FriendRepositoryCustomImplTest {
     @Test
     void existFriends_친구_존재여부() {
         // Given
-        Building building = Building.of("신공학관", 3L,"신공", 1L, BigDecimal.valueOf(234.3), BigDecimal.valueOf(342.23));
+        Building building = Building.of("신공학관", 3L,"신공",  BigDecimal.valueOf(234.3), BigDecimal.valueOf(342.23));
         College college = College.of("공과대학");
         entityManager.persist(building);
         entityManager.persist(college);
@@ -134,7 +134,7 @@ public class FriendRepositoryCustomImplTest {
     @Test
     void existFriends_친구_존재하지않음() {
         // Given
-        Building building = Building.of("신공학관", 3L,"신공", 1L, BigDecimal.valueOf(234.3), BigDecimal.valueOf(342.23));
+        Building building = Building.of("신공학관", 3L,"신공", BigDecimal.valueOf(234.3), BigDecimal.valueOf(342.23));
         College college = College.of("공과대학");
         entityManager.persist(building);
         entityManager.persist(college);
@@ -173,7 +173,7 @@ public class FriendRepositoryCustomImplTest {
     @Test
     void findOriginFriends_친구_상태조회() {
         // Given
-        Building building = Building.of("신공학관", 3L,"신공", 1L, BigDecimal.valueOf(234.3), BigDecimal.valueOf(342.23));
+        Building building = Building.of("신공학관", 3L,"신공", BigDecimal.valueOf(234.3), BigDecimal.valueOf(342.23));
         College college = College.of("공과대학");
         entityManager.persist(building);
         entityManager.persist(college);

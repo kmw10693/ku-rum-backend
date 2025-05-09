@@ -1,7 +1,7 @@
 package ku_rum.backend.domain.user.domain.repository;
 
 import ku_rum.backend.domain.building.domain.Building;
-import ku_rum.backend.domain.building.domain.repository.BuildingRepository;
+import ku_rum.backend.domain.building.domain.repository.BuildingViewRepository;
 import ku_rum.backend.domain.college.domain.College;
 import ku_rum.backend.domain.department.domain.Department;
 import ku_rum.backend.domain.department.domain.repository.DepartmentRepository;
@@ -20,7 +20,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @SpringBootTest
 @Transactional
@@ -33,7 +33,7 @@ class UserRepositoryTest {
     private UserRepository userRepository;
 
     @Autowired
-    private BuildingRepository buildingRepository;
+    private BuildingViewRepository buildingViewRepository;
 
     @Autowired
     private DepartmentRepository departmentRepository;
@@ -46,8 +46,8 @@ class UserRepositoryTest {
 
     @BeforeEach
     void setup() {
-        Building building = Building.of("신공학관", 3L,"신공",1L, BigDecimal.valueOf(23.32), BigDecimal.valueOf(23.32));
-        buildingRepository.save(building);
+        Building building = Building.of("신공학관", 3L,"신공",BigDecimal.valueOf(23.32), BigDecimal.valueOf(23.32));
+        buildingViewRepository.save(building);
 
         College college = College.of("공과대학");
         Department department = Department.of("컴퓨터공학부" , building, college);
