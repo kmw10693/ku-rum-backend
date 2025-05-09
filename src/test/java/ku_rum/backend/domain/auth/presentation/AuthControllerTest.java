@@ -6,6 +6,10 @@ import ku_rum.backend.domain.auth.application.AuthService;
 import ku_rum.backend.domain.auth.dto.request.LoginRequest;
 import ku_rum.backend.domain.auth.dto.request.ReissueRequest;
 import ku_rum.backend.domain.auth.dto.response.AuthResponse;
+import ku_rum.backend.domain.building.domain.Building;
+import ku_rum.backend.domain.college.domain.College;
+import ku_rum.backend.domain.department.domain.Department;
+import ku_rum.backend.domain.department.dto.DepartmentResponse;
 import ku_rum.backend.domain.user.dto.response.TokenResponse;
 import ku_rum.backend.domain.user.dto.response.UserResponse;
 import ku_rum.backend.global.batch.BatchScheduler;
@@ -22,6 +26,9 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.transaction.annotation.Transactional;
 import org.testcontainers.shaded.org.yaml.snakeyaml.tokens.Token;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import static com.epages.restdocs.apispec.ResourceDocumentation.resource;
 import static org.springframework.restdocs.headers.HeaderDocumentation.headerWithName;
@@ -56,11 +63,11 @@ class AuthControllerTest extends RestDocsTestSupport {
 
         // TokenResponse 설정
         TokenResponse tokenResponse = TokenResponse.of("accessToken", "refreshToken", 1800000L, 604800000L);
-
+        List<DepartmentResponse> departmentResponses = List.of();
         // UserResponse 설정 (사용자 정보도 포함해야 하므로, 예시로 넣음)
         UserResponse userResponse = UserResponse.of(
                 1L, "oauthId", "kmw10693", "email@example.com", "nickname", "studentId", "imageUrl"
-        );
+        , departmentResponses);
 
         // AuthResponse 설정
         AuthResponse authResponse = AuthResponse.of(tokenResponse, userResponse);
@@ -142,7 +149,10 @@ class AuthControllerTest extends RestDocsTestSupport {
                                                         .description("사용자 인덱스"),
                                                 fieldWithPath("data.userResponse.oauthId")
                                                         .type(JsonType.STRING)
-                                                        .description("사용자 oauthId")
+                                                        .description("사용자 oauthId"),
+                                                fieldWithPath("data.userResponse.departmentResponse")
+                                                        .type(JsonType.STRING)
+                                                        .description("사용자 학과")
                                         ).build())));
     }
 
@@ -245,7 +255,8 @@ class AuthControllerTest extends RestDocsTestSupport {
     void exchangeToken() throws Exception {
         // given
         String tempToken = "temporary_token_value";
-        UserResponse userResponse = new UserResponse(1L, "oauthId", "loginId", "email", "nickname", "studentId", "imageUrl");
+        List<DepartmentResponse> list = new ArrayList<>();
+        UserResponse userResponse = new UserResponse(1L, "oauthId", "loginId", "email", "nickname", "studentId", "imageUrl", list);
         TokenResponse tokenResponse = new TokenResponse("accessToken", "refreshToken", 1800000L, 604800000L);
         AuthResponse authResponse = new AuthResponse(
                 tokenResponse,
@@ -293,7 +304,8 @@ class AuthControllerTest extends RestDocsTestSupport {
                                                 fieldWithPath("data.userResponse.email").description("사용자 이메일"),
                                                 fieldWithPath("data.userResponse.nickname").description("사용자 닉네임"),
                                                 fieldWithPath("data.userResponse.studentId").description("사용자 학생 ID"),
-                                                fieldWithPath("data.userResponse.imageUrl").description("사용자 이미지 URL")
+                                                fieldWithPath("data.userResponse.imageUrl").description("사용자 이미지 URL"),
+                                                fieldWithPath("data.userResponse.departmentResponse").description("사용자 학과 정보")
                                         )
                                         .build()
                         )
