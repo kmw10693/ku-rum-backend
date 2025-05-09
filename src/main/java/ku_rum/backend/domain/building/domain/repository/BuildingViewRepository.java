@@ -11,14 +11,10 @@ public interface BuildingViewRepository extends JpaRepository<Building, Long> {
 
     @Query(value = """
     SELECT * FROM building
-    WHERE
-        (
-            (:name IS NOT NULL AND MATCH(name) AGAINST (:name IN BOOLEAN MODE))
-            OR
-            (:abbreviation IS NOT NULL AND MATCH(abbreviation) AGAINST (:abbreviation IN BOOLEAN MODE))
-        )
+    WHERE name LIKE CONCAT('%', :searchTerm, '%')
+       OR abbreviation LIKE CONCAT('%', :searchTerm, '%')
     """, nativeQuery = true)
-    List<Building> searchByNameOrAbbreviation(@Param("name") String name, @Param("abbreviation") String abbreviation);
+    List<Building> searchByNameOrAbbreviation(@Param("searchTerm") String searchTerm);
 
 
 

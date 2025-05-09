@@ -105,6 +105,7 @@ public class JwtTokenProvider {
         try {
             redisUtil.setRedisData(String.valueOf(claims.get("userPK")), refreshToken);
         } catch (Exception e) {
+            log.error("redisUtil :", redisUtil);
             log.error("레디스에 리프레시 토큰 저장 실패", e);
             throw new JwtException("레디스에 리프레시 토큰 저장 실패");
         }

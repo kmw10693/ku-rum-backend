@@ -1,3 +1,4 @@
+/*
 package ku_rum.backend.global.dataInit;
 
 import lombok.extern.slf4j.Slf4j;
@@ -19,17 +20,18 @@ public class FulltextIndexInitializer {
     @EventListener(ApplicationReadyEvent.class)
     public void init() {
         try {
-            insert_fulltext_index("building", "name_fulltext_index");
-            insert_fulltext_index("category", "name_fulltext_index");
+            insert_fulltext_index("building", "name_fulltext_index", "name");
+            insert_fulltext_index("building", "abbreviation_fulltext_index", "abbreviation");
+            insert_fulltext_index("category", "name_fulltext_index","name");
         } catch (Exception e) {
             log.error("❌ FULLTEXT INDEX 추가 실패: {}", e.getMessage(), e);
         }
     }
 
-    private void insert_fulltext_index(String tableName, String indexName) {
+    private void insert_fulltext_index(String tableName, String indexName, String columnName) {
         if (!isIndexExists(tableName, indexName)) {
             String sql = String.format(
-                    "ALTER TABLE %s ADD FULLTEXT INDEX %s (name) WITH PARSER ngram",
+                    "ALTER TABLE %s ADD FULLTEXT INDEX %s ("+ columnName +") WITH PARSER ngram",
                     tableName,
                     indexName
             );
@@ -48,3 +50,4 @@ public class FulltextIndexInitializer {
     }
 }
 
+*/

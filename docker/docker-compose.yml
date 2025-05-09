@@ -4,6 +4,8 @@ services:
     environment:
       MYSQL_ROOT_PASSWORD: 1234
       MYSQL_DATABASE: mydb
+      LANG: C.UTF-8
+    command: --character-set-server=utf8mb4 --collation-server=utf8mb4_general_ci
     ports:
       - "3307:3306"
     healthcheck:

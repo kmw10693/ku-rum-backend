@@ -22,8 +22,8 @@ public class BuildingViewService {
         return BuildingViewResponse.from(building);
     }
 
-    public List<BuildingViewResponse> searchBuildings(String name, String abbreviation) {
-        List<Building> buildings = buildingRepository.searchByNameOrAbbreviation(name, abbreviation);
+    public List<BuildingViewResponse> searchBuildings(String name) {
+        List<Building> buildings = buildingRepository.searchByNameOrAbbreviation(name);
         return buildings.stream()
                 .map(BuildingViewResponse::from)
                 .toList();

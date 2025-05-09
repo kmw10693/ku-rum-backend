@@ -22,7 +22,7 @@ public class BuildingViewController {
      * @return
      */
     @GetMapping("/search/{number}")
-    public ResponseEntity<BuildingViewResponse> getBuildingByNumber(@PathVariable Integer number) {
+    public ResponseEntity<BuildingViewResponse> getBuildingByNumber(@PathVariable("number") Integer number) {
         return ResponseEntity.ok(buildingViewService.getBuildingByNumber(number));
     }
 
@@ -30,15 +30,14 @@ public class BuildingViewController {
      * 이름 또는 약어로 검색 (ngram parser 적용 - mysql)
      *
      * @param name
-     * @param abbreviation
      * @return
      */
     @GetMapping("/search")
     public ResponseEntity<List<BuildingViewResponse>> searchBuildings(
-            @RequestParam(required = false) String name,
-            @RequestParam(required = false) String abbreviation
+            @RequestParam(name = "name") String name
     ) {
-        return ResponseEntity.ok(buildingViewService.searchBuildings(name, abbreviation));
+        return ResponseEntity.ok(buildingViewService.searchBuildings(name));
     }
+
 
 }
