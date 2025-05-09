@@ -1,7 +1,7 @@
 package ku_rum.backend.domain.menu.domain;
 
 import jakarta.persistence.*;
-import ku_rum.backend.domain.category.domain.Category;
+import ku_rum.backend.domain.place.domain.Place;
 import ku_rum.backend.global.support.type.BaseEntity;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -15,7 +15,7 @@ public class Menu extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Long menuId;
 
     @Column(length = 30)
     private String name;
@@ -26,23 +26,23 @@ public class Menu extends BaseEntity {
     private String imageUrl;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "category_id", nullable = false)
-    private Category category;
+    @JoinColumn(name = "place_id", nullable = false)
+    private Place place;
 
     @Builder
-    private Menu(String name, Long price, String imageUrl, Category category) {
+    private Menu(String name, Long price, String imageUrl, Place place) {
         this.name = name;
         this.price = price;
         this.imageUrl = imageUrl;
-        this.category = category;
+        this.place = place;
     }
 
-    public static Menu of(String name, Long price, String imageUrl, Category category) {
+    public static Menu of(String name, Long price, String imageUrl, Place place) {
         return Menu.builder()
                 .name(name)
                 .price(price)
                 .imageUrl(imageUrl)
-                .category(category)
+                .place(place)
                 .build();
     }
 }

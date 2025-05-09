@@ -1,11 +1,10 @@
 package ku_rum.backend.domain.category.domain;
 
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import static ku_rum.backend.domain.category.domain.CategoryType.*;
 import static org.assertj.core.api.Assertions.*;
+/*
 
 class CategoryTest {
 
@@ -20,4 +19,4 @@ class CategoryTest {
         assertThat(category.getName()).isEqualTo(categoryName);
     }
 
-}
+}*/

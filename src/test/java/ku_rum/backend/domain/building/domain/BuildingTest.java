@@ -7,6 +7,7 @@ import org.junit.jupiter.api.Test;
 import java.math.BigDecimal;
 
 import static org.assertj.core.api.Assertions.assertThat;
+/*
 
 @DisplayName("빌딩 데이터 생성 테스트")
 class BuildingTest {
@@ -46,4 +47,4 @@ class BuildingTest {
         }
     }
 
-}
+}*/

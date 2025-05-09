@@ -6,23 +6,14 @@ import ku_rum.backend.domain.department.domain.Department;
 import ku_rum.backend.domain.department.domain.DepartmentType;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;
-import java.util.Arrays;
 
 @Component
 public class DepartmentInitializer {
-    /**
-     * @param buildings 애플리케이션 구동 시 저장된 Building 리스트
-     * @param colleges  애플리케이션 구동 시 저장된 College 리스트
-     * @return 초기화된 Department 리스트
-     */
     public static List<Department> initialize(List<Building> buildings,
                                               List<College> colleges) {
-        // 이름→엔티티 매핑
         Map<String, Building> buildingMap = buildings.stream()
                 .collect(Collectors.toMap(Building::getName, Function.identity()));
         Map<String, College> collegeMap = colleges.stream()

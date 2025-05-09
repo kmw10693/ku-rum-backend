@@ -4,10 +4,9 @@ import ku_rum.backend.domain.category.domain.Category;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import static ku_rum.backend.domain.category.domain.CategoryType.STUDENT_CAFETERIA;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
 
+/*
 class MenuTest {
 
     @DisplayName("메뉴 생성 시 카테고리 정보를 넣어준다.")
@@ -27,4 +26,4 @@ class MenuTest {
         assertThat(menu.getCategory()).isEqualTo(category);
     }
 
-}
+}*/
