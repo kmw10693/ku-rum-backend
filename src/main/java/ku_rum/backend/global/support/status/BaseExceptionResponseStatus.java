@@ -49,7 +49,7 @@ public enum BaseExceptionResponseStatus implements ResponseStatus {
      * 400: Department
      */
     NO_SUCH_DEPARTMENT(400, HttpStatus.BAD_REQUEST, "존재하지 않는 학과명입니다."),
-    DUPLICATE_DEPARTMENT(400, HttpStatus.BAD_REQUEST, "중복된 학과명입니다."),
+    DUPLICATE_DEPARTMENT(401, HttpStatus.BAD_REQUEST, "중복된 학과명입니다."),
 
 
     /**
@@ -69,7 +69,12 @@ public enum BaseExceptionResponseStatus implements ResponseStatus {
      * 700: Friends
      */
     NO_FRIENDS_FOUND(700, HttpStatus.NO_CONTENT, "친구 목록에 친구가 존재하지 않습니다."),
-    DUPLICATE_FRIENDS(700, HttpStatus.NO_CONTENT, "이미 존재하는 친구입니다."),
+    DUPLICATE_FRIENDS(701, HttpStatus.NO_CONTENT, "이미 존재하는 친구입니다."),
+    NO_BLOCK_MYSELF(702, HttpStatus.BAD_REQUEST, "자기 자신을 차단할 수 없습니다."),
+    DUPLICATE_BLOCK(703, HttpStatus.BAD_REQUEST, "이미 차단된 사용자입니다."),
+    NO_REPORT_MYSELF(704, HttpStatus.BAD_REQUEST, "자기 자신을 신고할 수 없습니다."),
+    DUPLICATE_REPORT(705, HttpStatus.BAD_REQUEST, "이미 신고된 사용자입니다."),
+
 
     /**
      * 800: Notice
@@ -97,7 +102,6 @@ public enum BaseExceptionResponseStatus implements ResponseStatus {
     TOKEN_MISMATCH(1006, HttpStatus.UNAUTHORIZED, "로그인 정보가 토큰 정보와 일치하지 않습니다."),
     LOGIN_ERROR(1007, HttpStatus.UNAUTHORIZED, "잘못된 아이디/비밀번호입니다."),
     OAUTH_ERROR(1008, HttpStatus.UNAUTHORIZED, "잘못된 임시 토큰입니다."),
-
 
     /**
      * 1100: Wein

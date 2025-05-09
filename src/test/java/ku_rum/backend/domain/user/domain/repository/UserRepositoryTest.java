@@ -5,8 +5,11 @@ import ku_rum.backend.domain.building.domain.repository.BuildingViewRepository;
 import ku_rum.backend.domain.college.domain.College;
 import ku_rum.backend.domain.department.domain.Department;
 import ku_rum.backend.domain.department.domain.repository.DepartmentRepository;
+import ku_rum.backend.domain.friend.application.FriendManageService;
+import ku_rum.backend.domain.friend.domain.repository.FriendBlockRepository;
 import ku_rum.backend.domain.user.domain.User;
 import ku_rum.backend.global.batch.BatchScheduler;
+import ku_rum.backend.global.domain.repository.ApiLogRepository;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -43,6 +46,15 @@ class UserRepositoryTest {
 
     @MockBean
     private BatchScheduler batchScheduler;
+
+    @MockBean
+    private ApiLogRepository apiLogRepository;
+
+    @MockBean
+    private FriendManageService friendManageService;
+
+    @MockBean
+    private FriendBlockRepository friendBlockRepository;
 
     @BeforeEach
     void setup() {

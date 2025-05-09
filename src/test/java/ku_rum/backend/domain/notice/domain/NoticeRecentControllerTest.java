@@ -1,8 +1,9 @@
 package ku_rum.backend.domain.notice.domain;
 
 import com.epages.restdocs.apispec.ResourceSnippetParameters;
-import ku_rum.backend.BackendApplication;
 import ku_rum.backend.config.RestDocsTestSupport;
+import ku_rum.backend.domain.friend.application.FriendManageService;
+import ku_rum.backend.domain.friend.domain.repository.FriendBlockRepository;
 import ku_rum.backend.domain.notice.application.NoticeService;
 import ku_rum.backend.domain.notice.dto.response.NoticeSimpleResponse;
 import ku_rum.backend.domain.notice.dto.response.RecentSearchTerm;
@@ -16,8 +17,6 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.batch.core.launch.JobLauncher;
-import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
-import org.springframework.boot.autoconfigure.data.mongo.MongoDataAutoConfiguration;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
@@ -66,6 +65,12 @@ class NoticeRecentControllerTest  extends RestDocsTestSupport {
 
     @MockBean
     private ApiLogRepository apiLogRepository;
+
+    @MockBean
+    private FriendManageService friendManageService;
+
+    @MockBean
+    private FriendBlockRepository friendBlockRepository;
 
     private CustomUserDetails customUserDetails;
 
