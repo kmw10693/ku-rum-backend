@@ -40,7 +40,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureRestDocs
 @WebMvcTest(BuildingViewController.class)
 @ActiveProfiles("test")
-class BuildingSearchControllerTest extends RestDocsTestSupport {
+class BuildingViewControllerTest extends RestDocsTestSupport {
 
     @Autowired
     private MockMvc mockMvc;
