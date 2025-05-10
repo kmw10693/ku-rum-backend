@@ -1,4 +1,3 @@
-// 1. Import 추가
 import org.hidetake.gradle.swagger.generator.GenerateSwaggerUI
 
 buildscript {
@@ -11,110 +10,32 @@ plugins {
 	id 'java'
 	id 'org.springframework.boot' version '3.3.4'
 	id 'io.spring.dependency-management' version '1.1.6'
-	id 'org.asciidoctor.jvm.convert' version '3.3.2'
-	// epages-restdocs 플러그인 추가
-	id 'com.epages.restdocs-api-spec' version "${restdocsApiSpecVersion}"
-	//swagger generator 플러그인 추가
-	id 'org.hidetake.swagger.generator' version '2.18.2'
 	id 'jacoco'
+	id 'com.epages.restdocs-api-spec' version "${restdocsApiSpecVersion}"
+	id 'org.hidetake.swagger.generator' version '2.18.2'
 }
 
 group = 'ku-rum'
 version = '0.0.1-SNAPSHOT'
 
-jacoco {
-	toolVersion = "0.8.8"
-	reportsDirectory = layout.buildDirectory.dir('customJacocoReportDir')
-}
-
-test {
-	finalizedBy jacocoTestReport // test 작업이 끝나고 jacocoTestReport를 실행
-}
-
-jacocoTestReport {
-	dependsOn test // test 종속성 추가
-
-	reports {
-		xml.required = true
-		csv.required = false
-		html.required = true
-	}
-
-	def QDomainList = []
-	for (qPattern in '**/QA'..'**/QZ') { // QClass 대응
-		QDomainList.add(qPattern + '*')
-	}
-
-	afterEvaluate {
-		classDirectories.setFrom(files(classDirectories.files.collect {
-			fileTree(dir: it, exclude: [
-					'**/dto/**',
-					'**/event/**',
-					'**/*InitData*',
-					'**/*Application*',
-					'**/exception/**',
-					'**/service/alarm/**',
-					'**/aop/**',
-					'**/config/**',
-					'**/MemberRole*',
-					'**/oauth/**'
-			] + QDomainList)
-		}))
-	}
-
-	finalizedBy 'jacocoTestCoverageVerification' // jacocoTestReport 태스크가 끝난 후 실행
-}
-
-jacocoTestCoverageVerification {
-	violationRules {
-
-		rule {
-			enabled = true
-			//코드 버커리지 체크 기준
-			element = 'CLASS'
-
-			limit {
-				counter = 'CLASS'
-				value = 'COVEREDRATIO'
-				minimum = 0.0
-			}
-		}
-	}
-}
-
 java {
-	toolchain {
-		languageVersion = JavaLanguageVersion.of(17)
-	}
+	sourceCompatibility = '17'
 }
 
 configurations {
 	compileOnly {
 		extendsFrom annotationProcessor
 	}
+	asciidoctorExt
 }
 
 repositories {
 	mavenCentral()
 }
 
-// 5. 생성된 API 스펙이 어느 위치에 있는지 지정
-swaggerSources {
-	sample {
-		setInputFile(file("${project.buildDir}/api-spec/openapi3.yaml"))
-	}
-}
-
-// 6. openapi3 스펙 생성시 설정 정보
-openapi3 {
-	servers = [
-			{ url = "https://kuroom.shop" },
-			{ url = "http://localhost:8080" }
-	]
-	title = "쿠룸 백엔드 API 문서"
-	description = "RestDocs를 이용한 Swagger API 문서입니다."
-	version = "1.0"
-	format = "yaml"
+ext {
+	//snippetsDirectory 설정
+	snippetsDir = file('build/generated-snippets')
 }
 
 dependencies {
@@ -173,11 +94,10 @@ dependencies {
 
 	// Spring REST Docs 의존성
 	testImplementation 'org.springframework.restdocs:spring-restdocs-mockmvc'
-	// 8. openAPI3 추가
-	testImplementation 'com.epages:restdocs-api-spec-mockmvc:' + restdocsApiSpecVersion
-	// 9. SwaggerUI 추가
-	swaggerUI 'org.webjars:swagger-ui:4.11.1'
-	// 10. Assertj 추가
+	testImplementation "com.epages:restdocs-api-spec-mockmvc:${restdocsApiSpecVersion}"
+	implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.0.2'
+
+	// Assertj 추가
 	testImplementation 'org.assertj:assertj-core:3.23.1'
 	// Testcontainers & Selenium
 	testImplementation 'org.testcontainers:junit-jupiter'
@@ -198,49 +118,107 @@ dependencies {
 
 }
 
-
 tasks.named('test') {
 	useJUnitPlatform()
 }
 
-tasks.named('jar') {
-	enabled = false
+tasks.withType(GenerateSwaggerUI) {
+    // openapi3 테스크 이후에 실행 됨
+	dependsOn 'openapi3'
+
+	// 기존 파일 삭제했다가, build 에 json 정적파일 복사 (안해도 됨 → local 확인용)
+	delete file('src/main/resources/static/docs/')
+	copy {
+		from "build/resources/main/static/docs"
+		into "src/main/resources/static/docs/"
+	}
 }
 
-// 10. openapi3가 먼저 실행
-tasks.withType(GenerateSwaggerUI) {
-	dependsOn 'openapi3'
-	doFirst {
-		def swaggerUIFile = file("${openapi3.outputDirectory}/openapi3.yaml")
+openapi3 {
+	servers = [
+			{ url = "https://kuroom.shop" },
+			{ url = "http://localhost:8080" }
+	]
+	title = "쿠룸 백엔드 API 문서"
+	description = "RestDocs를 이용한 쿠름 Swagger API 문서입니다."
+	version = "1.0.0"
+	format = "yaml"
+	outputDirectory = file("build/generated-snippets")
+}
 
-	/*	def securitySchemesContent =  "  securitySchemes:\n" +  \
-                                      "    APIKey:\n" +  \
-                                      "      type: apiKey\n" +  \
-                                      "      name: Authorization\n" +  \
-                                      "      in: header\n" + \
-                                      "security:\n" +
-				"  - APIKey: []  # Apply the security scheme here"
+bootJar {
+	dependsOn(':openapi3')
+}
 
-		swaggerUIFile.append securitySchemesContent*/
+//===== jacoco =====
+jacoco {
+	toolVersion = "0.8.8"
+	reportsDirectory = layout.buildDirectory.dir('customJacocoReportDir')
+}
+
+test {
+	outputs.dir snippetsDir
+	finalizedBy jacocoTestReport // test 작업이 끝나고 jacocoTestReport를 실행
+}
+
+jacocoTestReport {
+	dependsOn test // test 종속성 추가
+
+	reports {
+		xml.required = true
+		csv.required = false
+		html.required = true
 	}
+
+	def QDomainList = []
+	for (qPattern in '**/QA'..'**/QZ') { // QClass 대응
+		QDomainList.add(qPattern + '*')
+	}
+
+	afterEvaluate {
+		classDirectories.setFrom(files(classDirectories.files.collect {
+			fileTree(dir: it, exclude: [
+					'**/dto/**',
+					'**/event/**',
+					'**/*InitData*',
+					'**/*Application*',
+					'**/exception/**',
+					'**/service/alarm/**',
+					'**/aop/**',
+					'**/config/**',
+					'**/MemberRole*',
+					'**/oauth/**'
+			] + QDomainList)
+		}))
+	}
+
+	finalizedBy 'jacocoTestCoverageVerification' // jacocoTestReport 태스크가 끝난 후 실행
+}
+
+jacocoTestCoverageVerification {
+	violationRules {
+
+		rule {
+			enabled = true
+			//코드 버커리지 체크 기준
+			element = 'CLASS'
+
+			limit {
+				counter = 'CLASS'
+				value = 'COVEREDRATIO'
+				minimum = 0.0
+			}
+		}
+	}
+}
+//===== jacoco =====
+
+tasks.named('jar') {
+	enabled = false
 }
 
 def querydslSrcDir = 'src/main/generated'
 
 clean {
 	delete file(querydslSrcDir)
-}
-
-//tasks.register("copySwaggerDocs", Copy) {
-//	dependsOn generateSwaggerUISample
-//	from("${generateSwaggerUISample.outputDir}")
-//	into("${project.projectDir}/src/main/resources/static/docs")
-//}
-
-// 11. 생성된 openapi3 스펙을 기반으로 SwaggerUISample 생성 및 static/docs 패키지에 복사
-bootJar {
-	dependsOn generateSwaggerUISample
-	from("${generateSwaggerUISample.outputDir}") {
-		into 'static/docs'
-	}
 }
