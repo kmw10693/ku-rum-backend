@@ -2,29 +2,22 @@ package ku_rum.backend.domain.building.presentation;
 
 import com.epages.restdocs.apispec.ResourceSnippetParameters;
 import ku_rum.backend.config.RestDocsTestSupport;
+import ku_rum.backend.domain.auth.application.TokenBlacklistService;
 import ku_rum.backend.domain.building.application.BuildingViewService;
 import ku_rum.backend.domain.building.dto.response.BuildingViewResponse;
-import ku_rum.backend.domain.user.application.UserService;
-import ku_rum.backend.domain.user.application.UserValidator;
-import ku_rum.backend.global.domain.repository.ApiLogRepository;
-import ku_rum.backend.global.security.JwtTokenProvider;
-import ku_rum.backend.global.utill.RedisUtil;
+import ku_rum.backend.global.batch.BatchScheduler;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.json.JsonType;
-import org.springframework.batch.core.Job;
-import org.springframework.batch.core.explore.JobExplorer;
-import org.springframework.batch.core.launch.JobLauncher;
-import org.springframework.batch.core.launch.JobOperator;
-import org.springframework.batch.core.repository.JobRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
+import org.springframework.restdocs.payload.JsonFieldType;
+import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.security.test.context.support.WithMockUser;
+import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -37,47 +30,22 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@AutoConfigureRestDocs
-@WebMvcTest(BuildingViewController.class)
+@SpringBootTest
+@EnableScheduling
 @ActiveProfiles("test")
 class BuildingViewControllerTest extends RestDocsTestSupport {
-
-    @Autowired
-    private MockMvc mockMvc;
 
     @MockBean
     private BuildingViewService buildingViewService;
 
     @MockBean
-    private UserService userService;
+    private SecurityFilterChain securityFilterChain;
 
     @MockBean
-    private JwtTokenProvider jwtTokenProvider;
+    private BatchScheduler batchScheduler;
 
     @MockBean
-    private RedisUtil redisUtil;
-
-    @MockBean
-    private ApiLogRepository apiLogRepository;
-
-    @MockBean
-    private UserValidator userValidator;
-
-    @MockBean
-    private JobLauncher jobLauncher;
-
-    @MockBean
-    private Job job; // 실제 배치 Job
-
-    @MockBean
-    private JobRepository jobRepository; // JobRepository Mock
-
-    @MockBean
-    private JobExplorer jobExplorer; // JobExplorer Mock
-
-    @MockBean
-    private JobOperator jobOperator; // JobExplorer Mock
-
+    private TokenBlacklistService tokenBlacklistService;
 
     @DisplayName("특정 건물번호로 해당 건물정보를 출력한다.")
     @Test
@@ -90,8 +58,9 @@ class BuildingViewControllerTest extends RestDocsTestSupport {
         );
         given(buildingViewService.getBuildingByNumber(21)).willReturn(mockBuildings.get(0));
 
-        // when then
+        // when & then
         mockMvc.perform(get("/api/v1/buildings/search/{number}", 21)
+                        .header("Authorization", "Bearer eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyUEsiOjEsInJvbGVzIjoiUk9MRV9VU0VSIiwiaWF0IjoxNzQwMjQyNjQxLCJleHAiOjE3NDAyNDQ0NDF9.kLSMBLWdvIvrBpGJdOigSKjxMIab0cV06xFjSpwrq70")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andDo(print())
                 .andExpect(status().isOk())
@@ -111,15 +80,15 @@ class BuildingViewControllerTest extends RestDocsTestSupport {
                                         .tag("빌딩 관련 API")
                                         .description("특정 건물번호로 건물 정보 출력")
                                         .responseFields(
-                                                fieldWithPath("code").type(JsonType.NUMBER).description("성공시 반환 코드 (200)"),
-                                                fieldWithPath("status").type(JsonType.STRING).description("올바른 인증코드 시 상태 값 (OK)"),
-                                                fieldWithPath("message").type(JsonType.STRING).description("올바른 인증코드 시 메시지 (OK)"),
-                                                fieldWithPath("data.id").type(JsonType.NUMBER).description("빌딩 ID"),
-                                                fieldWithPath("data.name").type(JsonType.STRING).description("빌딩 이름"),
-                                                fieldWithPath("data.number").type(JsonType.NUMBER).description("빌딩 번호"),
-                                                fieldWithPath("data.abbreviation").type(JsonType.STRING).description("빌딩 약어"),
-                                                fieldWithPath("data.latitude").type(JsonType.NUMBER).description("위도"),
-                                                fieldWithPath("data.longitude").type(JsonType.NUMBER).description("경도")
+                                                fieldWithPath("code").type(JsonFieldType.NUMBER).description("성공시 반환 코드 (200)"),
+                                                fieldWithPath("status").type(JsonFieldType.STRING).description("올바른 인증코드 시 상태 값 (OK)"),
+                                                fieldWithPath("message").type(JsonFieldType.STRING).description("올바른 인증코드 시 메시지 (OK)"),
+                                                fieldWithPath("data.id").type(JsonFieldType.NUMBER).description("빌딩 ID"),
+                                                fieldWithPath("data.name").type(JsonFieldType.STRING).description("빌딩 이름"),
+                                                fieldWithPath("data.number").type(JsonFieldType.NUMBER).description("빌딩 번호"),
+                                                fieldWithPath("data.abbreviation").type(JsonFieldType.STRING).description("빌딩 약어"),
+                                                fieldWithPath("data.latitude").type(JsonFieldType.NUMBER).description("위도"),
+                                                fieldWithPath("data.longitude").type(JsonFieldType.NUMBER).description("경도")
                                         ).build())));
 
     }
