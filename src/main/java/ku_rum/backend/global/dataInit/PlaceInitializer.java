@@ -1,21 +1,16 @@
 package ku_rum.backend.global.dataInit;
 
-import ku_rum.backend.domain.building.domain.Building;
-import ku_rum.backend.domain.category.domain.Category;
-import ku_rum.backend.domain.place.domain.Place;
-import org.springframework.stereotype.Component;
-
-import java.math.BigDecimal;
-import java.util.*;
-
+/*
 @Component
 public class PlaceInitializer {
     public static ArrayList<Place> initialize(List<Building> savedBuildings, List<Category> savedCategories) {
         ArrayList<Place> places = new ArrayList<>();
 
-        /**
+        */
+/**
          * 카테고리 : 단과대
-         */
+         *//*
+
         places.add(Place.of("경영대학", BigDecimal.valueOf(37.544419), BigDecimal.valueOf(127.076370), savedBuildings.get(1), savedCategories.get(1)));
         places.add(Place.of("상허생명과학대학", BigDecimal.valueOf(37.544292), BigDecimal.valueOf(127.076212), savedBuildings.get(2), savedCategories.get(1)));
         places.add(Place.of("문과대학", BigDecimal.valueOf(37.542422), BigDecimal.valueOf(127.078929), savedBuildings.get(18), savedCategories.get(1)));
@@ -27,9 +22,11 @@ public class PlaceInitializer {
         places.add(Place.of("의과대학", BigDecimal.valueOf(37.541443), BigDecimal.valueOf(127.072313), savedBuildings.get(9), savedCategories.get(1)));
         places.add(Place.of("예술디자인대학", BigDecimal.valueOf(37.544419), BigDecimal.valueOf(127.073994), savedBuildings.get(4), savedCategories.get(1)));
 
-        /**
+        */
+/**
          * 카테고리 : 케이큐브
-         */
+         *//*
+
         places.add(Place.of(
                 "케이큐브-경영관점",
                 BigDecimal.valueOf(37.5444261),
@@ -52,14 +49,18 @@ public class PlaceInitializer {
                 savedCategories.get(2)
         ));
 
-        /**
+        */
+/**
          * 카테고리 : 케이허브
-         */
+         *//*
 
 
-        /**
+
+        */
+/**
          * 카테고리 : 편의점
-         */
+         *//*
+
         places.add(Place.of(
                 "CU-제1학생회관점",
                 BigDecimal.valueOf(37.5418177),
@@ -82,9 +83,11 @@ public class PlaceInitializer {
                 savedCategories.get(4)
         ));
 
-        /**
+        */
+/**
          * 카테고리 : 레스티오
-         */
+         *//*
+
         places.add(Place.of(
                 "레스티오-공학관점",
                 BigDecimal.valueOf(37.5416511),
@@ -107,9 +110,11 @@ public class PlaceInitializer {
                 savedCategories.get(5)
         ));
 
-        /**
+        */
+/**
          * 카테고리 : 1984
-         */
+         *//*
+
         places.add(Place.of(
                 "1984카페-제1학생회관점",
                 BigDecimal.valueOf(37.5401054),
@@ -118,9 +123,11 @@ public class PlaceInitializer {
                 savedCategories.get(6)
         ));
 
-        /**
+        */
+/**
          * 카테고리 : 학생식당
-         */
+         *//*
+
         places.add(Place.of(
                 "학생식당(구시아)-제1학생회관점",
                 BigDecimal.valueOf(37.5419222),
@@ -136,13 +143,17 @@ public class PlaceInitializer {
                 savedCategories.get(7)
         ));
 
-        /**
+        */
+/**
          * 카테고리 : 학과사무실
-         */
+         *//*
 
-        /**
+
+        */
+/**
          * 카테고리 : 기숙사
-         */
+         *//*
+
         places.add(Place.of(
                 "쿨하우스(기숙사)",
                 BigDecimal.valueOf(37.5419259),
@@ -151,9 +162,11 @@ public class PlaceInitializer {
                 savedCategories.get(9)
         ));
 
-        /**
+        */
+/**
          * 카테고리 : 은행
-         */
+         *//*
+
         places.add(Place.of(
                 "신한은행-건국대 제1학생회관점",
                 BigDecimal.valueOf(37.5419876),
@@ -162,9 +175,11 @@ public class PlaceInitializer {
                 savedCategories.get(10)
         ));
 
-        /**
+        */
+/**
          * 카테고리 : 우체국
-         */
+         *//*
+
         places.add(Place.of(
                 "우체국-건국대 제1학생회관점",
                 BigDecimal.valueOf(37.5417271),
@@ -175,3 +190,4 @@ public class PlaceInitializer {
         return places;
     }
 }
+*/

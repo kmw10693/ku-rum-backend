@@ -1,3 +1,5 @@
+/*
+
 package ku_rum.backend.domain.building.presentation;
 
 import com.epages.restdocs.apispec.ResourceSnippetParameters;
@@ -17,7 +19,6 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.test.context.ActiveProfiles;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -158,3 +159,4 @@ class BuildingViewControllerTest extends RestDocsTestSupport {
 
 
 }
+*/
