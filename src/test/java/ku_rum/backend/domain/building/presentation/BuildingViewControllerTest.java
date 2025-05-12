@@ -8,7 +8,6 @@ import ku_rum.backend.domain.building.dto.response.BuildingViewResponse;
 import ku_rum.backend.global.batch.BatchScheduler;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.openqa.selenium.json.JsonType;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
@@ -17,7 +16,6 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.test.context.ActiveProfiles;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -54,17 +52,16 @@ class BuildingViewControllerTest extends RestDocsTestSupport {
         // given (Mock 데이터 설정)
         List<BuildingViewResponse> mockBuildings = List.of(
                 new BuildingViewResponse(16L, "공", "공학관", 21L,
-                        BigDecimal.valueOf(37.5418220000000), BigDecimal.valueOf(127.0788450000000))
+                        BigDecimal.valueOf(37.541822), BigDecimal.valueOf(127.078845))
         );
         given(buildingViewService.getBuildingByNumber(21)).willReturn(mockBuildings.get(0));
 
         // when & then
         mockMvc.perform(get("/api/v1/buildings/search/{number}", 21)
-                        .header("Authorization", "Bearer eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyUEsiOjEsInJvbGVzIjoiUk9MRV9VU0VSIiwiaWF0IjoxNzQwMjQyNjQxLCJleHAiOjE3NDAyNDQ0NDF9.kLSMBLWdvIvrBpGJdOigSKjxMIab0cV06xFjSpwrq70")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.code").value("200"))
+                .andExpect(jsonPath("$.code").value(200))
                 .andExpect(jsonPath("$.status").value("OK"))
                 .andExpect(jsonPath("$.message").value("OK"))
                 .andExpect(jsonPath("$.data.id").value(16))
@@ -100,12 +97,12 @@ class BuildingViewControllerTest extends RestDocsTestSupport {
         // given (Mock 데이터 설정)
         List<BuildingViewResponse> mockBuildings = List.of(
                 new BuildingViewResponse(16L, "공", "공학관", 21L,
-                        BigDecimal.valueOf(37.5418220000000), BigDecimal.valueOf(127.0788450000000)),
+                        BigDecimal.valueOf(37.5418220), BigDecimal.valueOf(127.078845)),
                 new BuildingViewResponse(15L, "신공", "신공학관", 22L,
-                        BigDecimal.valueOf(37.5418120000000), BigDecimal.valueOf(127.0788460000000))
+                        BigDecimal.valueOf(37.541812), BigDecimal.valueOf(127.078846))
         );
         given(buildingViewService.searchBuildings("공"))
-                .willReturn(List.of(mockBuildings.get(0), mockBuildings.get(1)));
+                .willReturn(mockBuildings);
 
         // when then
         mockMvc.perform(get("/api/v1/buildings/search?name=공")
@@ -113,7 +110,7 @@ class BuildingViewControllerTest extends RestDocsTestSupport {
                 )
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.code").value("200"))
+                .andExpect(jsonPath("$.code").value(200))
                 .andExpect(jsonPath("$.status").value("OK"))
                 .andExpect(jsonPath("$.message").value("OK"))
 
@@ -137,21 +134,16 @@ class BuildingViewControllerTest extends RestDocsTestSupport {
                                         .tag("빌딩 관련 API")
                                         .description("건물이름/줄임말로 건물정보 검색")
                                         .responseFields(
-                                                fieldWithPath("code").type(JsonType.NUMBER).description("성공시 반환 코드 (200)"),
-                                                fieldWithPath("status").type(JsonType.STRING).description("올바른 인증코드 시 상태 값 (OK)"),
-                                                fieldWithPath("message").type(JsonType.STRING).description("올바른 인증코드 시 메시지 (OK)"),
-                                                fieldWithPath("data[0].id").type(JsonType.NUMBER).description("첫 번째 빌딩 ID"),
-                                                fieldWithPath("data[0].name").type(JsonType.STRING).description("첫 번째 빌딩 이름"),
-                                                fieldWithPath("data[0].number").type(JsonType.NUMBER).description("첫 번째 빌딩 번호"),
-                                                fieldWithPath("data[0].abbreviation").type(JsonType.STRING).description("첫 번째 빌딩 약어"),
-                                                fieldWithPath("data[0].latitude").type(JsonType.NUMBER).description("첫 번째 빌딩 위도"),
-                                                fieldWithPath("data[0].longitude").type(JsonType.NUMBER).description("첫 번째 빌딩 경도"),
-                                                fieldWithPath("data[1].id").type(JsonType.NUMBER).description("두 번째 빌딩 ID"),
-                                                fieldWithPath("data[1].name").type(JsonType.STRING).description("두 번째 빌딩 이름"),
-                                                fieldWithPath("data[1].number").type(JsonType.NUMBER).description("두 번째 빌딩 번호"),
-                                                fieldWithPath("data[1].abbreviation").type(JsonType.STRING).description("두 번째 빌딩 약어"),
-                                                fieldWithPath("data[1].latitude").type(JsonType.NUMBER).description("두 번째 빌딩 위도"),
-                                                fieldWithPath("data[1].longitude").type(JsonType.NUMBER).description("두 번째 빌딩 경도")
+                                                fieldWithPath("code").type(JsonFieldType.NUMBER).description("성공시 반환 코드 (200)"),
+                                                fieldWithPath("status").type(JsonFieldType.STRING).description("올바른 인증코드 시 상태 값 (OK)"),
+                                                fieldWithPath("message").type(JsonFieldType.STRING).description("올바른 인증코드 시 메시지 (OK)"),
+
+                                                fieldWithPath("data[].id").type(JsonFieldType.NUMBER).description("빌딩 ID"),
+                                                fieldWithPath("data[].name").type(JsonFieldType.STRING).description("빌딩 이름"),
+                                                fieldWithPath("data[].number").type(JsonFieldType.NUMBER).description("빌딩 번호"),
+                                                fieldWithPath("data[].abbreviation").type(JsonFieldType.STRING).description("빌딩 약어"),
+                                                fieldWithPath("data[].latitude").type(JsonFieldType.NUMBER).description("빌딩 위도"),
+                                                fieldWithPath("data[].longitude").type(JsonFieldType.NUMBER).description("빌딩 경도")
                                         ).build())));
     }
 
