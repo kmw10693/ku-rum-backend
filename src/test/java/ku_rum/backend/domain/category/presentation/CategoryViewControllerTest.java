@@ -1,15 +1,14 @@
+
 package ku_rum.backend.domain.category.presentation;
 
 import com.epages.restdocs.apispec.ResourceSnippetParameters;
 import ku_rum.backend.config.RestDocsTestSupport;
-import ku_rum.backend.domain.auth.application.TokenBlacklistService;
 import ku_rum.backend.domain.building.domain.Building;
 import ku_rum.backend.domain.building.dto.response.BuildingViewResponse;
 import ku_rum.backend.domain.category.application.CategoryViewService;
 import ku_rum.backend.domain.category.dto.response.CategoryViewPlaceResponse;
 import ku_rum.backend.domain.user.application.UserService;
 import ku_rum.backend.domain.user.application.UserValidator;
-import ku_rum.backend.global.batch.BatchScheduler;
 import ku_rum.backend.global.domain.repository.ApiLogRepository;
 import ku_rum.backend.global.security.JwtTokenProvider;
 import ku_rum.backend.global.utill.RedisUtil;
@@ -23,44 +22,63 @@ import org.springframework.batch.core.repository.JobRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
-import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.security.test.context.support.WithMockUser;
-import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.transaction.annotation.Transactional;
-
-import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get;
 
 import java.math.BigDecimal;
 import java.util.List;
 
 import static com.epages.restdocs.apispec.ResourceDocumentation.resource;
 import static org.mockito.BDDMockito.given;
+import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get;
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@SpringBootTest
-@EnableScheduling
+@WebMvcTest(CategoryViewController.class)
+@AutoConfigureRestDocs
 @ActiveProfiles("test")
 class CategoryViewControllerTest extends RestDocsTestSupport {
+
+    @Autowired
+    private MockMvc mockMvc;
 
     @MockBean
     private CategoryViewService categoryViewService;
 
     @MockBean
-    private SecurityFilterChain securityFilterChain;
+    private ApiLogRepository apiLogRepository;
 
     @MockBean
-    private BatchScheduler batchScheduler;
+    private JwtTokenProvider jwtTokenProvider;
 
     @MockBean
-    private TokenBlacklistService tokenBlacklistService;
+    private UserService userService;
+
+    @MockBean
+    private RedisUtil redisUtil;
+
+    @MockBean
+    private UserValidator userValidator;
+
+    @MockBean
+    private JobLauncher jobLauncher;
+
+    @MockBean
+    private Job job; // 실제 배치 Job
+
+    @MockBean
+    private JobRepository jobRepository; // JobRepository Mock
+
+    @MockBean
+    private JobExplorer jobExplorer; // JobExplorer Mock
+
+    @MockBean
+    private JobOperator jobOperator; // JobExplorer Mock
 
     @DisplayName("카테고리 이름으로 카테고리 내 해당되는 장소들을 조회한다.")
     @Test

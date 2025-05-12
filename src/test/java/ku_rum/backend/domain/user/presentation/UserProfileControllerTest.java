@@ -4,10 +4,11 @@ import com.epages.restdocs.apispec.ResourceSnippetParameters;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import ku_rum.backend.config.RestDocsTestSupport;
 import ku_rum.backend.domain.auth.application.TokenBlacklistService;
+import ku_rum.backend.domain.common.mail.dto.request.MailVerificationRequest;
 import ku_rum.backend.domain.user.application.UserService;
 import ku_rum.backend.domain.user.dto.request.DepartmentRequest;
-import ku_rum.backend.domain.user.dto.request.NicknameChangeRequest;
 import ku_rum.backend.domain.user.dto.request.InitiatePasswordResetRequest;
+import ku_rum.backend.domain.user.dto.request.NicknameChangeRequest;
 import ku_rum.backend.domain.user.dto.request.ResetPasswordRequest;
 import ku_rum.backend.global.batch.BatchScheduler;
 import ku_rum.backend.global.security.CustomUserDetails;
@@ -18,7 +19,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.restdocs.payload.JsonFieldType;
-import org.springframework.restdocs.payload.ResponseFieldsSnippet;
 import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors;
@@ -28,12 +28,11 @@ import org.springframework.transaction.annotation.Transactional;
 
 import static com.epages.restdocs.apispec.ResourceDocumentation.resource;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 import static org.springframework.restdocs.headers.HeaderDocumentation.headerWithName;
-import static org.springframework.restdocs.headers.HeaderDocumentation.requestHeaders;
-import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.*;
-import static org.springframework.restdocs.payload.PayloadDocumentation.*;
+import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -103,7 +102,8 @@ public class UserProfileControllerTest extends RestDocsTestSupport {
     @WithMockUser
     void resetAccount() throws Exception {
         // given
-        InitiatePasswordResetRequest initiatePasswordResetRequest = new InitiatePasswordResetRequest("user123", "test12345");
+        MailVerificationRequest request = new MailVerificationRequest("kmw106933@naver.com","1234");
+        InitiatePasswordResetRequest initiatePasswordResetRequest = new InitiatePasswordResetRequest(request,"user123", "test12345");
 
         // when then
         mockMvc.perform(post("/api/v1/users/password-reset/initiate")
@@ -117,6 +117,12 @@ public class UserProfileControllerTest extends RestDocsTestSupport {
                                 .tag("프로필 관련 API")
                                 .description("로그인 전 비밀번호 변경")
                                 .requestFields(
+                                        fieldWithPath("emailRequest.email")
+                                                .type(JsonType.STRING)
+                                                .description("인증 이메일 주소"),
+                                        fieldWithPath("emailRequest.code")
+                                                .type(JsonType.STRING)
+                                                .description("이메일 인증 코드"),
                                         fieldWithPath("loginId")
                                                 .type(JsonType.STRING)
                                                 .description("비밀번호 변경할 아이디")

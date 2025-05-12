@@ -1,5 +1,6 @@
 package ku_rum.backend.domain.user.application;
 
+import ku_rum.backend.domain.common.mail.application.MailService;
 import ku_rum.backend.domain.department.application.DepartmentQueryService;
 import ku_rum.backend.domain.department.application.UserDepartmentService;
 import ku_rum.backend.domain.department.domain.Department;
@@ -14,7 +15,8 @@ import ku_rum.backend.domain.user.dto.response.UserSaveResponse;
 import ku_rum.backend.global.exception.department.DuplicateDepartmentException;
 import ku_rum.backend.global.exception.department.NoSuchDepartmentException;
 import ku_rum.backend.global.exception.global.GlobalException;
-import ku_rum.backend.global.exception.user.*;
+import ku_rum.backend.global.exception.user.DuplicateNicknameException;
+import ku_rum.backend.global.exception.user.NoSuchUserException;
 import ku_rum.backend.global.utill.UserUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -37,6 +39,7 @@ public class UserService {
     private final UserDepartmentRepository userDepartmentRepository;
     private final DepartmentRepository departmentRepository;
     private final UserDepartmentService userDepartmentService;
+    private final MailService mailService;
 
     @Transactional
     public UserSaveResponse saveUser(final UserSaveRequest userSaveRequest) {
@@ -56,7 +59,8 @@ public class UserService {
     public void initiatePasswordReset(final InitiatePasswordResetRequest initiatePasswordResetRequest) {
         log.info("계정 초기화 요청: loginId={}", initiatePasswordResetRequest.loginId());
         User user = userQueryService.getUserByLoginId(initiatePasswordResetRequest.loginId());
-
+        mailService.verifyCode(initiatePasswordResetRequest.emailRequest());
+        
         if (passwordEncoder.matches(initiatePasswordResetRequest.newPassword(), user.getPassword())) {
             throw new GlobalException(PREV_NEW_EQUAL_EXCEPTION);
         }
