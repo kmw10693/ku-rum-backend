@@ -5,7 +5,7 @@ buildscript {
 	ext {
 
 		restdocsApiSpecVersion = '0.18.2' // restdocsApiSpecVersion 버전 변수 설정
-
+	}
 }
 
 plugins {
