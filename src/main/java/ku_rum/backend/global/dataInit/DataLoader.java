@@ -1,3 +1,4 @@
+/*
 package ku_rum.backend.global.dataInit;
 
 import jakarta.annotation.PostConstruct;
@@ -36,7 +37,6 @@ public class DataLoader implements ApplicationRunner {
     private final CategoryInitializer categoryInitializer;
 
     private final PlaceViewRepository placeViewRepository;
-    private final PlaceInitializer placeInitializer;
 
     @PostConstruct
     public void init() {
@@ -92,15 +92,18 @@ public class DataLoader implements ApplicationRunner {
 
         }
 
-        //장소 정보 반환
+        */
+/*//*
+/장소 정보 반환
         if (placeViewRepository.count() == 0){
-            savedPlaces = placeViewRepository.saveAll(placeInitializer.initialize(savedBuildings, savedCategories));
             System.out.println("places saved1: " + savedPlaces.size());
 
         }else{
             savedPlaces = placeViewRepository.findAll();
             System.out.println("places saved2: " + savedPlaces.size());
 
-        }
+        }*//*
+
     }
 }
+*/

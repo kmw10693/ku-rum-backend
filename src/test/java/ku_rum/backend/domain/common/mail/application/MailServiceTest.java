@@ -12,9 +12,9 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.test.context.ActiveProfiles;
 
 import java.time.Duration;
-import java.time.LocalDateTime;
 import java.util.Optional;
 
 import static org.junit.Assert.assertThrows;
@@ -23,6 +23,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.*;
 
+@ActiveProfiles("test")
 @ExtendWith(MockitoExtension.class)
 class MailServiceTest {
 
