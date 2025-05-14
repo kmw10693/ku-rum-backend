@@ -17,3 +17,7 @@ networks:
   servernetwork:
     external: true
     driver: bridge
+
+
+
+
