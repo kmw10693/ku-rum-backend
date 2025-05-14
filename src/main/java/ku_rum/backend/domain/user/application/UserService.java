@@ -60,6 +60,8 @@ public class UserService {
         log.info("계정 초기화 요청: loginId={}", initiatePasswordResetRequest.loginId());
         User user = userQueryService.getUserByLoginId(initiatePasswordResetRequest.loginId());
         mailService.verifyCode(initiatePasswordResetRequest.emailRequest());
+
+
         
         if (passwordEncoder.matches(initiatePasswordResetRequest.newPassword(), user.getPassword())) {
             throw new GlobalException(PREV_NEW_EQUAL_EXCEPTION);

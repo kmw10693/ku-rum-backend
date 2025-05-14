@@ -1,10 +1,9 @@
-// Import 추가
+// 1. Import 추가
 import org.hidetake.gradle.swagger.generator.GenerateSwaggerUI
 
 buildscript {
 	ext {
-
-		restdocsApiSpecVersion = '0.18.2' // restdocsApiSpecVersion 버전 변수 설정
+		restdocsApiSpecVersion = '0.18.3' // restdocsApiSpecVersion 버전 변수 설정
 	}
 }
 
@@ -99,14 +98,14 @@ repositories {
 	mavenCentral()
 }
 
-// 생성된 API 스펙이 어느 위치에 있는지 지정
+// 5. 생성된 API 스펙이 어느 위치에 있는지 지정
 swaggerSources {
 	sample {
 		setInputFile(file("${project.buildDir}/api-spec/openapi3.yaml"))
 	}
 }
 
-// openapi3 스펙 생성시 설정 정보
+// 6. openapi3 스펙 생성시 설정 정보
 openapi3 {
 	servers = [
 			{ url = "https://kuroom.shop" },
@@ -116,8 +115,6 @@ openapi3 {
 	description = "RestDocs를 이용한 Swagger API 문서입니다."
 	version = "1.0"
 	format = "yaml"
-	outputDirectory = file("$buildDir/api-spec")
-
 }
 
 dependencies {
@@ -201,6 +198,7 @@ dependencies {
 
 }
 
+
 tasks.named('test') {
 	useJUnitPlatform()
 }
@@ -209,22 +207,23 @@ tasks.named('jar') {
 	enabled = false
 }
 
-// openapi3가 먼저 실행
+// 10. openapi3가 먼저 실행
 tasks.withType(GenerateSwaggerUI) {
 	dependsOn 'openapi3'
 	doFirst {
 		def swaggerUIFile = file("${openapi3.outputDirectory}/openapi3.yaml")
-		if (!swaggerUIFile.exists()) {
-			throw new GradleException("openapi3.yaml not found. Did the test and openapi3 tasks run successfully?")
-		}
+
+		/*	def securitySchemesContent =  "  securitySchemes:\n" +  \
+                                          "    APIKey:\n" +  \
+                                          "      type: apiKey\n" +  \
+                                          "      name: Authorization\n" +  \
+                                          "      in: header\n" + \
+                                          "security:\n" +
+                    "  - APIKey: []  # Apply the security scheme here"
+
+            swaggerUIFile.append securitySchemesContent*/
 	}
 }
-
-generateSwaggerUI {
-	dependsOn test
-}
-
-
 
 def querydslSrcDir = 'src/main/generated'
 
@@ -238,7 +237,7 @@ clean {
 //	into("${project.projectDir}/src/main/resources/static/docs")
 //}
 
-// 생성된 openapi3 스펙을 기반으로 SwaggerUISample 생성 및 static/docs 패키지에 복사
+// 11. 생성된 openapi3 스펙을 기반으로 SwaggerUISample 생성 및 static/docs 패키지에 복사
 bootJar {
 	dependsOn generateSwaggerUISample
 	from("${generateSwaggerUISample.outputDir}") {

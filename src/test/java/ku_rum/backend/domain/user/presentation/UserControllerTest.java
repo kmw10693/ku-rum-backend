@@ -3,7 +3,7 @@ package ku_rum.backend.domain.user.presentation;
 import com.epages.restdocs.apispec.ResourceSnippetParameters;
 import ku_rum.backend.config.RestDocsTestSupport;
 import ku_rum.backend.domain.common.mail.dto.request.EmailValidationRequest;
-import ku_rum.backend.domain.friend.application.FriendManageService;
+import ku_rum.backend.domain.friend.application.FriendReportService;
 import ku_rum.backend.domain.friend.domain.repository.FriendBlockRepository;
 import ku_rum.backend.domain.notice.domain.repository.NoticeRepositoryImpl;
 import ku_rum.backend.domain.user.application.UserService;
@@ -69,7 +69,7 @@ class UserControllerTest extends RestDocsTestSupport {
     private ApiLogRepository apiLogRepository;
 
     @MockBean
-    private FriendManageService friendManageService;
+    private FriendReportService friendManageService;
 
     @MockBean
     private FriendBlockRepository friendBlockRepository;
