@@ -5,7 +5,7 @@ import ku_rum.backend.domain.building.domain.repository.BuildingViewRepository;
 import ku_rum.backend.domain.college.domain.College;
 import ku_rum.backend.domain.department.domain.Department;
 import ku_rum.backend.domain.department.domain.repository.DepartmentRepository;
-import ku_rum.backend.domain.friend.application.FriendManageService;
+import ku_rum.backend.domain.friend.application.FriendReportService;
 import ku_rum.backend.domain.friend.domain.repository.FriendBlockRepository;
 import ku_rum.backend.domain.user.domain.User;
 import ku_rum.backend.global.batch.BatchScheduler;
@@ -51,7 +51,7 @@ class UserRepositoryTest {
     private ApiLogRepository apiLogRepository;
 
     @MockBean
-    private FriendManageService friendManageService;
+    private FriendReportService friendManageService;
 
     @MockBean
     private FriendBlockRepository friendBlockRepository;

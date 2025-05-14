@@ -10,7 +10,7 @@ import org.junit.jupiter.api.Test;
 
 import java.math.BigDecimal;
 
-import static ku_rum.backend.domain.friend.domain.FriendStatus.*;
+import static ku_rum.backend.domain.friend.domain.vo.FriendStatus.*;
 import static org.assertj.core.api.Assertions.*;
 
 class FriendTest {

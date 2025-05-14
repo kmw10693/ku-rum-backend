@@ -61,8 +61,8 @@ class CollegeQueryControllerTest extends RestDocsTestSupport {
                 .andDo(restDocs.document(
                         resource(
                                 ResourceSnippetParameters.builder()
-                                        .tag("컬리지 관련 API")
-                                        .description("전체 컬리지 목록 조회")
+                                        .tag("학과 관련 API")
+                                        .description("전체 단과대 목록 조회")
                                         .responseFields(
                                                 fieldWithPath("code")
                                                         .type(JsonFieldType.NUMBER)

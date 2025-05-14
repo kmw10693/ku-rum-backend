@@ -1,0 +1,30 @@
+package ku_rum.backend.domain.friend.presentation;
+
+import ku_rum.backend.domain.friend.application.FriendQueryService;
+import ku_rum.backend.domain.friend.dto.response.FriendListResponse;
+import ku_rum.backend.domain.friend.dto.response.ReceivedFriendResponse;
+import ku_rum.backend.global.support.response.BaseResponse;
+import lombok.RequiredArgsConstructor;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
+
+@RestController
+@RequiredArgsConstructor
+@RequestMapping("/api/v1/friends")
+public class FriendQueryController {
+    private final FriendQueryService friendQueryService;
+
+    @GetMapping("/list")
+    public BaseResponse<List<FriendListResponse>> getFriendList() {
+        return BaseResponse.ok(friendQueryService.getFriendList());
+    }
+
+    @GetMapping("/requests/received")
+    public BaseResponse<List<ReceivedFriendResponse>> getReceivedRequests() {
+        return BaseResponse.ok(friendQueryService.getReceivedPendingRequests());
+    }
+
+}
