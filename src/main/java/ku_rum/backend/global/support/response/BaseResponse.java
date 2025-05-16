@@ -6,10 +6,12 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import ku_rum.backend.global.support.status.ResponseStatus;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
+import lombok.Getter;
 import org.springframework.http.HttpStatus;
 
 @JsonPropertyOrder({"code", "status", "message", "data"})
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
+@Getter
 public class BaseResponse<T> implements ResponseStatus {
 
     private final int code;
@@ -40,6 +42,10 @@ public class BaseResponse<T> implements ResponseStatus {
         return of(HttpStatus.OK, data);
     }
 
+    public static <T> BaseResponse<T> ok() {
+        return of(HttpStatus.OK, null);
+    }
+
     @Override
     public int getCode() {
         return code;
@@ -53,9 +59,5 @@ public class BaseResponse<T> implements ResponseStatus {
     @Override
     public String getMessage() {
         return message;
-    }
-
-    public T getData() {
-        return data;
     }
 }

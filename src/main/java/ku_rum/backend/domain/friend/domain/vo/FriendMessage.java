@@ -1,4 +1,4 @@
-package ku_rum.backend.domain.friend.domain;
+package ku_rum.backend.domain.friend.domain.vo;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;

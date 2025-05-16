@@ -9,7 +9,7 @@ public enum BaseExceptionResponseStatus implements ResponseStatus {
     /**
      * 000: 서버 내부 오류
      */
-    INTERNAL_SERVER_ERROR(000, HttpStatus.INTERNAL_SERVER_ERROR, "서버내부 오류입니다."),
+    INTERNAL_SERVER_ERROR(000, HttpStatus.INTERNAL_SERVER_ERROR, "서버 내부 오류입니다."),
 
     /**
      * 100: 요청 성공 (OK)
@@ -74,7 +74,9 @@ public enum BaseExceptionResponseStatus implements ResponseStatus {
     DUPLICATE_BLOCK(703, HttpStatus.BAD_REQUEST, "이미 차단된 사용자입니다."),
     NO_REPORT_MYSELF(704, HttpStatus.BAD_REQUEST, "자기 자신을 신고할 수 없습니다."),
     DUPLICATE_REPORT(705, HttpStatus.BAD_REQUEST, "이미 신고된 사용자입니다."),
-
+    NO_PENDING_LIST(706, HttpStatus.BAD_REQUEST, "친구 요청에 목록이 없습니다."),
+    NOT_EQUAL_TO_USER(707, HttpStatus.BAD_REQUEST, "보낸 요청과 친구가 일치하지 않습니다."),
+    DUPLICATE_RESPONSE(708, HttpStatus.BAD_REQUEST, "이미 처리된 요청은 삭제할 수 없습니다."),
 
     /**
      * 800: Notice

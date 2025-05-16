@@ -1,20 +1,9 @@
 package ku_rum.backend.domain.friend.dto.response;
 
-import ku_rum.backend.domain.friend.domain.Friend;
-import lombok.Builder;
+import ku_rum.backend.domain.user.domain.User;
 
-public record FriendListResponse(
-        Long id,
-        String nickname) {
-
-    @Builder
-    public FriendListResponse {
-    }
-
-    public static FriendListResponse from(Friend friend) {
-        return FriendListResponse.builder()
-                .id(friend.getToUser().getId())
-                .nickname(friend.getToUser().getNickname())
-                .build();
+public record FriendListResponse(Long id, String nickname) {
+    public static FriendListResponse from(User user) {
+        return new FriendListResponse(user.getId(), user.getNickname());
     }
 }
