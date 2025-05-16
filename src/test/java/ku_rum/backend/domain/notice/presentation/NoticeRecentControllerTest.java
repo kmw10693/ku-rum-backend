@@ -1,4 +1,4 @@
-package ku_rum.backend.domain.notice.domain;
+package ku_rum.backend.domain.notice.presentation;
 
 import com.epages.restdocs.apispec.ResourceSnippetParameters;
 import ku_rum.backend.config.RestDocsTestSupport;

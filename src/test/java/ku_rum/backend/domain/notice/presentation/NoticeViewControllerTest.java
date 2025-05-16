@@ -1,8 +1,9 @@
-package ku_rum.backend.domain.notice.domain;
+package ku_rum.backend.domain.notice.presentation;
 
 import com.epages.restdocs.apispec.ResourceSnippetParameters;
 import ku_rum.backend.config.RestDocsTestSupport;
 import ku_rum.backend.domain.notice.application.NoticeService;
+import ku_rum.backend.domain.notice.domain.NoticeCategory;
 import ku_rum.backend.domain.notice.dto.response.NoticeSimpleResponse;
 import ku_rum.backend.domain.user.application.UserService;
 import ku_rum.backend.global.batch.BatchConfig;

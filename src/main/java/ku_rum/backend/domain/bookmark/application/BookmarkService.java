@@ -3,6 +3,7 @@ package ku_rum.backend.domain.bookmark.application;
 import ku_rum.backend.domain.bookmark.domain.Bookmark;
 import ku_rum.backend.domain.bookmark.domain.repository.BookmarkRepository;
 import ku_rum.backend.domain.bookmark.dto.request.BookmarkSaveRequest;
+import ku_rum.backend.domain.bookmark.dto.response.BookmarkSimpleResponse;
 import ku_rum.backend.domain.notice.domain.Notice;
 import ku_rum.backend.domain.notice.domain.repository.NoticeRepository;
 import ku_rum.backend.domain.notice.dto.response.NoticeSimpleResponse;
@@ -31,6 +32,8 @@ public class BookmarkService {
     private final BookmarkRepository bookmarkRepository;
     private final UserRepository userRepository;
     private final NoticeRepository noticeRepository;
+    private final UserUtil userUtil;
+
 
     @Transactional
     public void addBookmark(BookmarkSaveRequest bookmarkRequest) {
@@ -67,4 +70,14 @@ public class BookmarkService {
         return noticeRepository.findByUrl(bookmarkRequest.getUrl())
                 .orElseThrow(() -> new NoSuchNoticeException(BaseExceptionResponseStatus.NO_SUCH_NOTICE));
     }
+
+    public List<BookmarkSimpleResponse> getRecent5bookmarks() {
+        User user = userUtil.getUser();
+        List<Bookmark> recentBookmarks = bookmarkRepository.findTop5ByUserOrderByCreatedAtDesc(user);
+
+        return recentBookmarks.stream()
+                .map(BookmarkSimpleResponse::from)
+                .collect(Collectors.toList());
+    }
+
 }
