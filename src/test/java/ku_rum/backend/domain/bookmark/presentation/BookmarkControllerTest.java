@@ -61,7 +61,24 @@ public class BookmarkControllerTest extends RestDocsTestSupport {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.code").value(200))
                 .andExpect(jsonPath("$.status").value("OK"))
-                .andExpect(jsonPath("$.message").value("OK"));
+                .andExpect(jsonPath("$.message").value("OK"))
+                .andDo(restDocs.document(
+                        resource(
+                                ResourceSnippetParameters.builder()
+                                        .tag("북마크 API")
+                                        .description("사용자 북마크 저장")
+                                        .requestFields(
+                                                fieldWithPath("url").description("북마크할 공지사항 URL")
+                                        )
+                                        .responseFields(
+                                                fieldWithPath("code").description("응답 코드"),
+                                                fieldWithPath("status").description("응답 상태"),
+                                                fieldWithPath("message").description("응답 메시지"),
+                                                fieldWithPath("data").description("응답 데이터(성공 메시지)")
+                                        )
+                                        .build()
+                        )
+                ));
     }
 
 
