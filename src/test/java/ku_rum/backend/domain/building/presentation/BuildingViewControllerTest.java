@@ -1,5 +1,3 @@
-/*
-
 package ku_rum.backend.domain.building.presentation;
 
 import com.epages.restdocs.apispec.ResourceSnippetParameters;
@@ -141,22 +139,22 @@ class BuildingViewControllerTest extends RestDocsTestSupport {
                                                 fieldWithPath("code").type(JsonType.NUMBER).description("성공시 반환 코드 (200)"),
                                                 fieldWithPath("status").type(JsonType.STRING).description("올바른 인증코드 시 상태 값 (OK)"),
                                                 fieldWithPath("message").type(JsonType.STRING).description("올바른 인증코드 시 메시지 (OK)"),
-                                                fieldWithPath("data[0].id").type(JsonType.NUMBER).description("첫 번째 빌딩 ID"),
-                                                fieldWithPath("data[0].name").type(JsonType.STRING).description("첫 번째 빌딩 이름"),
-                                                fieldWithPath("data[0].number").type(JsonType.NUMBER).description("첫 번째 빌딩 번호"),
-                                                fieldWithPath("data[0].abbreviation").type(JsonType.STRING).description("첫 번째 빌딩 약어"),
-                                                fieldWithPath("data[0].latitude").type(JsonType.NUMBER).description("첫 번째 빌딩 위도"),
-                                                fieldWithPath("data[0].longitude").type(JsonType.NUMBER).description("첫 번째 빌딩 경도"),
-                                                fieldWithPath("data[1].id").type(JsonType.NUMBER).description("두 번째 빌딩 ID"),
-                                                fieldWithPath("data[1].name").type(JsonType.STRING).description("두 번째 빌딩 이름"),
-                                                fieldWithPath("data[1].number").type(JsonType.NUMBER).description("두 번째 빌딩 번호"),
-                                                fieldWithPath("data[1].abbreviation").type(JsonType.STRING).description("두 번째 빌딩 약어"),
-                                                fieldWithPath("data[1].latitude").type(JsonType.NUMBER).description("두 번째 빌딩 위도"),
-                                                fieldWithPath("data[1].longitude").type(JsonType.NUMBER).description("두 번째 빌딩 경도")
+                                                fieldWithPath("data[].id").type(JsonType.NUMBER).description("첫 번째 빌딩 ID"),
+                                                fieldWithPath("data[].name").type(JsonType.STRING).description("첫 번째 빌딩 이름"),
+                                                fieldWithPath("data[].number").type(JsonType.NUMBER).description("첫 번째 빌딩 번호"),
+                                                fieldWithPath("data[].abbreviation").type(JsonType.STRING).description("첫 번째 빌딩 약어"),
+                                                fieldWithPath("data[].latitude").type(JsonType.NUMBER).description("첫 번째 빌딩 위도"),
+                                                fieldWithPath("data[].longitude").type(JsonType.NUMBER).description("첫 번째 빌딩 경도"),
+                                                fieldWithPath("data[].id").type(JsonType.NUMBER).description("두 번째 빌딩 ID"),
+                                                fieldWithPath("data[].name").type(JsonType.STRING).description("두 번째 빌딩 이름"),
+                                                fieldWithPath("data[].number").type(JsonType.NUMBER).description("두 번째 빌딩 번호"),
+                                                fieldWithPath("data[].abbreviation").type(JsonType.STRING).description("두 번째 빌딩 약어"),
+                                                fieldWithPath("data[].latitude").type(JsonType.NUMBER).description("두 번째 빌딩 위도"),
+                                                fieldWithPath("data[].longitude").type(JsonType.NUMBER).description("두 번째 빌딩 경도")
                                         ).build())));
     }
 
 
 
 }
-*/
+
