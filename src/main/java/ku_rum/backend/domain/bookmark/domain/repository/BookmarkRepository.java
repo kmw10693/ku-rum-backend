@@ -17,4 +17,7 @@ public interface BookmarkRepository extends JpaRepository<Bookmark, Long> {
     Optional<Bookmark> findByUserAndNotice(User user, Notice notice);
 
     boolean existsByUserAndNotice(User user, Notice notice);
+
+    List<Bookmark> findTop5ByUserOrderByCreatedAtDesc(User user);
+
 }

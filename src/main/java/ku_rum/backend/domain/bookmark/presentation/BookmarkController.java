@@ -21,14 +21,26 @@ public class BookmarkController {
 
     private final BookmarkService bookmarkService;
 
+    /**
+     * 사용자의 북마크 새로 저장
+     *
+     * @param bookmarkRequest
+     * @return
+     */
     @PostMapping("/save")
     public BaseResponse<String> addBookmark(@RequestBody @Valid final BookmarkSaveRequest bookmarkRequest) {
         bookmarkService.addBookmark(bookmarkRequest);
         return BaseResponse.ok(BOOKMARK_SUCCESS.getMessage());
     }
 
+    /**
+     * 사용자의 모든 북마크 불러오기
+     *
+     * @return
+     */
     @GetMapping("/find")
     public BaseResponse<List<NoticeSimpleResponse>> getBookmarks() {
         return BaseResponse.ok(bookmarkService.getBookmarks());
     }
+
 }
