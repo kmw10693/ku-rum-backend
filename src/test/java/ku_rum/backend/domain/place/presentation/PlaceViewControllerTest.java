@@ -3,7 +3,10 @@ package ku_rum.backend.domain.place.presentation;
 import com.epages.restdocs.apispec.ResourceSnippetParameters;
 import ku_rum.backend.config.RestDocsTestSupport;
 import ku_rum.backend.domain.auth.application.TokenBlacklistService;
+import ku_rum.backend.domain.building.dto.response.BuildingViewResponse;
 import ku_rum.backend.domain.place.application.PlaceViewService;
+import ku_rum.backend.domain.place.dto.request.LocationRequest;
+import ku_rum.backend.domain.place.dto.response.LocationInfoResponse;
 import ku_rum.backend.domain.place.dto.response.PlaceDetailView;
 import ku_rum.backend.global.batch.BatchScheduler;
 import org.junit.jupiter.api.DisplayName;
@@ -21,7 +24,7 @@ import java.math.BigDecimal;
 
 import static com.epages.restdocs.apispec.ResourceDocumentation.resource;
 import static org.mockito.BDDMockito.given;
-import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get;
+import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.*;
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -104,4 +107,75 @@ class PlaceViewControllerTest extends RestDocsTestSupport {
                         )
                 ));
     }
+
+    @DisplayName("사용자 위치 기반 위치공유 여부 및 가장 가까운 건물 정보 조회")
+    @Test
+    @WithMockUser
+    void getUserLocation() throws Exception {
+        // given
+        LocationRequest request = new LocationRequest(
+                BigDecimal.valueOf(37.54289),
+                BigDecimal.valueOf(127.0742)
+        );
+
+        BuildingViewResponse buildingResponse = new BuildingViewResponse(
+                6L,
+                "언어원",
+                "언어교육원",
+                6L,
+                BigDecimal.valueOf(37.5425),
+                BigDecimal.valueOf(127.0746)
+        );
+
+        LocationInfoResponse mockResponse = new LocationInfoResponse(
+                true,
+                buildingResponse
+        );
+
+        given(placeViewService.getUserLocation(request)).willReturn(mockResponse);
+
+        // when then
+        mockMvc.perform(post("/api/v1/places/location")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(request))
+                )
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.code").value(200))
+                .andExpect(jsonPath("$.status").value("OK"))
+                .andExpect(jsonPath("$.message").value("OK"))
+                .andExpect(jsonPath("$.data.isShare").value(true))
+                .andExpect(jsonPath("$.data.buildingViewResponse.id").value(6))
+                .andExpect(jsonPath("$.data.buildingViewResponse.abbreviation").value("언어원"))
+                .andExpect(jsonPath("$.data.buildingViewResponse.name").value("언어교육원"))
+                .andExpect(jsonPath("$.data.buildingViewResponse.number").value(6))
+                .andExpect(jsonPath("$.data.buildingViewResponse.latitude").value(37.5425))
+                .andExpect(jsonPath("$.data.buildingViewResponse.longitude").value(127.0746))
+
+                .andDo(restDocs.document(
+                        resource(ResourceSnippetParameters.builder()
+                                .tag("장소 관련 API")
+                                .description("사용자 위치 기반 위치공유 여부 및 가장 가까운 건물 정보 조회")
+                                .requestFields(
+                                        fieldWithPath("latitude").type(JsonFieldType.NUMBER).description("현재 위도"),
+                                        fieldWithPath("longtitude").type(JsonFieldType.NUMBER).description("현재 경도")
+                                )
+                                .responseFields(
+                                        fieldWithPath("code").type(JsonFieldType.NUMBER).description("응답 코드"),
+                                        fieldWithPath("status").type(JsonFieldType.STRING).description("응답 상태"),
+                                        fieldWithPath("message").type(JsonFieldType.STRING).description("응답 메시지"),
+                                        fieldWithPath("data.isShare").type(JsonFieldType.BOOLEAN).description("위치 공유 여부"),
+                                        fieldWithPath("data.buildingViewResponse.id").type(JsonFieldType.NUMBER).description("건물 ID"),
+                                        fieldWithPath("data.buildingViewResponse.abbreviation").type(JsonFieldType.STRING).description("건물 약어"),
+                                        fieldWithPath("data.buildingViewResponse.name").type(JsonFieldType.STRING).description("건물 이름"),
+                                        fieldWithPath("data.buildingViewResponse.number").type(JsonFieldType.NUMBER).description("건물 번호"),
+                                        fieldWithPath("data.buildingViewResponse.latitude").type(JsonFieldType.NUMBER).description("건물 위도"),
+                                        fieldWithPath("data.buildingViewResponse.longitude").type(JsonFieldType.NUMBER).description("건물 경도")
+                                ).build()
+                        )
+                ));
+    }
+
+
+
 }
