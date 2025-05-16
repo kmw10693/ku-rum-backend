@@ -112,7 +112,12 @@ public enum BaseExceptionResponseStatus implements ResponseStatus {
      * 1100: Field/Type Error
      */
     FIELD_ERROR(1100, HttpStatus.BAD_REQUEST, "형식에 맞지 않는 필드 데이터입니다."),
-    METHOD_ARGUMENT_ERROR(1101, HttpStatus.BAD_REQUEST, "요청 타입이 맞지 않습니다.");
+    METHOD_ARGUMENT_ERROR(1101, HttpStatus.BAD_REQUEST, "요청 타입이 맞지 않습니다."),
+
+    /**
+     * 1200: Place
+     */
+    PLACE_NOT_FOUND(1200, HttpStatus.NOT_FOUND, "해당되는 장소가 없습니다.");
 
     private final int code;
     private final HttpStatus status;
