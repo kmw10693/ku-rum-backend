@@ -17,8 +17,16 @@ import java.util.List;
 public class CategoryViewController {
     private final CategoryViewService categoryViewService;
 
+    /**
+     * 카테고리 별로 해당 장소 모두 검색
+     *
+     * @param categoryName
+     * @return
+     */
     @GetMapping("/{categoryName}/places")
     public BaseResponse<List<CategoryViewPlaceResponse>> getPlacesByCategoryName(@PathVariable("categoryName") String categoryName) {
         return BaseResponse.ok(categoryViewService.getPlacesByCategoryName(categoryName));
     }
+
+
 }

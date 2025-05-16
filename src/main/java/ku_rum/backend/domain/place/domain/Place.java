@@ -14,12 +14,19 @@ import java.math.BigDecimal;
 @Table(name = "place")
 public class Place extends BaseEntity {
 
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(length = 100, nullable = false)
-    private String name;
+    private String name; //제목
+
+    private String subName; //부제목
+
+    @Lob
+    @Column(columnDefinition = "TEXT")
+    private String text; //상세 내용
 
     @Column(nullable = false, precision = 10, scale = 6)
     private BigDecimal latitude;
@@ -36,17 +43,21 @@ public class Place extends BaseEntity {
     private Category category;
 
     @Builder
-    private Place(String name, BigDecimal latitude, BigDecimal longitude, Building building, Category category) {
+    private Place(String name, String subName, String text, BigDecimal latitude, BigDecimal longitude, Building building, Category category) {
         this.name = name;
+        this.subName = subName;
+        this.text = text;
         this.latitude = latitude;
         this.longitude = longitude;
         this.building = building;
         this.category = category;
     }
 
-    public static Place of(String name, BigDecimal latitude, BigDecimal longitude, Building building, Category category) {
+    public static Place of(String name, String subName, String text, BigDecimal latitude, BigDecimal longitude, Building building, Category category) {
         return Place.builder()
                 .name(name)
+                .subName(subName)
+                .text(text)
                 .latitude(latitude)
                 .longitude(longitude)
                 .building(building)
@@ -54,8 +65,10 @@ public class Place extends BaseEntity {
                 .build();
     }
 
-    public void update(String name, BigDecimal latitude, BigDecimal longitude, Building building, Category category) {
+    public void update(String name, String subName, String text, BigDecimal latitude, BigDecimal longitude, Building building, Category category) {
         this.name = name;
+        this.subName = subName;
+        this.text = text;
         this.latitude = latitude;
         this.longitude = longitude;
         this.building = building;
