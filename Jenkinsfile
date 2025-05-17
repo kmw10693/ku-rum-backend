@@ -14,7 +14,8 @@ pipeline{
         }
         stage('Prepare'){
             steps {
-                sh 'gradle clean'
+                sh './gradlew clean'
+                sh './gradlew build'
             }
         }
         stage('Replace Prod Properties') {

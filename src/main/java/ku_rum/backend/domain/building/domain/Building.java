@@ -9,12 +9,12 @@ import java.math.BigDecimal;
 @Getter
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@Table(name = "building",
+/*@Table(name = "building",
         indexes = {
                 @Index(name = "idx_building_name_fulltext", columnList = "name", unique = false),
                 @Index(name = "idx_building_abbreviation_fulltext", columnList = "abbreviation", unique = false)
         }
-)
+)*/
 public class Building extends BaseEntity {
 
     @Id
