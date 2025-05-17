@@ -38,5 +38,17 @@ public class PlaceViewController {
     }
 
 
+    /**
+     * 특정 장소 관련 이미지 저장
+     *
+     */
+   /* @GetMapping("/{placeId}/image")
+    public BaseResponse<????> getPlaceDetail(@PathVariable("id") Long placeId){
+        return BaseResponse.ok(placeViewService.getImage(placeId));
+    }*/
 
+    /**
+     * 특정 장소 관련 이미지 불러오기
+     *
+     */
 }
