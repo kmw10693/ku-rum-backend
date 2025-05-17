@@ -46,8 +46,8 @@ class FriendQueryControllerTest extends RestDocsTestSupport {
     void getFriendList() throws Exception {
         // given
         List<FriendListResponse> mockList = List.of(
-                new FriendListResponse(1L, "친구1"),
-                new FriendListResponse(2L, "친구2")
+                new FriendListResponse(1L, "친구1", "image.com"),
+                new FriendListResponse(2L, "친구2", "image.com")
         );
         when(friendQueryService.getFriendList()).thenReturn(mockList);
 
@@ -64,7 +64,8 @@ class FriendQueryControllerTest extends RestDocsTestSupport {
                                 .description("친구 목록 조회")
                                 .responseFields(RestDocsFieldSnippets.withDataFields(List.of(
                                         fieldWithPath("data[].id").type(JsonFieldType.NUMBER).description("친구 ID"),
-                                        fieldWithPath("data[].nickname").type(JsonFieldType.STRING).description("친구 닉네임")
+                                        fieldWithPath("data[].nickname").type(JsonFieldType.STRING).description("친구 닉네임"),
+                                        fieldWithPath("data[].imageUrl").type(JsonFieldType.STRING).description("프로필 이미지")
                                 )))
                                 .build())
                 ));
@@ -76,8 +77,8 @@ class FriendQueryControllerTest extends RestDocsTestSupport {
     void getReceivedFriendRequests() throws Exception {
         // given
         List<ReceivedFriendResponse> mockList = List.of(
-                new ReceivedFriendResponse(10L, 3L, "요청자A"),
-                new ReceivedFriendResponse(11L, 4L, "요청자B")
+                new ReceivedFriendResponse(10L, 3L, "요청자A", "image.com"),
+                new ReceivedFriendResponse(11L, 4L, "요청자B", "image.com")
         );
         when(friendQueryService.getReceivedPendingRequests()).thenReturn(mockList);
 
@@ -96,7 +97,8 @@ class FriendQueryControllerTest extends RestDocsTestSupport {
                                 .responseFields(RestDocsFieldSnippets.withDataFields(List.of(
                                         fieldWithPath("data[].requestId").type(JsonFieldType.NUMBER).description("요청 ID"),
                                         fieldWithPath("data[].fromUserId").type(JsonFieldType.NUMBER).description("보낸 사람 ID"),
-                                        fieldWithPath("data[].fromUserNickname").type(JsonFieldType.STRING).description("보낸 사람 닉네임")
+                                        fieldWithPath("data[].fromUserNickname").type(JsonFieldType.STRING).description("보낸 사람 닉네임"),
+                                        fieldWithPath("data[].imageUrl").type(JsonFieldType.STRING).description("프로필 이미지")
                                 )))
                                 .build())
                 ));
