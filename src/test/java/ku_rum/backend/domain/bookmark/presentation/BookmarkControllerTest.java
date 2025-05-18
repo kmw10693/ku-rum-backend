@@ -1,7 +1,7 @@
 package ku_rum.backend.domain.bookmark.presentation;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.epages.restdocs.apispec.ResourceSnippetParameters;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import ku_rum.backend.config.RestDocsTestSupport;
 import ku_rum.backend.domain.auth.application.TokenBlacklistService;
 import ku_rum.backend.domain.bookmark.application.BookmarkService;
@@ -13,7 +13,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
-import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.test.context.ActiveProfiles;
@@ -22,13 +21,14 @@ import java.util.List;
 
 import static com.epages.restdocs.apispec.ResourceDocumentation.resource;
 import static org.mockito.BDDMockito.given;
-import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.*;
-import static org.springframework.restdocs.payload.PayloadDocumentation.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get;
+import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.post;
+import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest
-@EnableScheduling
 @ActiveProfiles("test")
 public class BookmarkControllerTest extends RestDocsTestSupport {
 

@@ -21,6 +21,7 @@ import org.springframework.test.context.ActiveProfiles;
 import static com.epages.restdocs.apispec.ResourceDocumentation.resource;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doNothing;
+import static org.springframework.restdocs.headers.HeaderDocumentation.headerWithName;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.patch;
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -51,6 +52,7 @@ class FriendReportControllerTest extends RestDocsTestSupport {
 
         // when & then
         mockMvc.perform(patch("/api/v1/friends/block")
+                        .header("Authorization", "Bearer eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyUEsiOjEsInJvbGVzIjoiUk9MRV9VU0VSIiwiaWF0IjoxNzQwMjQyNjQxLCJleHAiOjE3NDAyNDQ0NDF9.kLSMBLWdvIvrBpGJdOigSKjxMIab0cV06xFjSpwrq70")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(request))
                 )
@@ -62,6 +64,9 @@ class FriendReportControllerTest extends RestDocsTestSupport {
                         resource(ResourceSnippetParameters.builder()
                                 .tag("친구 관련 API")
                                 .description("친구 차단")
+                                .requestHeaders(
+                                        headerWithName("Authorization").description("발급 받은 엑세스 토큰입니다.")
+                                )
                                 .requestFields(
                                         fieldWithPath("reportId").type(JsonFieldType.NUMBER).description("차단 대상 유저 ID")
                                 )
@@ -81,6 +86,7 @@ class FriendReportControllerTest extends RestDocsTestSupport {
 
         // when & then
         mockMvc.perform(patch("/api/v1/friends/report")
+                        .header("Authorization", "Bearer eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyUEsiOjEsInJvbGVzIjoiUk9MRV9VU0VSIiwiaWF0IjoxNzQwMjQyNjQxLCJleHAiOjE3NDAyNDQ0NDF9.kLSMBLWdvIvrBpGJdOigSKjxMIab0cV06xFjSpwrq70")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(request))
                 )
@@ -92,6 +98,9 @@ class FriendReportControllerTest extends RestDocsTestSupport {
                         resource(ResourceSnippetParameters.builder()
                                 .tag("친구 관련 API")
                                 .description("친구 신고")
+                                .requestHeaders(
+                                        headerWithName("Authorization").description("발급 받은 엑세스 토큰입니다.")
+                                )
                                 .requestFields(
                                         fieldWithPath("reportId").type(JsonFieldType.NUMBER).description("신고 대상 유저 ID"),
                                         fieldWithPath("reason").type(JsonFieldType.STRING).description("신고 사유")

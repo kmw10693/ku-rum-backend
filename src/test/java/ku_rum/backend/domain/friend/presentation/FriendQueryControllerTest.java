@@ -5,6 +5,7 @@ import ku_rum.backend.config.RestDocsTestSupport;
 import ku_rum.backend.domain.friend.application.FriendQueryService;
 import ku_rum.backend.domain.friend.dto.response.FriendListResponse;
 import ku_rum.backend.domain.friend.dto.response.ReceivedFriendResponse;
+import ku_rum.backend.domain.friend.dto.response.SentFriendResponse;
 import ku_rum.backend.global.batch.BatchScheduler;
 import ku_rum.backend.util.RestDocsFieldSnippets;
 import ku_rum.backend.util.RestDocsTestUtils;
@@ -12,6 +13,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.MediaType;
 import org.springframework.restdocs.payload.JsonFieldType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.security.web.SecurityFilterChain;
@@ -20,7 +22,9 @@ import org.springframework.test.context.ActiveProfiles;
 import java.util.List;
 
 import static com.epages.restdocs.apispec.ResourceDocumentation.resource;
+import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.when;
+import static org.springframework.restdocs.headers.HeaderDocumentation.headerWithName;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get;
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -52,7 +56,9 @@ class FriendQueryControllerTest extends RestDocsTestSupport {
         when(friendQueryService.getFriendList()).thenReturn(mockList);
 
         // when & then
-        mockMvc.perform(get("/api/v1/friends/list"))
+        mockMvc.perform(get("/api/v1/friends/list")
+                        .header("Authorization", "Bearer eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyUEsiOjEsInJvbGVzIjoiUk9MRV9VU0VSIiwiaWF0IjoxNzQwMjQyNjQxLCJleHAiOjE3NDAyNDQ0NDF9.kLSMBLWdvIvrBpGJdOigSKjxMIab0cV06xFjSpwrq70")
+                )
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpectAll(RestDocsTestUtils.expectCommonSuccess())
@@ -62,6 +68,9 @@ class FriendQueryControllerTest extends RestDocsTestSupport {
                         resource(ResourceSnippetParameters.builder()
                                 .tag("친구 관련 API")
                                 .description("친구 목록 조회")
+                                .requestHeaders(
+                                        headerWithName("Authorization").description("발급 받은 엑세스 토큰입니다.")
+                                )
                                 .responseFields(RestDocsFieldSnippets.withDataFields(List.of(
                                         fieldWithPath("data[].id").type(JsonFieldType.NUMBER).description("친구 ID"),
                                         fieldWithPath("data[].nickname").type(JsonFieldType.STRING).description("친구 닉네임"),
@@ -83,7 +92,10 @@ class FriendQueryControllerTest extends RestDocsTestSupport {
         when(friendQueryService.getReceivedPendingRequests()).thenReturn(mockList);
 
         // when & then
-        mockMvc.perform(get("/api/v1/friends/requests/received"))
+        mockMvc.perform(get("/api/v1/friends/requests/received")
+                        .header("Authorization", "Bearer eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyUEsiOjEsInJvbGVzIjoiUk9MRV9VU0VSIiwiaWF0IjoxNzQwMjQyNjQxLCJleHAiOjE3NDAyNDQ0NDF9.kLSMBLWdvIvrBpGJdOigSKjxMIab0cV06xFjSpwrq70")
+
+                )
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpectAll(RestDocsTestUtils.expectCommonSuccess())
@@ -94,6 +106,9 @@ class FriendQueryControllerTest extends RestDocsTestSupport {
                         resource(ResourceSnippetParameters.builder()
                                 .tag("친구 관련 API")
                                 .description("받은 친구 요청 목록 조회")
+                                .requestHeaders(
+                                        headerWithName("Authorization").description("발급 받은 엑세스 토큰입니다.")
+                                )
                                 .responseFields(RestDocsFieldSnippets.withDataFields(List.of(
                                         fieldWithPath("data[].requestId").type(JsonFieldType.NUMBER).description("요청 ID"),
                                         fieldWithPath("data[].fromUserId").type(JsonFieldType.NUMBER).description("보낸 사람 ID"),
@@ -103,4 +118,46 @@ class FriendQueryControllerTest extends RestDocsTestSupport {
                                 .build())
                 ));
     }
+
+    @DisplayName("보낸 친구 요청 목록 조회 API")
+    @Test
+    @WithMockUser
+    void getSentRequests() throws Exception {
+        // given
+        List<SentFriendResponse> mockResponse = List.of(
+                new SentFriendResponse(1L, 2L, "receiver1","image"),
+                new SentFriendResponse(2L, 3L, "receiver2", "image2")
+        );
+
+        given(friendQueryService.getSentPendingRequests()).willReturn(mockResponse);
+
+        // when & then
+        mockMvc.perform(get("/api/v1/friends/requests/sent")
+                        .header("Authorization", "Bearer your.jwt.token")
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpectAll(RestDocsTestUtils.expectCommonSuccess())
+                .andDo(restDocs.document(
+                        resource(ResourceSnippetParameters.builder()
+                                .tag("친구 관련 API")
+                                .description("보낸 친구 요청 목록 조회")
+                                .requestHeaders(
+                                        headerWithName("Authorization").description("발급 받은 엑세스 토큰입니다.")
+                                )
+                                .responseFields(
+                                        fieldWithPath("data[].requestId").description("친구 요청 ID"),
+                                        fieldWithPath("data[].fromUserId").description("수신자 ID"),
+                                        fieldWithPath("data[].fromUserNickname").description("수신자 닉네임"),
+                                        fieldWithPath("data[].imageUrl").description("프로필 이미지"),
+                                        fieldWithPath("message").description("응답 메시지"),
+                                        fieldWithPath("status").description("HTTP 상태 코드"),
+                                        fieldWithPath("code").description("응답 코드")
+                                )
+                                .build())
+                ));
+    }
+
+
+
 }
