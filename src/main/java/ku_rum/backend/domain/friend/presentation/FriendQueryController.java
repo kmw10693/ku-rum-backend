@@ -3,6 +3,7 @@ package ku_rum.backend.domain.friend.presentation;
 import ku_rum.backend.domain.friend.application.FriendQueryService;
 import ku_rum.backend.domain.friend.dto.response.FriendListResponse;
 import ku_rum.backend.domain.friend.dto.response.ReceivedFriendResponse;
+import ku_rum.backend.domain.friend.dto.response.SentFriendResponse;
 import ku_rum.backend.global.support.response.BaseResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -27,4 +28,8 @@ public class FriendQueryController {
         return BaseResponse.ok(friendQueryService.getReceivedPendingRequests());
     }
 
+    @GetMapping("/requests/sent")
+    public BaseResponse<List<SentFriendResponse>> getSentRequests() {
+        return BaseResponse.ok(friendQueryService.getSentPendingRequests());
+    }
 }

@@ -5,6 +5,7 @@ import ku_rum.backend.domain.friend.domain.repository.FriendRepository;
 import ku_rum.backend.domain.friend.domain.vo.FriendStatus;
 import ku_rum.backend.domain.friend.dto.response.FriendListResponse;
 import ku_rum.backend.domain.friend.dto.response.ReceivedFriendResponse;
+import ku_rum.backend.domain.friend.dto.response.SentFriendResponse;
 import ku_rum.backend.domain.user.domain.User;
 import ku_rum.backend.global.utill.UserUtil;
 import lombok.RequiredArgsConstructor;
@@ -45,4 +46,18 @@ public class FriendQueryService {
                 .map(ReceivedFriendResponse::from)
                 .collect(Collectors.toList());
     }
+
+    public List<SentFriendResponse> getSentPendingRequests() {
+            User currentUser = userUtil.getUser();
+            List<Friend> sentRequests = friendRepository.findByFromUserAndStatus(currentUser, FriendStatus.PENDING);
+
+            return sentRequests.stream()
+                    .map(req -> new SentFriendResponse(
+                            req.getId(),
+                            req.getToUser().getId(),
+                            req.getToUser().getNickname(),
+                            req.getToUser().getImageUrl()
+                    ))
+                    .toList();
+        }
 }
