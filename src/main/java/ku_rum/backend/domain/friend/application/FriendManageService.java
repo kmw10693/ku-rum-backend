@@ -63,4 +63,19 @@ public class FriendManageService {
         friendRepository.delete(friend);
     }
 
+    public void deleteFriend(Long targetUserId) {
+        User currentUser = userUtil.getUser();
+        User targetUser = userQueryService.getUserById(targetUserId);
+
+        boolean isFriend = friendRepository.existsByFromUserAndToUserAndStatus(currentUser, targetUser, FriendStatus.ACCEPT) ||
+                friendRepository.existsByFromUserAndToUserAndStatus(targetUser, currentUser, FriendStatus.ACCEPT);
+
+        if (!isFriend) {
+            throw new GlobalException(NO_FRIEND_REQUEST);
+        }
+
+        friendRepository.deleteByFromUserAndToUser(currentUser, targetUser);
+        friendRepository.deleteByFromUserAndToUser(targetUser, currentUser);
+    }
+
 }

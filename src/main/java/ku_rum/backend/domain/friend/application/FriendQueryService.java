@@ -4,9 +4,11 @@ import ku_rum.backend.domain.friend.domain.Friend;
 import ku_rum.backend.domain.friend.domain.repository.FriendRepository;
 import ku_rum.backend.domain.friend.domain.vo.FriendStatus;
 import ku_rum.backend.domain.friend.dto.response.FriendListResponse;
+import ku_rum.backend.domain.friend.dto.response.FriendSearchResponse;
 import ku_rum.backend.domain.friend.dto.response.ReceivedFriendResponse;
 import ku_rum.backend.domain.friend.dto.response.SentFriendResponse;
 import ku_rum.backend.domain.user.domain.User;
+import ku_rum.backend.domain.user.domain.repository.UserRepository;
 import ku_rum.backend.global.utill.UserUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -22,6 +24,7 @@ import java.util.stream.Stream;
 public class FriendQueryService {
 
     private final FriendRepository friendRepository;
+    private final UserRepository userRepository;
     private final UserUtil userUtil;
 
     // 친구 목록 조회
@@ -48,16 +51,43 @@ public class FriendQueryService {
     }
 
     public List<SentFriendResponse> getSentPendingRequests() {
-            User currentUser = userUtil.getUser();
-            List<Friend> sentRequests = friendRepository.findByFromUserAndStatus(currentUser, FriendStatus.PENDING);
+        User currentUser = userUtil.getUser();
+        List<Friend> sentRequests = friendRepository.findByFromUserAndStatus(currentUser, FriendStatus.PENDING);
 
-            return sentRequests.stream()
-                    .map(req -> new SentFriendResponse(
-                            req.getId(),
-                            req.getToUser().getId(),
-                            req.getToUser().getNickname(),
-                            req.getToUser().getImageUrl()
-                    ))
-                    .toList();
-        }
+        return sentRequests.stream()
+                .map(req -> new SentFriendResponse(
+                        req.getId(),
+                        req.getToUser().getId(),
+                        req.getToUser().getNickname(),
+                        req.getToUser().getImageUrl()
+                ))
+                .toList();
+    }
+
+    public List<FriendSearchResponse> searchByNickname(final String nickname) {
+        User currentUser = userUtil.getUser();
+        List<User> matchedUsers = userRepository.findByNicknameContainingIgnoreCase(nickname).stream()
+                .filter(user -> !user.getId().equals(currentUser.getId()))
+                .toList();
+
+        List<Long> targetUserIds = matchedUsers.stream()
+                .map(User::getId)
+                .collect(Collectors.toList());
+
+        // 1. 친구 요청을 보낸 사용자 ID 리스트 (PENDING)
+        List<Long> sentRequestUserIds = friendRepository.findToUserIdsByFromUserAndStatus(currentUser.getId(), targetUserIds, FriendStatus.PENDING);
+
+        // 2. 친구인 사용자 ID 리스트 (ACCEPTED 양방향)
+        List<Long> friendUserIds = friendRepository.findFriendUserIds(currentUser.getId(), targetUserIds, FriendStatus.ACCEPT);
+
+        return matchedUsers.stream()
+                .map(user -> new FriendSearchResponse(
+                        user.getId(),
+                        user.getNickname(),
+                        user.getImageUrl(),
+                        sentRequestUserIds.contains(user.getId()),
+                        friendUserIds.contains(user.getId())
+                ))
+                .collect(Collectors.toList());
+    }
 }
