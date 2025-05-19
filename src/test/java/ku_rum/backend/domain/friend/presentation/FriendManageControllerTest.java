@@ -22,6 +22,7 @@ import static org.mockito.Mockito.doNothing;
 import static org.springframework.restdocs.headers.HeaderDocumentation.headerWithName;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.*;
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
+import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -158,4 +159,35 @@ class FriendManageControllerTest extends RestDocsTestSupport {
                                 .build())
                 ));
     }
+
+    @Test
+    @DisplayName("친구 삭제 API")
+    @WithMockUser
+    void deleteFriend() throws Exception {
+        Long friendId = 1L;
+
+        // friendManageService.deleteFriend(friendId)를 void로 호출하는 경우
+        doNothing().when(friendManageService).deleteFriend(friendId);
+
+        mockMvc.perform(delete("/api/v1/friends/{friendId}", friendId)
+                        .header("Authorization", "Bearer your.jwt.token"))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpectAll(RestDocsTestUtils.expectCommonSuccess())
+                .andDo(restDocs.document(
+                        resource(ResourceSnippetParameters.builder()
+                                .tag("친구 관련 API")
+                                .description("친구 삭제")
+                                .requestHeaders(
+                                        headerWithName("Authorization").description("발급 받은 액세스 토큰")
+                                )
+                                .pathParameters(
+                                        parameterWithName("friendId").description("삭제할 친구의 사용자 ID")
+                                )
+                                .responseFields(RestDocsFieldSnippets.COMMON_RESPONSE_FIELDS)
+                                .build())
+                ));
+
+    }
+
 }

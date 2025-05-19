@@ -4,6 +4,7 @@ import com.epages.restdocs.apispec.ResourceSnippetParameters;
 import ku_rum.backend.config.RestDocsTestSupport;
 import ku_rum.backend.domain.friend.application.FriendQueryService;
 import ku_rum.backend.domain.friend.dto.response.FriendListResponse;
+import ku_rum.backend.domain.friend.dto.response.FriendSearchResponse;
 import ku_rum.backend.domain.friend.dto.response.ReceivedFriendResponse;
 import ku_rum.backend.domain.friend.dto.response.SentFriendResponse;
 import ku_rum.backend.global.batch.BatchScheduler;
@@ -27,6 +28,7 @@ import static org.mockito.Mockito.when;
 import static org.springframework.restdocs.headers.HeaderDocumentation.headerWithName;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get;
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
+import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -125,7 +127,7 @@ class FriendQueryControllerTest extends RestDocsTestSupport {
     void getSentRequests() throws Exception {
         // given
         List<SentFriendResponse> mockResponse = List.of(
-                new SentFriendResponse(1L, 2L, "receiver1","image"),
+                new SentFriendResponse(1L, 2L, "receiver1", "image"),
                 new SentFriendResponse(2L, 3L, "receiver2", "image2")
         );
 
@@ -158,6 +160,48 @@ class FriendQueryControllerTest extends RestDocsTestSupport {
                 ));
     }
 
+    @Test
+    @DisplayName("닉네임으로 친구 검색 API")
+    @WithMockUser
+    void searchFriendByNickname() throws Exception {
+        String nickname = "minu";
+
+        // Mock 응답 데이터
+        List<FriendSearchResponse> mockResponse = List.of(
+                new FriendSearchResponse(1L, "minu1", "https://img1.com", true, true),
+                new FriendSearchResponse(2L, "minu2", "https://img2.com", false, false)
+        );
+        when(friendQueryService.searchByNickname(nickname)).thenReturn(mockResponse);
+
+        mockMvc.perform(get("/api/v1/friends/search")
+                        .header("Authorization", "Bearer your.jwt.token")
+                        .param("nickname", nickname))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpectAll(RestDocsTestUtils.expectCommonSuccess())
+                .andDo(restDocs.document(
+                        resource(ResourceSnippetParameters.builder()
+                                .tag("친구 관련 API")
+                                .description("닉네임으로 친구 검색")
+                                .requestHeaders(
+                                        headerWithName("Authorization").description("발급 받은 액세스 토큰")
+                                )
+                                .queryParameters(
+                                        parameterWithName("nickname").description("검색할 닉네임 (부분일치)")
+                                )
+                                .responseFields(
+                                        RestDocsFieldSnippets.COMMON_RESPONSE_FIELDS
+                                )
+                                .responseFields(RestDocsFieldSnippets.withDataFields(List.of(
+                                        fieldWithPath("data[].userId").type(JsonFieldType.NUMBER).description("유저 ID"),
+                                        fieldWithPath("data[].nickname").type(JsonFieldType.STRING).description("유저 닉네임"),
+                                        fieldWithPath("data[].imageUrl").type(JsonFieldType.STRING).description("프로필 이미지 URL"),
+                                        fieldWithPath("data[].requestSent").type(JsonFieldType.BOOLEAN).description("친구 요청 보냈는지 여부"),
+                                        fieldWithPath("data[].isFriend").type(JsonFieldType.BOOLEAN).description("이미 친구인지 여부")
+                                )))
+                                .build())
+                ));
+    }
 
 
 }

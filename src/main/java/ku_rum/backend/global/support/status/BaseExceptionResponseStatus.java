@@ -77,6 +77,7 @@ public enum BaseExceptionResponseStatus implements ResponseStatus {
     NO_PENDING_LIST(706, HttpStatus.BAD_REQUEST, "친구 요청에 목록이 없습니다."),
     NOT_EQUAL_TO_USER(707, HttpStatus.BAD_REQUEST, "보낸 요청과 친구가 일치하지 않습니다."),
     DUPLICATE_RESPONSE(708, HttpStatus.BAD_REQUEST, "이미 처리된 요청은 삭제할 수 없습니다."),
+    NO_FRIEND_REQUEST(709, HttpStatus.BAD_REQUEST, "해당 친구가 존재하지 않습니다"),
 
     /**
      * 800: Notice

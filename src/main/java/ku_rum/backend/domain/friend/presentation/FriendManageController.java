@@ -48,4 +48,13 @@ public class FriendManageController {
         friendManageService.deleteSentRequest(FriendDeleteRequest);
         return BaseResponse.ok();
     }
+
+    /**
+     * 친구 삭제 API
+     */
+    @DeleteMapping("/{friendId}")
+    public BaseResponse<Void> deleteFriend(@PathVariable final Long friendId) {
+        friendManageService.deleteFriend(friendId);
+        return BaseResponse.ok();
+    }
 }
