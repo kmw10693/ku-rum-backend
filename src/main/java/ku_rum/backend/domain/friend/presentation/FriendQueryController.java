@@ -34,7 +34,7 @@ public class FriendQueryController {
     public BaseResponse<List<SentFriendResponse>> getSentRequests() {
         return BaseResponse.ok(friendQueryService.getSentPendingRequests());
     }
-
+  
     @GetMapping("/search")
     public BaseResponse<List<FriendSearchResponse>> searchFriendByNickname(@RequestParam final String nickname) {
         return BaseResponse.ok(friendQueryService.searchByNickname(nickname));
