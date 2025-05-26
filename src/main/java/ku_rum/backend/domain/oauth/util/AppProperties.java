@@ -28,6 +28,8 @@ public class AppProperties {
         private long refreshTokenExpiry;
     }
 
+    @Getter
+    @Setter
     public static final class OAuth2 {
         private List<String> authorizedRedirectUris = new ArrayList<>();
 
