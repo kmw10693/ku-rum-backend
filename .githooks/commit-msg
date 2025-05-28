@@ -29,3 +29,4 @@ if ! echo "$commit_message" | grep -Eq '^(feat|fix|docs|style|refactor|test|chor
 else
   echo "✅ 커밋 메시지 형식이 올바릅니다: '$commit_message'"
 fi
+
