@@ -1,12 +1,12 @@
 package ku_rum.backend.domain.building.presentation;
 
-import ku_rum.backend.domain.building.dto.response.BuildingViewResponse;
 import ku_rum.backend.domain.building.application.BuildingViewService;
+import ku_rum.backend.domain.building.dto.response.BuildingViewResponse;
 import ku_rum.backend.global.support.response.BaseResponse;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import java.util.*;
+
+import java.util.List;
 
 
 @RestController

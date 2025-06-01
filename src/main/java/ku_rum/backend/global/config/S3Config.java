@@ -4,6 +4,7 @@ import com.amazonaws.auth.AWSStaticCredentialsProvider;
 import com.amazonaws.auth.BasicAWSCredentials;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3ClientBuilder;
+import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -20,6 +21,16 @@ public class S3Config {
 
     @Value("${cloud.aws.region}")
     private String region;
+
+    @Value("${cloud.aws.s3.bucket}")
+    private String bucket;
+
+    @PostConstruct
+    public void init() {
+        System.out.println("✅ AWS region: " + region);
+        System.out.println("✅ AWS accessKey: " + accessKey);
+        System.out.println("✅ AWS bucket: " + bucket);  // -> 오류 나면 이 줄에서 터짐
+    }
 
     @Bean
     @Primary

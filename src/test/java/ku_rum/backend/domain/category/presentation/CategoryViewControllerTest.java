@@ -87,13 +87,13 @@ class CategoryViewControllerTest extends RestDocsTestSupport {
         // given
         List<CategoryViewPlaceResponse> mockResponse = List.of(
                 new CategoryViewPlaceResponse(
-                        29L, "레스티오-공학관점",
+                        29L, "레스티오-공학관점","공",
                         BigDecimal.valueOf(37.541651), BigDecimal.valueOf(127.078702),
                         BuildingViewResponse.from(Building.of("공학관점", 11L, "공",
                                 BigDecimal.valueOf(37.541004), BigDecimal.valueOf(127.074197))) // id가 11L로 설정
                 ),
                 new CategoryViewPlaceResponse(
-                        30L, "레스티오-경영관점",
+                        30L, "레스티오-경영관점","레",
                         BigDecimal.valueOf(37.544476), BigDecimal.valueOf(127.076513),
                         BuildingViewResponse.from(Building.of("경영관점", 1L, "경",
                                 BigDecimal.valueOf(37.543075), BigDecimal.valueOf(127.075067))) // id가 1L로 설정

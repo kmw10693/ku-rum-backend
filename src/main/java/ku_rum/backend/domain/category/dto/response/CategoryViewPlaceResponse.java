@@ -8,6 +8,7 @@ import java.math.BigDecimal;
 public record CategoryViewPlaceResponse(
         Long placeId,
         String name,
+        String subname,
         BigDecimal latitude,
         BigDecimal longitude,
         BuildingViewResponse building
@@ -16,6 +17,7 @@ public record CategoryViewPlaceResponse(
         return new CategoryViewPlaceResponse(
                 place.getId(),
                 place.getName(),
+                place.getSubName(),
                 place.getLatitude(),
                 place.getLongitude(),
                 BuildingViewResponse.from(place.getBuilding())

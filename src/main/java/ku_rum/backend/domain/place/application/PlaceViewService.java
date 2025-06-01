@@ -29,7 +29,7 @@ public class PlaceViewService {
     private final UserUtil userUtil;
 
     public PlaceDetailView getPlaceDetail(Long placeId) {
-        Place place = placeViewRepository.findById(placeId)
+        Place place = placeViewRepository.findPlaceById(placeId)
                 .orElseThrow(() -> new PlaceNotFoundException(PLACE_NOT_FOUND));
 
         return new PlaceDetailView(
@@ -64,8 +64,7 @@ public class PlaceViewService {
                                 building.getLatitude().doubleValue(), building.getLongitude().doubleValue())))
                 .orElseThrow(() -> new PlaceNotFoundException(PLACE_NOT_FOUND));
 
-        //사용자 공유 상태 조회
-        //로직 추가 예정
+        //TODO: 사용자 공유 상태 조회 로직 추가 예정(현재는 isShare = true로 반환)
 
 
         return new LocationInfoResponse(
