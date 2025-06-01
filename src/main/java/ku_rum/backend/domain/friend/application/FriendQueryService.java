@@ -90,5 +90,4 @@ public class FriendQueryService {
                 ))
                 .collect(Collectors.toList());
     }
-
 }
