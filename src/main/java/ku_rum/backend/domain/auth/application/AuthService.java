@@ -6,20 +6,18 @@ import ku_rum.backend.domain.auth.dto.request.LoginRequest;
 import ku_rum.backend.domain.auth.dto.request.ReissueRequest;
 import ku_rum.backend.domain.auth.dto.response.AuthResponse;
 import ku_rum.backend.domain.common.firebase.application.NotificationService;
-import ku_rum.backend.domain.department.application.UserDepartmentService;
 import ku_rum.backend.domain.department.domain.UserDepartment;
 import ku_rum.backend.domain.department.domain.repository.UserDepartmentRepository;
 import ku_rum.backend.domain.department.dto.DepartmentResponse;
 import ku_rum.backend.domain.oauth.handler.TempTokenProvider;
 import ku_rum.backend.domain.user.domain.User;
 import ku_rum.backend.domain.user.domain.repository.UserRepository;
+import ku_rum.backend.domain.user.dto.response.TokenResponse;
 import ku_rum.backend.domain.user.dto.response.UserResponse;
 import ku_rum.backend.global.exception.user.NoSuchUserException;
 import ku_rum.backend.global.security.CustomUserDetails;
 import ku_rum.backend.global.security.JwtTokenAuthenticationFilter;
 import ku_rum.backend.global.security.JwtTokenProvider;
-import ku_rum.backend.domain.user.dto.response.TokenResponse;
-import ku_rum.backend.global.utill.UserUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -27,12 +25,10 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 import static ku_rum.backend.global.support.status.BaseExceptionResponseStatus.*;
 
@@ -150,6 +146,7 @@ public class AuthService {
                 user.getNickname(),
                 user.getStudentId(),
                 user.getImageUrl(),
-                list);
+                list,
+                user.isFirstLogin());
     }
 }

@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import ku_rum.backend.domain.department.domain.Department;
 import ku_rum.backend.domain.oauth.domain.OAuth2MemberInfo;
 import ku_rum.backend.domain.oauth.domain.ProviderType;
+import ku_rum.backend.domain.user.dto.request.UserSaveRequest;
 import ku_rum.backend.global.support.type.BaseEntity;
 import lombok.*;
 import org.hibernate.annotations.SQLDelete;
@@ -17,6 +18,7 @@ import static ku_rum.backend.domain.user.domain.UserRole.*;
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name = "users")
+@Setter
 @SQLDelete(sql = "UPDATE users SET active = false WHERE id = ?")
 public class User extends BaseEntity {
 
@@ -54,6 +56,8 @@ public class User extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private ProviderType providerType;
 
+    private boolean firstLogin = true;
+
     public void changePassword(String password) {
         this.password = password;
     }
@@ -64,6 +68,10 @@ public class User extends BaseEntity {
 
     public void changeNickname(String nickname) {
         this.nickname = nickname;
+    }
+
+    public void changeFirstLogin(boolean firstLogin) {
+        this.firstLogin = firstLogin;
     }
 
     @Builder
@@ -78,6 +86,16 @@ public class User extends BaseEntity {
         this.agreementStatus = agreementStatus;
         this.imageUrl = imageUrl;
         this.providerType = providerType;
+    }
+
+    public void changeProfile(UserSaveRequest userSaveRequest, String password) {
+        this.email = userSaveRequest.email();
+        this.loginId = userSaveRequest.loginId();
+        this.password = password;
+        this.studentId = userSaveRequest.studentId();
+        this.nickname = userSaveRequest.nickname();
+        this.agreementStatus = userSaveRequest.agreementStatus();
+        firstLogin = false;
     }
 
     public static User of(String loginId, String email, String nickname, String password, String studentId, Department department, AgreementStatus agreementStatus, ProviderType providerType) {

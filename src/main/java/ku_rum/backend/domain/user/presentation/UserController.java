@@ -33,6 +33,17 @@ public class UserController {
     }
 
     /**
+     * 소셜 로그인 회원 가입 API (토큰 필요)
+     *
+     * @param userSaveRequest
+     * @return
+     */
+    @PostMapping("/social")
+    public BaseResponse<UserSaveResponse> joinBySocial(@RequestBody @Valid final UserSaveRequest userSaveRequest) {
+        return BaseResponse.ok(userService.saveUserBySocial(userSaveRequest));
+    }
+
+    /**
      * 이메일 검증 API
      *
      * @param emailValidationRequest

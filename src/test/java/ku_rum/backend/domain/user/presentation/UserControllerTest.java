@@ -146,6 +146,82 @@ class UserControllerTest extends RestDocsTestSupport {
                                 ).build())));
     }
 
+    @DisplayName("신규 유저를 소셜 로그인으로 생성한다.")
+    @Test
+    @WithMockUser
+    void createUserBySocial() throws Exception {
+        //given
+        UserSaveRequest request = UserSaveRequest.builder()
+                .email("kmw106933@konkuk.ac.kr")
+                .loginId("kmw106933")
+                .password("password123")
+                .department("컴퓨터공학부")
+                .nickname("미미미누")
+                .studentId("202112322")
+                .agreementStatus(AgreementStatus.AGREED)
+                .build();
+
+        // when then
+        mockMvc.perform(post("/api/v1/users/social")
+                        .content(objectMapper.writeValueAsString(request))
+                        .header("Authorization", "Bearer eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyUEsiOjEsInJvbGVzIjoiUk9MRV9VU0VSIiwiaWF0IjoxNzQwMjQyNjQxLCJleHAiOjE3NDAyNDQ0NDF9.kLSMBLWdvIvrBpGJdOigSKjxMIab0cV06xFjSpwrq70")
+                        .contentType(MediaType.APPLICATION_JSON)
+                )
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.code").value("200"))
+                .andExpect(jsonPath("$.status").value("OK"))
+                .andExpect(jsonPath("$.message").value("OK"))
+                .andDo(restDocs.document(resource(
+                        ResourceSnippetParameters.builder()
+                                .tag("멤버 관련 API")
+                                .description("소셜 로그인 신규 회원 가입 생성")
+                                .requestHeaders(
+                                        headerWithName("Authorization").description("발급 받은 엑세스 토큰입니다.")
+                                )
+                                .requestFields(
+                                        fieldWithPath("loginId")
+                                                .type(JsonType.STRING)
+                                                .description("멤버 아이디")
+                                                .attributes(constraints("아이디 입력은 필수입니다. 최소 6자 이상입니다.")),
+                                        fieldWithPath("email")
+                                                .type(JsonType.STRING)
+                                                .description("멤버 이메일")
+                                                .attributes(constraints("유저의 이메일")),
+                                        fieldWithPath("nickname")
+                                                .type(JsonType.STRING)
+                                                .description("멤버 닉네임")
+                                                .attributes(constraints("닉네임 입력은 필수입니다. 최대 8자 이하입니다.")),
+                                        fieldWithPath("password")
+                                                .type(JsonType.STRING)
+                                                .description("멤버 패스워드")
+                                                .attributes(constraints("비밀번호는 영어와 숫자를 포함해서 8자 이상 20자 이내로 입력해주세요.")),
+                                        fieldWithPath("studentId")
+                                                .type(JsonType.STRING)
+                                                .description("멤버 학번")
+                                                .attributes(constraints("학번은 20으로 시작하고, 9자리여야 합니다.")),
+                                        fieldWithPath("department")
+                                                .type(JsonType.STRING)
+                                                .description("멤버 학과")
+                                                .attributes(constraints("ex) 컴퓨터공학부")),
+                                        fieldWithPath("agreementStatus")
+                                                .type(JsonType.STRING)
+                                                .description("선택 동의 여부")
+                                                .attributes(constraints("ex) AGREED/DISAGREED"))
+                                )
+                                .responseFields(
+                                        fieldWithPath("code")
+                                                .type(JsonType.STRING)
+                                                .description("성공시 반환 코드 (200)"),
+                                        fieldWithPath("status")
+                                                .type(JsonType.STRING)
+                                                .description("성공시 상태 값 (OK)"),
+                                        fieldWithPath("message")
+                                                .type(JsonType.STRING)
+                                                .description("성공 시 메시지 (OK)")
+                                ).build())));
+    }
+
 
     @DisplayName("이메일 중복을 확인한다.")
     @Test
