@@ -128,4 +128,7 @@ public class User extends BaseEntity {
     }
 
 
+    public String getProfileImageKey() {
+        return imageUrl;
+    }
 }

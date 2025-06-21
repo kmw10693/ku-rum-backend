@@ -61,4 +61,5 @@ public class UserMapController {
     public BaseResponse<UserShareActiveResponse> userLocation() {
         return BaseResponse.ok(userService.changeToNotActive());
     }
+
 }
