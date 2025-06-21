@@ -1,4 +1,4 @@
-/*
+
 package ku_rum.backend.global.config;
 
 import com.amazonaws.auth.AWSStaticCredentialsProvider;
@@ -48,4 +48,4 @@ public class S3Config {
                 .build();
     }
 }
-*/
+
