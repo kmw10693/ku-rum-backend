@@ -1,4 +1,5 @@
 /*
+
 package ku_rum.backend.domain.common.image.application;
 
 import com.amazonaws.HttpMethod;

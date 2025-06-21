@@ -15,3 +15,8 @@ spring:
 logging:
   level:
     org.springframework.cache: trace
+
+app:
+  oauth2:
+    authorizedRedirectUris:
+      - http://localhost:5173

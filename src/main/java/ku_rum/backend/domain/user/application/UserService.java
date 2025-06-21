@@ -40,7 +40,9 @@ public class UserService {
     private final DepartmentRepository departmentRepository;
     private final UserDepartmentService userDepartmentService;
     private final MailService mailService;
+    private final UserUtil userUtil;
 
+    // 소셜 로그인 X
     @Transactional
     public UserSaveResponse saveUser(final UserSaveRequest userSaveRequest) {
         log.info("사용자 저장 요청: {}", userSaveRequest);
@@ -50,9 +52,26 @@ public class UserService {
 
         User user = UserSaveRequest.newUser(userSaveRequest, passwordEncoder.encode(userSaveRequest.password()));
         userDepartmentService.addDeptToUser(user, department);
+        user.changeFirstLogin(false);
 
         log.info("사용자 저장 완료: ID={}", userSaveRequest.loginId());
         return UserSaveResponse.from(userRepository.save(user));
+    }
+
+    // 소셜 로그인 전용 회원 가입 토큰 필요
+    @Transactional
+    public UserSaveResponse saveUserBySocial(final UserSaveRequest userSaveRequest) {
+        log.info("사용자 저장 요청: {}", userSaveRequest);
+        userValidator.validateUser(userSaveRequest);
+
+        Department department = departmentQueryService.getDepartment(userSaveRequest);
+        User user = userUtil.getUser();
+        user.changeProfile(userSaveRequest, passwordEncoder.encode(userSaveRequest.password()));
+
+        userDepartmentService.addDeptToUser(user, department);
+
+        log.info("사용자 저장 완료: ID={}", userSaveRequest.loginId());
+        return UserSaveResponse.from(user);
     }
 
     @Transactional

@@ -1,4 +1,5 @@
 /*
+
 package ku_rum.backend.domain.common.image.presentation;
 
 import com.epages.restdocs.apispec.ResourceSnippetParameters;
@@ -79,4 +80,5 @@ class ImageControllerTest extends RestDocsTestSupport {
                         )
                 ));
     }
-}*/
+}
+*/
