@@ -46,7 +46,7 @@ cloud:
     credentials:
       access-key: testtest
       secret-key: testtest
-  s3:
-    bucket: kuroom
-  stack:
-    auto: false
+    s3:
+      bucket: kuroom
+    stack:
+      auto: false

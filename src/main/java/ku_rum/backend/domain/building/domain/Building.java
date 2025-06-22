@@ -19,6 +19,7 @@ public class Building extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "building_id")
     private Long id;
 
     @Column(length = 40)

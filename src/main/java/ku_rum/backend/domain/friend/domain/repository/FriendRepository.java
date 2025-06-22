@@ -36,4 +36,36 @@ public interface FriendRepository extends JpaRepository<Friend, Long> {
 
     boolean existsByFromUserAndToUserAndStatus(User fromUser, User toUser, FriendStatus status);
 
+    @Query(value = """
+        SELECT u.* FROM users u
+        JOIN friend f ON ( (f.from_user_id = :currentUserId AND f.to_user_id = u.id) 
+                        OR (f.to_user_id = :currentUserId AND f.from_user_id = u.id) )
+        WHERE u.active = true
+          AND u.active_building_name = :name
+          AND f.status = 'ACCEPT'
+        """, nativeQuery = true)
+    List<User> findActiveFriendsInPlace(@Param("name") String name, @Param("currentUserId") Long currentUserId);
+
+    @Query(value = """
+    SELECT u.* FROM users u
+    JOIN friend f ON (
+        (f.from_user_id = :currentUserId AND f.to_user_id = u.id) OR
+        (f.to_user_id = :currentUserId AND f.from_user_id = u.id)
+    )
+    WHERE f.status = :status
+    """, nativeQuery = true)
+    List<User> findFriendsByUserIdAndStatus(@Param("currentUserId") Long currentUserId,
+                                            @Param("status") FriendStatus status);
+
+    @Query(value = """
+    SELECT u.*
+    FROM user u
+    JOIN friend f ON (
+        (f.from_user_id = :currentUserId AND f.to_user_id = u.id)
+        OR (f.to_user_id = :currentUserId AND f.from_user_id = u.id)
+    )
+    WHERE f.status = 'ACCEPT'
+      AND u.active_building_name = :buildingName
+    """, nativeQuery = true)
+    List<User> findActiveFriendsInPlaceByBuildingId(@Param("currentUserId") Long currentUserId, @Param("buildingName") String buildingName);
 }

@@ -51,7 +51,9 @@ public class User extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private AgreementStatus agreementStatus;
 
-    private boolean active = true;
+    private boolean active = true; //위치 공유 현재 상태
+
+    private String activeBuildingName; //현재 공유되는 빌딩명
 
     @Enumerated(EnumType.STRING)
     private ProviderType providerType;
@@ -73,6 +75,12 @@ public class User extends BaseEntity {
     public void changeFirstLogin(boolean firstLogin) {
         this.firstLogin = firstLogin;
     }
+
+    public void changeActiveBuildingName(String buildingName) {
+        this.activeBuildingName = buildingName;
+    }
+
+    public void setLocationSharingActive(boolean value) { this.active = value;}
 
     @Builder
     private User(String loginId, String oauthId, String email, String nickname, String password, String studentId, AgreementStatus agreementStatus, ProviderType providerType, String imageUrl) {
@@ -117,5 +125,10 @@ public class User extends BaseEntity {
                 .email(memberInfo.getEmail())
                 .providerType(providerType) // enum 변환
                 .build();
+    }
+
+
+    public String getProfileImageKey() {
+        return imageUrl;
     }
 }
