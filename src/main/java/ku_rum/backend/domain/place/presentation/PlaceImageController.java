@@ -1,3 +1,4 @@
+/*
 package ku_rum.backend.domain.place.presentation;
 
 import ku_rum.backend.domain.place.application.PlaceImageService;
@@ -16,15 +17,18 @@ import java.util.List;
 public class PlaceImageController {
     private final PlaceImageService placeImageService;
 
-    /**
+    */
+/**
      * 특정 장소와 관련된 이미지 조회
      *
      * @param placeId
      * @return
-     */
+     *//*
+
     @GetMapping("/id={placeId}")
     public BaseResponse<List<String>> getImageByFileName(@PathVariable("placeId") Long placeId) {
         List<String> url = placeImageService.getPresignedImageUrls(placeId);
         return BaseResponse.ok(url);
     }
 }
+*/

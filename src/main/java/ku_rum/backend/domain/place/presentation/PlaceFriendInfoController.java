@@ -1,6 +1,7 @@
 package ku_rum.backend.domain.place.presentation;
 
 import ku_rum.backend.domain.place.application.PlaceFriendInfoService;
+import ku_rum.backend.domain.place.dto.request.PlaceSearchRequest;
 import ku_rum.backend.domain.place.dto.response.PlaceFriendInfo2Response;
 import ku_rum.backend.domain.place.dto.response.PlaceFriendInfoResponse;
 import ku_rum.backend.domain.place.dto.response.PlaceSearchInfoResponse;
@@ -43,29 +44,30 @@ public class PlaceFriendInfoController {
     /**
      * 7. 건물명, 강의실명, 건물번호 검색 여러개(제목) 반환
      *
-     * @param search
+     * @param request
      * @return
      */
-    @PostMapping
+    @PostMapping("/search")
     public BaseResponse<List<PlaceSearchInfoResponse>> getPlacesNameBySearch(
-            @RequestParam("search") String search
+            @RequestBody PlaceSearchRequest request
     ) {
-        List<PlaceSearchInfoResponse> response = placeFriendInfoService.getPlacesNameBySearch(search);
+        List<PlaceSearchInfoResponse> response = placeFriendInfoService.getPlacesNameBySearch(request.search());
         return BaseResponse.ok(response);
     }
+
 
 
     /**
      * 8. 건물명, 강의실명, 건물번호 검색 디테일 반환
      *
-     * @param search
+     * @param request
      * @return
      */
     @PostMapping("/search/detail")
     public BaseResponse<List<PlaceFriendInfoResponse>> getDetailWithPlacesNameBySearch(
-            @RequestParam("search") String search
+            @RequestBody PlaceSearchRequest request
     ) {
-        List<PlaceFriendInfoResponse> response = placeFriendInfoService.getDetailWithPlacesNameBySearch(search);
+        List<PlaceFriendInfoResponse> response = placeFriendInfoService.getDetailWithPlacesNameBySearch(request.search());
         return BaseResponse.ok(response);
     }
 

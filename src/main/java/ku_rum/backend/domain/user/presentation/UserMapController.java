@@ -53,7 +53,7 @@ public class UserMapController {
     }
 
     /**
-     *
+     * 4. ‘내 위치 공유 해제’ 클릭
      *
      * @return
      */

@@ -1,3 +1,4 @@
+/*
 package ku_rum.backend.domain.place.presentation;
 
 import ku_rum.backend.config.RestDocsTestSupport;
@@ -79,4 +80,4 @@ class PlaceImageControllerTest extends RestDocsTestSupport{
                 ));
     }
 
-}
+}*/
