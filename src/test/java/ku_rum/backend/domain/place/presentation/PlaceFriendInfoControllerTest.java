@@ -6,6 +6,7 @@ import ku_rum.backend.domain.friend.application.FriendReportService;
 import ku_rum.backend.domain.friend.domain.repository.FriendBlockRepository;
 import ku_rum.backend.domain.notice.domain.repository.NoticeRepositoryImpl;
 import ku_rum.backend.domain.place.application.PlaceFriendInfoService;
+import ku_rum.backend.domain.place.dto.request.DeleteSearchTermRequest;
 import ku_rum.backend.domain.place.dto.request.PlaceSearchRequest;
 import ku_rum.backend.domain.place.dto.response.PlaceFriendInfo2Response;
 import ku_rum.backend.domain.place.dto.response.PlaceFriendInfoResponse;
@@ -33,7 +34,7 @@ import java.util.List;
 import static com.epages.restdocs.apispec.ResourceDocumentation.resource;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.restdocs.headers.HeaderDocumentation.headerWithName;
-import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.post;
+import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.*;
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
 import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -78,7 +79,7 @@ public class PlaceFriendInfoControllerTest extends RestDocsTestSupport {
 
     @DisplayName("칩 이름으로 장소 정보와 해당 장소에 위치 공유 중인 친구 정보를 반환한다.")
     @Test
-    @WithMockUser
+    //@WithMockUser
     void getChipDetailInfo() throws Exception {
         // given
         String chipName = "레스티오";
@@ -100,7 +101,6 @@ public class PlaceFriendInfoControllerTest extends RestDocsTestSupport {
 
         // when then
         mockMvc.perform(post("/api/v1/map/chip/{chipName}", chipName)
-                        .header("Authorization", "Bearer ACCESS_TOKEN")
                 )
                 .andDo(print())
                 .andExpect(status().isOk())
@@ -113,9 +113,6 @@ public class PlaceFriendInfoControllerTest extends RestDocsTestSupport {
                         ResourceSnippetParameters.builder()
                                 .tag("NEW 지도 API")
                                 .description("5. 칩 이름으로 장소 정보 및 위치 공유 중인 친구 목록 조회")
-                                .requestHeaders(
-                                        headerWithName("Authorization").description("액세스 토큰 (Bearer Token)")
-                                )
                                 .pathParameters(
                                         parameterWithName("chipName").description("칩 이름 (예: 레스티오)")
                                 )
@@ -305,6 +302,85 @@ public class PlaceFriendInfoControllerTest extends RestDocsTestSupport {
                                         fieldWithPath("data[].longitude").type(JsonFieldType.NUMBER).description("경도"),
                                         fieldWithPath("data[].friendList[].nickname").type(JsonFieldType.STRING).description("위치 공유 중인 친구 닉네임"),
                                         fieldWithPath("data[].friendList[].profileUrl").type(JsonFieldType.STRING).description("친구 프로필 이미지 URL")
+                                )
+                                .build()
+                )));
+    }
+
+
+    @DisplayName("건물명, 강의실명, 건물번호 검색어 리스트 조회")
+    @Test
+    @WithMockUser
+    void getSearchTermList() throws Exception {
+        // given
+        List<String> searchTerms = List.of("신공학관", "종강102", "레스티오");
+        given(placeFriendInfoService.getSearchTermList()).willReturn(searchTerms);
+
+        // when & then
+        mockMvc.perform(get("/api/v1/map/search/term")
+                        .header("Authorization", "Bearer ACCESS_TOKEN"))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.code").value(200))
+                .andExpect(jsonPath("$.status").value("OK"))
+                .andExpect(jsonPath("$.message").value("OK"))
+                .andExpect(jsonPath("$.data[0]").value("신공학관"))
+                .andExpect(jsonPath("$.data[1]").value("종강102"))
+                .andExpect(jsonPath("$.data[2]").value("레스티오"))
+                .andDo(restDocs.document(resource(
+                        ResourceSnippetParameters.builder()
+                                .tag("NEW 지도 API")
+                                .description("9. 건물명, 강의실명, 건물번호 검색어 리스트 반환")
+                                .requestHeaders(
+                                        headerWithName("Authorization").description("액세스 토큰 (Bearer Token)")
+                                )
+                                .responseFields(
+                                        fieldWithPath("code").type(JsonFieldType.NUMBER).description("응답 코드"),
+                                        fieldWithPath("status").type(JsonFieldType.STRING).description("응답 상태"),
+                                        fieldWithPath("message").type(JsonFieldType.STRING).description("응답 메시지"),
+                                        fieldWithPath("data[]").type(JsonFieldType.ARRAY).description("최근 검색어 리스트")
+                                )
+                                .build()
+                )));
+    }
+
+
+    @DisplayName("건물명, 강의실명, 건물번호 검색어 삭제")
+    @Test
+    @WithMockUser
+    void deleteSearchTerm() throws Exception {
+        // given
+        String term = "신공학관";
+        DeleteSearchTermRequest request = new DeleteSearchTermRequest(term);
+
+        given(placeFriendInfoService.deleteSearchTerm(term)).willReturn("최근 검색어 삭제 완료");
+
+        // when & then
+        mockMvc.perform(delete("/api/v1/map/search/term")
+                        .header("Authorization", "Bearer ACCESS_TOKEN")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(request)))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.code").value(200))
+                .andExpect(jsonPath("$.status").value("OK"))
+                .andExpect(jsonPath("$.message").value("OK"))
+                .andExpect(jsonPath("$.data").value("최근 검색어 삭제 완료"))
+                .andDo(restDocs.document(resource(
+                        ResourceSnippetParameters.builder()
+                                .tag("NEW 지도 API")
+                                .description("10. 건물명, 강의실명, 건물번호 검색어 삭제")
+                                .requestHeaders(
+                                        headerWithName("Authorization").description("액세스 토큰 (Bearer Token)")
+                                )
+                                .requestFields(
+                                        fieldWithPath("term").type(JsonFieldType.STRING).description("삭제할 검색어")
+                                )
+                                .responseFields(
+                                        fieldWithPath("code").type(JsonFieldType.NUMBER).description("응답 코드"),
+                                        fieldWithPath("status").type(JsonFieldType.STRING).description("응답 상태"),
+                                        fieldWithPath("message").type(JsonFieldType.STRING).description("응답 메시지"),
+                                        fieldWithPath("data").type(JsonFieldType.STRING).description("삭제 결과 메시지")
                                 )
                                 .build()
                 )));
