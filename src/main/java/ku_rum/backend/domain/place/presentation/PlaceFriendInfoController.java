@@ -1,6 +1,7 @@
 package ku_rum.backend.domain.place.presentation;
 
 import ku_rum.backend.domain.place.application.PlaceFriendInfoService;
+import ku_rum.backend.domain.place.dto.request.DeleteSearchTermRequest;
 import ku_rum.backend.domain.place.dto.request.PlaceSearchRequest;
 import ku_rum.backend.domain.place.dto.response.PlaceFriendInfo2Response;
 import ku_rum.backend.domain.place.dto.response.PlaceFriendInfoResponse;
@@ -69,6 +70,29 @@ public class PlaceFriendInfoController {
     ) {
         List<PlaceFriendInfoResponse> response = placeFriendInfoService.getDetailWithPlacesNameBySearch(request.search());
         return BaseResponse.ok(response);
+    }
+
+    /**
+     * 9. 건물명, 강의실명, 건물번호 검색어 반환
+     *
+     * @return
+     */
+    @GetMapping("/search/term")
+    public BaseResponse<List<String>> getSearchTermList() {
+        List<String> response = placeFriendInfoService.getSearchTermList();
+        return BaseResponse.ok(response);
+    }
+
+    /**
+     * 10. 건물명, 강의실명, 건물번호 검색어 삭제
+     *
+     * @param request
+     * @return
+     */
+    @DeleteMapping("/search/term")
+    public BaseResponse<String> deleteSearchTerm(@RequestBody DeleteSearchTermRequest request) {
+        String result = placeFriendInfoService.deleteSearchTerm(request.term());
+        return BaseResponse.ok(result);
     }
 
 

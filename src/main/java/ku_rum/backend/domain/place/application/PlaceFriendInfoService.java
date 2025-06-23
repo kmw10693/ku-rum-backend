@@ -12,10 +12,12 @@ import ku_rum.backend.domain.place.dto.response.PlaceFriendInfo2Response;
 import ku_rum.backend.domain.place.dto.response.PlaceFriendInfoResponse;
 import ku_rum.backend.domain.place.dto.response.PlaceSearchInfoResponse;
 import ku_rum.backend.domain.user.domain.User;
+import ku_rum.backend.global.utill.RedisUtil;
 import ku_rum.backend.global.utill.UserUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -36,6 +38,8 @@ public class PlaceFriendInfoService {
 
     private final AmazonS3 amazonS3;
     private final UserUtil userUtil;
+    private final RedisUtil redisUtil;
+
 
     @Value("${cloud.aws.s3.bucket}")
     private String bucket;
@@ -106,6 +110,10 @@ public class PlaceFriendInfoService {
 
     @Transactional
     public List<PlaceSearchInfoResponse> getPlacesNameBySearch(String search) {
+        //최근 검색어 redis에 저장
+        Long currentUserId = userUtil.getUser().getId();
+        redisUtil.setRedisData("user:" + currentUserId + ":recent-search", search);
+
         List<PlaceSearchInfoResponse> resultList = new ArrayList<>();
 
         //place.name, place.subName 에서 검색
@@ -199,4 +207,24 @@ public class PlaceFriendInfoService {
                 .toList();
     }
 
+    @Transactional
+    public List<String> getSearchTermList() {
+        Long currentUserId = userUtil.getUser().getId();
+
+        String key = "user:" + currentUserId + ":recent-search";
+
+        List<String> recentSearches = redisUtil.getRecentSearchList(key, 10);
+
+        return recentSearches != null ? recentSearches : List.of();
+    }
+
+    @Transactional
+    public String deleteSearchTerm(String term) {
+        Long currentUserId = userUtil.getUser().getId();
+        String key = "user:" + currentUserId + ":recent-search";
+
+        redisUtil.removeRecentSearch(key, term);
+
+        return "최근 검색어 삭제 완료";
+    }
 }
