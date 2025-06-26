@@ -41,7 +41,7 @@ public class FriendManageController {
     }
 
     /**
-     * 친구 요청 삭제 API
+     * 보낸 친구 요청 삭제 API
      */
     @DeleteMapping("/request")
     public BaseResponse<Void> deleteSentRequest(@RequestBody final FriendRequest FriendDeleteRequest) {
