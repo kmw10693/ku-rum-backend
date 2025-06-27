@@ -64,4 +64,11 @@ public class UserExceptionControllerAdvice {
         log.error("[handleDuplicateNicknameException]");
         return new BaseErrorResponse(INVALID_PASSWORD);
     }
+
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    @ExceptionHandler(UserMapBuildingNotFoundException.class)
+    public BaseErrorResponse handleNoSuchUserMapBuildingException(final NoSuchUserException e) {
+        log.error("[handleNoSuchUserMapBuildingException]");
+        return new BaseErrorResponse(MATCHED_USER_BUILDING_ERROR);
+    }
 }

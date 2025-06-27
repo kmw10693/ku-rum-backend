@@ -1,5 +1,5 @@
 // 1. Import 추가
-import org.hidetake.gradle.swagger.generator.GenerateSwaggerUI
+//import org.hidetake.gradle.swagger.generator.GenerateSwaggerUI
 
 buildscript {
 	ext {

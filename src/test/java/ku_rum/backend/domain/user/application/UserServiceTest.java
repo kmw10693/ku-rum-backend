@@ -18,6 +18,7 @@ import ku_rum.backend.global.exception.user.DuplicateNicknameException;
 import ku_rum.backend.global.exception.user.DuplicateStudentIdException;
 import ku_rum.backend.global.exception.user.NoSuchUserException;
 import ku_rum.backend.global.security.CustomUserDetails;
+import ku_rum.backend.global.utill.UserUtil;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -50,6 +51,7 @@ class UserServiceTest {
     @Autowired
     private DepartmentRepository departmentRepository;
 
+
     @Autowired
     private CollegeRepository collegeRepository;
 
@@ -69,13 +71,20 @@ class UserServiceTest {
     @Autowired
     private UserValidator userValidator;
 
+    @MockBean
+    private UserUtil userUtil;
+
+    private User user;
+
     @BeforeEach
     void setUp() {
         college = College.of("공과대학");
         collegeRepository.save(college);
+        user = User.builder().oauthId("kmw106933").build();
 
         department = Department.of("컴퓨터공학부", college);
         departmentRepository.save(department);
+        userRepository.save(user);
     }
 
     @Test
@@ -90,6 +99,7 @@ class UserServiceTest {
                 .studentId("202112322")
                 .department("컴퓨터공학부")
                 .build();
+
         //when
         UserSaveResponse userSaveResponse = userService.saveUser(request);
 

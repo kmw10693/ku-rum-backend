@@ -1,5 +1,6 @@
 package ku_rum.backend.domain.user.application;
 
+import jakarta.servlet.http.HttpServletRequest;
 import ku_rum.backend.domain.common.mail.application.MailService;
 import ku_rum.backend.domain.department.application.DepartmentQueryService;
 import ku_rum.backend.domain.department.application.UserDepartmentService;
@@ -10,19 +11,23 @@ import ku_rum.backend.domain.department.domain.repository.UserDepartmentReposito
 import ku_rum.backend.domain.user.domain.User;
 import ku_rum.backend.domain.user.domain.repository.UserRepository;
 import ku_rum.backend.domain.user.dto.request.*;
-import ku_rum.backend.domain.user.dto.response.LoginIdResponse;
-import ku_rum.backend.domain.user.dto.response.UserSaveResponse;
+import ku_rum.backend.domain.user.dto.response.*;
 import ku_rum.backend.global.exception.department.DuplicateDepartmentException;
 import ku_rum.backend.global.exception.department.NoSuchDepartmentException;
 import ku_rum.backend.global.exception.global.GlobalException;
 import ku_rum.backend.global.exception.user.DuplicateNicknameException;
 import ku_rum.backend.global.exception.user.NoSuchUserException;
+import ku_rum.backend.global.exception.user.UserMapBuildingNotFoundException;
+import ku_rum.backend.global.utill.LocationUtils;
 import ku_rum.backend.global.utill.UserUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Comparator;
+import java.util.List;
 
 import static ku_rum.backend.global.support.status.BaseExceptionResponseStatus.*;
 
@@ -40,7 +45,9 @@ public class UserService {
     private final DepartmentRepository departmentRepository;
     private final UserDepartmentService userDepartmentService;
     private final MailService mailService;
+    private final UserUtil userUtil;
 
+    // 소셜 로그인 X
     @Transactional
     public UserSaveResponse saveUser(final UserSaveRequest userSaveRequest) {
         log.info("사용자 저장 요청: {}", userSaveRequest);
@@ -50,9 +57,26 @@ public class UserService {
 
         User user = UserSaveRequest.newUser(userSaveRequest, passwordEncoder.encode(userSaveRequest.password()));
         userDepartmentService.addDeptToUser(user, department);
+        user.changeFirstLogin(false);
 
         log.info("사용자 저장 완료: ID={}", userSaveRequest.loginId());
         return UserSaveResponse.from(userRepository.save(user));
+    }
+
+    // 소셜 로그인 전용 회원 가입 토큰 필요
+    @Transactional
+    public UserSaveResponse saveUserBySocial(final UserSaveRequest userSaveRequest) {
+        log.info("사용자 저장 요청: {}", userSaveRequest);
+        userValidator.validateUser(userSaveRequest);
+
+        Department department = departmentQueryService.getDepartment(userSaveRequest);
+        User user = userUtil.getUser();
+        user.changeProfile(userSaveRequest, passwordEncoder.encode(userSaveRequest.password()));
+
+        userDepartmentService.addDeptToUser(user, department);
+
+        log.info("사용자 저장 완료: ID={}", userSaveRequest.loginId());
+        return UserSaveResponse.from(user);
     }
 
     @Transactional
@@ -150,5 +174,34 @@ public class UserService {
 
     private boolean isNicknameDuplicate(String nickname) {
         return userRepository.existsByNickname(nickname);
+    }
+
+    @Transactional
+    public UserShareActiveResponse isShareActive() {
+        User currentUser = userUtil.getUser();
+        return new UserShareActiveResponse(currentUser.isActive());
+    }
+
+    @Transactional
+    public UserLocationShareStartResponse startShareLocation(UserLocationShareStartRequest request) {
+        //요청한 장소 이름 가져오기
+        String placePointed = request.placePointed();
+
+        //현재 로그인한 사용자 정보 가져오기
+        User currentUser = userUtil.getUser();
+
+        //사용자 위치 공유 활성화 상태 변경 및 activeBuildingName 변경
+        currentUser.changeActiveBuildingName(placePointed);
+        currentUser.setLocationSharingActive(true);
+
+        //응답용 DTO 생성 및 반환
+        return new UserLocationShareStartResponse(placePointed, true);
+    }
+
+    @Transactional
+    public UserShareActiveResponse changeToNotActive() {
+        User currentUser = userUtil.getUser();
+        currentUser.setLocationSharingActive(false);
+        return new UserShareActiveResponse(currentUser.isActive());
     }
 }

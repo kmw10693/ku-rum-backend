@@ -43,8 +43,8 @@ public enum BaseExceptionResponseStatus implements ResponseStatus {
     PREV_PASSWORD_EXCEPTION(310, HttpStatus.BAD_REQUEST, "기존 비밀번호가 일치하지 않습니다."),
     PREV_NEW_EQUAL_EXCEPTION(311, HttpStatus.BAD_REQUEST, "기존 비밀번호와 새 비밀번호가 일치할 수 없습니다"),
     DELETED_MEMBER(312, HttpStatus.BAD_REQUEST, "탈퇴한 사용자입니다."),
-
-
+    MATCHED_USER_BUILDING_ERROR(313, HttpStatus.NOT_FOUND, "사용자가 위치한 빌딩명을 못 찾았습니다.")
+,
     /**
      * 400: Department
      */
@@ -120,7 +120,8 @@ public enum BaseExceptionResponseStatus implements ResponseStatus {
     /**
      * 1200: Place
      */
-    PLACE_NOT_FOUND(1200, HttpStatus.NOT_FOUND, "해당되는 장소가 없습니다.");
+    PLACE_NOT_FOUND(1200, HttpStatus.NOT_FOUND, "해당되는 장소가 없습니다."),
+    PLACE_IMAGE_NOT_FOUND(1201, HttpStatus.NOT_FOUND, "해당되는 장소 이미지가 없습니다.");
 
     private final int code;
     private final HttpStatus status;

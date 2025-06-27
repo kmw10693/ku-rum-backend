@@ -6,6 +6,7 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Component;
 
 import java.time.Duration;
+import java.util.List;
 
 @Component
 @RequiredArgsConstructor
@@ -46,5 +47,15 @@ public class RedisUtil {
             return "false";
         }
         return redisTemplate.opsForValue().get(key);
+    }
+
+    public List<String> getRecentSearchList(String key, int count) {
+        log.info("레디스에 모든 값 가져오기");
+        return redisTemplate.opsForList().range(key, 0, count - 1);
+    }
+
+    public void removeRecentSearch(String key, String term) {
+        log.info("레디스에 +" + term +"값 가져오기");
+        redisTemplate.opsForList().remove(key, 0, term);
     }
 }
