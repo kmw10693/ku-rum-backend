@@ -1,6 +1,7 @@
 package ku_rum.backend.domain.place.domain;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -16,11 +17,11 @@ import lombok.NoArgsConstructor;
 public class Position {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long position_id;
+    private Long positionId;
 
-    @OneToOne
+    @OneToOne(fetch = FetchType.LAZY)
     private User user;
 
-    @OneToOne
+    @OneToOne(fetch = FetchType.LAZY)
     private Place place;
 }

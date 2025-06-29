@@ -1,6 +1,7 @@
 package ku_rum.backend.domain.place.domain;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -16,11 +17,11 @@ import lombok.NoArgsConstructor;
 public class PlaceImage {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long place_image_id;
+    private Long placeImageId;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private Place place;
 
     @NotNull
-    private String image_url;
+    private String imageUrl;
 }

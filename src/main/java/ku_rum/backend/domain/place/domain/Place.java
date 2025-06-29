@@ -6,10 +6,10 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
 import jakarta.validation.constraints.NotNull;
+import java.math.BigDecimal;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import software.amazon.ion.Decimal;
 
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -17,7 +17,7 @@ import software.amazon.ion.Decimal;
 public class Place {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long place_id;
+    private Long placeId;
 
     @ManyToOne
     private Category category;
@@ -32,8 +32,8 @@ public class Place {
     private String content;
 
     @NotNull
-    private Decimal latitude;
+    private BigDecimal latitude;
 
     @NotNull
-    private Decimal longitude;
+    private BigDecimal longitude;
 }
