@@ -1,6 +1,8 @@
 package ku_rum.backend.domain.place.domain;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -20,7 +22,7 @@ public class Place {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long placeId;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @Enumerated(value = EnumType.STRING)
     private Category category;
 
     @NotNull
