@@ -1,4 +1,4 @@
-/*
+
 package ku_rum.backend.global.dataInit;
 
 import lombok.extern.slf4j.Slf4j;
@@ -8,7 +8,6 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
 
 @Slf4j
-@Component
 public class FulltextIndexInitializer {
 
     private final JdbcTemplate jdbcTemplate;
@@ -20,8 +19,6 @@ public class FulltextIndexInitializer {
     @EventListener(ApplicationReadyEvent.class)
     public void init() {
         try {
-            insert_fulltext_index("building", "name_fulltext_index", "name");
-            insert_fulltext_index("building", "abbreviation_fulltext_index", "abbreviation");
             insert_fulltext_index("category", "name_fulltext_index","name");
         } catch (Exception e) {
             log.error("❌ FULLTEXT INDEX 추가 실패: {}", e.getMessage(), e);
@@ -50,4 +47,3 @@ public class FulltextIndexInitializer {
     }
 }
 
-*/
