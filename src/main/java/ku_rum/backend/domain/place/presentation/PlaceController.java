@@ -11,6 +11,7 @@ import ku_rum.backend.global.security.CustomUserDetails;
 import ku_rum.backend.global.support.response.BaseResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -43,5 +44,11 @@ public class PlaceController {
                                                                        @RequestBody CurrentPositionConfirmRequest request){
         CurrentPositionConfirmResponse response = positionService.confirmCurrentPosition(userDetails,request);
         return BaseResponse.ok(response);
+    }
+
+    @DeleteMapping("/sharing/confirm")
+    public BaseResponse<Void>disableSharingPosition(@AuthenticationPrincipal CustomUserDetails userDetails){
+        positionService.disableSharingPosition(userDetails);
+        return BaseResponse.ok();
     }
 }

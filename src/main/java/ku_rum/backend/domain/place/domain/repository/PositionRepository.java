@@ -11,4 +11,6 @@ public interface PositionRepository extends JpaRepository<Position,Long> {
     Boolean existsPositionByUser(User user);
 
     Optional<Position> findPositionByUser(User user);
+
+    void deleteByUser(User user);
 }

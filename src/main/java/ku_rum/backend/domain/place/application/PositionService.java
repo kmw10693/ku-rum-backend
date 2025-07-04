@@ -84,6 +84,15 @@ public class PositionService {
     }
 
     /**
+     * 공유 취소
+     * @param userDetails 사용자 인증정보
+     */
+    public void disableSharingPosition(CustomUserDetails userDetails){
+        User user = userService.getUser();
+        positionRepository.deleteByUser(user);
+    }
+
+    /**
      * place 조회
      * @param name 이름(건물, k-cube ...)
      * @return place 엔티티
