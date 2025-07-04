@@ -9,7 +9,7 @@ import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
-
+@Component
 public class DepartmentInitializer {	
     public static List<Department> initialize(List<College> colleges) {
         Map<String, College> collegeMap = colleges.stream()	

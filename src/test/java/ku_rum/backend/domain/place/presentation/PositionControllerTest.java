@@ -1,5 +1,6 @@
 package ku_rum.backend.domain.place.presentation;
 
+import ku_rum.backend.config.RestDocsTestSupport;
 import ku_rum.backend.domain.place.application.PositionService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -12,7 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 @SpringBootTest
 @ActiveProfiles("test")
-public class PositionControllerTest {
+public class PositionControllerTest extends RestDocsTestSupport {
 
     @MockBean
     private PositionService positionService;
@@ -20,10 +21,15 @@ public class PositionControllerTest {
     @MockBean
     private SecurityFilterChain securityFilterChain;
 
-    @DisplayName("로그아웃을 진행한다.")
+    @DisplayName("현재 유저의 위치 공유여부를 확인한다.")
     @Test
     @WithMockUser
     void getCurrentPositionStatus() throws Exception {
-        //gi
+        //given
+
+
+        //when
+
+        //then
     }
 }

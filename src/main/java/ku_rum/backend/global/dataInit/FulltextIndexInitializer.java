@@ -8,6 +8,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
 
 @Slf4j
+@Component
 public class FulltextIndexInitializer {
 
     private final JdbcTemplate jdbcTemplate;

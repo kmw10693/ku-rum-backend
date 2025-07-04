@@ -1,6 +1,10 @@
 package ku_rum.backend.domain.place.application;
 
+import ku_rum.backend.domain.place.domain.Place;
+import ku_rum.backend.domain.place.domain.repository.PlaceRepository;
 import ku_rum.backend.domain.place.domain.repository.PositionRepository;
+import ku_rum.backend.domain.place.dto.request.CurrentPositionRequest;
+import ku_rum.backend.domain.place.dto.response.CurrentPositionResponse;
 import ku_rum.backend.domain.place.dto.response.CurrentPositionStatusResponse;
 import ku_rum.backend.domain.user.application.UserService;
 import ku_rum.backend.domain.user.domain.User;
@@ -13,6 +17,7 @@ import org.springframework.stereotype.Service;
 public class PositionService {
 
     private final PositionRepository positionRepository;
+    private final PlaceRepository placeRepository;
     private final UserService userService;
 
     /**
@@ -26,5 +31,19 @@ public class PositionService {
             return new CurrentPositionStatusResponse(true);
         }
         return new CurrentPositionStatusResponse(false);
+    }
+
+    /**
+     * 사용자 위치값 반환
+     * 가장 근접한 건물 반환
+     * @param userDetails 사용자 인증정보
+     * @param currentPositionRequest request 객체
+     * @return response 객체
+     */
+    public CurrentPositionResponse getCurrentPosition(CustomUserDetails userDetails,
+                                                      CurrentPositionRequest currentPositionRequest){
+        Place findPlace = placeRepository.findNearestPlace(currentPositionRequest.latitude(),
+                currentPositionRequest.longitude());
+        return new CurrentPositionResponse(findPlace.getName());
     }
 }
