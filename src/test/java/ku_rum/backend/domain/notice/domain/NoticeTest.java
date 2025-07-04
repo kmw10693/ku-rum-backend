@@ -1,6 +1,5 @@
 package ku_rum.backend.domain.notice.domain;
 
-import ku_rum.backend.domain.building.domain.Building;
 import ku_rum.backend.domain.college.domain.College;
 import ku_rum.backend.domain.department.domain.Department;
 import ku_rum.backend.domain.user.domain.User;
@@ -24,8 +23,7 @@ class NoticeTest {
     @Test
     void registeredNoticeWithUser() {
         //given
-        Building building = createBuilding();
-        Department department = getDepartment(building);
+        Department department = getDepartment();
         User user = User.of("사용자1", "kmw106933@konkuk.ac.kr","미미미누", "password123", "202112322", department, AgreementStatus.AGREED, null);
 
         //when
@@ -40,8 +38,7 @@ class NoticeTest {
     @Test
     void init() {
         //given
-        Building building = createBuilding();
-        Department department = getDepartment(building);
+        Department department = getDepartment();
         User user = User.of("사용자1", "kmw106933@konkuk.ac.kr","미미미누", "password123", "202112322", department, AgreementStatus.AGREED, null);
 
         //when
@@ -51,17 +48,10 @@ class NoticeTest {
         assertThat(notice.getNoticeStatus()).isEqualTo(GENERAL);
     }
 
-    private Department getDepartment(Building building) {
+    private Department getDepartment() {
         String Deptname = "컴퓨터공학부";
         College college = College.of("공과대학");
-        Department department = Department.of(Deptname, building, college);
+        Department department = Department.of(Deptname, college);
         return department;
     }
-
-    private Building createBuilding() {
-        BigDecimal latitude = BigDecimal.valueOf(64.3423423);
-        BigDecimal longitude = BigDecimal.valueOf(342.2343434);
-        return (Building.of("신공학관", 3L,"신공", latitude, longitude));
-    }
-
 }
