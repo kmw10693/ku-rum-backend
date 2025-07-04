@@ -9,12 +9,16 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToOne;
 import ku_rum.backend.domain.user.domain.User;
 import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
+@Builder
 public class Position {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -25,4 +29,8 @@ public class Position {
 
     @ManyToOne(fetch = FetchType.LAZY)
     private Place place;
+
+    public void update(Place place) {
+        this.place=place;
+    }
 }

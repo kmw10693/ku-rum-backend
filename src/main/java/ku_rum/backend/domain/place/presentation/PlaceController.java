@@ -2,7 +2,9 @@ package ku_rum.backend.domain.place.presentation;
 
 import ku_rum.backend.domain.notice.dto.response.RecentSearchTerm;
 import ku_rum.backend.domain.place.application.PositionService;
+import ku_rum.backend.domain.place.dto.request.CurrentPositionConfirmRequest;
 import ku_rum.backend.domain.place.dto.request.CurrentPositionRequest;
+import ku_rum.backend.domain.place.dto.response.CurrentPositionConfirmResponse;
 import ku_rum.backend.domain.place.dto.response.CurrentPositionResponse;
 import ku_rum.backend.domain.place.dto.response.CurrentPositionStatusResponse;
 import ku_rum.backend.global.security.CustomUserDetails;
@@ -30,9 +32,16 @@ public class PlaceController {
 
     @PostMapping("/sharing")
     public BaseResponse<CurrentPositionResponse> getCurrentPosition(@AuthenticationPrincipal CustomUserDetails userDetails,
-                                                                    @RequestBody CurrentPositionRequest currentPositionRequest){
+                                                                    @RequestBody CurrentPositionRequest request){
         CurrentPositionResponse response = positionService.getCurrentPosition(userDetails,
-                currentPositionRequest);
-        return BaseResponse.ok(new CurrentPositionResponse(response.placeName()));
+                request);
+        return BaseResponse.ok(response);
+    }
+
+    @PostMapping("/sharing/confirm")
+    public BaseResponse<CurrentPositionConfirmResponse>sharingPosition(@AuthenticationPrincipal CustomUserDetails userDetails,
+                                                                       @RequestBody CurrentPositionConfirmRequest request){
+        CurrentPositionConfirmResponse response = positionService.confirmCurrentPosition(userDetails,request);
+        return BaseResponse.ok(response);
     }
 }
