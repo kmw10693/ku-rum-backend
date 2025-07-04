@@ -1,22 +1,25 @@
 package ku_rum.backend.domain.place.domain;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.validation.constraints.NotNull;
-import lombok.AccessLevel;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 
-@Entity
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
-public class Category {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long categoryId;
+public enum Category {
+    BUILDING("건물"),
+    COLLEGE("단과대"),
+    K_CUBE("K-Cube"),
+    K_HUB("K-Hub"),
+    CONVENIENCE_STORE("편의점"),
+    CAFE_RESTIO("레스티오"),
+    CAFE_1847("1847"),
+    STUDENT_CAFETERIA("학생식당"),
+    DEPARTMENT_OFFICE("학과사무실"),
+    DORMITORY("기숙사"),
+    BANK("은행"),
+    POST_OFFICE("우체국");
 
-    @NotNull
-    private String name;
+    private final String name;
+
+    Category(String name) {
+        this.name = name;
+    }
 }
