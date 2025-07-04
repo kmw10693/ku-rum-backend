@@ -134,7 +134,7 @@ public class UserService {
         user.changeNickname(nicknameChangeRequest.nickname());
     }
 
-    private User getUser() {
+    public User getUser() {
         Long memberId = UserUtil.getLongMemberId();
         log.debug("현재 사용자 조회: userId={}", memberId);
         return userRepository.findUserById(memberId).orElseThrow(() -> new NoSuchUserException(NO_SUCH_USER));
