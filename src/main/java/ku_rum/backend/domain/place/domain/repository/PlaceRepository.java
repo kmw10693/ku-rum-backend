@@ -11,6 +11,7 @@ public interface PlaceRepository extends JpaRepository<Place,Long> {
     @Query("""
         SELECT p
         FROM Place p
+        WHERE p.category = "BUILDING"
         ORDER BY
             POWER(p.latitude - :latitude, 2) + POWER(p.longitude - :longitude, 2)
         LIMIT 1
