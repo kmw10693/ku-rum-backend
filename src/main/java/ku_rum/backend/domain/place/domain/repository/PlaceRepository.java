@@ -14,7 +14,7 @@ public interface PlaceRepository extends JpaRepository<Place,Long> {
         FROM Place p
         WHERE p.category = "BUILDING"
         ORDER BY
-            POWER(p.latitude - :latitude, 2) + POWER(p.longitude - :longitude, 2)
+            ABS(p.latitude - :latitude) + ABS(p.longitude - :longitude)
         LIMIT 1
     """)
     Place findNearestPlace(@Param("latitude") BigDecimal latitude, @Param("longitude")BigDecimal longitude);
