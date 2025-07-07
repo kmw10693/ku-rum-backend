@@ -1,5 +1,6 @@
 package ku_rum.backend.domain.place.presentation;
 
+import jakarta.validation.Valid;
 import ku_rum.backend.domain.place.application.PositionService;
 import ku_rum.backend.domain.place.dto.request.CurrentPositionConfirmRequest;
 import ku_rum.backend.domain.place.dto.request.CurrentPositionRequest;
@@ -34,7 +35,7 @@ public class PlaceController {
     @PostMapping("/sharing")
     public BaseResponse<CurrentPositionResponse> getCurrentPosition(
             @AuthenticationPrincipal CustomUserDetails userDetails,
-            @RequestBody CurrentPositionRequest request) {
+            @Valid @RequestBody CurrentPositionRequest request) {
         CurrentPositionResponse response = positionService.getCurrentPosition(userDetails, request);
         return BaseResponse.ok(response);
     }
@@ -42,7 +43,7 @@ public class PlaceController {
     @PostMapping("/sharing/confirm")
     public BaseResponse<CurrentPositionConfirmResponse> sharingPosition(
             @AuthenticationPrincipal CustomUserDetails userDetails,
-            @RequestBody CurrentPositionConfirmRequest request) {
+            @Valid @RequestBody CurrentPositionConfirmRequest request) {
         CurrentPositionConfirmResponse response = positionService.confirmCurrentPosition(userDetails, request);
         return BaseResponse.ok(response);
     }
