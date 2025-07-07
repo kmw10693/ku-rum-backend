@@ -1,6 +1,5 @@
 package ku_rum.backend.domain.place.presentation;
 
-import ku_rum.backend.domain.notice.dto.response.RecentSearchTerm;
 import ku_rum.backend.domain.place.application.PositionService;
 import ku_rum.backend.domain.place.dto.request.CurrentPositionConfirmRequest;
 import ku_rum.backend.domain.place.dto.request.CurrentPositionRequest;
@@ -26,28 +25,30 @@ public class PlaceController {
     private final PositionService positionService;
 
     @GetMapping("/sharing/status")
-    public BaseResponse<CurrentPositionStatusResponse> getCurrentPositionStatus(@AuthenticationPrincipal CustomUserDetails userDetails){
+    public BaseResponse<CurrentPositionStatusResponse> getCurrentPositionStatus(
+            @AuthenticationPrincipal CustomUserDetails userDetails) {
         CurrentPositionStatusResponse response = positionService.getCurrentPositionStatus(userDetails);
         return BaseResponse.ok(response);
     }
 
     @PostMapping("/sharing")
-    public BaseResponse<CurrentPositionResponse> getCurrentPosition(@AuthenticationPrincipal CustomUserDetails userDetails,
-                                                                    @RequestBody CurrentPositionRequest request){
-        CurrentPositionResponse response = positionService.getCurrentPosition(userDetails,
-                request);
+    public BaseResponse<CurrentPositionResponse> getCurrentPosition(
+            @AuthenticationPrincipal CustomUserDetails userDetails,
+            @RequestBody CurrentPositionRequest request) {
+        CurrentPositionResponse response = positionService.getCurrentPosition(userDetails, request);
         return BaseResponse.ok(response);
     }
 
     @PostMapping("/sharing/confirm")
-    public BaseResponse<CurrentPositionConfirmResponse>sharingPosition(@AuthenticationPrincipal CustomUserDetails userDetails,
-                                                                       @RequestBody CurrentPositionConfirmRequest request){
-        CurrentPositionConfirmResponse response = positionService.confirmCurrentPosition(userDetails,request);
+    public BaseResponse<CurrentPositionConfirmResponse> sharingPosition(
+            @AuthenticationPrincipal CustomUserDetails userDetails,
+            @RequestBody CurrentPositionConfirmRequest request) {
+        CurrentPositionConfirmResponse response = positionService.confirmCurrentPosition(userDetails, request);
         return BaseResponse.ok(response);
     }
 
     @DeleteMapping("/sharing/confirm")
-    public BaseResponse<Void>disableSharingPosition(@AuthenticationPrincipal CustomUserDetails userDetails){
+    public BaseResponse<Void> disableSharingPosition(@AuthenticationPrincipal CustomUserDetails userDetails) {
         positionService.disableSharingPosition(userDetails);
         return BaseResponse.ok();
     }
