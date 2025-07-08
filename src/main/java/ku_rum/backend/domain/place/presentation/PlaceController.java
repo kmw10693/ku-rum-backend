@@ -27,14 +27,14 @@ public class PlaceController {
 
     @GetMapping("/sharing/status")
     public BaseResponse<CurrentPositionStatusResponse> getCurrentPositionStatus(
-            @AuthenticationPrincipal CustomUserDetails userDetails) {
+            @AuthenticationPrincipal final CustomUserDetails userDetails) {
         CurrentPositionStatusResponse response = positionService.getCurrentPositionStatus(userDetails);
         return BaseResponse.ok(response);
     }
 
     @PostMapping("/sharing")
     public BaseResponse<CurrentPositionResponse> getCurrentPosition(
-            @AuthenticationPrincipal CustomUserDetails userDetails,
+            @AuthenticationPrincipal final CustomUserDetails userDetails,
             @Valid @RequestBody CurrentPositionRequest request) {
         CurrentPositionResponse response = positionService.getCurrentPosition(userDetails, request);
         return BaseResponse.ok(response);
@@ -42,14 +42,14 @@ public class PlaceController {
 
     @PostMapping("/sharing/confirm")
     public BaseResponse<CurrentPositionConfirmResponse> sharingPosition(
-            @AuthenticationPrincipal CustomUserDetails userDetails,
+            @AuthenticationPrincipal final CustomUserDetails userDetails,
             @Valid @RequestBody CurrentPositionConfirmRequest request) {
         CurrentPositionConfirmResponse response = positionService.confirmCurrentPosition(userDetails, request);
         return BaseResponse.ok(response);
     }
 
     @DeleteMapping("/sharing/confirm")
-    public BaseResponse<Void> disableSharingPosition(@AuthenticationPrincipal CustomUserDetails userDetails) {
+    public BaseResponse<Void> disableSharingPosition(@AuthenticationPrincipal final CustomUserDetails userDetails) {
         positionService.disableSharingPosition(userDetails);
         return BaseResponse.ok();
     }

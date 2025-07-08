@@ -35,6 +35,6 @@ public class Position extends BaseEntity {
     private Place place;
 
     public void update(Place place) {
-        this.place=place;
+        this.place = place;
     }
 }
