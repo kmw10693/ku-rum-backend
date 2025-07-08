@@ -9,14 +9,19 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToOne;
 import ku_rum.backend.domain.user.domain.User;
+import ku_rum.backend.global.support.type.BaseEntity;
 import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
-public class Position {
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
+@Builder
+public class Position extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long positionId;
@@ -28,4 +33,8 @@ public class Position {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(nullable = false)
     private Place place;
+
+    public void update(Place place) {
+        this.place = place;
+    }
 }
