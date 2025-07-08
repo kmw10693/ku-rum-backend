@@ -1,8 +1,6 @@
 package ku_rum.backend.domain.user.application;
 
 import jakarta.transaction.Transactional;
-import ku_rum.backend.domain.building.domain.Building;
-import ku_rum.backend.domain.building.domain.repository.BuildingViewRepository;
 import ku_rum.backend.domain.college.domain.College;
 import ku_rum.backend.domain.college.domain.repository.CollegeRepository;
 import ku_rum.backend.domain.common.mail.dto.request.EmailValidationRequest;
@@ -55,9 +53,6 @@ class UserServiceTest {
 
 
     @Autowired
-    private BuildingViewRepository buildingViewRepository;
-
-    @Autowired
     private CollegeRepository collegeRepository;
 
     @MockBean
@@ -65,8 +60,6 @@ class UserServiceTest {
 
     @MockBean
     private BatchScheduler batchScheduler;
-
-    private Building building;
 
     private College college;
 
@@ -85,13 +78,11 @@ class UserServiceTest {
 
     @BeforeEach
     void setUp() {
-        building = Building.of("신공학관", 3L, "신공", BigDecimal.valueOf(64.3423423), BigDecimal.valueOf(64.3423423));
         college = College.of("공과대학");
-        buildingViewRepository.save(building);
         collegeRepository.save(college);
         user = User.builder().oauthId("kmw106933").build();
 
-        department = Department.of("컴퓨터공학부", building, college);
+        department = Department.of("컴퓨터공학부", college);
         departmentRepository.save(department);
         userRepository.save(user);
     }

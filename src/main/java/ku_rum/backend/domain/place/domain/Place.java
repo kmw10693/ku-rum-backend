@@ -1,77 +1,43 @@
 package ku_rum.backend.domain.place.domain;
 
-import jakarta.persistence.*;
-import ku_rum.backend.domain.building.domain.Building;
-import ku_rum.backend.domain.category.domain.Category;
-import ku_rum.backend.global.support.type.BaseEntity;
-import lombok.*;
-
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.validation.constraints.NotNull;
 import java.math.BigDecimal;
+import ku_rum.backend.global.support.type.BaseEntity;
+import lombok.AccessLevel;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
-@Getter
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@Table(name = "place")
+@Getter
 public class Place extends BaseEntity {
-
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Long placeId;
 
-    @Column(length = 100, nullable = false)
-    private String name; //제목
-
-    private String subName; //부제목
-
-    @Lob
-    @Column(columnDefinition = "TEXT")
-    private String text; //상세 내용
-
-    @Column(nullable = false, precision = 10, scale = 6)
-    private BigDecimal latitude;
-
-    @Column(nullable = false, precision = 10, scale = 6)
-    private BigDecimal longitude;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "building_id", nullable = false)
-    private Building building;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "category_id", nullable = false)
+    @Enumerated(value = EnumType.STRING)
     private Category category;
 
-    @Builder
-    private Place(String name, String subName, String text, BigDecimal latitude, BigDecimal longitude, Building building, Category category) {
-        this.name = name;
-        this.subName = subName;
-        this.text = text;
-        this.latitude = latitude;
-        this.longitude = longitude;
-        this.building = building;
-        this.category = category;
-    }
+    @NotNull
+    private String name;
 
-    public static Place of(String name, String subName, String text, BigDecimal latitude, BigDecimal longitude, Building building, Category category) {
-        return Place.builder()
-                .name(name)
-                .subName(subName)
-                .text(text)
-                .latitude(latitude)
-                .longitude(longitude)
-                .building(building)
-                .category(category)
-                .build();
-    }
+    private String subName;
 
-    public void update(String name, String subName, String text, BigDecimal latitude, BigDecimal longitude, Building building, Category category) {
-        this.name = name;
-        this.subName = subName;
-        this.text = text;
-        this.latitude = latitude;
-        this.longitude = longitude;
-        this.building = building;
-        this.category = category;
-    }
+    @NotNull
+    private String content;
+
+    @NotNull
+    @Column(nullable = false, precision = 15, scale = 9)
+    private BigDecimal latitude;
+
+    @NotNull
+    @Column(nullable = false, precision = 15, scale = 9)
+    private BigDecimal longitude;
 }

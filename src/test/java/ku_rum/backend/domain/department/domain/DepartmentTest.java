@@ -1,6 +1,5 @@
 package ku_rum.backend.domain.department.domain;
 
-import ku_rum.backend.domain.building.domain.Building;
 import ku_rum.backend.domain.college.domain.College;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -12,39 +11,17 @@ import static org.assertj.core.api.Assertions.*;
 
 class DepartmentTest {
 
-    @DisplayName("학과 생성 시 빌딩 정보를 넣어준다.")
-    @Test
-    void registeredDepartment() {
-        //given
-        College college = College.of("공과대학");
-        Building building = createBuilding();
-
-        //when
-        Department department = Department.of("컴퓨터공학부", building, college);
-
-        //then
-        assertThat(department.getBuilding()).isEqualTo(building);
-    }
-
     @DisplayName("학과 생성 시 학과 이름을 넣어준다.")
     @Test
     void registeredDepartmentWithName() {
         //given
-        Building building = createBuilding();
         College college = College.of("공과대학");
         String Deptname = "컴퓨터공학부";
 
         //when
-        Department department = Department.of(Deptname, building, college);
+        Department department = Department.of(Deptname, college);
 
         //then
         assertThat(department.getName()).isEqualTo(Deptname);
     }
-
-    private Building createBuilding() {
-        BigDecimal latitude = BigDecimal.valueOf(64.3423423);
-        BigDecimal longitude = BigDecimal.valueOf(342.2343434);
-        return (Building.of("신공학관", 3L,"신공",  latitude, longitude));
-    }
-
 }

@@ -1,8 +1,6 @@
 package ku_rum.backend.domain.user.application;
 
 import jakarta.servlet.http.HttpServletRequest;
-import ku_rum.backend.domain.building.domain.Building;
-import ku_rum.backend.domain.building.domain.repository.BuildingRepository;
 import ku_rum.backend.domain.common.mail.application.MailService;
 import ku_rum.backend.domain.department.application.DepartmentQueryService;
 import ku_rum.backend.domain.department.application.UserDepartmentService;
@@ -39,7 +37,6 @@ import static ku_rum.backend.global.support.status.BaseExceptionResponseStatus.*
 @Slf4j
 public class UserService {
     private final UserRepository userRepository;
-    private final BuildingRepository buildingRepository;
     private final PasswordEncoder passwordEncoder;
     private final UserValidator userValidator;
     private final UserQueryService userQueryService;
@@ -137,7 +134,7 @@ public class UserService {
         user.changeNickname(nicknameChangeRequest.nickname());
     }
 
-    private User getUser() {
+    public User getUser() {
         Long memberId = UserUtil.getLongMemberId();
         log.debug("현재 사용자 조회: userId={}", memberId);
         return userRepository.findUserById(memberId).orElseThrow(() -> new NoSuchUserException(NO_SUCH_USER));
@@ -184,25 +181,6 @@ public class UserService {
         User currentUser = userUtil.getUser();
         return new UserShareActiveResponse(currentUser.isActive());
     }
-
-    @Transactional(readOnly = true)
-    public UserLocationResponse getUserLocation(UserLocationRequest request) {
-        List<Building> buildings = buildingRepository.findAll();
-
-        Building nearest = buildings.stream()
-                .min(Comparator.comparingDouble(b ->
-                        LocationUtils.distance(
-                                request.latitude(),
-                                request.longitude(),
-                                b.getLatitude().doubleValue(),
-                                b.getLongitude().doubleValue()
-                        )
-                ))
-                .orElseThrow(() -> new UserMapBuildingNotFoundException(MATCHED_USER_BUILDING_ERROR));
-
-        return new UserLocationResponse(nearest.getName());
-    }
-
 
     @Transactional
     public UserLocationShareStartResponse startShareLocation(UserLocationShareStartRequest request) {
