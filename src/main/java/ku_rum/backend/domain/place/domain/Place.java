@@ -11,11 +11,15 @@ import jakarta.validation.constraints.NotNull;
 import java.math.BigDecimal;
 import ku_rum.backend.global.support.type.BaseEntity;
 import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor(access = AccessLevel.PROTECTED)
+@Builder
 @Getter
 public class Place extends BaseEntity {
     @Id
