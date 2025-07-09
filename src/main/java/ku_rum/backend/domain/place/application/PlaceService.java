@@ -11,7 +11,9 @@ import ku_rum.backend.domain.place.domain.repository.PositionRepository;
 import ku_rum.backend.domain.place.dto.FriendUserDto;
 import ku_rum.backend.domain.place.dto.response.SelectPlaceChipFriendListResponse;
 import ku_rum.backend.domain.place.dto.response.SelectPlaceChipResponse;
+import ku_rum.backend.global.exception.global.GlobalException;
 import ku_rum.backend.global.security.CustomUserDetails;
+import ku_rum.backend.global.support.status.BaseExceptionResponseStatus;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Service;
@@ -58,7 +60,7 @@ public class PlaceService {
      */
     public List<SelectPlaceChipResponse> selectChip(CategoryChip categoryChip) {
         if (categoryChip.equals(CategoryChip.FRIEND)) {
-            throw new RuntimeException("비회원으로 친구를 조회할 수 없습니다");
+            throw new GlobalException(BaseExceptionResponseStatus.UNSUPPORTED_FRIEND_CHIP_ERROR);
         }
 
         List<Place> places = placeRepository.findByCategoryChip(categoryChip);

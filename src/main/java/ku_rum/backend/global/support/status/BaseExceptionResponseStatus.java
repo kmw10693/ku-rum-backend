@@ -119,7 +119,8 @@ public enum BaseExceptionResponseStatus implements ResponseStatus {
      * 1200: Place
      */
     PLACE_NOT_FOUND(1200, HttpStatus.NOT_FOUND, "해당되는 장소가 없습니다."),
-    PLACE_IMAGE_NOT_FOUND(1201, HttpStatus.NOT_FOUND, "해당되는 장소 이미지가 없습니다.");
+    PLACE_IMAGE_NOT_FOUND(1201, HttpStatus.NOT_FOUND, "해당되는 장소 이미지가 없습니다."),
+    UNSUPPORTED_FRIEND_CHIP_ERROR(1202, HttpStatus.UNAUTHORIZED, "비회원으로 친구를 조회할 수 없습니다");
 
     private final int code;
     private final HttpStatus status;
