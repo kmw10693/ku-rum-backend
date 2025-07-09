@@ -34,18 +34,34 @@ public class PlaceService {
      */
     public List<SelectPlaceChipResponse> selectChipWithUser(
             @AuthenticationPrincipal CustomUserDetails userDetails,
-            CategoryChip category) {
+            CategoryChip categoryChip) {
 
-        if (category.equals(CategoryChip.FRIEND)) {
+        if (categoryChip.equals(CategoryChip.FRIEND)) {
             List<Place> places = placeRepository.findByCategoryChip(CategoryChip.BUILDING);
             return selectFriendListWithUser(userDetails, places);
         }
 
-        List<Place> places = placeRepository.findByCategoryChip(category);
-        if (category.equals(CategoryChip.BUILDING)) {
+        List<Place> places = placeRepository.findByCategoryChip(categoryChip);
+        if (categoryChip.equals(CategoryChip.BUILDING)) {
             return selectBuildingChipWithUser(userDetails, places);
         }
 
+        return places.stream()
+                .map(SelectPlaceChipResponse::from)
+                .toList();
+    }
+
+    /**
+     * 지도 칩 조회(비회원 로직)
+     *
+     * @return
+     */
+    public List<SelectPlaceChipResponse> selectChip(CategoryChip categoryChip) {
+        if (categoryChip.equals(CategoryChip.FRIEND)) {
+            throw new RuntimeException("비회원으로 친구를 조회할 수 없습니다");
+        }
+
+        List<Place> places = placeRepository.findByCategoryChip(categoryChip);
         return places.stream()
                 .map(SelectPlaceChipResponse::from)
                 .toList();

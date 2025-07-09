@@ -71,7 +71,7 @@ public class PlaceController {
             @AuthenticationPrincipal final CustomUserDetails userDetails,
             @RequestParam("chip") CategoryChip category) {
         if (userDetails == null) {
-            return null;
+            return BaseResponse.ok(placeService.selectChip(category));
         }
         return BaseResponse.ok(placeService.selectChipWithUser(userDetails, category));
     }
