@@ -23,7 +23,7 @@ public class Place extends BaseEntity {
     private Long placeId;
 
     @Enumerated(value = EnumType.STRING)
-    private Category category;
+    private CategoryChip categoryChip;
 
     @NotNull
     private String name;
