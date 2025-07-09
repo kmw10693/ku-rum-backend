@@ -61,16 +61,7 @@ public class PlaceService {
             @AuthenticationPrincipal CustomUserDetails userDetails, List<Place> places) {
         List<FriendUserDto> friendUserDtos = positionRepository.findPlaceByFriend(userDetails.getUserId());
 
-        return places.stream()
-                .map(place -> {
-                    List<SelectPlaceChipFriendListResponse> matchedFriends = friendUserDtos.stream()
-                            .filter(friend -> friend.placeId().equals(place.getPlaceId()))
-                            .map(SelectPlaceChipFriendListResponse::from)
-                            .toList();
-
-                    return SelectPlaceChipResponse.from(place, matchedFriends);
-                })
-                .toList();
+        return mapPlacesWithFriends(places, friendUserDtos);
     }
 
     /**
@@ -90,7 +81,12 @@ public class PlaceService {
                 .filter(place -> placeIdSet.contains(place.getPlaceId()))
                 .toList();
 
-        return filteredPlaces.stream()
+        return mapPlacesWithFriends(filteredPlaces, friendUserDtos);
+    }
+
+    private List<SelectPlaceChipResponse> mapPlacesWithFriends(List<Place> places,
+                                                               List<FriendUserDto> friendUserDtos) {
+        return places.stream()
                 .map(place -> {
                     List<SelectPlaceChipFriendListResponse> matchedFriends = friendUserDtos.stream()
                             .filter(friend -> friend.placeId().equals(place.getPlaceId()))
