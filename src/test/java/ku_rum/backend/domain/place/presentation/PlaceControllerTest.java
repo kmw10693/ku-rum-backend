@@ -1,5 +1,6 @@
 package ku_rum.backend.domain.place.presentation;
 
+import static com.epages.restdocs.apispec.ResourceDocumentation.parameterWithName;
 import static com.epages.restdocs.apispec.ResourceDocumentation.resource;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
@@ -16,13 +17,18 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import com.epages.restdocs.apispec.ResourceSnippetParameters;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.math.BigDecimal;
+import java.util.List;
 import ku_rum.backend.config.RestDocsTestSupport;
+import ku_rum.backend.domain.place.application.PlaceService;
 import ku_rum.backend.domain.place.application.PositionService;
+import ku_rum.backend.domain.place.domain.CategoryChip;
+import ku_rum.backend.domain.place.domain.Place;
 import ku_rum.backend.domain.place.dto.request.CurrentPositionConfirmRequest;
 import ku_rum.backend.domain.place.dto.request.CurrentPositionRequest;
 import ku_rum.backend.domain.place.dto.response.CurrentPositionConfirmResponse;
 import ku_rum.backend.domain.place.dto.response.CurrentPositionResponse;
 import ku_rum.backend.domain.place.dto.response.CurrentPositionStatusResponse;
+import ku_rum.backend.domain.place.dto.response.SelectPlaceChipResponse;
 import ku_rum.backend.domain.user.domain.User;
 import ku_rum.backend.global.security.CustomUserDetails;
 import org.junit.jupiter.api.BeforeEach;
@@ -42,6 +48,9 @@ public class PlaceControllerTest extends RestDocsTestSupport {
 
     @MockBean
     PositionService positionService;
+
+    @MockBean
+    PlaceService placeService;
 
     @MockBean
     private SecurityFilterChain securityFilterChain;
@@ -172,6 +181,46 @@ public class PlaceControllerTest extends RestDocsTestSupport {
                                 .requestHeaders(
                                         headerWithName("Authorization").description("발급 받은 엑세스 토큰입니다.")
                                 )
+                                .build())));
+    }
+
+    @DisplayName("칩에 해당 하는 정보를 조회한다")
+    @Test
+    void selectChip() throws Exception {
+        //given
+        String name = "상허기념도서관";
+        Place place = Place.builder()
+                .placeId(1L)
+                .categoryChip(CategoryChip.K_CUBE)
+                .name(name)
+                .subName("상허기념도서관 K-CUBE")
+                .content("상허기념도서관 K-CUBE입니다")
+                .latitude(BigDecimal.valueOf(37.541941000))
+                .longitude(BigDecimal.valueOf(127.073784000))
+                .build();
+
+        List<SelectPlaceChipResponse> response = List.of(SelectPlaceChipResponse.from(place));
+
+        given(placeService.selectChipWithUser(any(CustomUserDetails.class), eq(CategoryChip.K_CUBE)))
+                .willReturn(response);
+
+        //when
+        mockMvc.perform(get("/api/v1/places/chip")
+                        .header("Authorization",
+                                "Bearer eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyUEsiOjEsInJvbGVzIjoiUk9MRV9VU0VSIiwiaWF0IjoxNzQwMjQyNjQxLCJleHAiOjE3NDAyNDQ0NDF9.kLSMBLWdvIvrBpㄴGJdOigSKjxMIab0cV06xFjSpwrq70")
+                        .param("chip", "K_CUBE"))
+                //then
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.data[0].name").value(name))
+                .andDo(restDocs.document(resource(
+                        ResourceSnippetParameters.builder()
+                                .tag("지도 관련 API")
+                                .description("지도 칩 정보 조회")
+                                .requestHeaders(
+                                        headerWithName("Authorization").description("발급 받은 엑세스 토큰입니다.")
+                                )
+                                .queryParameters(parameterWithName("chip").description("칩 이름"))
                                 .build())));
     }
 }
