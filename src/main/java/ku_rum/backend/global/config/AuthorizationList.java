@@ -31,8 +31,7 @@ public final class AuthorizationList {
             "/api/v1/buildings/**",
             "/api/v1/departments/**",
             "/api/v1/colleges/**",
-            "/api/v1/places/search",
-            "/chip/**"
+            "/api/v1/places/chip"
     );
 
     private AuthorizationList() {
