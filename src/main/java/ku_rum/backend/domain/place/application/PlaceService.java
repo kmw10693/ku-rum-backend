@@ -1,6 +1,8 @@
 package ku_rum.backend.domain.place.application;
 
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 import ku_rum.backend.domain.friend.domain.repository.FriendRepository;
 import ku_rum.backend.domain.place.domain.CategoryChip;
 import ku_rum.backend.domain.place.domain.Place;
@@ -28,17 +30,18 @@ public class PlaceService {
      * 지도 칩 조회(회원 로직)
      *
      * @param userDetails
-     * @return
+     * @return response 객체
      */
     public List<SelectPlaceChipResponse> selectChipWithUser(
             @AuthenticationPrincipal CustomUserDetails userDetails,
             CategoryChip category) {
+
         if (category.equals(CategoryChip.FRIEND)) {
-            throw new RuntimeException("지원하지 않는 칩입니다");
+            List<Place> places = placeRepository.findByCategoryChip(CategoryChip.BUILDING);
+            return selectFriendListWithUser(userDetails, places);
         }
 
         List<Place> places = placeRepository.findByCategoryChip(category);
-
         if (category.equals(CategoryChip.BUILDING)) {
             return selectBuildingChipWithUser(userDetails, places);
         }
@@ -49,16 +52,45 @@ public class PlaceService {
     }
 
     /**
-     * 빌딩 칩 조회(회원 로직)
+     * 빌딩 칩 조회(회원 로직), 빌딩 정보와 친구의 공유 정보를 함께 반환
      *
      * @param userDetails
-     * @return
+     * @return response 객체
      */
     private List<SelectPlaceChipResponse> selectBuildingChipWithUser(
             @AuthenticationPrincipal CustomUserDetails userDetails, List<Place> places) {
         List<FriendUserDto> friendUserDtos = positionRepository.findPlaceByFriend(userDetails.getUserId());
 
         return places.stream()
+                .map(place -> {
+                    List<SelectPlaceChipFriendListResponse> matchedFriends = friendUserDtos.stream()
+                            .filter(friend -> friend.placeId().equals(place.getPlaceId()))
+                            .map(SelectPlaceChipFriendListResponse::from)
+                            .toList();
+
+                    return SelectPlaceChipResponse.from(place, matchedFriends);
+                })
+                .toList();
+    }
+
+    /**
+     * 친구 칩 조회(회원 로직), 친구의 공유 정보를 위치값과 함께 반환
+     *
+     * @return response 객체
+     */
+    private List<SelectPlaceChipResponse> selectFriendListWithUser(
+            @AuthenticationPrincipal CustomUserDetails userDetails, List<Place> places) {
+        List<FriendUserDto> friendUserDtos = positionRepository.findPlaceByFriend(userDetails.getUserId());
+
+        Set<Long> placeIdSet = friendUserDtos.stream()
+                .map(FriendUserDto::placeId)
+                .collect(Collectors.toSet());
+
+        List<Place> filteredPlaces = places.stream()
+                .filter(place -> placeIdSet.contains(place.getPlaceId()))
+                .toList();
+
+        return filteredPlaces.stream()
                 .map(place -> {
                     List<SelectPlaceChipFriendListResponse> matchedFriends = friendUserDtos.stream()
                             .filter(friend -> friend.placeId().equals(place.getPlaceId()))
