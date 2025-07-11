@@ -77,10 +77,7 @@ public class PositionService {
             return new CurrentPositionConfirmResponse(position.getPlace().getName());
         }
 
-        Position position = Position.builder()
-                .user(user)
-                .place(place)
-                .build();
+        Position position = Position.of(user, place);
         Position savePosition = positionRepository.save(position);
         return new CurrentPositionConfirmResponse(savePosition.getPlace().getName());
     }
