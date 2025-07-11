@@ -37,6 +37,7 @@ public class PositionService {
     public CurrentPositionStatusResponse getCurrentPositionStatus(CustomUserDetails userDetails) {
         User user = userService.getUser();
         if (positionRepository.existsPositionByUser(user)) {
+
             return new CurrentPositionStatusResponse(true);
         }
         return new CurrentPositionStatusResponse(false);

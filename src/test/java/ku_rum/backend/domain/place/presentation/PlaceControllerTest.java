@@ -1,6 +1,9 @@
 package ku_rum.backend.domain.place.presentation;
 
+<<<<<<< HEAD
 import static com.epages.restdocs.apispec.ResourceDocumentation.parameterWithName;
+=======
+>>>>>>> fc5536cdf3146cfcbc7cde2deee0055e03f890ca
 import static com.epages.restdocs.apispec.ResourceDocumentation.resource;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
@@ -17,18 +20,26 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import com.epages.restdocs.apispec.ResourceSnippetParameters;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.math.BigDecimal;
+<<<<<<< HEAD
 import java.util.List;
 import ku_rum.backend.config.RestDocsTestSupport;
 import ku_rum.backend.domain.place.application.PlaceService;
 import ku_rum.backend.domain.place.application.PositionService;
 import ku_rum.backend.domain.place.domain.CategoryChip;
 import ku_rum.backend.domain.place.domain.Place;
+=======
+import ku_rum.backend.config.RestDocsTestSupport;
+import ku_rum.backend.domain.place.application.PositionService;
+>>>>>>> fc5536cdf3146cfcbc7cde2deee0055e03f890ca
 import ku_rum.backend.domain.place.dto.request.CurrentPositionConfirmRequest;
 import ku_rum.backend.domain.place.dto.request.CurrentPositionRequest;
 import ku_rum.backend.domain.place.dto.response.CurrentPositionConfirmResponse;
 import ku_rum.backend.domain.place.dto.response.CurrentPositionResponse;
 import ku_rum.backend.domain.place.dto.response.CurrentPositionStatusResponse;
+<<<<<<< HEAD
 import ku_rum.backend.domain.place.dto.response.SelectPlaceChipResponse;
+=======
+>>>>>>> fc5536cdf3146cfcbc7cde2deee0055e03f890ca
 import ku_rum.backend.domain.user.domain.User;
 import ku_rum.backend.global.security.CustomUserDetails;
 import org.junit.jupiter.api.BeforeEach;
@@ -50,9 +61,12 @@ public class PlaceControllerTest extends RestDocsTestSupport {
     PositionService positionService;
 
     @MockBean
+<<<<<<< HEAD
     PlaceService placeService;
 
     @MockBean
+=======
+>>>>>>> fc5536cdf3146cfcbc7cde2deee0055e03f890ca
     private SecurityFilterChain securityFilterChain;
 
     @BeforeEach
@@ -183,6 +197,7 @@ public class PlaceControllerTest extends RestDocsTestSupport {
                                 )
                                 .build())));
     }
+<<<<<<< HEAD
 
     @DisplayName("칩에 해당 하는 정보를 조회한다")
     @Test
@@ -223,4 +238,6 @@ public class PlaceControllerTest extends RestDocsTestSupport {
                                 .queryParameters(parameterWithName("chip").description("칩 이름"))
                                 .build())));
     }
+=======
+>>>>>>> fc5536cdf3146cfcbc7cde2deee0055e03f890ca
 }
