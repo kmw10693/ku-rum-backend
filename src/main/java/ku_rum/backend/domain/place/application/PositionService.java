@@ -72,9 +72,7 @@ public class PositionService {
         Place place = findOneByName(request.placeName());
 
         if (positionOptional.isPresent()) {
-            Position position = positionOptional.get();
-            position.update(place);
-            return new CurrentPositionConfirmResponse(position.getPlace().getName());
+            return updatePosition(positionOptional.get(), place);
         }
 
         Position position = Position.of(user, place);
@@ -101,5 +99,10 @@ public class PositionService {
     private Place findOneByName(String name) {
         return placeRepository.findOneByName(name)
                 .orElseThrow(() -> new GlobalException(BaseExceptionResponseStatus.PLACE_NOT_FOUND));
+    }
+
+    private CurrentPositionConfirmResponse updatePosition(Position position, Place place) {
+        position.update(place);
+        return new CurrentPositionConfirmResponse(position.getPlace().getName());
     }
 }

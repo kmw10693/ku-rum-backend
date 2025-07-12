@@ -50,12 +50,7 @@ public class PlaceService {
             return selectBuildingChipWithUser(userDetails, places);
         }
 
-        Map<Long, List<PlaceImage>> placeImageMap = findPlaceImageMap(places);
-        return places.stream()
-                .map(place -> {
-                    return SelectPlaceChipResponse.from(place, placeImageMap);
-                })
-                .toList();
+        return findPlacesWithImages(places);
     }
 
     /**
@@ -132,5 +127,14 @@ public class PlaceService {
                         pi -> pi.getPlace().getPlaceId(),
                         Collectors.toList()
                 ));
+    }
+
+    private List<SelectPlaceChipResponse> findPlacesWithImages(List<Place> places) {
+        Map<Long, List<PlaceImage>> placeImageMap = findPlaceImageMap(places);
+        return places.stream()
+                .map(place -> {
+                    return SelectPlaceChipResponse.from(place, placeImageMap);
+                })
+                .toList();
     }
 }
