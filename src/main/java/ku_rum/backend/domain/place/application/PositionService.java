@@ -101,6 +101,13 @@ public class PositionService {
                 .orElseThrow(() -> new GlobalException(BaseExceptionResponseStatus.PLACE_NOT_FOUND));
     }
 
+    /**
+     * 위치값 수정
+     *
+     * @param position
+     * @param place
+     * @return
+     */
     private CurrentPositionConfirmResponse updatePosition(Position position, Place place) {
         position.update(place);
         return new CurrentPositionConfirmResponse(position.getPlace().getName());

@@ -106,6 +106,13 @@ public class PlaceService {
         return mapPlacesWithFriends(filteredPlaces, friendUserDtos);
     }
 
+    /**
+     * 장소와 공유 친구, 이미지 함께 조회
+     *
+     * @param places         장소 리스트
+     * @param friendUserDtos 친구 DTO
+     * @return
+     */
     private List<SelectPlaceChipResponse> mapPlacesWithFriends(List<Place> places,
                                                                List<FriendUserDto> friendUserDtos) {
         Map<Long, List<PlaceImage>> placeImageMap = findPlaceImageMap(places);
@@ -121,6 +128,12 @@ public class PlaceService {
                 .toList();
     }
 
+    /**
+     * 장소들에 속해있는 이미지 map 반환
+     *
+     * @param places 장소 리스트
+     * @return
+     */
     private Map<Long, List<PlaceImage>> findPlaceImageMap(List<Place> places) {
         return placeImageRepository.findByPlaceIn(places).stream()
                 .collect(Collectors.groupingBy(
@@ -129,6 +142,12 @@ public class PlaceService {
                 ));
     }
 
+    /**
+     * 장소 이미지와 함께 조회
+     *
+     * @param places 장소 리스트
+     * @return
+     */
     private List<SelectPlaceChipResponse> findPlacesWithImages(List<Place> places) {
         Map<Long, List<PlaceImage>> placeImageMap = findPlaceImageMap(places);
         return places.stream()
