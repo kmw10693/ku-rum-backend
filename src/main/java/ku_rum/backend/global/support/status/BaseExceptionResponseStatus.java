@@ -43,14 +43,12 @@ public enum BaseExceptionResponseStatus implements ResponseStatus {
     PREV_PASSWORD_EXCEPTION(310, HttpStatus.BAD_REQUEST, "기존 비밀번호가 일치하지 않습니다."),
     PREV_NEW_EQUAL_EXCEPTION(311, HttpStatus.BAD_REQUEST, "기존 비밀번호와 새 비밀번호가 일치할 수 없습니다"),
     DELETED_MEMBER(312, HttpStatus.BAD_REQUEST, "탈퇴한 사용자입니다."),
-    MATCHED_USER_BUILDING_ERROR(313, HttpStatus.NOT_FOUND, "사용자가 위치한 빌딩명을 못 찾았습니다.")
-,
+    MATCHED_USER_BUILDING_ERROR(313, HttpStatus.NOT_FOUND, "사용자가 위치한 빌딩명을 못 찾았습니다."),
     /**
      * 400: Department
      */
     NO_SUCH_DEPARTMENT(400, HttpStatus.BAD_REQUEST, "존재하지 않는 학과명입니다."),
     DUPLICATE_DEPARTMENT(401, HttpStatus.BAD_REQUEST, "중복된 학과명입니다."),
-
 
     /**
      * 500: Building 오류
@@ -60,7 +58,7 @@ public enum BaseExceptionResponseStatus implements ResponseStatus {
     NO_BUILDING_REGISTERED_CURRENTLY(502, HttpStatus.NO_CONTENT, "등록된 건물이 없습니다."),
 
     /**
-     * 600: Category
+     * 600: CategoryChip
      */
     CATEGORY_NAME_NOT_EXIST(600, HttpStatus.NOT_FOUND, "존재하지 않는 카테고리명 입니다."),
     CATEGORYNAME_NOT_PROVIDING_DETAIL(601, HttpStatus.NO_CONTENT, "디테일을 제공하는 카테고리명이 아닙니다."),
@@ -121,7 +119,8 @@ public enum BaseExceptionResponseStatus implements ResponseStatus {
      * 1200: Place
      */
     PLACE_NOT_FOUND(1200, HttpStatus.NOT_FOUND, "해당되는 장소가 없습니다."),
-    PLACE_IMAGE_NOT_FOUND(1201, HttpStatus.NOT_FOUND, "해당되는 장소 이미지가 없습니다.");
+    PLACE_IMAGE_NOT_FOUND(1201, HttpStatus.NOT_FOUND, "해당되는 장소 이미지가 없습니다."),
+    UNSUPPORTED_FRIEND_CHIP_ERROR(1202, HttpStatus.UNAUTHORIZED, "비회원으로 친구를 조회할 수 없습니다");
 
     private final int code;
     private final HttpStatus status;
