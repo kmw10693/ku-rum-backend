@@ -10,11 +10,15 @@ import jakarta.persistence.ManyToOne;
 import jakarta.validation.constraints.NotNull;
 import ku_rum.backend.global.support.type.BaseEntity;
 import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
+@Builder
 @Getter
 public class PlaceImage extends BaseEntity {
     @Id

@@ -1,9 +1,6 @@
-
 package ku_rum.backend.global.dataInit;
 
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.boot.context.event.ApplicationReadyEvent;
-import org.springframework.context.event.EventListener;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
 
@@ -17,19 +14,10 @@ public class FulltextIndexInitializer {
         this.jdbcTemplate = jdbcTemplate;
     }
 
-    @EventListener(ApplicationReadyEvent.class)
-    public void init() {
-        try {
-            insert_fulltext_index("category", "name_fulltext_index","name");
-        } catch (Exception e) {
-            log.error("❌ FULLTEXT INDEX 추가 실패: {}", e.getMessage(), e);
-        }
-    }
-
     private void insert_fulltext_index(String tableName, String indexName, String columnName) {
         if (!isIndexExists(tableName, indexName)) {
             String sql = String.format(
-                    "ALTER TABLE %s ADD FULLTEXT INDEX %s ("+ columnName +") WITH PARSER ngram",
+                    "ALTER TABLE %s ADD FULLTEXT INDEX %s (" + columnName + ") WITH PARSER ngram",
                     tableName,
                     indexName
             );

@@ -37,4 +37,11 @@ public class Position extends BaseEntity {
     public void update(Place place) {
         this.place = place;
     }
+
+    public static Position of(User user, Place place) {
+        return Position.builder()
+                .user(user)
+                .place(place)
+                .build();
+    }
 }
