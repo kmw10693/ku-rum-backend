@@ -12,4 +12,6 @@ import org.springframework.stereotype.Repository;
 public interface PlaceImageRepository extends JpaRepository<PlaceImage, Long> {
     @Query("SELECT pi FROM PlaceImage pi WHERE pi.place IN :places")
     List<PlaceImage> findByPlaceIn(@Param("places") List<Place> places);
+
+    List<PlaceImage> findByPlace(Place place);
 }

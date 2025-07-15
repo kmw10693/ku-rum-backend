@@ -4,19 +4,21 @@ import jakarta.validation.Valid;
 import java.util.List;
 import ku_rum.backend.domain.place.application.PlaceService;
 import ku_rum.backend.domain.place.application.PositionService;
+import ku_rum.backend.domain.place.application.response.CurrentPositionConfirmResponse;
+import ku_rum.backend.domain.place.application.response.CurrentPositionResponse;
+import ku_rum.backend.domain.place.application.response.CurrentPositionStatusResponse;
+import ku_rum.backend.domain.place.application.response.GetPlaceResponse;
+import ku_rum.backend.domain.place.application.response.SelectPlaceChipResponse;
 import ku_rum.backend.domain.place.domain.CategoryChip;
 import ku_rum.backend.domain.place.dto.request.CurrentPositionConfirmRequest;
 import ku_rum.backend.domain.place.dto.request.CurrentPositionRequest;
-import ku_rum.backend.domain.place.dto.response.CurrentPositionConfirmResponse;
-import ku_rum.backend.domain.place.dto.response.CurrentPositionResponse;
-import ku_rum.backend.domain.place.dto.response.CurrentPositionStatusResponse;
-import ku_rum.backend.domain.place.dto.response.SelectPlaceChipResponse;
 import ku_rum.backend.global.security.CustomUserDetails;
 import ku_rum.backend.global.support.response.BaseResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -66,13 +68,29 @@ public class PlaceController {
      * @param userDetails 인증 객체(없을 경우 비회원 로직)
      * @return 칩에 해당하는 데이터 리스트
      */
-    @GetMapping("/chip")
+    @GetMapping
     public BaseResponse<List<SelectPlaceChipResponse>> selectChip(
             @AuthenticationPrincipal final CustomUserDetails userDetails,
-            @RequestParam("chip") CategoryChip category) {
-        if (userDetails == null) {
-            return BaseResponse.ok(placeService.selectChip(category));
+            @RequestParam("chip") final CategoryChip category) {
+        if (isAuthenticated(userDetails)) {
+            return BaseResponse.ok(placeService.selectChipWithUser(userDetails, category));
         }
-        return BaseResponse.ok(placeService.selectChipWithUser(userDetails, category));
+        return BaseResponse.ok(placeService.selectChip(category));
+    }
+
+    @GetMapping("/{placeId}")
+    public BaseResponse<GetPlaceResponse> getPlace(@PathVariable("placeId") final Long placeId,
+                                                   @AuthenticationPrincipal final CustomUserDetails userDetails) {
+        if (isAuthenticated(userDetails)) {
+            return BaseResponse.ok(placeService.getPlaceWithUser(userDetails, placeId));
+        }
+        return BaseResponse.ok(placeService.getPlace(placeId));
+    }
+
+    private boolean isAuthenticated(final CustomUserDetails userDetails) {
+        if (userDetails == null) {
+            return false;
+        }
+        return true;
     }
 }

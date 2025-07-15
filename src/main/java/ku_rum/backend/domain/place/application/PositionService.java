@@ -1,15 +1,15 @@
 package ku_rum.backend.domain.place.application;
 
 import java.util.Optional;
+import ku_rum.backend.domain.place.application.response.CurrentPositionConfirmResponse;
+import ku_rum.backend.domain.place.application.response.CurrentPositionResponse;
+import ku_rum.backend.domain.place.application.response.CurrentPositionStatusResponse;
 import ku_rum.backend.domain.place.domain.Place;
 import ku_rum.backend.domain.place.domain.Position;
 import ku_rum.backend.domain.place.domain.repository.PlaceRepository;
 import ku_rum.backend.domain.place.domain.repository.PositionRepository;
 import ku_rum.backend.domain.place.dto.request.CurrentPositionConfirmRequest;
 import ku_rum.backend.domain.place.dto.request.CurrentPositionRequest;
-import ku_rum.backend.domain.place.dto.response.CurrentPositionConfirmResponse;
-import ku_rum.backend.domain.place.dto.response.CurrentPositionResponse;
-import ku_rum.backend.domain.place.dto.response.CurrentPositionStatusResponse;
 import ku_rum.backend.domain.user.application.UserService;
 import ku_rum.backend.domain.user.domain.User;
 import ku_rum.backend.global.exception.global.GlobalException;
