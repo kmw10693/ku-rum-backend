@@ -25,5 +25,7 @@ public interface PlaceRepository extends JpaRepository<Place, Long> {
 
     Optional<Place> findOneByName(String name);
 
+    Optional<Place> findByPlaceId(Long placeId);
+
     List<Place> findByCategoryChip(CategoryChip categoryChip);
 }

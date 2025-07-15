@@ -34,6 +34,8 @@ public class Place extends BaseEntity {
 
     private String subName;
 
+    private String abbreviation;
+
     @NotNull
     private String content;
 

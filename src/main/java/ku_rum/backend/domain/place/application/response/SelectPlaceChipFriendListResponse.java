@@ -1,4 +1,4 @@
-package ku_rum.backend.domain.place.dto.response;
+package ku_rum.backend.domain.place.application.response;
 
 import ku_rum.backend.domain.place.dto.FriendUserDto;
 

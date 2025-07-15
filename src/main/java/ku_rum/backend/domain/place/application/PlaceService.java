@@ -1,21 +1,23 @@
 package ku_rum.backend.domain.place.application;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
+import ku_rum.backend.domain.place.application.response.GetPlaceResponse;
+import ku_rum.backend.domain.place.application.response.SelectPlaceChipFriendListResponse;
+import ku_rum.backend.domain.place.application.response.SelectPlaceChipResponse;
 import ku_rum.backend.domain.place.domain.CategoryChip;
 import ku_rum.backend.domain.place.domain.Place;
+import ku_rum.backend.domain.place.domain.PlaceImage;
 import ku_rum.backend.domain.place.domain.repository.PlaceImageRepository;
 import ku_rum.backend.domain.place.domain.repository.PlaceRepository;
 import ku_rum.backend.domain.place.domain.repository.PositionRepository;
 import ku_rum.backend.domain.place.dto.FriendUserDto;
-import ku_rum.backend.domain.place.dto.response.SelectPlaceChipFriendListResponse;
-import ku_rum.backend.domain.place.dto.response.SelectPlaceChipResponse;
 import ku_rum.backend.global.exception.global.GlobalException;
 import ku_rum.backend.global.security.CustomUserDetails;
 import ku_rum.backend.global.support.status.BaseExceptionResponseStatus;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -35,8 +37,8 @@ public class PlaceService {
      * @return response 객체
      */
     public List<SelectPlaceChipResponse> selectChipWithUser(
-            @AuthenticationPrincipal CustomUserDetails userDetails,
-            CategoryChip categoryChip) {
+            final CustomUserDetails userDetails,
+            final CategoryChip categoryChip) {
 
         if (categoryChip.equals(CategoryChip.FRIEND)) {
             List<Place> places = placeRepository.findByCategoryChip(CategoryChip.BUILDING);
@@ -56,7 +58,7 @@ public class PlaceService {
      *
      * @return
      */
-    public List<SelectPlaceChipResponse> selectChip(CategoryChip categoryChip) {
+    public List<SelectPlaceChipResponse> selectChip(final CategoryChip categoryChip) {
         if (categoryChip.equals(CategoryChip.FRIEND)) {
             throw new GlobalException(BaseExceptionResponseStatus.UNSUPPORTED_FRIEND_CHIP_ERROR);
         }
@@ -68,6 +70,49 @@ public class PlaceService {
                 .toList();
     }
 
+
+    /**
+     * 장소 조회(회원 로직)
+     *
+     * @param userDetails 인증 객체
+     * @param placeId     장소 PK
+     * @return
+     */
+    public GetPlaceResponse getPlaceWithUser(
+            final CustomUserDetails userDetails,
+            final Long placeId) {
+        Place place = findPlace(placeId);
+        List<PlaceImage> placeImages = placeImageRepository.findByPlace(place);
+        List<FriendUserDto> friendUserDtos = positionRepository.findPlaceByFriend(userDetails.getUserId());
+
+        return GetPlaceResponse.of(place, friendUserDtos, placeImages);
+    }
+
+    /**
+     * 장소 조회(비회원 로직)
+     *
+     * @param placeId 장소 PK
+     * @return
+     */
+    public GetPlaceResponse getPlace(
+            final Long placeId) {
+        Place place = findPlace(placeId);
+        List<PlaceImage> placeImages = placeImageRepository.findByPlace(place);
+
+        return GetPlaceResponse.of(place, Collections.emptyList(), placeImages);
+    }
+
+    /**
+     * place 조회
+     *
+     * @param placeId
+     * @return Place 엔티티
+     */
+    private Place findPlace(Long placeId) {
+        return placeRepository.findByPlaceId(placeId)
+                .orElseThrow(() -> new GlobalException(BaseExceptionResponseStatus.PLACE_NOT_FOUND));
+    }
+
     /**
      * 빌딩 칩 조회(회원 로직), 빌딩 정보와 친구의 공유 정보를 함께 반환
      *
@@ -75,7 +120,7 @@ public class PlaceService {
      * @return response 객체
      */
     private List<SelectPlaceChipResponse> selectBuildingChipWithUser(
-            @AuthenticationPrincipal CustomUserDetails userDetails, List<Place> places) {
+            final CustomUserDetails userDetails, final List<Place> places) {
         List<FriendUserDto> friendUserDtos = positionRepository.findPlaceByFriend(userDetails.getUserId());
 
         return mapPlacesWithFriends(places, friendUserDtos);
@@ -87,7 +132,7 @@ public class PlaceService {
      * @return response 객체
      */
     private List<SelectPlaceChipResponse> selectFriendListWithUser(
-            @AuthenticationPrincipal CustomUserDetails userDetails, List<Place> places) {
+            final CustomUserDetails userDetails, final List<Place> places) {
         List<FriendUserDto> friendUserDtos = positionRepository.findPlaceByFriend(userDetails.getUserId());
 
         Set<Long> placeIdSet = friendUserDtos.stream()
@@ -108,8 +153,8 @@ public class PlaceService {
      * @param friendUserDtos 친구 DTO
      * @return
      */
-    private List<SelectPlaceChipResponse> mapPlacesWithFriends(List<Place> places,
-                                                               List<FriendUserDto> friendUserDtos) {
+    private List<SelectPlaceChipResponse> mapPlacesWithFriends(final List<Place> places,
+                                                               final List<FriendUserDto> friendUserDtos) {
         return places.stream()
                 .map(place -> {
                     List<SelectPlaceChipFriendListResponse> matchedFriends = friendUserDtos.stream()
@@ -128,7 +173,7 @@ public class PlaceService {
      * @param places 장소 리스트
      * @return
      */
-    private List<SelectPlaceChipResponse> findPlacesWithImages(List<Place> places) {
+    private List<SelectPlaceChipResponse> findPlacesWithImages(final List<Place> places) {
         return places.stream()
                 .map(SelectPlaceChipResponse::from)
                 .toList();

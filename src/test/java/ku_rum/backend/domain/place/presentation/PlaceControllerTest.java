@@ -21,15 +21,17 @@ import java.util.List;
 import ku_rum.backend.config.RestDocsTestSupport;
 import ku_rum.backend.domain.place.application.PlaceService;
 import ku_rum.backend.domain.place.application.PositionService;
+import ku_rum.backend.domain.place.application.response.CurrentPositionConfirmResponse;
+import ku_rum.backend.domain.place.application.response.CurrentPositionResponse;
+import ku_rum.backend.domain.place.application.response.CurrentPositionStatusResponse;
+import ku_rum.backend.domain.place.application.response.GetPlaceResponse;
+import ku_rum.backend.domain.place.application.response.SelectPlaceChipResponse;
 import ku_rum.backend.domain.place.domain.CategoryChip;
 import ku_rum.backend.domain.place.domain.Place;
 import ku_rum.backend.domain.place.domain.PlaceImage;
+import ku_rum.backend.domain.place.dto.FriendUserDto;
 import ku_rum.backend.domain.place.dto.request.CurrentPositionConfirmRequest;
 import ku_rum.backend.domain.place.dto.request.CurrentPositionRequest;
-import ku_rum.backend.domain.place.dto.response.CurrentPositionConfirmResponse;
-import ku_rum.backend.domain.place.dto.response.CurrentPositionResponse;
-import ku_rum.backend.domain.place.dto.response.CurrentPositionStatusResponse;
-import ku_rum.backend.domain.place.dto.response.SelectPlaceChipResponse;
 import ku_rum.backend.domain.user.domain.User;
 import ku_rum.backend.global.security.CustomUserDetails;
 import org.junit.jupiter.api.BeforeEach;
@@ -38,6 +40,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
+import org.springframework.restdocs.request.RequestDocumentation;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.SecurityFilterChain;
@@ -200,10 +203,6 @@ public class PlaceControllerTest extends RestDocsTestSupport {
                 .longitude(BigDecimal.valueOf(127.073784000))
                 .build();
 
-        List<PlaceImage> placeImages = List.of(PlaceImage.builder()
-                .imageUrl("imgurl.png")
-                .build());
-
         List<SelectPlaceChipResponse> response = List.of(SelectPlaceChipResponse.from(place));
 
         given(placeService.selectChipWithUser(any(CustomUserDetails.class), eq(CategoryChip.K_CUBE)))
@@ -227,5 +226,56 @@ public class PlaceControllerTest extends RestDocsTestSupport {
                                 )
                                 .queryParameters(parameterWithName("chip").description("칩 이름"))
                                 .build())));
+    }
+
+    @DisplayName("장소를 조회한다")
+    @Test
+    void getPlace() throws Exception {
+        //given
+        String name = "상허기념도서관";
+        Long placeId = 1L;
+        Place place = Place.builder()
+                .placeId(placeId)
+                .categoryChip(CategoryChip.K_CUBE)
+                .name(name)
+                .subName("상허기념도서관 K-CUBE")
+                .content("상허기념도서관 K-CUBE입니다")
+                .latitude(BigDecimal.valueOf(37.541941000))
+                .longitude(BigDecimal.valueOf(127.073784000))
+                .build();
+
+        List<FriendUserDto> friendUserDtos = List.of(new FriendUserDto(1L, "닉네임", "url", 1L));
+        PlaceImage placeImage = PlaceImage.builder()
+                .placeImageId(1L)
+                .place(place)
+                .imageUrl("URL")
+                .build();
+
+        List<PlaceImage> placeImages = List.of(placeImage);
+        GetPlaceResponse response = GetPlaceResponse.of(place, friendUserDtos, placeImages);
+
+        given(placeService.getPlaceWithUser(any(CustomUserDetails.class), eq(placeId)))
+                .willReturn(response);
+
+        //when
+        mockMvc.perform(get("/api/v1/places/{placeId}", placeId)
+                        .header("Authorization",
+                                "Bearer eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyUEsiOjEsInJvbGVzIjoiUk9MRV9VU0VSIiwiaWF0IjoxNzQwMjQyNjQxLCJleHAiOjE3NDAyNDQ0NDF9.kLSMBLWdvIvrBpㄴGJdOigSKjxMIab0cV06xFjSpwrq70"))
+                //then
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.data.name").value(name))
+                .andDo(restDocs.document(resource(
+                        ResourceSnippetParameters.builder()
+                                .tag("지도 관련 API")
+                                .description("정보 조회")
+                                .requestHeaders(
+                                        headerWithName("Authorization").description("발급 받은 엑세스 토큰입니다.")
+                                )
+                                .pathParameters(
+                                        RequestDocumentation.parameterWithName("placeId").description("건물id")
+                                )
+                                .build())));
+
     }
 }

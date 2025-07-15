@@ -1,4 +1,4 @@
-package ku_rum.backend.domain.place.dto.response;
+package ku_rum.backend.domain.place.application.response;
 
 import java.math.BigDecimal;
 import java.util.Collections;
@@ -16,14 +16,15 @@ public record SelectPlaceChipResponse(
 ) {
 
     public static SelectPlaceChipResponse from(Place place) {
-        return new SelectPlaceChipResponse(place.getPlaceId(), place.getName(), place.getSubName(), place.getContent(),
-                place.getLatitude(),
-                place.getLongitude(), Collections.emptyList());
+        return new SelectPlaceChipResponse(place.getPlaceId(), place.getName(), place.getSubName(),
+                place.getAbbreviation(),
+                place.getLatitude(), place.getLongitude(), Collections.emptyList());
     }
 
     public static SelectPlaceChipResponse from(Place place,
                                                List<SelectPlaceChipFriendListResponse> selectPlaceChipFriendListResponses) {
-        return new SelectPlaceChipResponse(place.getPlaceId(), place.getName(), place.getSubName(), place.getContent(),
+        return new SelectPlaceChipResponse(place.getPlaceId(), place.getName(), place.getSubName(),
+                place.getAbbreviation(),
                 place.getLatitude(), place.getLongitude(), selectPlaceChipFriendListResponses);
     }
 }
