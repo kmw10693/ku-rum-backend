@@ -66,10 +66,10 @@ public class PlaceController {
      * @param userDetails 인증 객체(없을 경우 비회원 로직)
      * @return 칩에 해당하는 데이터 리스트
      */
-    @GetMapping("/chip")
+    @GetMapping
     public BaseResponse<List<SelectPlaceChipResponse>> selectChip(
             @AuthenticationPrincipal final CustomUserDetails userDetails,
-            @RequestParam("chip") CategoryChip category) {
+            @RequestParam("chip") final CategoryChip category) {
         if (userDetails == null) {
             return BaseResponse.ok(placeService.selectChip(category));
         }

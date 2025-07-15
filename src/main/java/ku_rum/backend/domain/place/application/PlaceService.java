@@ -1,12 +1,10 @@
 package ku_rum.backend.domain.place.application;
 
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 import ku_rum.backend.domain.place.domain.CategoryChip;
 import ku_rum.backend.domain.place.domain.Place;
-import ku_rum.backend.domain.place.domain.PlaceImage;
 import ku_rum.backend.domain.place.domain.repository.PlaceImageRepository;
 import ku_rum.backend.domain.place.domain.repository.PlaceRepository;
 import ku_rum.backend.domain.place.domain.repository.PositionRepository;
@@ -65,11 +63,8 @@ public class PlaceService {
 
         List<Place> places = placeRepository.findByCategoryChip(categoryChip);
 
-        Map<Long, List<PlaceImage>> placeImageMap = findPlaceImageMap(places);
         return places.stream()
-                .map(place -> {
-                    return SelectPlaceChipResponse.from(place, placeImageMap);
-                })
+                .map(SelectPlaceChipResponse::from)
                 .toList();
     }
 
@@ -115,7 +110,6 @@ public class PlaceService {
      */
     private List<SelectPlaceChipResponse> mapPlacesWithFriends(List<Place> places,
                                                                List<FriendUserDto> friendUserDtos) {
-        Map<Long, List<PlaceImage>> placeImageMap = findPlaceImageMap(places);
         return places.stream()
                 .map(place -> {
                     List<SelectPlaceChipFriendListResponse> matchedFriends = friendUserDtos.stream()
@@ -123,23 +117,9 @@ public class PlaceService {
                             .map(SelectPlaceChipFriendListResponse::from)
                             .toList();
 
-                    return SelectPlaceChipResponse.from(place, matchedFriends, placeImageMap);
+                    return SelectPlaceChipResponse.from(place, matchedFriends);
                 })
                 .toList();
-    }
-
-    /**
-     * 장소들에 속해있는 이미지 map 반환
-     *
-     * @param places 장소 리스트
-     * @return
-     */
-    private Map<Long, List<PlaceImage>> findPlaceImageMap(List<Place> places) {
-        return placeImageRepository.findByPlaceIn(places).stream()
-                .collect(Collectors.groupingBy(
-                        pi -> pi.getPlace().getPlaceId(),
-                        Collectors.toList()
-                ));
     }
 
     /**
@@ -149,11 +129,8 @@ public class PlaceService {
      * @return
      */
     private List<SelectPlaceChipResponse> findPlacesWithImages(List<Place> places) {
-        Map<Long, List<PlaceImage>> placeImageMap = findPlaceImageMap(places);
         return places.stream()
-                .map(place -> {
-                    return SelectPlaceChipResponse.from(place, placeImageMap);
-                })
+                .map(SelectPlaceChipResponse::from)
                 .toList();
     }
 }

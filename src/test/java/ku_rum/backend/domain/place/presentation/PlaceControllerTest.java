@@ -18,7 +18,6 @@ import com.epages.restdocs.apispec.ResourceSnippetParameters;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.math.BigDecimal;
 import java.util.List;
-import java.util.Map;
 import ku_rum.backend.config.RestDocsTestSupport;
 import ku_rum.backend.domain.place.application.PlaceService;
 import ku_rum.backend.domain.place.application.PositionService;
@@ -204,15 +203,14 @@ public class PlaceControllerTest extends RestDocsTestSupport {
         List<PlaceImage> placeImages = List.of(PlaceImage.builder()
                 .imageUrl("imgurl.png")
                 .build());
-        Map<Long, List<PlaceImage>> map = Map.of(1L, placeImages);
 
-        List<SelectPlaceChipResponse> response = List.of(SelectPlaceChipResponse.from(place, map));
+        List<SelectPlaceChipResponse> response = List.of(SelectPlaceChipResponse.from(place));
 
         given(placeService.selectChipWithUser(any(CustomUserDetails.class), eq(CategoryChip.K_CUBE)))
                 .willReturn(response);
 
         //when
-        mockMvc.perform(get("/api/v1/places/chip")
+        mockMvc.perform(get("/api/v1/places")
                         .header("Authorization",
                                 "Bearer eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyUEsiOjEsInJvbGVzIjoiUk9MRV9VU0VSIiwiaWF0IjoxNzQwMjQyNjQxLCJleHAiOjE3NDAyNDQ0NDF9.kLSMBLWdvIvrBpㄴGJdOigSKjxMIab0cV06xFjSpwrq70")
                         .param("chip", "K_CUBE"))
