@@ -83,7 +83,8 @@ public class PlaceService {
             final Long placeId) {
         Place place = findPlace(placeId);
         List<PlaceImage> placeImages = placeImageRepository.findByPlace(place);
-        List<FriendUserDto> friendUserDtos = positionRepository.findPlaceByFriend(userDetails.getUserId());
+        List<FriendUserDto> friendUserDtos = positionRepository.findPositionByFriendAndPlace(userDetails.getUserId(),
+                place);
 
         return GetPlaceResponse.of(place, friendUserDtos, placeImages);
     }
