@@ -22,7 +22,7 @@ public interface PositionRepository extends JpaRepository<Position, Long> {
                     user.id,
                     user.nickname,
                     user.imageUrl,
-                    p.positionId
+                    p.place
                 )
                 FROM Friend f
                 JOIN User user

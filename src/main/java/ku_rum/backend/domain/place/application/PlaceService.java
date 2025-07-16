@@ -136,7 +136,7 @@ public class PlaceService {
         List<FriendUserDto> friendUserDtos = positionRepository.findPlaceByFriend(userDetails.getUserId());
 
         Set<Long> placeIdSet = friendUserDtos.stream()
-                .map(FriendUserDto::placeId)
+                .map(friendUserDto -> friendUserDto.place().getPlaceId())
                 .collect(Collectors.toSet());
 
         List<Place> filteredPlaces = places.stream()
@@ -158,7 +158,7 @@ public class PlaceService {
         return places.stream()
                 .map(place -> {
                     List<SelectPlaceChipFriendListResponse> matchedFriends = friendUserDtos.stream()
-                            .filter(friend -> friend.placeId().equals(place.getPlaceId()))
+                            .filter(friend -> friend.place().equals(place))
                             .map(SelectPlaceChipFriendListResponse::from)
                             .toList();
 
