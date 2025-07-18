@@ -83,7 +83,8 @@ public class PlaceService {
             final Long placeId) {
         Place place = findPlace(placeId);
         List<PlaceImage> placeImages = placeImageRepository.findByPlace(place);
-        List<FriendUserDto> friendUserDtos = positionRepository.findPlaceByFriend(userDetails.getUserId());
+        List<FriendUserDto> friendUserDtos = positionRepository.findPositionByFriendAndPlace(userDetails.getUserId(),
+                place);
 
         return GetPlaceResponse.of(place, friendUserDtos, placeImages);
     }
@@ -136,7 +137,7 @@ public class PlaceService {
         List<FriendUserDto> friendUserDtos = positionRepository.findPlaceByFriend(userDetails.getUserId());
 
         Set<Long> placeIdSet = friendUserDtos.stream()
-                .map(FriendUserDto::placeId)
+                .map(friendUserDto -> friendUserDto.place().getPlaceId())
                 .collect(Collectors.toSet());
 
         List<Place> filteredPlaces = places.stream()
@@ -158,7 +159,7 @@ public class PlaceService {
         return places.stream()
                 .map(place -> {
                     List<SelectPlaceChipFriendListResponse> matchedFriends = friendUserDtos.stream()
-                            .filter(friend -> friend.placeId().equals(place.getPlaceId()))
+                            .filter(friend -> friend.place().equals(place))
                             .map(SelectPlaceChipFriendListResponse::from)
                             .toList();
 

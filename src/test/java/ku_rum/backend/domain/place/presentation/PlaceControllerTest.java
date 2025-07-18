@@ -244,7 +244,7 @@ public class PlaceControllerTest extends RestDocsTestSupport {
                 .longitude(BigDecimal.valueOf(127.073784000))
                 .build();
 
-        List<FriendUserDto> friendUserDtos = List.of(new FriendUserDto(1L, "닉네임", "url", 1L));
+        List<FriendUserDto> friendUserDtos = List.of(new FriendUserDto(1L, "닉네임", "url", place));
         PlaceImage placeImage = PlaceImage.builder()
                 .placeImageId(1L)
                 .place(place)
