@@ -86,7 +86,6 @@ public class PlaceService {
      * @param placeId     장소 PK
      * @return
      */
-    @Transactional
     public GetPlaceResponse getPlaceWithUser(
             final CustomUserDetails userDetails,
             final Long placeId) {
@@ -131,6 +130,7 @@ public class PlaceService {
      * @param query
      * @return
      */
+    @Transactional
     public List<SearchPlaceResponse> searchPlaceWithUser(CustomUserDetails userDetails, String query) {
         updatePlaceHistory(query, userDetails);
         return searchPlace(query);
