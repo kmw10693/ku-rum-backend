@@ -19,6 +19,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import java.math.BigDecimal;
 import java.util.List;
 import ku_rum.backend.config.RestDocsTestSupport;
+import ku_rum.backend.domain.place.application.PlaceHistoryService;
 import ku_rum.backend.domain.place.application.PlaceService;
 import ku_rum.backend.domain.place.application.PositionService;
 import ku_rum.backend.domain.place.application.response.CurrentPositionConfirmResponse;
@@ -57,6 +58,9 @@ public class PlaceControllerTest extends RestDocsTestSupport {
 
     @MockBean
     PlaceService placeService;
+
+    @MockBean
+    PlaceHistoryService placeHistoryService;
 
     @MockBean
     private SecurityFilterChain securityFilterChain;
@@ -302,7 +306,7 @@ public class PlaceControllerTest extends RestDocsTestSupport {
                 .build();
         SearchPlaceHistoryResponse response = SearchPlaceHistoryResponse.from(placeHistory);
 
-        given(placeService.searchPlaceHistory(any(CustomUserDetails.class)))
+        given(placeHistoryService.searchPlaceHistory(any(CustomUserDetails.class)))
                 .willReturn(List.of(response));
 
         //when

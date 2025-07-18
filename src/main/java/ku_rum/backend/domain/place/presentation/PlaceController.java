@@ -2,6 +2,7 @@ package ku_rum.backend.domain.place.presentation;
 
 import jakarta.validation.Valid;
 import java.util.List;
+import ku_rum.backend.domain.place.application.PlaceHistoryService;
 import ku_rum.backend.domain.place.application.PlaceService;
 import ku_rum.backend.domain.place.application.PositionService;
 import ku_rum.backend.domain.place.application.response.CurrentPositionConfirmResponse;
@@ -34,6 +35,7 @@ public class PlaceController {
 
     private final PositionService positionService;
     private final PlaceService placeService;
+    private final PlaceHistoryService placeHistoryService;
 
     @GetMapping("/sharing/status")
     public BaseResponse<CurrentPositionStatusResponse> getCurrentPositionStatus(
@@ -101,7 +103,7 @@ public class PlaceController {
     @GetMapping("/search/history")
     public BaseResponse<List<SearchPlaceHistoryResponse>> searchPlaceHistory(
             @AuthenticationPrincipal final CustomUserDetails userDetails) {
-        return BaseResponse.ok(placeService.searchPlaceHistory(userDetails));
+        return BaseResponse.ok(placeHistoryService.searchPlaceHistory(userDetails));
     }
 
     private boolean isAuthenticated(final CustomUserDetails userDetails) {
