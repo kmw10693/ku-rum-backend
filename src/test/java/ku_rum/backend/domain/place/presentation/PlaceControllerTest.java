@@ -311,7 +311,7 @@ public class PlaceControllerTest extends RestDocsTestSupport {
                 //then
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.data[0].placeId").value(placeId))
+                .andExpect(jsonPath("$.data[0].placeHistoryId").value(placeId))
                 .andDo(restDocs.document(resource(
                         ResourceSnippetParameters.builder()
                                 .tag("지도 관련 API")
