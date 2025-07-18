@@ -39,6 +39,7 @@ public class PlaceHistoryService {
      * @param query
      * @param userDetails
      */
+    @Transactional
     public void updatePlaceHistory(final String query, final CustomUserDetails userDetails) {
         User user = userService.getUser();
         placeHistoryRepository.findByNameAndUser(query, user)
