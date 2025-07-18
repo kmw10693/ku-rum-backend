@@ -27,9 +27,7 @@ public class PlaceHistory extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long placeHistoryId;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(nullable = false)
-    private Place place;
+    private String name;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(nullable = false)

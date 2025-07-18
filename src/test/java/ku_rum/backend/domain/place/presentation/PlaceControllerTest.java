@@ -19,6 +19,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import java.math.BigDecimal;
 import java.util.List;
 import ku_rum.backend.config.RestDocsTestSupport;
+import ku_rum.backend.domain.place.application.PlaceHistoryService;
 import ku_rum.backend.domain.place.application.PlaceService;
 import ku_rum.backend.domain.place.application.PositionService;
 import ku_rum.backend.domain.place.application.response.CurrentPositionConfirmResponse;
@@ -57,6 +58,9 @@ public class PlaceControllerTest extends RestDocsTestSupport {
 
     @MockBean
     PlaceService placeService;
+
+    @MockBean
+    PlaceHistoryService placeHistoryService;
 
     @MockBean
     private SecurityFilterChain securityFilterChain;
@@ -286,10 +290,11 @@ public class PlaceControllerTest extends RestDocsTestSupport {
     void searchPlaceHistory() throws Exception {
         //given
         Long placeId = 1L;
+        String name = "상허기념도서관";
         Place place = Place.builder()
                 .placeId(placeId)
                 .categoryChip(CategoryChip.K_CUBE)
-                .name("상허기념도서관")
+                .name(name)
                 .subName("상허기념도서관 K-CUBE")
                 .content("상허기념도서관 K-CUBE입니다")
                 .latitude(BigDecimal.valueOf(37.541941000))
@@ -297,11 +302,11 @@ public class PlaceControllerTest extends RestDocsTestSupport {
                 .build();
         PlaceHistory placeHistory = PlaceHistory.builder()
                 .placeHistoryId(1L)
-                .place(place)
+                .name(name)
                 .build();
         SearchPlaceHistoryResponse response = SearchPlaceHistoryResponse.from(placeHistory);
 
-        given(placeService.searchPlaceHistory(any(CustomUserDetails.class)))
+        given(placeHistoryService.searchPlaceHistory(any(CustomUserDetails.class)))
                 .willReturn(List.of(response));
 
         //when
@@ -311,7 +316,7 @@ public class PlaceControllerTest extends RestDocsTestSupport {
                 //then
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.data[0].placeId").value(placeId))
+                .andExpect(jsonPath("$.data[0].placeHistoryId").value(placeId))
                 .andDo(restDocs.document(resource(
                         ResourceSnippetParameters.builder()
                                 .tag("지도 관련 API")
