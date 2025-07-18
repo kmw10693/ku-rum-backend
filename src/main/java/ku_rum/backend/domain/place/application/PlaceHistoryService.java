@@ -10,9 +10,11 @@ import ku_rum.backend.global.security.CustomUserDetails;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 @Service
 @Transactional(readOnly = true)
+@RequestMapping("/api/v1/places")
 @RequiredArgsConstructor
 public class PlaceHistoryService {
 
@@ -47,6 +49,24 @@ public class PlaceHistoryService {
                         PlaceHistory::refreshModifiedAt,
                         () -> savePlaceHistory(query, user)
                 );
+    }
+
+    /**
+     * 유저 검색 히스토리 삭제
+     */
+    @Transactional
+    public void deletePlaceHistory(final Long placeHistoryId, final CustomUserDetails userDetails) {
+        User user = userService.getUser();
+        placeHistoryRepository.deleteByPlaceHistoryIdAndUser(placeHistoryId, user);
+    }
+
+    /**
+     * 유저 검색 히스토리 모두 삭제
+     */
+    @Transactional
+    public void deletePlaceHistory(final CustomUserDetails userDetails) {
+        User user = userService.getUser();
+        placeHistoryRepository.deleteByUser(user);
     }
 
     /**

@@ -13,4 +13,8 @@ public interface PlaceHistoryRepository extends JpaRepository<PlaceHistory, Long
     List<PlaceHistory> findTop5ByUserOrderByModifiedAtDesc(User user);
 
     Optional<PlaceHistory> findByNameAndUser(String name, User user);
+
+    void deleteByPlaceHistoryIdAndUser(Long placeHistoryId, User user);
+
+    void deleteByUser(User user);
 }
