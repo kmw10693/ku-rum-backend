@@ -286,10 +286,11 @@ public class PlaceControllerTest extends RestDocsTestSupport {
     void searchPlaceHistory() throws Exception {
         //given
         Long placeId = 1L;
+        String name = "상허기념도서관";
         Place place = Place.builder()
                 .placeId(placeId)
                 .categoryChip(CategoryChip.K_CUBE)
-                .name("상허기념도서관")
+                .name(name)
                 .subName("상허기념도서관 K-CUBE")
                 .content("상허기념도서관 K-CUBE입니다")
                 .latitude(BigDecimal.valueOf(37.541941000))
@@ -297,7 +298,7 @@ public class PlaceControllerTest extends RestDocsTestSupport {
                 .build();
         PlaceHistory placeHistory = PlaceHistory.builder()
                 .placeHistoryId(1L)
-                .place(place)
+                .name(name)
                 .build();
         SearchPlaceHistoryResponse response = SearchPlaceHistoryResponse.from(placeHistory);
 

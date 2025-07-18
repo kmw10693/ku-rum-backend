@@ -91,7 +91,6 @@ public class PlaceService {
             final CustomUserDetails userDetails,
             final Long placeId) {
         Place place = findPlace(placeId);
-        updatePlaceHistory(place, userDetails);
         List<PlaceImage> placeImages = placeImageRepository.findByPlace(place);
         List<FriendUserDto> friendUserDtos = positionRepository.findPositionByFriendAndPlace(userDetails.getUserId(),
                 place);
@@ -123,6 +122,18 @@ public class PlaceService {
         return placeRepository.findByNameContaining(query).stream()
                 .map(SearchPlaceResponse::from)
                 .toList();
+    }
+
+    /**
+     * 장소 검색(회원 로직)
+     *
+     * @param userDetails
+     * @param query
+     * @return
+     */
+    public List<SearchPlaceResponse> searchPlaceWithUser(CustomUserDetails userDetails, String query) {
+        updatePlaceHistory(query, userDetails);
+        return searchPlace(query);
     }
 
     /**
@@ -218,27 +229,27 @@ public class PlaceService {
     /**
      * 검색 히스토리 업데이트
      *
-     * @param place
+     * @param query
      * @param userDetails
      */
-    private void updatePlaceHistory(final Place place, final CustomUserDetails userDetails) {
+    private void updatePlaceHistory(final String query, final CustomUserDetails userDetails) {
         User user = userService.getUser();
-        placeHistoryRepository.findByPlaceAndUser(place, user)
+        placeHistoryRepository.findByNameAndUser(query, user)
                 .ifPresentOrElse(
                         PlaceHistory::refreshModifiedAt,
-                        () -> savePlaceHistory(place, user)
+                        () -> savePlaceHistory(query, user)
                 );
     }
 
     /**
      * 검색 히스토리 저장
      *
-     * @param place
-     * @param userDetails
+     * @param query
+     * @param user
      */
-    private void savePlaceHistory(final Place place, final User user) {
+    private void savePlaceHistory(final String query, final User user) {
         PlaceHistory placeHistory = PlaceHistory.builder()
-                .place(place)
+                .name(query)
                 .user(user)
                 .build();
         placeHistoryRepository.save(placeHistory);

@@ -92,6 +92,9 @@ public class PlaceController {
     @GetMapping("/search")
     public BaseResponse<List<SearchPlaceResponse>> searchPlace(@RequestParam("query") String query,
                                                                @AuthenticationPrincipal final CustomUserDetails userDetails) {
+        if (isAuthenticated(userDetails)) {
+            return BaseResponse.ok(placeService.searchPlaceWithUser(userDetails, query));
+        }
         return BaseResponse.ok(placeService.searchPlace(query));
     }
 
