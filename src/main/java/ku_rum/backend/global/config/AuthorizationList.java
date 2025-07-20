@@ -41,4 +41,21 @@ public final class AuthorizationList {
     public static String[] getAuthorizedEndpoints() {
         return AUTHORIZED_ENDPOINTS.toArray(new String[0]);
     }
+
+    public static boolean isPermitted(String path) {
+        return AUTHORIZED_ENDPOINTS.stream().anyMatch(auth -> {
+            if (auth.endsWith("/**")) {
+                String prefix = auth.substring(0, auth.length() - 3);
+                return path.startsWith(prefix);
+            }
+            return path.equals(pathNormalize(auth));
+        });
+    }
+
+    private static String pathNormalize(String path) {
+        if (path.endsWith("/")) {
+            return path.substring(0, path.length() - 1);
+        }
+        return path;
+    }
 }
