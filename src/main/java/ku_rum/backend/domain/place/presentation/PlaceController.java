@@ -106,6 +106,19 @@ public class PlaceController {
         return BaseResponse.ok(placeHistoryService.searchPlaceHistory(userDetails));
     }
 
+    @DeleteMapping("/search/history/{placeHistoryId}")
+    public BaseResponse<Void> deletePlaceHistory(@PathVariable("placeHistoryId") Long placeHistoryId,
+                                                 @AuthenticationPrincipal final CustomUserDetails userDetails) {
+        placeHistoryService.deletePlaceHistory(placeHistoryId, userDetails);
+        return BaseResponse.ok();
+    }
+
+    @DeleteMapping("/search/history")
+    public BaseResponse<Void> deletePlaceHistory(@AuthenticationPrincipal final CustomUserDetails userDetails) {
+        placeHistoryService.deletePlaceHistory(userDetails);
+        return BaseResponse.ok();
+    }
+
     private boolean isAuthenticated(final CustomUserDetails userDetails) {
         if (userDetails == null) {
             return false;

@@ -326,4 +326,54 @@ public class PlaceControllerTest extends RestDocsTestSupport {
                                 )
                                 .build())));
     }
+
+    @DisplayName("장소 검색 기록를 삭제한다")
+    @Test
+    void deleteSearchHistory() throws Exception {
+        //given
+        Long placeHistoryId = 1L;
+        doNothing().when(placeHistoryService).deletePlaceHistory(eq(placeHistoryId), any(CustomUserDetails.class));
+        //then
+        mockMvc.perform(delete("/api/v1/places/search/history/{placeHistoryId}", placeHistoryId)
+                        .header("Authorization",
+                                "Bearer eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyUEsiOjEsInJvbGVzIjoiUk9MRV9VU0VSIiwiaWF0IjoxNzQwMjQyNjQxLCJleHAiOjE3NDAyNDQ0NDF9.kLSMBLWdvIvrBpㄴGJdOigSKjxMIab0cV06xFjSpwrq70"))
+                //then
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andDo(restDocs.document(resource(
+                        ResourceSnippetParameters.builder()
+                                .tag("지도 관련 API")
+                                .description("지도 검색 히스토리 삭제")
+                                .requestHeaders(
+                                        headerWithName("Authorization").description("발급 받은 엑세스 토큰입니다.")
+                                )
+                                .pathParameters(
+                                        RequestDocumentation.parameterWithName("placeHistoryId")
+                                                .description("검색 히스토리id")
+                                )
+                                .build())));
+    }
+
+    @DisplayName("장소 검색 기록를 전부 삭제한다")
+    @Test
+    void deleteAllSearchHistory() throws Exception {
+        //given
+        Long placeHistoryId = 1L;
+        doNothing().when(placeHistoryService).deletePlaceHistory(any(CustomUserDetails.class));
+        //then
+        mockMvc.perform(delete("/api/v1/places/search/history")
+                        .header("Authorization",
+                                "Bearer eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyUEsiOjEsInJvbGVzIjoiUk9MRV9VU0VSIiwiaWF0IjoxNzQwMjQyNjQxLCJleHAiOjE3NDAyNDQ0NDF9.kLSMBLWdvIvrBpㄴGJdOigSKjxMIab0cV06xFjSpwrq70"))
+                //then
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andDo(restDocs.document(resource(
+                        ResourceSnippetParameters.builder()
+                                .tag("지도 관련 API")
+                                .description("지도 검색 히스토리 전부 삭제")
+                                .requestHeaders(
+                                        headerWithName("Authorization").description("발급 받은 엑세스 토큰입니다.")
+                                )
+                                .build())));
+    }
 }

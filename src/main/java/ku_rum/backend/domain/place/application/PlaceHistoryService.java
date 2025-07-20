@@ -50,6 +50,24 @@ public class PlaceHistoryService {
     }
 
     /**
+     * 유저 검색 히스토리 삭제
+     */
+    @Transactional
+    public void deletePlaceHistory(final Long placeHistoryId, final CustomUserDetails userDetails) {
+        User user = userService.getUser();
+        placeHistoryRepository.deleteByPlaceHistoryIdAndUser(placeHistoryId, user);
+    }
+
+    /**
+     * 유저 검색 히스토리 모두 삭제
+     */
+    @Transactional
+    public void deletePlaceHistory(final CustomUserDetails userDetails) {
+        User user = userService.getUser();
+        placeHistoryRepository.deleteByUser(user);
+    }
+
+    /**
      * 검색 히스토리 저장
      *
      * @param query
