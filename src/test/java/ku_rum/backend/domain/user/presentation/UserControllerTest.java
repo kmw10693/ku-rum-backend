@@ -5,14 +5,12 @@ import ku_rum.backend.config.RestDocsTestSupport;
 import ku_rum.backend.domain.common.mail.dto.request.EmailValidationRequest;
 import ku_rum.backend.domain.friend.application.FriendReportService;
 import ku_rum.backend.domain.friend.domain.repository.FriendBlockRepository;
-import ku_rum.backend.domain.notice.domain.repository.NoticeRepositoryImpl;
 import ku_rum.backend.domain.user.application.UserService;
 import ku_rum.backend.domain.user.application.UserValidator;
 import ku_rum.backend.domain.user.domain.AgreementStatus;
 import ku_rum.backend.domain.user.dto.request.ProfileChangeRequest;
 import ku_rum.backend.domain.user.dto.request.UserSaveRequest;
 import ku_rum.backend.domain.user.dto.response.LoginIdResponse;
-import ku_rum.backend.global.batch.BatchScheduler;
 import ku_rum.backend.global.domain.repository.ApiLogRepository;
 import ku_rum.backend.global.security.CustomUserDetails;
 import org.junit.jupiter.api.DisplayName;
@@ -54,16 +52,10 @@ class UserControllerTest extends RestDocsTestSupport {
     private SecurityFilterChain securityFilterChain;
 
     @MockBean
-    private BatchScheduler batchScheduler;
-
-    @MockBean
     private UserDetailsService userDetailsService;
 
     @MockBean
     private UserValidator userValidator;
-
-    @MockBean
-    private NoticeRepositoryImpl noticeRepository;
 
     @MockBean
     private ApiLogRepository apiLogRepository;

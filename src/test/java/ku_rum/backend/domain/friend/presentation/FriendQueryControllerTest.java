@@ -7,7 +7,6 @@ import ku_rum.backend.domain.friend.dto.response.FriendListResponse;
 import ku_rum.backend.domain.friend.dto.response.FriendSearchResponse;
 import ku_rum.backend.domain.friend.dto.response.ReceivedFriendResponse;
 import ku_rum.backend.domain.friend.dto.response.SentFriendResponse;
-import ku_rum.backend.global.batch.BatchScheduler;
 import ku_rum.backend.util.RestDocsFieldSnippets;
 import ku_rum.backend.util.RestDocsTestUtils;
 import org.junit.jupiter.api.DisplayName;
@@ -42,9 +41,6 @@ class FriendQueryControllerTest extends RestDocsTestSupport {
 
     @MockBean
     private SecurityFilterChain securityFilterChain;
-
-    @MockBean
-    private BatchScheduler batchScheduler;
 
     @Test
     @DisplayName("친구 목록 조회 API")

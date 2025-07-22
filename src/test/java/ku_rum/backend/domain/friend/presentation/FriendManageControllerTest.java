@@ -4,7 +4,6 @@ import com.epages.restdocs.apispec.ResourceSnippetParameters;
 import ku_rum.backend.config.RestDocsTestSupport;
 import ku_rum.backend.domain.friend.application.FriendManageService;
 import ku_rum.backend.domain.friend.dto.request.FriendRequest;
-import ku_rum.backend.global.batch.BatchScheduler;
 import ku_rum.backend.util.RestDocsFieldSnippets;
 import ku_rum.backend.util.RestDocsTestUtils;
 import org.junit.jupiter.api.DisplayName;
@@ -36,9 +35,6 @@ class FriendManageControllerTest extends RestDocsTestSupport {
 
     @MockBean
     private SecurityFilterChain securityFilterChain;
-
-    @MockBean
-    private BatchScheduler batchScheduler;
 
     @Test
     @DisplayName("친구 요청 API")

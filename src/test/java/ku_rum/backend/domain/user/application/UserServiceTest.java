@@ -12,7 +12,6 @@ import ku_rum.backend.domain.user.dto.request.NicknameChangeRequest;
 import ku_rum.backend.domain.user.dto.request.UserSaveRequest;
 import ku_rum.backend.domain.user.dto.response.LoginIdResponse;
 import ku_rum.backend.domain.user.dto.response.UserSaveResponse;
-import ku_rum.backend.global.batch.BatchScheduler;
 import ku_rum.backend.global.exception.email.DuplicateEmailException;
 import ku_rum.backend.global.exception.user.DuplicateNicknameException;
 import ku_rum.backend.global.exception.user.DuplicateStudentIdException;
@@ -31,8 +30,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.test.context.ActiveProfiles;
-
-import java.math.BigDecimal;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -58,8 +55,6 @@ class UserServiceTest {
     @MockBean
     private SecurityFilterChain securityFilterChain;
 
-    @MockBean
-    private BatchScheduler batchScheduler;
 
     private College college;
 

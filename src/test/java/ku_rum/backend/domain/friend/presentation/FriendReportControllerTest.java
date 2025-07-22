@@ -5,7 +5,6 @@ import ku_rum.backend.config.RestDocsTestSupport;
 import ku_rum.backend.domain.friend.application.FriendReportService;
 import ku_rum.backend.domain.friend.dto.request.FriendBlockRequest;
 import ku_rum.backend.domain.friend.dto.request.FriendReportRequest;
-import ku_rum.backend.global.batch.BatchScheduler;
 import ku_rum.backend.util.RestDocsFieldSnippets;
 import ku_rum.backend.util.RestDocsTestUtils;
 import org.junit.jupiter.api.DisplayName;
@@ -37,9 +36,6 @@ class FriendReportControllerTest extends RestDocsTestSupport {
 
     @MockBean
     private SecurityFilterChain securityFilterChain;
-
-    @MockBean
-    private BatchScheduler batchScheduler;
 
     @DisplayName("친구 차단 API")
     @Test
