@@ -1,0 +1,39 @@
+package ku_rum.backend.domain.rank.domain;
+
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.validation.constraints.NotNull;
+import ku_rum.backend.domain.place.domain.Place;
+import ku_rum.backend.domain.user.domain.User;
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+
+@Entity
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
+@Builder
+@Getter
+public class Rank {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long rankId;
+
+    @NotNull
+    private int count = 0;
+
+    @ManyToOne
+    @JoinColumn(nullable = false)
+    private User user;
+
+    @ManyToOne
+    @JoinColumn(nullable = false)
+    private Place place;
+}
