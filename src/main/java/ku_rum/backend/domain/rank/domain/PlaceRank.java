@@ -20,7 +20,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @Builder
 @Getter
-public class Rank {
+public class PlaceRank {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -36,4 +36,8 @@ public class Rank {
     @ManyToOne
     @JoinColumn(nullable = false)
     private Place place;
+
+    public void increaseCount() {
+        count++;
+    }
 }
