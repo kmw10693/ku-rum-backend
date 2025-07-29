@@ -1,54 +1,31 @@
 package ku_rum.backend.domain.notice.domain;
 
 import jakarta.persistence.*;
-import ku_rum.backend.global.support.type.BaseEntity;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
-@Getter
 @Entity
-@NoArgsConstructor
-@Table(name = "notice")
-public class Notice extends BaseEntity {
+@Getter
+@Builder
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
+public class Notice {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(length = 300, nullable = false, unique = true)
-    private String url;
+    private Integer categoryId;
 
-    @Column(nullable = false)
+    private String categoryName;
+
     private String title;
 
-    @Column(nullable = false)
-    private String date; // 공지사항 작성일
+    private String link;
 
-    @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
-    private NoticeCategory noticeCategory;
+    private String pubDate;
 
-    @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
-    private NoticeStatus noticeStatus;
+    private String author;
 
-    @Builder
-    private Notice(String url, String title, String date, NoticeCategory noticeCategory, NoticeStatus noticeStatus) {
-        this.url = url;
-        this.title = title;
-        this.date = date;
-        this.noticeCategory = noticeCategory;
-        this.noticeStatus = noticeStatus;
-    }
-
-    public static Notice of(String title, String url, String date, NoticeCategory noticeCategory, NoticeStatus noticeStatus) {
-        return Notice.builder()
-                .title(title)
-                .url(url)
-                .date(date)
-                .noticeCategory(noticeCategory)
-                .noticeStatus(noticeStatus)
-                .build();
-    }
+    @Column(columnDefinition = "TEXT")
+    private String description;
 }

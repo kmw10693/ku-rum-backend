@@ -4,7 +4,6 @@ import com.epages.restdocs.apispec.ResourceSnippetParameters;
 import ku_rum.backend.config.RestDocsTestSupport;
 import ku_rum.backend.domain.college.application.CollegeQueryService;
 import ku_rum.backend.domain.college.dto.response.CollegeResponse;
-import ku_rum.backend.global.batch.BatchScheduler;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -34,9 +33,6 @@ class CollegeQueryControllerTest extends RestDocsTestSupport {
 
     @MockBean
     private SecurityFilterChain securityFilterChain;
-
-    @MockBean
-    private BatchScheduler batchScheduler;
 
     @Test
     @DisplayName("전체 컬리지 목록 조회 성공")

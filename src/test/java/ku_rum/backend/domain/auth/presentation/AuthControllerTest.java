@@ -9,7 +9,6 @@ import ku_rum.backend.domain.auth.dto.response.AuthResponse;
 import ku_rum.backend.domain.department.dto.DepartmentResponse;
 import ku_rum.backend.domain.user.dto.response.TokenResponse;
 import ku_rum.backend.domain.user.dto.response.UserResponse;
-import ku_rum.backend.global.batch.BatchScheduler;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -45,9 +44,6 @@ class AuthControllerTest extends RestDocsTestSupport {
 
     @MockBean
     private SecurityFilterChain securityFilterChain;
-
-    @MockBean
-    private BatchScheduler batchScheduler;
 
     @DisplayName("로그인을 진행한다.")
     @Test
