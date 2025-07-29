@@ -10,6 +10,7 @@ import ku_rum.backend.domain.place.domain.repository.PlaceRepository;
 import ku_rum.backend.domain.place.domain.repository.PositionRepository;
 import ku_rum.backend.domain.place.dto.request.CurrentPositionConfirmRequest;
 import ku_rum.backend.domain.place.dto.request.CurrentPositionRequest;
+import ku_rum.backend.domain.rank.application.RankService;
 import ku_rum.backend.domain.user.application.UserService;
 import ku_rum.backend.domain.user.domain.User;
 import ku_rum.backend.global.exception.global.GlobalException;
@@ -27,6 +28,7 @@ public class PositionService {
     private final PositionRepository positionRepository;
     private final PlaceRepository placeRepository;
     private final UserService userService;
+    private final RankService rankService;
 
     /**
      * 사용자 위치 공유 여부 확인
@@ -71,12 +73,14 @@ public class PositionService {
         Optional<Position> positionOptional = positionRepository.findPositionByUser(user);
         Place place = findOneByName(request.placeName());
 
+        rankService.updateRank(user, place);
         if (positionOptional.isPresent()) {
             return updatePosition(positionOptional.get(), place);
         }
 
         Position position = Position.of(user, place);
         Position savePosition = positionRepository.save(position);
+
         return new CurrentPositionConfirmResponse(savePosition.getPlace().getName());
     }
 
