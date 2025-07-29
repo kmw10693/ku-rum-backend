@@ -10,7 +10,6 @@ import ku_rum.backend.domain.user.dto.request.DepartmentRequest;
 import ku_rum.backend.domain.user.dto.request.InitiatePasswordResetRequest;
 import ku_rum.backend.domain.user.dto.request.NicknameChangeRequest;
 import ku_rum.backend.domain.user.dto.request.ResetPasswordRequest;
-import ku_rum.backend.global.batch.BatchScheduler;
 import ku_rum.backend.global.security.CustomUserDetails;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -47,9 +46,6 @@ public class UserProfileControllerTest extends RestDocsTestSupport {
 
     @MockBean
     private SecurityFilterChain securityFilterChain;
-
-    @MockBean
-    private BatchScheduler batchScheduler;
 
     @MockBean
     private TokenBlacklistService tokenBlacklistService;
