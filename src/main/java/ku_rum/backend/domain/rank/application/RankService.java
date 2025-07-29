@@ -11,9 +11,11 @@ import ku_rum.backend.domain.user.domain.User;
 import ku_rum.backend.global.security.CustomUserDetails;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
+@Transactional(readOnly = true)
 public class RankService {
 
     private final PlaceRankRepository placeRankRepository;
@@ -38,6 +40,7 @@ public class RankService {
      * @param user
      * @param place
      */
+    @Transactional
     public void updateRank(User user, Place place) {
         Optional<PlaceRank> optionalRank = placeRankRepository.findByUserAndPlace(user, place);
         if (optionalRank.isPresent()) {
