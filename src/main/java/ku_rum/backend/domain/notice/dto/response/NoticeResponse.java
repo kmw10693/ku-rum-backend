@@ -13,16 +13,16 @@ public record NoticeResponse(
         String author,
         String description
 ) {
-    public static NoticeResponse from(Notice n) {
+    public static NoticeResponse from(Notice notice) {
         return new NoticeResponse(
-                n.getId(),
-                n.getCategoryId(),
-                n.getCategoryName(),
-                n.getTitle(),
-                n.getLink(),
-                n.getPubDate(),
-                n.getAuthor(),
-                n.getDescription()
+                notice.getId(),
+                notice.getCategoryId(),
+                notice.getCategoryName(),
+                notice.getTitle(),
+                notice.getLink(),
+                notice.getPubDate(),
+                notice.getAuthor(),
+                notice.getDescription()
         );
     }
 }
