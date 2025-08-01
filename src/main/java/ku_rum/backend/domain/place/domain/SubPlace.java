@@ -7,6 +7,7 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.ManyToOne;
 import jakarta.validation.constraints.NotNull;
 import java.math.BigDecimal;
 import ku_rum.backend.global.support.type.BaseEntity;
@@ -21,7 +22,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @Builder
 @Getter
-public class Place extends BaseEntity {
+public class SubPlace extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long placeId;
@@ -46,4 +47,7 @@ public class Place extends BaseEntity {
     @NotNull
     @Column(nullable = false, precision = 15, scale = 9)
     private BigDecimal longitude;
+
+    @ManyToOne
+    private PlaceGroup placeGroup;
 }
