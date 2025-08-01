@@ -1,0 +1,87 @@
+package ku_rum.backend.domain.place.application;
+
+import java.util.Arrays;
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
+import ku_rum.backend.domain.place.application.response.SearchPlaceResponse;
+import ku_rum.backend.domain.place.domain.CategoryChip;
+import ku_rum.backend.domain.place.domain.Place;
+import ku_rum.backend.domain.place.domain.repository.PlaceRepository;
+import ku_rum.backend.domain.place.domain.repository.SubPlaceRepository;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+@Service
+@Transactional(readOnly = true)
+@RequiredArgsConstructor
+public class SearchService {
+
+    private final PlaceRepository placeRepository;
+    private final SubPlaceRepository subPlaceRepository;
+
+    /**
+     * 장소 검색(비회원 로직)
+     *
+     * @param query 검색어
+     * @return
+     */
+    public List<SearchPlaceResponse> searchPlace(String query) {
+        query = refineQuery(query);
+        System.out.println("query = " + query);
+        Optional<CategoryChip> categoryChipOptional = CategoryChip.from(query);
+        if (categoryChipOptional.isPresent()) {
+            CategoryChip categoryChip = categoryChipOptional.get();
+
+            List<SearchPlaceResponse> response = placeRepository.findByCategoryChip(categoryChip).stream()
+                    .map(SearchPlaceResponse::from)
+                    .collect(Collectors.toList());
+
+            response.addAll(subPlaceRepository.findByCategoryChip(categoryChip).stream()
+                    .map(SearchPlaceResponse::from)
+                    .collect(Collectors.toList()));
+            return response;
+        }
+
+        List<Place> places = placeRepository.findByNameContaining(query);
+        if (places.size() == 0) {
+            return subPlaceRepository.findByNameContaining(query).stream()
+                    .map(SearchPlaceResponse::from)
+                    .toList();
+        }
+        return places.stream()
+                .map(SearchPlaceResponse::from)
+                .toList();
+
+
+    }
+
+    /**
+     * 검색어 수정
+     *
+     * @param query
+     * @return
+     */
+    private String refineQuery(String query) {
+        query = query.replaceAll("[0-9]", "");
+
+        if (query.startsWith("공") && !query.startsWith("공학관")) {
+            query = query.replaceFirst("^공", "공학관");
+        }
+
+        if (query.equals("상허관")) {
+            return "상허연구관";
+        }
+
+        if (query.equals("사")) {
+            return "교육과학관";
+        }
+        return query;
+    }
+
+    private boolean isCategoryChip(String query) {
+        List<CategoryChip> categoryChips = Arrays.stream(CategoryChip.values()).toList();
+        return categoryChips.contains(query);
+    }
+}

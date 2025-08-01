@@ -1,17 +1,17 @@
-package ku_rum.backend.domain.subPlace.domain.repository;
+package ku_rum.backend.domain.place.domain.repository;
 
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
-import ku_rum.backend.domain.subPlace.domain.CategoryChip;
-import ku_rum.backend.domain.subPlace.domain.SubPlace;
+import ku_rum.backend.domain.place.domain.CategoryChip;
+import ku_rum.backend.domain.place.domain.SubPlace;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface PlaceRepository extends JpaRepository<SubPlace, Long> {
+public interface SubPlaceRepository extends JpaRepository<SubPlace, Long> {
 
     @Query("""
                 SELECT p

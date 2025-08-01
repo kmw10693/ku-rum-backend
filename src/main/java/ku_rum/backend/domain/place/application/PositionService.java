@@ -4,10 +4,10 @@ import java.util.Optional;
 import ku_rum.backend.domain.place.application.response.CurrentPositionConfirmResponse;
 import ku_rum.backend.domain.place.application.response.CurrentPositionResponse;
 import ku_rum.backend.domain.place.application.response.CurrentPositionStatusResponse;
-import ku_rum.backend.domain.place.domain.Place;
 import ku_rum.backend.domain.place.domain.Position;
-import ku_rum.backend.domain.place.domain.repository.PlaceRepository;
+import ku_rum.backend.domain.place.domain.SubPlace;
 import ku_rum.backend.domain.place.domain.repository.PositionRepository;
+import ku_rum.backend.domain.place.domain.repository.SubPlaceRepository;
 import ku_rum.backend.domain.place.dto.request.CurrentPositionConfirmRequest;
 import ku_rum.backend.domain.place.dto.request.CurrentPositionRequest;
 import ku_rum.backend.domain.rank.application.RankService;
@@ -20,13 +20,15 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+;
+
 @Service
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
 public class PositionService {
 
     private final PositionRepository positionRepository;
-    private final PlaceRepository placeRepository;
+    private final SubPlaceRepository subPlaceRepository;
     private final UserService userService;
     private final RankService rankService;
 
@@ -54,9 +56,9 @@ public class PositionService {
      */
     public CurrentPositionResponse getCurrentPosition(CustomUserDetails userDetails,
                                                       CurrentPositionRequest request) {
-        Place findPlace = placeRepository.findNearestPlace(request.latitude(),
+        SubPlace findSubPlace = subPlaceRepository.findNearestPlace(request.latitude(),
                 request.longitude());
-        return new CurrentPositionResponse(findPlace.getName());
+        return new CurrentPositionResponse(findSubPlace.getName());
     }
 
     /**
@@ -71,17 +73,17 @@ public class PositionService {
                                                                  CurrentPositionConfirmRequest request) {
         User user = userService.getUser();
         Optional<Position> positionOptional = positionRepository.findPositionByUser(user);
-        Place place = findOneByName(request.placeName());
+        SubPlace subPlace = findOneByName(request.placeName());
 
-        rankService.updateRank(user, place);
+        rankService.updateRank(user, subPlace);
         if (positionOptional.isPresent()) {
-            return updatePosition(positionOptional.get(), place);
+            return updatePosition(positionOptional.get(), subPlace);
         }
 
-        Position position = Position.of(user, place);
+        Position position = Position.of(user, subPlace);
         Position savePosition = positionRepository.save(position);
 
-        return new CurrentPositionConfirmResponse(savePosition.getPlace().getName());
+        return new CurrentPositionConfirmResponse(savePosition.getSubPlace().getName());
     }
 
     /**
@@ -100,8 +102,8 @@ public class PositionService {
      * @param name 이름(건물, k-cube ...)
      * @return place 엔티티
      */
-    private Place findOneByName(String name) {
-        return placeRepository.findOneByName(name)
+    private SubPlace findOneByName(String name) {
+        return subPlaceRepository.findOneByName(name)
                 .orElseThrow(() -> new GlobalException(BaseExceptionResponseStatus.PLACE_NOT_FOUND));
     }
 
@@ -109,11 +111,11 @@ public class PositionService {
      * 위치값 수정
      *
      * @param position
-     * @param place
+     * @param subPlace
      * @return
      */
-    private CurrentPositionConfirmResponse updatePosition(Position position, Place place) {
-        position.update(place);
-        return new CurrentPositionConfirmResponse(position.getPlace().getName());
+    private CurrentPositionConfirmResponse updatePosition(Position position, SubPlace subPlace) {
+        position.update(subPlace);
+        return new CurrentPositionConfirmResponse(position.getSubPlace().getName());
     }
 }

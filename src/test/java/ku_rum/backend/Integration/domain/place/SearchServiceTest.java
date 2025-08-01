@@ -1,0 +1,294 @@
+package ku_rum.backend.Integration.domain.place;
+
+import java.util.List;
+import ku_rum.backend.Integration.domain.place.config.PlaceTestConfig;
+import ku_rum.backend.Integration.domain.place.data.PlaceData;
+import ku_rum.backend.domain.place.application.SearchService;
+import ku_rum.backend.domain.place.application.response.SearchPlaceResponse;
+import ku_rum.backend.domain.place.domain.repository.PlaceRepository;
+import org.assertj.core.api.Assertions;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.context.annotation.Import;
+
+@SpringBootTest
+@Import({PlaceTestConfig.class})
+@DisplayName("검색 서비스 통합 테스트")
+public class SearchServiceTest {
+
+    @Autowired
+    SearchService searchService;
+
+    @Autowired
+    PlaceRepository placeRepository;
+
+    @Autowired
+    PlaceData placeData;
+
+    @BeforeEach
+    void init() {
+        placeData.savePlaceData();
+    }
+
+    @AfterEach
+    void afterEach() {
+        placeData.afterEach();
+    }
+
+    @Test
+    @DisplayName("정확한 장소를 입력하면 해당 장소를 결과로 반환한다")
+    void searchCase1() {
+        //given
+        String query = "공학관B";
+
+        //when
+        List<SearchPlaceResponse> response = searchService.searchPlace(query);
+
+        //then
+        Assertions.assertThat(response.size()).isEqualTo(1);
+        Assertions.assertThat(response.get(0).name()).isEqualTo(query);
+    }
+
+    @Test
+    @DisplayName("공B102를 검색하면 공학관B를 검색한 것과 같은 결과를 반환한다")
+    void searchCase2() {
+        //given
+        String preQuery = "공학관B";
+        List<SearchPlaceResponse> preResponse = searchService.searchPlace(preQuery);
+
+        //when
+        String query = "공B102";
+        List<SearchPlaceResponse> response = searchService.searchPlace(query);
+
+        //then
+        Assertions.assertThat(preResponse).isEqualTo(response);
+    }
+
+    @Test
+    @DisplayName("공B를 검색하면 공학관B를 검색한 것과 같은 결과를 반환한다")
+    void searchCase3() {
+        //given
+        String preQuery = "공학관B";
+        List<SearchPlaceResponse> preResponse = searchService.searchPlace(preQuery);
+
+        //when
+        String query = "공B";
+        List<SearchPlaceResponse> response = searchService.searchPlace(query);
+
+        //then
+        Assertions.assertThat(preResponse).isEqualTo(response);
+    }
+
+    @Test
+    @DisplayName("공학관B를 검색하면 케이큐브가 나오지 않는다")
+    void searchCase4() {
+        //given
+        String query = "공학관B";
+        String kCube = "공학관 케이큐브";
+
+        //when
+        List<SearchPlaceResponse> response = searchService.searchPlace(query);
+
+        //then
+        Assertions.assertThat(response.stream().noneMatch(
+                searchPlaceResponse -> searchPlaceResponse.name().equals(kCube)
+        )).isTrue();
+    }
+
+    @Test
+    @DisplayName("공학관을 검색하면 공학관 케이큐브를 확인할 수 있다")
+    void searchCase5() {
+        //given
+        String query = "공학관";
+        String kCube = "공학관 케이큐브";
+
+        //when
+        List<SearchPlaceResponse> response = searchService.searchPlace(query);
+
+        //then
+        Assertions.assertThat(response.stream().anyMatch(
+                searchPlaceResponse -> searchPlaceResponse.name().equals(kCube)
+        )).isTrue();
+    }
+
+    @Test
+    @DisplayName("건물 카테고리를 검색시 건물을 모두 검색한다.")
+    void searchCase6() {
+        //given
+        String query = "건물";
+
+        //when
+        List<SearchPlaceResponse> response = searchService.searchPlace(query);
+
+        //then
+        Assertions.assertThat(response.stream().anyMatch(
+                searchPlaceResponse -> searchPlaceResponse.name().equals("공학관")
+        )).isTrue();
+        Assertions.assertThat(response.stream().anyMatch(
+                searchPlaceResponse -> searchPlaceResponse.name().equals("공학관A")
+        )).isTrue();
+        Assertions.assertThat(response.stream().anyMatch(
+                searchPlaceResponse -> searchPlaceResponse.name().equals("공학관B")
+        )).isTrue();
+        Assertions.assertThat(response.stream().anyMatch(
+                searchPlaceResponse -> searchPlaceResponse.name().equals("공학관C")
+        )).isTrue();
+        Assertions.assertThat(response.stream().anyMatch(
+                searchPlaceResponse -> searchPlaceResponse.name().equals("공학관D")
+        )).isTrue();
+    }
+
+    @Test
+    @DisplayName("컴퓨터공학부를 검색시 컴퓨터공학부 학과 사무실을 검색할 수 있다")
+    void searchCase7() {
+        //given
+        String query = "컴퓨터공학부";
+
+        //when
+        List<SearchPlaceResponse> response = searchService.searchPlace(query);
+
+        //then
+        Assertions.assertThat(response.stream().anyMatch(
+                searchPlaceResponse -> searchPlaceResponse.name().equals("컴퓨터공학부")
+        )).isTrue();
+    }
+
+    @Test
+    @DisplayName("경영관을 검색할 수 있다")
+    void searchCase8_1() {
+        //given
+        String query = "경영관";
+
+        //when
+        List<SearchPlaceResponse> response = searchService.searchPlace(query);
+
+        //then
+        Assertions.assertThat(response.stream().anyMatch(
+                searchPlaceResponse -> searchPlaceResponse.name().equals(query)
+        )).isTrue();
+    }
+
+    @Test
+    @DisplayName("경영206은 경영관과 같은 검색 결과를 반환해야 한다")
+    void searchCase9() {
+        //given
+        String preQuery = "경영관";
+        List<SearchPlaceResponse> preResponse = searchService.searchPlace(preQuery);
+
+        //when
+        String query = "경영206";
+        List<SearchPlaceResponse> response = searchService.searchPlace(query);
+
+        //then
+        Assertions.assertThat(preResponse).isEqualTo(response);
+    }
+
+    @Test
+    @DisplayName("상허연구관을 검색할 수 있다")
+    void searchCase10() {
+        //given
+        String query = "상허연구관";
+
+        //when
+        List<SearchPlaceResponse> response = searchService.searchPlace(query);
+
+        //then
+        Assertions.assertThat(response.stream().anyMatch(
+                searchPlaceResponse -> searchPlaceResponse.name().equals(query)
+        )).isTrue();
+    }
+
+    @Test
+    @DisplayName("상허관197은 상허연구관과 같은 검색 결과를 반환해야 한다")
+    void searchCase11() {
+        //given
+        String preQuery = "상허연구관";
+        List<SearchPlaceResponse> preResponse = searchService.searchPlace(preQuery);
+
+        //when
+        String query = "상허관197";
+        List<SearchPlaceResponse> response = searchService.searchPlace(query);
+
+        //then
+        Assertions.assertThat(preResponse).isEqualTo(response);
+    }
+
+    @Test
+    @DisplayName("교육과학관을 검색할 수 있다")
+    void searchCase12() {
+        //given
+        String query = "교육과학관";
+
+        //when
+        List<SearchPlaceResponse> response = searchService.searchPlace(query);
+
+        //then
+        Assertions.assertThat(response.stream().anyMatch(
+                searchPlaceResponse -> searchPlaceResponse.name().equals(query)
+        )).isTrue();
+    }
+
+    @Test
+    @DisplayName("사117은 교육과학관과 같은 검색 결과를 반환해야 한다")
+    void searchCase13() {
+        //given
+        String preQuery = "교육과학관";
+        List<SearchPlaceResponse> preResponse = searchService.searchPlace(preQuery);
+
+        //when
+        String query = "사117";
+        List<SearchPlaceResponse> response = searchService.searchPlace(query);
+
+        //then
+        Assertions.assertThat(preResponse).isEqualTo(response);
+    }
+
+    @Test
+    @DisplayName("예술문화관을 검색할 수 있다")
+    void searchCase14() {
+        //given
+        String query = "예술문화관";
+
+        //when
+        List<SearchPlaceResponse> response = searchService.searchPlace(query);
+
+        //then
+        Assertions.assertThat(response.stream().anyMatch(
+                searchPlaceResponse -> searchPlaceResponse.name().equals(query)
+        )).isTrue();
+    }
+
+    @Test
+    @DisplayName("예1007 예술문화관과 같은 검색 결과를 반환해야 한다")
+    void searchCase15() {
+        //given
+        String preQuery = "예술문화관";
+        List<SearchPlaceResponse> preResponse = searchService.searchPlace(preQuery);
+
+        //when
+        String query = "예1007";
+        List<SearchPlaceResponse> response = searchService.searchPlace(query);
+
+        //then
+        Assertions.assertThat(preResponse).isEqualTo(response);
+    }
+
+    private void assertSearchResultMatches(String expectedQuery, String aliasQuery) {
+        List<SearchPlaceResponse> expected = searchService.searchPlace(expectedQuery);
+        List<SearchPlaceResponse> actual = searchService.searchPlace(aliasQuery);
+
+        Assertions.assertThat(actual).isEqualTo(expected);
+    }
+
+    private void assertSearchResultExist(String query) {
+        List<SearchPlaceResponse> response = searchService.searchPlace(query);
+
+        Assertions.assertThat(response.stream().anyMatch(
+                res -> res.name().equals(query)
+        )).isTrue();
+    }
+}
