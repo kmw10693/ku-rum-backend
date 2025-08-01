@@ -7,6 +7,8 @@ import java.util.stream.Collectors;
 import ku_rum.backend.domain.place.application.response.SearchPlaceResponse;
 import ku_rum.backend.domain.place.domain.CategoryChip;
 import ku_rum.backend.domain.place.domain.Place;
+import ku_rum.backend.domain.place.domain.PlaceAlias;
+import ku_rum.backend.domain.place.domain.repository.PlaceAliasRepository;
 import ku_rum.backend.domain.place.domain.repository.PlaceRepository;
 import ku_rum.backend.domain.place.domain.repository.SubPlaceRepository;
 import lombok.RequiredArgsConstructor;
@@ -20,6 +22,7 @@ public class SearchService {
 
     private final PlaceRepository placeRepository;
     private final SubPlaceRepository subPlaceRepository;
+    private final PlaceAliasRepository placeAliasRepository;
 
     /**
      * 장소 검색(비회원 로직)
@@ -28,6 +31,7 @@ public class SearchService {
      * @return
      */
     public List<SearchPlaceResponse> searchPlace(String query) {
+        System.out.println("before query = " + query);
         query = refineQuery(query);
         System.out.println("query = " + query);
         Optional<CategoryChip> categoryChipOptional = CategoryChip.from(query);
@@ -66,16 +70,10 @@ public class SearchService {
     private String refineQuery(String query) {
         query = query.replaceAll("[0-9]", "");
 
-        if (query.startsWith("공") && !query.startsWith("공학관")) {
-            query = query.replaceFirst("^공", "공학관");
-        }
-
-        if (query.equals("상허관")) {
-            return "상허연구관";
-        }
-
-        if (query.equals("사")) {
-            return "교육과학관";
+        Optional<PlaceAlias> placeAliasOptional = placeAliasRepository.findPlaceAliasByName(query);
+        if (placeAliasOptional.isPresent()) {
+            String replacement = placeAliasOptional.get().getReplacement();
+            return query.replace(query, replacement);
         }
         return query;
     }
