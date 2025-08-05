@@ -34,20 +34,11 @@ public class SearchService {
         query = refineQuery(query);
         Optional<CategoryChip> categoryChipOptional = CategoryChip.from(query);
         if (categoryChipOptional.isPresent()) {
-            CategoryChip categoryChip = categoryChipOptional.get();
-
-            List<SearchPlaceResponse> response = placeRepository.findByCategoryChip(categoryChip).stream()
-                    .map(SearchPlaceResponse::from)
-                    .collect(Collectors.toList());
-
-            response.addAll(subPlaceRepository.findByCategoryChip(categoryChip).stream()
-                    .map(SearchPlaceResponse::from)
-                    .collect(Collectors.toList()));
-            return response;
+            return searchPlaceByCategory(categoryChipOptional.get());
         }
 
         List<Place> places = placeRepository.findByNameContaining(query);
-        if (places.size() == 0) {
+        if (places.isEmpty()) {
             return subPlaceRepository.findByNameContaining(query).stream()
                     .map(SearchPlaceResponse::from)
                     .toList();
@@ -55,8 +46,22 @@ public class SearchService {
         return places.stream()
                 .map(SearchPlaceResponse::from)
                 .toList();
+    }
 
+    /**
+     * 카테고리에 해당하는 장소 검색
+     *
+     * @return
+     */
+    private List<SearchPlaceResponse> searchPlaceByCategory(CategoryChip categoryChip) {
+        List<SearchPlaceResponse> response = placeRepository.findByCategoryChip(categoryChip).stream()
+                .map(SearchPlaceResponse::from)
+                .collect(Collectors.toList());
 
+        response.addAll(subPlaceRepository.findByCategoryChip(categoryChip).stream()
+                .map(SearchPlaceResponse::from)
+                .collect(Collectors.toList()));
+        return response;
     }
 
     /**
