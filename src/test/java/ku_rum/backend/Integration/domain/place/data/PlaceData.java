@@ -166,6 +166,210 @@ public class PlaceData {
                 .build();
         placeAliasRepository.save(placeAlias7);
 
+        Place place10 = Place.builder()
+                .categoryChip(CategoryChip.BUILDING)
+                .name("의생명과학연구관")
+                .subName("의")
+                .abbreviation("도서관 우측에 위치합니다")
+                .content("내용")
+                .latitude(BigDecimal.valueOf(12.12))
+                .longitude(BigDecimal.valueOf(12.12))
+                .build();
+        placeRepository.save(place10);
+
+        PlaceAlias placeAlias8 = PlaceAlias.builder()
+                .name("의")
+                .replacement("의생명과학연구관")
+                .build();
+        placeAliasRepository.save(placeAlias8);
+
+        Place place11 = Place.builder()
+                .categoryChip(CategoryChip.BUILDING)
+                .name("생명과학관")
+                .subName("생")
+                .abbreviation("도서관 우측에 위치합니다")
+                .content("내용")
+                .latitude(BigDecimal.valueOf(12.12))
+                .longitude(BigDecimal.valueOf(12.12))
+                .build();
+        placeRepository.save(place11);
+
+        PlaceAlias placeAlias9 = PlaceAlias.builder()
+                .name("생")
+                .replacement("생명과학관")
+                .build();
+        placeAliasRepository.save(placeAlias9);
+
+        Place place12 = Place.builder()
+                .categoryChip(CategoryChip.BUILDING)
+                .name("동물생명과학관")
+                .subName("동")
+                .abbreviation("산학 뒤에 위치합니다")
+                .content("내용")
+                .latitude(BigDecimal.valueOf(12.12))
+                .longitude(BigDecimal.valueOf(12.12))
+                .build();
+        placeRepository.save(place12);
+
+        PlaceAlias placeAlias10 = PlaceAlias.builder()
+                .name("동")
+                .replacement("동물생명과학관")
+                .build();
+        placeAliasRepository.save(placeAlias10);
+
+        Place place13 = Place.builder()
+                .categoryChip(CategoryChip.BUILDING)
+                .name("산학협동관")
+                .subName("산학")
+                .abbreviation("수의대 옆에 위치합니다")
+                .content("내용")
+                .latitude(BigDecimal.valueOf(12.12))
+                .longitude(BigDecimal.valueOf(12.12))
+                .build();
+        placeRepository.save(place13);
+
+        PlaceAlias placeAlias11 = PlaceAlias.builder()
+                .name("산학")
+                .replacement("산학협동관")
+                .build();
+        placeAliasRepository.save(placeAlias11);
+
+        Place place14 = Place.builder()
+                .categoryChip(CategoryChip.BUILDING)
+                .name("수의학관")
+                .subName("수")
+                .abbreviation("건국대 입구 근처에 위치합니다")
+                .content("내용")
+                .latitude(BigDecimal.valueOf(12.12))
+                .longitude(BigDecimal.valueOf(12.12))
+                .build();
+        placeRepository.save(place14);
+
+        PlaceAlias placeAlias12 = PlaceAlias.builder()
+                .name("수")
+                .replacement("수의학관")
+                .build();
+        placeAliasRepository.save(placeAlias12);
+
+        Place place15 = Place.builder()
+                .categoryChip(CategoryChip.BUILDING)
+                .name("새천년관")
+                .subName("새")
+                .abbreviation("건국대 후문에 위치합니다")
+                .content("내용")
+                .latitude(BigDecimal.valueOf(12.12))
+                .longitude(BigDecimal.valueOf(12.12))
+                .build();
+        placeRepository.save(place15);
+
+        PlaceAlias placeAlias13 = PlaceAlias.builder()
+                .name("새")
+                .replacement("새천년관")
+                .build();
+        placeAliasRepository.save(placeAlias13);
+
+        Place place16 = Place.builder()
+                .categoryChip(CategoryChip.BUILDING)
+                .name("건축관")
+                .subName("건")
+                .abbreviation("건국대 후문에 위치합니다")
+                .content("내용")
+                .latitude(BigDecimal.valueOf(12.12))
+                .longitude(BigDecimal.valueOf(12.12))
+                .build();
+        placeRepository.save(place16);
+
+        PlaceAlias placeAlias14 = PlaceAlias.builder()
+                .name("건")
+                .replacement("건축관")
+                .build();
+        placeAliasRepository.save(placeAlias14);
+
+        Place place17 = Place.builder()
+                .categoryChip(CategoryChip.BUILDING)
+                .name("해봉부동산학관")
+                .subName("부")
+                .abbreviation("새천년돤 옆에 위치합니다")
+                .content("내용")
+                .latitude(BigDecimal.valueOf(12.12))
+                .longitude(BigDecimal.valueOf(12.12))
+                .build();
+        placeRepository.save(place17);
+
+        PlaceAlias placeAlias15 = PlaceAlias.builder()
+                .name("부")
+                .replacement("해봉부동산학관")
+                .build();
+        placeAliasRepository.save(placeAlias15);
+
+        Place place18 = Place.builder()
+                .categoryChip(CategoryChip.BUILDING)
+                .name("인문학관")
+                .subName("문")
+                .abbreviation("공학관 왼쪽에 위치합니다")
+                .content("내용")
+                .latitude(BigDecimal.valueOf(12.12))
+                .longitude(BigDecimal.valueOf(12.12))
+                .build();
+        placeRepository.save(place18);
+
+        PlaceAlias placeAlias16 = PlaceAlias.builder()
+                .name("문")
+                .replacement("인문학관")
+                .build();
+        placeAliasRepository.save(placeAlias16);
+
+        Place place19 = Place.builder()
+                .categoryChip(CategoryChip.BUILDING)
+                .name("신공학관")
+                .subName("신공")
+                .abbreviation("공학관 오른쪽에 위치합니다")
+                .content("내용")
+                .latitude(BigDecimal.valueOf(12.12))
+                .longitude(BigDecimal.valueOf(12.12))
+                .build();
+        placeRepository.save(place19);
+
+        PlaceAlias placeAlias17 = PlaceAlias.builder()
+                .name("신공")
+                .replacement("신공학관")
+                .build();
+        placeAliasRepository.save(placeAlias17);
+
+        Place place20 = Place.builder()
+                .categoryChip(CategoryChip.BUILDING)
+                .name("과학관")
+                .subName("이")
+                .abbreviation("공학관 뒤편에 위치합니다")
+                .content("내용")
+                .latitude(BigDecimal.valueOf(12.12))
+                .longitude(BigDecimal.valueOf(12.12))
+                .build();
+        placeRepository.save(place20);
+
+        PlaceAlias placeAlias18 = PlaceAlias.builder()
+                .name("이")
+                .replacement("과학관")
+                .build();
+        placeAliasRepository.save(placeAlias18);
+
+        Place place21 = Place.builder()
+                .categoryChip(CategoryChip.BUILDING)
+                .name("창의관")
+                .subName("창")
+                .abbreviation("공학관 뒤편에 위치합니다")
+                .content("내용")
+                .latitude(BigDecimal.valueOf(12.12))
+                .longitude(BigDecimal.valueOf(12.12))
+                .build();
+        placeRepository.save(place21);
+
+        PlaceAlias placeAlias19 = PlaceAlias.builder()
+                .name("")
+                .replacement("창의관")
+                .build();
+        placeAliasRepository.save(placeAlias19);
+
         SubPlace subPlace1 = SubPlace.builder()
                 .categoryChip(CategoryChip.BUILDING)
                 .name("공학관A")

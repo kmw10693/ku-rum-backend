@@ -258,10 +258,157 @@ public class SearchServiceTest {
     }
 
     @Test
-    void test() {
-        String str = "상허관";
-        String replace = str.replace("상허관", "상허연구관");
-        System.out.println("replace = " + replace);
+    @DisplayName("생명과학관을 검색할 수 있고, 생302은 생명과학관과 같은 검색 결과를 반환해야 한다")
+    void searchTest15() {
+        //given
+        String query = "생명과학관";
+        String aliasQuery = "생302";
+
+        //when
+
+        //then
+        assertSearchResultExist(query);
+        assertSearchResultMatches(query, aliasQuery);
+    }
+
+    @Test
+    @DisplayName("동물생명과학관을 검색할 수 있고, 동302은 동물생명과학관과 같은 검색 결과를 반환해야 한다")
+    void searchTest16() {
+        //given
+        String query = "동물생명과학관";
+        String aliasQuery = "동302";
+
+        //when
+
+        //then
+        assertSearchResultExist(query);
+        assertSearchResultMatches(query, aliasQuery);
+    }
+
+    @Test
+    @DisplayName("산학협동관을 검색할 수 있고, 산학302은 산학협동관과 같은 검색 결과를 반환해야 한다")
+    void searchTest17() {
+        //given
+        String query = "산학협동관";
+        String aliasQuery = "산학302";
+
+        //when
+
+        //then
+        assertSearchResultExist(query);
+        assertSearchResultMatches(query, aliasQuery);
+    }
+
+    @Test
+    @DisplayName("수의학관을 검색할 수 있고, 수302은 수의학관과 같은 검색 결과를 반환해야 한다")
+    void searchTest18() {
+        //given
+        String query = "수의학관";
+        String aliasQuery = "수302";
+
+        //when
+
+        //then
+        assertSearchResultExist(query);
+        assertSearchResultMatches(query, aliasQuery);
+    }
+
+    @Test
+    @DisplayName("수의학관을 검색할 수 있고, 수302은 수의학관과 같은 검색 결과를 반환해야 한다")
+    void searchTest19() {
+        //given
+        String query = "새천년관";
+        String aliasQuery = "새302";
+
+        //when
+
+        //then
+        assertSearchResultExist(query);
+        assertSearchResultMatches(query, aliasQuery);
+    }
+
+    @Test
+    @DisplayName("건축관을 검색할 수 있고, 건302은 건축관과 같은 검색 결과를 반환해야 한다")
+    void searchTest20() {
+        //given
+        String query = "건축관";
+        String aliasQuery = "건302";
+
+        //when
+
+        //then
+        assertSearchResultExist(query);
+        assertSearchResultMatches(query, aliasQuery);
+    }
+
+    @Test
+    @DisplayName("해봉부동산학관을 검색할 수 있고, 부302은 해봉부동산학관과 같은 검색 결과를 반환해야 한다")
+    void searchTest21() {
+        //given
+        String query = "해봉부동산학관";
+        String aliasQuery = "부302";
+
+        //when
+
+        //then
+        assertSearchResultExist(query);
+        assertSearchResultMatches(query, aliasQuery);
+    }
+
+    @Test
+    @DisplayName("인문학관을 검색할 수 있고, 문302은 인문학관과 같은 검색 결과를 반환해야 한다")
+    void searchTest22() {
+        //given
+        String query = "인문학관";
+        String aliasQuery = "문302";
+
+        //when
+
+        //then
+        assertSearchResultExist(query);
+        assertSearchResultMatches(query, aliasQuery);
+    }
+
+    @Test
+    @DisplayName("신공학관을 검색할 수 있고, 신공1016은 인문학관과 같은 검색 결과를 반환해야 한다")
+    void searchTest23() {
+        //given
+        String query = "신공학관";
+        String aliasQuery = "신공1016";
+
+        //when
+
+        //then
+        assertSearchResultExist(query);
+        assertSearchResultMatches(query, aliasQuery);
+    }
+
+    @Test
+    @DisplayName("과학관을 검색할 수 있고, 이1016은 과학관과 같은 검색 결과를 반환해야 한다")
+    void searchTest24() {
+        //given
+        String query = "과학관";
+        String aliasQuery = "이1016";
+
+        //when
+
+        //then
+        assertSearchResultExist(query);
+        assertSearchResultMatches(query, aliasQuery);
+    }
+
+    @Test
+    @DisplayName("창의관을 검색할 수 있고, 창1016은 창의관과 같은 검색 결과를 반환해야 한다")
+    void searchTest25() {
+        //given
+        String query = "창의관";
+        String aliasQuery = "창1016";
+
+        //when
+
+        //then
+        assertSearchResultExist(query);
+        assertSearchResultMatches(query, aliasQuery);
     }
 
     private void assertSearchResultMatches(String expectedQuery, String aliasQuery) {
