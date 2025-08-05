@@ -31,9 +31,7 @@ public class SearchService {
      * @return
      */
     public List<SearchPlaceResponse> searchPlace(String query) {
-        System.out.println("before query = " + query);
         query = refineQuery(query);
-        System.out.println("query = " + query);
         Optional<CategoryChip> categoryChipOptional = CategoryChip.from(query);
         if (categoryChipOptional.isPresent()) {
             CategoryChip categoryChip = categoryChipOptional.get();
