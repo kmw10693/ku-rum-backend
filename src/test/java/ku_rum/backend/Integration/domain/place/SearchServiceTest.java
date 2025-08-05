@@ -14,10 +14,12 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.Import;
+import org.springframework.test.context.ActiveProfiles;
 
 @SpringBootTest
 @Import({PlaceTestConfig.class})
 @DisplayName("검색 서비스 통합 테스트")
+@ActiveProfiles("test")
 public class SearchServiceTest {
 
     @Autowired
