@@ -370,6 +370,28 @@ public class PlaceData {
                 .build();
         placeAliasRepository.save(placeAlias19);
 
+        Place place22 = Place.builder()
+                .categoryChip(CategoryChip.CONVENIENCE_STORE)
+                .name("산학협동관 이마트24")
+                .subName("이마트24")
+                .abbreviation("이마트24입니다")
+                .content("내용")
+                .latitude(BigDecimal.valueOf(12.12))
+                .longitude(BigDecimal.valueOf(12.12))
+                .build();
+        placeRepository.save(place22);
+
+        Place place23 = Place.builder()
+                .categoryChip(CategoryChip.CONVENIENCE_STORE)
+                .name("학생회관 CU")
+                .subName("학생회관 CU")
+                .abbreviation("학생회관 CU 입니다")
+                .content("내용")
+                .latitude(BigDecimal.valueOf(12.12))
+                .longitude(BigDecimal.valueOf(12.12))
+                .build();
+        placeRepository.save(place23);
+
         SubPlace subPlace1 = SubPlace.builder()
                 .categoryChip(CategoryChip.BUILDING)
                 .name("공학관A")

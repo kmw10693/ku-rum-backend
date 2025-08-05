@@ -411,6 +411,37 @@ public class SearchServiceTest {
         assertSearchResultMatches(query, aliasQuery);
     }
 
+    @Test
+    @DisplayName("산학협동관 이마트24를 검색할 수 있다")
+    void searchCase26() {
+        //given
+        String query = "이마트24";
+        String eMart = "산학협동관 이마트24";
+
+        //when
+        List<SearchPlaceResponse> response = searchService.searchPlace(query);
+
+        //then
+        Assertions.assertThat(response.stream().anyMatch(
+                searchPlaceResponse -> searchPlaceResponse.name().equals(eMart)
+        )).isTrue();
+    }
+
+    @Test
+    @DisplayName("학생회관 CU를 검색할 수 있다")
+    void searchCase27() {
+        //given
+        String query = "학생회관 CU";
+
+        //when
+        List<SearchPlaceResponse> response = searchService.searchPlace(query);
+
+        //then
+        Assertions.assertThat(response.stream().anyMatch(
+                searchPlaceResponse -> searchPlaceResponse.name().equals(query)
+        )).isTrue();
+    }
+
     private void assertSearchResultMatches(String expectedQuery, String aliasQuery) {
         List<SearchPlaceResponse> expected = searchService.searchPlace(expectedQuery);
         List<SearchPlaceResponse> actual = searchService.searchPlace(aliasQuery);
