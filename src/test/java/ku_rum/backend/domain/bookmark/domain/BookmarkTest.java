@@ -3,15 +3,11 @@ package ku_rum.backend.domain.bookmark.domain;
 import ku_rum.backend.domain.college.domain.College;
 import ku_rum.backend.domain.department.domain.Department;
 import ku_rum.backend.domain.notice.domain.Notice;
-import ku_rum.backend.domain.notice.domain.NoticeCategory;
 import ku_rum.backend.domain.user.domain.User;
 import ku_rum.backend.domain.user.domain.AgreementStatus;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import java.math.BigDecimal;
-
-import static ku_rum.backend.domain.notice.domain.NoticeStatus.GENERAL;
 import static org.assertj.core.api.Assertions.*;
 
 class BookmarkTest {
@@ -21,7 +17,15 @@ class BookmarkTest {
     void saveBookmarkWithUserAndNotice() {
         //given
         User user = createUser("사용자1", "202112322");
-        Notice notice = Notice.of("가나다라", "naver.com/abc123", "2024-11-07", NoticeCategory.AFFAIR, GENERAL);
+        Notice notice = Notice.builder()
+                .id(1L)
+                .categoryId(234)
+                .categoryName("학사")
+                .title("타이틀")
+                .pubDate("2024-01-03")
+                .author("교무팀")
+                .description("교무 관련 공지사항")
+                .build();
 
         //when
         Bookmark bookmark = Bookmark.of(user, notice);

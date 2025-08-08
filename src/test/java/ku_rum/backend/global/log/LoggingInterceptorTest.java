@@ -4,8 +4,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.JsonNodeFactory;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import jakarta.servlet.http.HttpServletResponse;
-import ku_rum.backend.domain.notice.domain.repository.NoticeRepositoryImpl;
-import ku_rum.backend.global.batch.BatchScheduler;
 import ku_rum.backend.global.domain.ApiLog;
 import ku_rum.backend.global.domain.repository.ApiLogRepository;
 import ku_rum.backend.global.interceptor.LoggingInterceptor;
@@ -38,12 +36,6 @@ class LoggingInterceptorTest {
 
     @Mock
     private ObjectMapper objectMapper;
-
-    @MockBean
-    private NoticeRepositoryImpl noticeRepository;
-
-    @MockBean
-    private BatchScheduler batchScheduler;
 
 
     @Test

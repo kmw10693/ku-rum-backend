@@ -5,8 +5,9 @@ import io.jsonwebtoken.JwtException;
 import jakarta.servlet.*;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import ku_rum.backend.global.utill.RedisUtil;
+import ku_rum.backend.global.config.AuthorizationList;
 import ku_rum.backend.global.support.response.BaseResponse;
+import ku_rum.backend.global.utill.RedisUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
@@ -28,6 +29,13 @@ public class JwtTokenAuthenticationFilter extends GenericFilter {
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
         try {
+            StringBuffer path = ((HttpServletRequest) request).getRequestURL();
+
+            if (AuthorizationList.isPermitted(String.valueOf(path))) {
+                chain.doFilter(request, response);
+                return;
+            }
+
             String token = resolveToken((HttpServletRequest) request);
 
             if (token != null && jwtTokenProvider.validateToken(token) && isNotLogout(token)) {
