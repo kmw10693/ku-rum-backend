@@ -13,11 +13,18 @@ spring:
             enable: true
 
   datasource:
+    username: sa
+    password:
     driver-class-name: org.h2.Driver
-    url: jdbc:h2:mem:test;MODE=MySQL;DB_CLOSE_DELAY=-1
+    url: jdbc:h2:mem:test;DB_CLOSE_DELAY=-1;MODE=MySQL
   jpa:
-    hibernate:
-      ddl-auto: create
+    database: h2
+    properties:
+      hibernate:
+        ddl-auto: create-drop
+    show-sql: true
+    generate-ddl: true
+    database-platform: org.hibernate.dialect.H2Dialect
   data:
     redis:
       port: 6379
@@ -26,6 +33,49 @@ spring:
   batch:
     job:
       enabled: false
+
+  security:
+    oauth2:
+      client:
+        registration:
+          google:
+            client-id: something
+            client-secret: something
+            redirect-uri: something
+            scope:
+              - email
+              - profile
+          naver:
+            client-id: something
+            client-secret: something
+            redirect-uri: something
+            client-authentication-method: something
+            authorizationGrantType: something
+            clientName: something
+            scope:
+              - nickname
+              - email
+              - profile_image
+          kakao:
+            client-id: something
+            client-authentication-method: something
+            authorizationGrantType: something
+            redirectUri: something
+            scope:
+              - profile_nickname
+              - profile_image
+            client-name: Kakao
+        provider:
+          naver:
+            authorization-uri: something
+            token-uri: something
+            user-info-uri: something
+            userNameAttribute: something
+          kakao:
+            authorization-uri: something
+            token-uri: something
+            user-info-uri: something
+            userNameAttribute: something
 
 
 # JWT 설정

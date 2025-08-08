@@ -29,7 +29,7 @@ import ku_rum.backend.domain.place.application.response.GetPlaceResponse;
 import ku_rum.backend.domain.place.application.response.SearchPlaceHistoryResponse;
 import ku_rum.backend.domain.place.application.response.SelectPlaceChipResponse;
 import ku_rum.backend.domain.place.domain.CategoryChip;
-import ku_rum.backend.domain.place.domain.Place;
+import ku_rum.backend.domain.place.domain.SubPlace;
 import ku_rum.backend.domain.place.domain.PlaceHistory;
 import ku_rum.backend.domain.place.domain.PlaceImage;
 import ku_rum.backend.domain.place.dto.FriendUserDto;
@@ -51,7 +51,7 @@ import org.springframework.test.context.ActiveProfiles;
 
 @SpringBootTest
 @ActiveProfiles("test")
-public class PlaceControllerTest extends RestDocsTestSupport {
+public class SubPlaceControllerTest extends RestDocsTestSupport {
 
     @MockBean
     PositionService positionService;
@@ -199,7 +199,7 @@ public class PlaceControllerTest extends RestDocsTestSupport {
     void selectChip() throws Exception {
         //given
         String name = "상허기념도서관";
-        Place place = Place.builder()
+        SubPlace subPlace = SubPlace.builder()
                 .placeId(1L)
                 .categoryChip(CategoryChip.K_CUBE)
                 .name(name)
@@ -209,7 +209,7 @@ public class PlaceControllerTest extends RestDocsTestSupport {
                 .longitude(BigDecimal.valueOf(127.073784000))
                 .build();
 
-        List<SelectPlaceChipResponse> response = List.of(SelectPlaceChipResponse.from(place));
+        List<SelectPlaceChipResponse> response = List.of(SelectPlaceChipResponse.from(subPlace));
 
         given(placeService.selectChipWithUser(any(CustomUserDetails.class), eq(CategoryChip.K_CUBE)))
                 .willReturn(response);
@@ -240,7 +240,7 @@ public class PlaceControllerTest extends RestDocsTestSupport {
         //given
         String name = "상허기념도서관";
         Long placeId = 1L;
-        Place place = Place.builder()
+        SubPlace subPlace = SubPlace.builder()
                 .placeId(placeId)
                 .categoryChip(CategoryChip.K_CUBE)
                 .name(name)
@@ -250,15 +250,15 @@ public class PlaceControllerTest extends RestDocsTestSupport {
                 .longitude(BigDecimal.valueOf(127.073784000))
                 .build();
 
-        List<FriendUserDto> friendUserDtos = List.of(new FriendUserDto(1L, "닉네임", "url", place));
+        List<FriendUserDto> friendUserDtos = List.of(new FriendUserDto(1L, "닉네임", "url", subPlace));
         PlaceImage placeImage = PlaceImage.builder()
                 .placeImageId(1L)
-                .place(place)
+                .subPlace(subPlace)
                 .imageUrl("URL")
                 .build();
 
         List<PlaceImage> placeImages = List.of(placeImage);
-        GetPlaceResponse response = GetPlaceResponse.of(place, friendUserDtos, placeImages);
+        GetPlaceResponse response = GetPlaceResponse.of(subPlace, friendUserDtos, placeImages);
 
         given(placeService.getPlaceWithUser(any(CustomUserDetails.class), eq(placeId)))
                 .willReturn(response);
@@ -291,7 +291,7 @@ public class PlaceControllerTest extends RestDocsTestSupport {
         //given
         Long placeId = 1L;
         String name = "상허기념도서관";
-        Place place = Place.builder()
+        SubPlace subPlace = SubPlace.builder()
                 .placeId(placeId)
                 .categoryChip(CategoryChip.K_CUBE)
                 .name(name)
