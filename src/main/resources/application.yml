@@ -16,6 +16,6 @@ app:
 ---
 spring:
   config:
-    import: optional:file:./config/application-prod.yml
+    import: classpath:config/application-prod.yml
     activate:
       on-profile: prod
