@@ -158,19 +158,6 @@ jobs:
               nginx
           fi
 
-          if [ ! -d "./certbot/conf/live/kuroom.shop" ]; then
-            echo "Requesting Let's Encrypt certificate..."
-            sudo docker run --rm \
-              -v $(pwd)/certbot/conf:/etc/letsencrypt \
-              -v $(pwd)/certbot/www:/var/www/certbot \
-              certbot/certbot certonly --webroot \
-              -w /var/www/certbot \
-              -d kuroom.shop -d www.kuroom.shop \
-              --email admin@kuroom.shop --agree-tos --no-eff-email
-            sudo docker exec $NGINX_CONTAINER_NAME nginx -s reload
-          fi
-
-
       - name: Stop and remove the old container
         run: |
           CURRENT_PORT=$CURRENT_PORT
