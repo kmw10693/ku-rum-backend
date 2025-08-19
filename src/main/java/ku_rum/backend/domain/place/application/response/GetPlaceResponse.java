@@ -2,7 +2,7 @@ package ku_rum.backend.domain.place.application.response;
 
 import java.math.BigDecimal;
 import java.util.List;
-import ku_rum.backend.domain.place.domain.Place;
+import ku_rum.backend.domain.place.domain.SubPlace;
 import ku_rum.backend.domain.place.domain.PlaceImage;
 import ku_rum.backend.domain.place.dto.FriendUserDto;
 import lombok.Builder;
@@ -17,7 +17,7 @@ public record GetPlaceResponse(Long placeId,
                                List<SelectPlaceChipFriendListResponse> friends,
                                List<String> imageUrls) {
 
-    public static GetPlaceResponse of(Place place,
+    public static GetPlaceResponse of(SubPlace subPlace,
                                       List<FriendUserDto> friendUserDtos,
                                       List<PlaceImage> placeImages) {
         List<SelectPlaceChipFriendListResponse> selectPlaceChipFriendListResponses = friendUserDtos.stream()
@@ -25,7 +25,7 @@ public record GetPlaceResponse(Long placeId,
                 .toList();
 
         List<String> ImageUrls = placeImages.stream().map(PlaceImage::getImageUrl).toList();
-        return new GetPlaceResponse(place.getPlaceId(), place.getName(), place.getSubName(), place.getContent(),
-                place.getLatitude(), place.getLongitude(), selectPlaceChipFriendListResponses, ImageUrls);
+        return new GetPlaceResponse(subPlace.getPlaceId(), subPlace.getName(), subPlace.getSubName(), subPlace.getContent(),
+                subPlace.getLatitude(), subPlace.getLongitude(), selectPlaceChipFriendListResponses, ImageUrls);
     }
 }

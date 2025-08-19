@@ -9,11 +9,11 @@ import ku_rum.backend.domain.place.application.response.SearchPlaceResponse;
 import ku_rum.backend.domain.place.application.response.SelectPlaceChipFriendListResponse;
 import ku_rum.backend.domain.place.application.response.SelectPlaceChipResponse;
 import ku_rum.backend.domain.place.domain.CategoryChip;
-import ku_rum.backend.domain.place.domain.Place;
 import ku_rum.backend.domain.place.domain.PlaceImage;
+import ku_rum.backend.domain.place.domain.SubPlace;
 import ku_rum.backend.domain.place.domain.repository.PlaceImageRepository;
-import ku_rum.backend.domain.place.domain.repository.PlaceRepository;
 import ku_rum.backend.domain.place.domain.repository.PositionRepository;
+import ku_rum.backend.domain.place.domain.repository.SubPlaceRepository;
 import ku_rum.backend.domain.place.dto.FriendUserDto;
 import ku_rum.backend.global.exception.global.GlobalException;
 import ku_rum.backend.global.security.CustomUserDetails;
@@ -27,10 +27,11 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class PlaceService {
 
-    private final PlaceRepository placeRepository;
+    private final SubPlaceRepository subPlaceRepository;
     private final PositionRepository positionRepository;
     private final PlaceImageRepository placeImageRepository;
     private final PlaceHistoryService placeHistoryService;
+    private final SearchService searchService;
 
     /**
      * 지도 칩 조회(회원 로직)
@@ -43,16 +44,16 @@ public class PlaceService {
             final CategoryChip categoryChip) {
 
         if (categoryChip.equals(CategoryChip.FRIEND)) {
-            List<Place> places = placeRepository.findByCategoryChip(CategoryChip.BUILDING);
-            return selectFriendListWithUser(userDetails, places);
+            List<SubPlace> subPlaces = subPlaceRepository.findByCategoryChip(CategoryChip.BUILDING);
+            return selectFriendListWithUser(userDetails, subPlaces);
         }
 
-        List<Place> places = placeRepository.findByCategoryChip(categoryChip);
+        List<SubPlace> subPlaces = subPlaceRepository.findByCategoryChip(categoryChip);
         if (categoryChip.equals(CategoryChip.BUILDING)) {
-            return selectBuildingChipWithUser(userDetails, places);
+            return selectBuildingChipWithUser(userDetails, subPlaces);
         }
 
-        return findPlacesWithImages(places);
+        return findPlacesWithImages(subPlaces);
     }
 
     /**
@@ -65,9 +66,9 @@ public class PlaceService {
             throw new GlobalException(BaseExceptionResponseStatus.UNSUPPORTED_FRIEND_CHIP_ERROR);
         }
 
-        List<Place> places = placeRepository.findByCategoryChip(categoryChip);
+        List<SubPlace> subPlaces = subPlaceRepository.findByCategoryChip(categoryChip);
 
-        return places.stream()
+        return subPlaces.stream()
                 .map(SelectPlaceChipResponse::from)
                 .toList();
     }
@@ -83,12 +84,12 @@ public class PlaceService {
     public GetPlaceResponse getPlaceWithUser(
             final CustomUserDetails userDetails,
             final Long placeId) {
-        Place place = findPlace(placeId);
-        List<PlaceImage> placeImages = placeImageRepository.findByPlace(place);
+        SubPlace subPlace = findPlace(placeId);
+        List<PlaceImage> placeImages = placeImageRepository.findBySubPlace(subPlace);
         List<FriendUserDto> friendUserDtos = positionRepository.findPositionByFriendAndPlace(userDetails.getUserId(),
-                place);
+                subPlace);
 
-        return GetPlaceResponse.of(place, friendUserDtos, placeImages);
+        return GetPlaceResponse.of(subPlace, friendUserDtos, placeImages);
     }
 
     /**
@@ -99,22 +100,10 @@ public class PlaceService {
      */
     public GetPlaceResponse getPlace(
             final Long placeId) {
-        Place place = findPlace(placeId);
-        List<PlaceImage> placeImages = placeImageRepository.findByPlace(place);
+        SubPlace subPlace = findPlace(placeId);
+        List<PlaceImage> placeImages = placeImageRepository.findBySubPlace(subPlace);
 
-        return GetPlaceResponse.of(place, Collections.emptyList(), placeImages);
-    }
-
-    /**
-     * 장소 검색(비회원 로직)
-     *
-     * @param query 검색어
-     * @return
-     */
-    public List<SearchPlaceResponse> searchPlace(String query) {
-        return placeRepository.findByNameContaining(query).stream()
-                .map(SearchPlaceResponse::from)
-                .toList();
+        return GetPlaceResponse.of(subPlace, Collections.emptyList(), placeImages);
     }
 
     /**
@@ -127,7 +116,7 @@ public class PlaceService {
     @Transactional
     public List<SearchPlaceResponse> searchPlaceWithUser(CustomUserDetails userDetails, String query) {
         placeHistoryService.updatePlaceHistory(query, userDetails);
-        return searchPlace(query);
+        return searchService.searchPlace(query);
     }
 
     /**
@@ -136,8 +125,8 @@ public class PlaceService {
      * @param placeId
      * @return Place 엔티티
      */
-    private Place findPlace(Long placeId) {
-        return placeRepository.findByPlaceId(placeId)
+    private SubPlace findPlace(Long placeId) {
+        return subPlaceRepository.findByPlaceId(placeId)
                 .orElseThrow(() -> new GlobalException(BaseExceptionResponseStatus.PLACE_NOT_FOUND));
     }
 
@@ -148,10 +137,10 @@ public class PlaceService {
      * @return response 객체
      */
     private List<SelectPlaceChipResponse> selectBuildingChipWithUser(
-            final CustomUserDetails userDetails, final List<Place> places) {
+            final CustomUserDetails userDetails, final List<SubPlace> subPlaces) {
         List<FriendUserDto> friendUserDtos = positionRepository.findPlaceByFriend(userDetails.getUserId());
 
-        return mapPlacesWithFriends(places, friendUserDtos);
+        return mapPlacesWithFriends(subPlaces, friendUserDtos);
     }
 
     /**
@@ -160,33 +149,33 @@ public class PlaceService {
      * @return response 객체
      */
     private List<SelectPlaceChipResponse> selectFriendListWithUser(
-            final CustomUserDetails userDetails, final List<Place> places) {
+            final CustomUserDetails userDetails, final List<SubPlace> subPlaces) {
         List<FriendUserDto> friendUserDtos = positionRepository.findPlaceByFriend(userDetails.getUserId());
 
         Set<Long> placeIdSet = friendUserDtos.stream()
-                .map(friendUserDto -> friendUserDto.place().getPlaceId())
+                .map(friendUserDto -> friendUserDto.subPlace().getPlaceId())
                 .collect(Collectors.toSet());
 
-        List<Place> filteredPlaces = places.stream()
+        List<SubPlace> filteredSubPlaces = subPlaces.stream()
                 .filter(place -> placeIdSet.contains(place.getPlaceId()))
                 .toList();
 
-        return mapPlacesWithFriends(filteredPlaces, friendUserDtos);
+        return mapPlacesWithFriends(filteredSubPlaces, friendUserDtos);
     }
 
     /**
      * 장소와 공유 친구, 이미지 함께 조회
      *
-     * @param places         장소 리스트
+     * @param subPlaces      장소 리스트
      * @param friendUserDtos 친구 DTO
      * @return
      */
-    private List<SelectPlaceChipResponse> mapPlacesWithFriends(final List<Place> places,
+    private List<SelectPlaceChipResponse> mapPlacesWithFriends(final List<SubPlace> subPlaces,
                                                                final List<FriendUserDto> friendUserDtos) {
-        return places.stream()
+        return subPlaces.stream()
                 .map(place -> {
                     List<SelectPlaceChipFriendListResponse> matchedFriends = friendUserDtos.stream()
-                            .filter(friend -> friend.place().equals(place))
+                            .filter(friend -> friend.subPlace().equals(place))
                             .map(SelectPlaceChipFriendListResponse::from)
                             .toList();
 
@@ -198,11 +187,11 @@ public class PlaceService {
     /**
      * 장소 이미지와 함께 조회
      *
-     * @param places 장소 리스트
+     * @param subPlaces 장소 리스트
      * @return
      */
-    private List<SelectPlaceChipResponse> findPlacesWithImages(final List<Place> places) {
-        return places.stream()
+    private List<SelectPlaceChipResponse> findPlacesWithImages(final List<SubPlace> subPlaces) {
+        return subPlaces.stream()
                 .map(SelectPlaceChipResponse::from)
                 .toList();
     }
