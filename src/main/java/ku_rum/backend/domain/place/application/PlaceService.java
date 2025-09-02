@@ -31,6 +31,7 @@ public class PlaceService {
     private final PositionRepository positionRepository;
     private final PlaceImageRepository placeImageRepository;
     private final PlaceHistoryService placeHistoryService;
+    private final SearchService searchService;
 
     /**
      * 지도 칩 조회(회원 로직)
@@ -112,9 +113,7 @@ public class PlaceService {
      * @return
      */
     public List<SearchPlaceResponse> searchPlace(String query) {
-        return placeRepository.findByNameContaining(query).stream()
-                .map(SearchPlaceResponse::from)
-                .toList();
+        return searchService.searchPlace(query);
     }
 
     /**
