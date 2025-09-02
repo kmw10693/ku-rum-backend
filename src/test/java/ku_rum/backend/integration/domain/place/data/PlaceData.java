@@ -360,7 +360,7 @@ public class PlaceData {
         placeRepository.save(place21);
 
         PlaceAlias placeAlias19 = PlaceAlias.builder()
-                .original("")
+                .original("창")
                 .replacement("창의관")
                 .build();
         placeAliasRepository.save(placeAlias19);
