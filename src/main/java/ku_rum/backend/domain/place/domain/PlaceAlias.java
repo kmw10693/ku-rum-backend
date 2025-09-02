@@ -7,6 +7,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Index;
 import jakarta.persistence.Table;
+import ku_rum.backend.global.support.type.BaseEntity;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -19,7 +20,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @Getter
 @Table(indexes = {@Index(name = "original_index", columnList = "original")})
-public class PlaceAlias {
+public class PlaceAlias extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
