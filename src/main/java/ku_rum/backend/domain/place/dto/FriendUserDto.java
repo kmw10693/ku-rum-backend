@@ -1,7 +1,7 @@
 package ku_rum.backend.domain.place.dto;
 
-import ku_rum.backend.domain.place.domain.SubPlace;
+import ku_rum.backend.domain.place.domain.Place;
 
 public record FriendUserDto(Long userId, String nickname, String profileImageUrl,
-                            SubPlace subPlace) {
+                            Place place) {
 }

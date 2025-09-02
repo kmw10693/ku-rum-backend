@@ -27,7 +27,7 @@ public class PlaceImage extends BaseEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(nullable = false)
-    private SubPlace subPlace;
+    private Place place;
 
     @NotNull
     private String imageUrl;

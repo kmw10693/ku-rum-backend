@@ -2,7 +2,7 @@ package ku_rum.backend.domain.rank.application;
 
 import java.util.List;
 import java.util.Optional;
-import ku_rum.backend.domain.place.domain.SubPlace;
+import ku_rum.backend.domain.place.domain.Place;
 import ku_rum.backend.domain.rank.application.response.GetPlaceUserRankResponse;
 import ku_rum.backend.domain.rank.domain.PlaceRank;
 import ku_rum.backend.domain.rank.domain.repository.PlaceRankRepository;
@@ -38,11 +38,11 @@ public class RankService {
      * 유저 장소 랭킹 업데이트
      *
      * @param user
-     * @param subPlace
+     * @param place
      */
     @Transactional
-    public void updateRank(User user, SubPlace subPlace) {
-        Optional<PlaceRank> optionalRank = placeRankRepository.findByUserAndSubPlace(user, subPlace);
+    public void updateRank(User user, Place place) {
+        Optional<PlaceRank> optionalRank = placeRankRepository.findByUserAndPlace(user, place);
         if (optionalRank.isPresent()) {
             optionalRank.get().increaseCount();
             return;
@@ -51,7 +51,7 @@ public class RankService {
         PlaceRank rank = PlaceRank.builder()
                 .count(1)
                 .user(user)
-                .subPlace(subPlace)
+                .place(place)
                 .build();
         placeRankRepository.save(rank);
     }
