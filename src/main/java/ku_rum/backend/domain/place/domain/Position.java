@@ -32,16 +32,16 @@ public class Position extends BaseEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(nullable = false)
-    private SubPlace subPlace;
+    private Place place;
 
-    public void update(SubPlace subPlace) {
-        this.subPlace = subPlace;
+    public void update(Place place) {
+        this.place = place;
     }
 
-    public static Position of(User user, SubPlace subPlace) {
+    public static Position of(User user, Place place) {
         return Position.builder()
                 .user(user)
-                .subPlace(subPlace)
+                .place(place)
                 .build();
     }
 }

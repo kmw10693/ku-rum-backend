@@ -2,16 +2,14 @@ package ku_rum.backend.domain.place.domain.repository;
 
 import java.util.List;
 import java.util.Optional;
+import ku_rum.backend.domain.place.domain.Place;
 import ku_rum.backend.domain.place.domain.Position;
-import ku_rum.backend.domain.place.domain.SubPlace;
 import ku_rum.backend.domain.place.dto.FriendUserDto;
 import ku_rum.backend.domain.user.domain.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
-import org.springframework.stereotype.Repository;
 
-@Repository
 public interface PositionRepository extends JpaRepository<Position, Long> {
 
     boolean existsPositionByUser(User user);
@@ -25,7 +23,7 @@ public interface PositionRepository extends JpaRepository<Position, Long> {
                     user.id,
                     user.nickname,
                     user.imageUrl,
-                    p.subPlace
+                    p.place
                 )
                 FROM Friend f
                 JOIN User user
@@ -45,7 +43,7 @@ public interface PositionRepository extends JpaRepository<Position, Long> {
                     user.id,
                     user.nickname,
                     user.imageUrl,
-                    p.subPlace
+                    p.place
                 )
                 FROM Friend f
                 JOIN User user
@@ -57,8 +55,7 @@ public interface PositionRepository extends JpaRepository<Position, Long> {
                     ON p.user.id = user.id
                 WHERE f.status = 'ACCEPT'
                   AND (f.fromUser.id = :userId OR f.toUser.id = :userId)
-                  AND p.subPlace = :subPlace
+                  AND p.place = :place
             """)
-    List<FriendUserDto> findPositionByFriendAndPlace(@Param("userId") Long userId,
-                                                     @Param("subPlace") SubPlace subPlace);
+    List<FriendUserDto> findPositionByFriendAndPlace(@Param("userId") Long userId, @Param("place") Place place);
 }
