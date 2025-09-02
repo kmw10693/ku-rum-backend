@@ -3,7 +3,7 @@ package ku_rum.backend.domain.place.application.response;
 import java.math.BigDecimal;
 import java.util.Collections;
 import java.util.List;
-import ku_rum.backend.domain.place.domain.SubPlace;
+import ku_rum.backend.domain.place.domain.Place;
 
 public record SelectPlaceChipResponse(
         Long placeId,
@@ -15,16 +15,16 @@ public record SelectPlaceChipResponse(
         List<SelectPlaceChipFriendListResponse> friends
 ) {
 
-    public static SelectPlaceChipResponse from(SubPlace subPlace) {
-        return new SelectPlaceChipResponse(subPlace.getPlaceId(), subPlace.getName(), subPlace.getSubName(),
-                subPlace.getAbbreviation(),
-                subPlace.getLatitude(), subPlace.getLongitude(), Collections.emptyList());
+    public static SelectPlaceChipResponse from(Place place) {
+        return new SelectPlaceChipResponse(place.getPlaceId(), place.getName(), place.getSubName(),
+                place.getAbbreviation(),
+                place.getLatitude(), place.getLongitude(), Collections.emptyList());
     }
 
-    public static SelectPlaceChipResponse from(SubPlace subPlace,
+    public static SelectPlaceChipResponse from(Place place,
                                                List<SelectPlaceChipFriendListResponse> selectPlaceChipFriendListResponses) {
-        return new SelectPlaceChipResponse(subPlace.getPlaceId(), subPlace.getName(), subPlace.getSubName(),
-                subPlace.getAbbreviation(),
-                subPlace.getLatitude(), subPlace.getLongitude(), selectPlaceChipFriendListResponses);
+        return new SelectPlaceChipResponse(place.getPlaceId(), place.getName(), place.getSubName(),
+                place.getAbbreviation(),
+                place.getLatitude(), place.getLongitude(), selectPlaceChipFriendListResponses);
     }
 }
