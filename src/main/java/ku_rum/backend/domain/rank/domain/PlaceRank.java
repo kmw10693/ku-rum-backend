@@ -8,7 +8,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.validation.constraints.NotNull;
-import ku_rum.backend.domain.place.domain.SubPlace;
+import ku_rum.backend.domain.place.domain.Place;
 import ku_rum.backend.domain.user.domain.User;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -36,7 +36,7 @@ public class PlaceRank {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(nullable = false)
-    private SubPlace subPlace;
+    private Place place;
 
     public void increaseCount() {
         count++;

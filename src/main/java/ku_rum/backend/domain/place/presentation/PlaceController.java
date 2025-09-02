@@ -5,7 +5,6 @@ import java.util.List;
 import ku_rum.backend.domain.place.application.PlaceHistoryService;
 import ku_rum.backend.domain.place.application.PlaceService;
 import ku_rum.backend.domain.place.application.PositionService;
-import ku_rum.backend.domain.place.application.SearchService;
 import ku_rum.backend.domain.place.application.response.CurrentPositionConfirmResponse;
 import ku_rum.backend.domain.place.application.response.CurrentPositionResponse;
 import ku_rum.backend.domain.place.application.response.CurrentPositionStatusResponse;
@@ -37,7 +36,6 @@ public class PlaceController {
     private final PositionService positionService;
     private final PlaceService placeService;
     private final PlaceHistoryService placeHistoryService;
-    private final SearchService searchService;
 
     @GetMapping("/sharing/status")
     public BaseResponse<CurrentPositionStatusResponse> getCurrentPositionStatus(
@@ -99,7 +97,7 @@ public class PlaceController {
         if (isAuthenticated(userDetails)) {
             return BaseResponse.ok(placeService.searchPlaceWithUser(userDetails, query));
         }
-        return BaseResponse.ok(searchService.searchPlace(query));
+        return BaseResponse.ok(placeService.searchPlace(query));
     }
 
     @GetMapping("/search/history")
