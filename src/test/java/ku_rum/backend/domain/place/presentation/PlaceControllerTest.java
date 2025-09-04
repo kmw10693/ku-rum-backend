@@ -82,7 +82,7 @@ public class PlaceControllerTest extends RestDocsTestSupport {
     @Test
     void getCurrentPositionStatus() throws Exception {
         //given
-        CurrentPositionStatusResponse response = new CurrentPositionStatusResponse(Boolean.FALSE);
+        CurrentPositionStatusResponse response = new CurrentPositionStatusResponse(Boolean.FALSE, "공학관");
         given(positionService.getCurrentPositionStatus(any(CustomUserDetails.class)))
                 .willReturn(response);
 
