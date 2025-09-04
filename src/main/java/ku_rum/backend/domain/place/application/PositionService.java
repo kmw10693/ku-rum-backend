@@ -38,11 +38,13 @@ public class PositionService {
      */
     public CurrentPositionStatusResponse getCurrentPositionStatus(CustomUserDetails userDetails) {
         User user = userService.getUser();
-        if (positionRepository.existsPositionByUser(user)) {
+        Optional<Position> positionOptional = positionRepository.findPositionByUser(user);
 
-            return new CurrentPositionStatusResponse(true);
+        if (positionOptional.isEmpty()) {
+            return new CurrentPositionStatusResponse(false, null);
         }
-        return new CurrentPositionStatusResponse(false);
+        String placeName = positionOptional.get().getPlace().getName();
+        return new CurrentPositionStatusResponse(true, placeName);
     }
 
     /**
