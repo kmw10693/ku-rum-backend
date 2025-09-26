@@ -1,5 +1,7 @@
 package ku_rum.backend.domain.rank.application;
 
+import static java.util.stream.Collectors.toList;
+
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
@@ -8,8 +10,10 @@ import java.util.TreeMap;
 import java.util.stream.Collectors;
 import ku_rum.backend.domain.place.domain.Place;
 import ku_rum.backend.domain.rank.application.response.GetPlaceUserRankResponse;
+import ku_rum.backend.domain.rank.application.response.PlaceUserRankResponse;
 import ku_rum.backend.domain.rank.domain.PlaceRank;
 import ku_rum.backend.domain.rank.domain.repository.PlaceRankRepository;
+import ku_rum.backend.domain.rank.dto.PlaceRankWithRankingProjection;
 import ku_rum.backend.domain.user.application.UserService;
 import ku_rum.backend.domain.user.domain.User;
 import ku_rum.backend.global.exception.global.GlobalException;
@@ -41,7 +45,7 @@ public class RankService {
                 .collect(Collectors.groupingBy(
                         PlaceRank::getCount,
                         () -> new TreeMap<>(Comparator.reverseOrder()),
-                        Collectors.toList())
+                        toList())
                 );
 
         return placeRanksGroupedByCount.values()
@@ -75,5 +79,45 @@ public class RankService {
     public PlaceRank getUserPlaceRank(User user, Place place) {
         return placeRankRepository.findByUserAndPlace(user, place).orElseThrow(() -> new GlobalException(
                 BaseExceptionResponseStatus.PLACE_RANK_NOT_FOUND));
+    }
+
+    /**
+     * 장소 전체 유저공유 랭킹 조회(3개)
+     *
+     * @return
+     */
+    public List<PlaceUserRankResponse> getPlaceRanks(User user) {
+        List<PlaceRankWithRankingProjection> placeRankWithRankings = placeRankRepository.findTop3RanksWithTies(
+                user.getId());
+
+        Map<Integer, List<PlaceRankWithRankingProjection>> placeRanksGroupedByCount = placeRankWithRankings.stream()
+                .collect(Collectors.groupingBy(
+                        PlaceRankWithRankingProjection::getRanking,
+                        () -> new TreeMap<>(Comparator.reverseOrder()),
+                        toList())
+                );
+
+        placeRanksGroupedByCount.values().stream().toList();
+
+        return placeRanksGroupedByCount.values()
+                .stream()
+                .map(placeRanks -> PlaceUserRankResponse.from(placeRanks, user))
+                .toList();
+    }
+
+    public List<GetPlaceUserRankResponse> getPlaceFriendRank(CustomUserDetails userDetails, Long friendId) {
+        List<PlaceRank> PlaceRanks = placeRankRepository.findTop3RanksWithTiesByUser(friendId);
+
+        Map<Integer, List<PlaceRank>> placeRanksGroupedByCount = PlaceRanks.stream()
+                .collect(Collectors.groupingBy(
+                        PlaceRank::getCount,
+                        () -> new TreeMap<>(Comparator.reverseOrder()),
+                        toList())
+                );
+
+        return placeRanksGroupedByCount.values()
+                .stream()
+                .map(GetPlaceUserRankResponse::from)
+                .toList();
     }
 }
