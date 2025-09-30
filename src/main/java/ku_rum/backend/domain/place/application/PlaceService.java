@@ -95,7 +95,7 @@ public class PlaceService {
         List<FriendUserDto> friendUserDtos = positionRepository.findPositionByFriendAndPlace(userDetails.getUserId(),
                 place);
         User user = userService.getUser();
-        List<PlaceUserRankResponse> placeRanks = rankService.getPlaceRanks(user);
+        List<PlaceUserRankResponse> placeRanks = rankService.getPlaceRanks(user, placeId);
 
         return GetPlaceResponse.of(place, friendUserDtos, placeImages, placeRanks);
     }
@@ -111,7 +111,7 @@ public class PlaceService {
         Place place = findPlace(placeId);
         List<PlaceImage> placeImages = placeImageRepository.findByPlace(place);
 
-        return GetPlaceResponse.of(place, Collections.emptyList(), placeImages, null);
+        return GetPlaceResponse.of(place, Collections.emptyList(), placeImages, Collections.emptyList());
     }
 
     /**

@@ -86,18 +86,16 @@ public class RankService {
      *
      * @return
      */
-    public List<PlaceUserRankResponse> getPlaceRanks(User user) {
+    public List<PlaceUserRankResponse> getPlaceRanks(User user, Long placeId) {
         List<PlaceRankWithRankingProjection> placeRankWithRankings = placeRankRepository.findTop3RanksWithTies(
-                user.getId());
+                user.getId(), placeId);
 
         Map<Integer, List<PlaceRankWithRankingProjection>> placeRanksGroupedByCount = placeRankWithRankings.stream()
                 .collect(Collectors.groupingBy(
                         PlaceRankWithRankingProjection::getRanking,
-                        () -> new TreeMap<>(Comparator.reverseOrder()),
+                        TreeMap::new,
                         toList())
                 );
-
-        placeRanksGroupedByCount.values().stream().toList();
 
         return placeRanksGroupedByCount.values()
                 .stream()
