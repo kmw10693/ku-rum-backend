@@ -1,22 +1,5 @@
 package ku_rum.backend.domain.notice.presentation;
 
-import com.epages.restdocs.apispec.ResourceSnippetParameters;
-import ku_rum.backend.config.RestDocsTestSupport;
-import ku_rum.backend.domain.notice.application.NoticeService;
-import ku_rum.backend.domain.notice.dto.response.NoticeResponse;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.test.context.ActiveProfiles;
-
-import java.util.List;
-
 import static com.epages.restdocs.apispec.ResourceDocumentation.resource;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
@@ -26,8 +9,27 @@ import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWit
 import static org.springframework.restdocs.payload.PayloadDocumentation.subsectionWithPath;
 import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
+import com.epages.restdocs.apispec.ResourceSnippetParameters;
+import java.util.List;
+import ku_rum.backend.config.RestDocsTestSupport;
+import ku_rum.backend.domain.notice.application.NoticeService;
+import ku_rum.backend.domain.notice.dto.response.NoticeDetailResponse;
+import ku_rum.backend.domain.notice.dto.response.NoticeResponse;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.http.MediaType;
+import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.test.context.ActiveProfiles;
 
 @SpringBootTest
 @ActiveProfiles("test")
@@ -43,7 +45,7 @@ public class NoticeControllerTest extends RestDocsTestSupport {
     @Test
     void getNoticesByCategory() throws Exception {
         //given
-        Integer categoryId = 234;
+        Long categoryId = Long.valueOf(234);
         Pageable pageable = PageRequest.of(0, 2);
 
         List<NoticeResponse> noticeList = List.of(
@@ -96,5 +98,33 @@ public class NoticeControllerTest extends RestDocsTestSupport {
                                         fieldWithPath("empty").description("비어 있는지 여부")
                                 )
                                 .build())));
+    }
+
+    @DisplayName("공지사항 ID로 공지 상세 HTML을 조회한다.")
+    @Test
+    void getNoticeDetailById() throws Exception {
+        // given
+        Long noticeId = 1L;
+        String htmlContent = "<div>공지 상세 내용</div>";
+
+        given(noticeService.findByNoticeId(eq(noticeId)))
+                .willReturn(new NoticeDetailResponse(noticeId, htmlContent));
+
+        // when & then
+        mockMvc.perform(get("/api/v1/notices/{noticeId}", noticeId))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.TEXT_HTML))
+                .andDo(restDocs.document(
+                        resource(
+                                ResourceSnippetParameters.builder()
+                                        .tag("공지사항 관련 API")
+                                        .description("공지사항 ID로 HTML 상세 정보 조회")
+                                        .pathParameters(
+                                                parameterWithName("noticeId").description("조회할 공지사항 ID")
+                                        )
+                                        .build()
+                        )
+                ));
     }
 }
