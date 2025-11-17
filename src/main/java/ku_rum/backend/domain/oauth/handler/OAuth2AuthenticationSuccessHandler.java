@@ -4,6 +4,7 @@ import com.github.dockerjava.api.exception.BadRequestException;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import ku_rum.backend.domain.oauth.domain.PreSignupPrincipal;
 import ku_rum.backend.domain.oauth.util.AppProperties;
 import ku_rum.backend.domain.oauth.util.CookieUtils;
 import lombok.RequiredArgsConstructor;
@@ -23,7 +24,8 @@ import static ku_rum.backend.domain.oauth.handler.HttpCookieOAuth2AuthorizationR
 public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
 
     private final AppProperties appProperties;
-    private final TempTokenProvider tokenProvider;
+    private final TempTokenProvider tempTokenProvider;             // 기존 가입자용 임시토큰
+    private final PreSignupTokenProvider preSignupTokenProvider;   // 신규: 프리사인업 토큰
     private final HttpCookieOAuth2AuthorizationRequestRepository httpCookieOAuth2AuthorizationRequestRepository;
 
     @Override
@@ -50,10 +52,22 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
 
         String targetUrl = redirectUri.orElse(getDefaultTargetUrl());
 
-        String token = tokenProvider.createTempToken(authentication);
+        Object principal = authentication.getPrincipal();
 
+        if (principal instanceof PreSignupPrincipal pre) {
+            // 미가입자 —> 프리사인업 토큰 발급
+            String preToken = preSignupTokenProvider.create(pre);
+            return UriComponentsBuilder.fromUriString(targetUrl)
+                    .queryParam("needSignup", true)
+                    .queryParam("token", preToken)
+                    .build().toUriString();
+        }
+
+        // 기존 가입자 —> 임시토큰(=userId 바인딩) 발급 (기존 교환 플로우 유지)
+        String tempToken = tempTokenProvider.createTempToken(authentication);
         return UriComponentsBuilder.fromUriString(targetUrl)
-                .queryParam("token", token)
+                .queryParam("needSignup", false)
+                .queryParam("token", tempToken)
                 .build().toUriString();
     }
 
@@ -64,7 +78,6 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
 
     private boolean isAuthorizedRedirectUri(String uri) {
         URI clientRedirectUri = URI.create(uri);
-
         return appProperties.getOauth2().getAuthorizedRedirectUris()
                 .stream()
                 .anyMatch(authorizedRedirectUri -> {

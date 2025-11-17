@@ -1,17 +1,27 @@
 package ku_rum.backend.domain.user.presentation;
 
 import jakarta.validation.Valid;
-import ku_rum.backend.domain.user.application.UserValidator;
-import ku_rum.backend.domain.user.application.UserService;
+import ku_rum.backend.domain.auth.dto.response.AuthResponse;
 import ku_rum.backend.domain.common.mail.dto.request.EmailValidationRequest;
+import ku_rum.backend.domain.user.application.UserService;
+import ku_rum.backend.domain.user.application.UserValidator;
+import ku_rum.backend.domain.user.dto.request.SocialSignupRequest;
 import ku_rum.backend.domain.user.dto.request.UserSaveRequest;
 import ku_rum.backend.domain.user.dto.response.UserSaveResponse;
 import ku_rum.backend.global.support.response.BaseResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
-import static ku_rum.backend.domain.user.domain.UserMessage.*;
+import static ku_rum.backend.domain.user.domain.UserMessage.VALID_EMAIL_MESSAGE;
+import static ku_rum.backend.domain.user.domain.UserMessage.VALID_LOGINID_MESSAGE;
+import static ku_rum.backend.domain.user.domain.UserMessage.VALID_NICKNAME_MESSAGE;
+import static ku_rum.backend.domain.user.domain.UserMessage.VALID_STUDENTID_MESSAGE;
 
 @RestController
 @RequestMapping("/api/v1/users")
@@ -23,7 +33,6 @@ public class UserController {
 
     /**
      * 회원 가입 API
-     *
      * @param userSaveRequest
      * @return
      */
@@ -34,18 +43,15 @@ public class UserController {
 
     /**
      * 소셜 로그인 회원 가입 API (토큰 필요)
-     *
-     * @param userSaveRequest
      * @return
      */
     @PostMapping("/social")
-    public BaseResponse<UserSaveResponse> joinBySocial(@RequestBody @Valid final UserSaveRequest userSaveRequest) {
-        return BaseResponse.ok(userService.saveUserBySocial(userSaveRequest));
+    public BaseResponse<AuthResponse> joinBySocial(@RequestBody @Valid final SocialSignupRequest req) {
+        return BaseResponse.ok(userService.completeSocialSignup(req));
     }
 
     /**
      * 이메일 검증 API
-     *
      * @param emailValidationRequest
      * @return
      */
@@ -57,7 +63,6 @@ public class UserController {
 
     /**
      * 아이디 중복 확인 API
-     *
      * @param value
      * @return
      */
@@ -69,7 +74,6 @@ public class UserController {
 
     /**
      * 닉네임 중복 확인 API
-     *
      * @param value
      * @return
      */
@@ -81,7 +85,6 @@ public class UserController {
 
     /**
      * 학번 중복 확인 API
-     *
      * @param value
      * @return
      */
