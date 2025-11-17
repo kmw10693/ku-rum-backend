@@ -9,7 +9,6 @@ public record GetPlaceRankResponse(int ranking, String nickname, int sharingCoun
     private static final int EXCEPTION_COUNT_RANKING = 0;
 
     public static GetPlaceRankResponse from(PlaceRankWithRankingProjection placeRanks) {
-
         return new GetPlaceRankResponse(placeRanks.getRanking(), placeRanks.getNickname(), placeRanks.getCount());
     }
 

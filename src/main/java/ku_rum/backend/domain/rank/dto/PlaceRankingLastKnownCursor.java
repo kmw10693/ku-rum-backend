@@ -1,7 +1,6 @@
 package ku_rum.backend.domain.rank.dto;
 
 import static ku_rum.backend.global.support.status.BaseExceptionResponseStatus.INVALID_LAST_KNOWN;
-
 import ku_rum.backend.global.exception.global.GlobalException;
 
 public record PlaceRankingLastKnownCursor(int lastRank, Long lastRankId) {
