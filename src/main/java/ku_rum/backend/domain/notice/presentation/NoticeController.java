@@ -1,6 +1,5 @@
 package ku_rum.backend.domain.notice.presentation;
 
-import java.util.List;
 import ku_rum.backend.domain.notice.application.NoticeService;
 import ku_rum.backend.domain.notice.dto.response.NoticeDetailResponse;
 import ku_rum.backend.domain.notice.dto.response.NoticeResponse;
@@ -13,6 +12,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/notices")
@@ -38,5 +39,19 @@ public class NoticeController {
     public BaseResponse<List<NoticeResponse>> getPopularNotices() {
         List<NoticeResponse> response = noticeService.findPopularNotice();
         return BaseResponse.ok(response);
+    }
+
+    @GetMapping("/primary")
+    public BaseResponse<List<NoticeResponse>> getPrimaryNotices() {
+        List<NoticeResponse> response = noticeService.findPopularNotice();
+        return BaseResponse.ok(response);
+    }
+
+    @GetMapping("/search")
+    public Page<NoticeResponse> searchNoticesByKeyword(
+            @RequestParam("keyword") String keyword,
+            Pageable pageable
+    ) {
+        return noticeService.searchByKeyword(keyword, pageable);
     }
 }

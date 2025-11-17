@@ -41,4 +41,6 @@ public class Notice {
 
     @Enumerated(EnumType.STRING)
     private PublishStatus publishStatus;
+
+    private boolean isImportant;
 }

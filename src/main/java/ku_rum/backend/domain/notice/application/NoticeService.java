@@ -1,9 +1,5 @@
 package ku_rum.backend.domain.notice.application;
 
-import static ku_rum.backend.global.support.status.BaseExceptionResponseStatus.NO_SUCH_NOTICE;
-import static ku_rum.backend.global.support.status.BaseExceptionResponseStatus.NO_SUCH_NOTICE_DETAIL;
-
-import java.util.List;
 import ku_rum.backend.domain.notice.domain.Notice;
 import ku_rum.backend.domain.notice.domain.NoticeDetail;
 import ku_rum.backend.domain.notice.domain.PublishStatus;
@@ -14,14 +10,23 @@ import ku_rum.backend.domain.notice.dto.response.NoticeResponse;
 import ku_rum.backend.global.exception.global.GlobalException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
+
+import static ku_rum.backend.global.support.status.BaseExceptionResponseStatus.NO_SUCH_NOTICE;
+import static ku_rum.backend.global.support.status.BaseExceptionResponseStatus.NO_SUCH_NOTICE_DETAIL;
 
 @Service
 @RequiredArgsConstructor
 public class NoticeService {
 
     private static final int POPULAR_NOTICE_COUNT = 3;
+    private static final int PRIMARY_NOTICE_COUNT = 3;
+
     private final NoticeRepository noticeRepository;
     private final NoticeDetailRepository noticeDetailRepository;
 
@@ -51,6 +56,27 @@ public class NoticeService {
                 .stream()
                 .map(NoticeResponse::from)
                 .toList();
+    }
+
+
+    public List<NoticeResponse> findPrimaryNotices() {
+        Pageable pageable = PageRequest.of(
+                0,
+                PRIMARY_NOTICE_COUNT,
+                Sort.by(Sort.Direction.DESC, "id") // 가장 최근 공지 우선
+        );
+
+        return noticeRepository
+                .findByIsImportantTrueAndPublishStatus(PublishStatus.SUCCESS_CRAWLING, pageable)
+                .stream()
+                .map(NoticeResponse::from)
+                .toList();
+    }
+
+    // 키워드 검색 로직
+    public Page<NoticeResponse> searchByKeyword(String keyword, Pageable pageable) {
+        return noticeRepository.searchByKeyword(keyword, PublishStatus.SUCCESS_CRAWLING, pageable)
+                .map(NoticeResponse::from);
     }
 }
 
