@@ -199,7 +199,7 @@ public class NoticeControllerTest extends RestDocsTestSupport {
         );
 
         // 현재 컨트롤러가 noticeService.findPopularNotice()를 호출하고 있으므로 그대로 사용
-        given(noticeService.findPopularNotice())
+        given(noticeService.findPrimaryNotices())
                 .willReturn(fakeResponse);
 
         // when & then

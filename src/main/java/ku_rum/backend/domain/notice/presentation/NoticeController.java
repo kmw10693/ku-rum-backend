@@ -43,7 +43,7 @@ public class NoticeController {
 
     @GetMapping("/primary")
     public BaseResponse<List<NoticeResponse>> getPrimaryNotices() {
-        List<NoticeResponse> response = noticeService.findPopularNotice();
+        List<NoticeResponse> response = noticeService.findPrimaryNotices();
         return BaseResponse.ok(response);
     }
 
