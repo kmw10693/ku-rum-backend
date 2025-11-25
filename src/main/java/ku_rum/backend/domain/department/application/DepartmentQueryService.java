@@ -28,6 +28,12 @@ public class DepartmentQueryService {
                 .orElseThrow(() -> new NoSuchDepartmentException(NO_SUCH_DEPARTMENT));
     }
 
+    public Department getDepartment(final String departmentName) {
+        log.debug("학과 정보 검색: department={}", departmentName);
+        return departmentRepository.findFirstByName(departmentName)
+                .orElseThrow(() -> new NoSuchDepartmentException(NO_SUCH_DEPARTMENT));
+    }
+
     public CollegeDepartmentResponse getDepartmentsByCollege(final String college) {
         List<Department> departments = departmentRepository.findAllByCollege_Name(college);
         List<String> list = departments.stream().map(Department::getName).toList();
