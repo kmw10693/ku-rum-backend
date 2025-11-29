@@ -2,9 +2,11 @@ package ku_rum.backend.domain.place.presentation;
 
 import jakarta.validation.Valid;
 import java.util.List;
+import java.util.Optional;
 import ku_rum.backend.domain.place.application.PlaceHistoryService;
 import ku_rum.backend.domain.place.application.PlaceService;
 import ku_rum.backend.domain.place.application.PositionService;
+import ku_rum.backend.domain.place.application.RankingChangeDto;
 import ku_rum.backend.domain.place.application.response.CurrentPositionConfirmResponse;
 import ku_rum.backend.domain.place.application.response.CurrentPositionResponse;
 import ku_rum.backend.domain.place.application.response.CurrentPositionStatusResponse;
@@ -15,6 +17,7 @@ import ku_rum.backend.domain.place.application.response.SelectPlaceChipResponse;
 import ku_rum.backend.domain.place.domain.CategoryChip;
 import ku_rum.backend.domain.place.dto.request.CurrentPositionConfirmRequest;
 import ku_rum.backend.domain.place.dto.request.CurrentPositionRequest;
+import ku_rum.backend.domain.rank.application.RankService;
 import ku_rum.backend.global.security.CustomUserDetails;
 import ku_rum.backend.global.support.response.BaseResponse;
 import lombok.RequiredArgsConstructor;
@@ -36,6 +39,7 @@ public class PlaceController {
     private final PositionService positionService;
     private final PlaceService placeService;
     private final PlaceHistoryService placeHistoryService;
+    private final RankService rankService;
 
     @GetMapping("/sharing/status")
     public BaseResponse<CurrentPositionStatusResponse> getCurrentPositionStatus(
@@ -57,12 +61,19 @@ public class PlaceController {
             @AuthenticationPrincipal final CustomUserDetails userDetails,
             @Valid @RequestBody CurrentPositionConfirmRequest request) {
         CurrentPositionConfirmResponse response = positionService.confirmCurrentPosition(userDetails, request);
+
+        positionService.alarmConfirmCurrentPosition(userDetails, response);
         return BaseResponse.ok(response);
     }
 
     @DeleteMapping("/sharing/confirm")
     public BaseResponse<Void> disableSharingPosition(@AuthenticationPrincipal final CustomUserDetails userDetails) {
-        positionService.disableSharingPosition(userDetails);
+        Optional<RankingChangeDto> rankingChangeDtoOptional = positionService.disableSharingPosition(userDetails);
+        if (rankingChangeDtoOptional.isEmpty()) {
+            return BaseResponse.ok();
+        }
+        RankingChangeDto rankingChangeDto = rankingChangeDtoOptional.get();
+        rankService.checkoutRankChange(rankingChangeDto, userDetails);
         return BaseResponse.ok();
     }
 

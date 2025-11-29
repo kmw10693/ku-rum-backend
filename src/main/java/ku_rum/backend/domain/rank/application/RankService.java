@@ -8,7 +8,10 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.TreeMap;
 import java.util.stream.Collectors;
+import ku_rum.backend.domain.alarm.application.AlarmService;
+import ku_rum.backend.domain.alarm.domain.AlarmType;
 import ku_rum.backend.domain.friend.application.FriendQueryService;
+import ku_rum.backend.domain.place.application.RankingChangeDto;
 import ku_rum.backend.domain.place.domain.Place;
 import ku_rum.backend.domain.rank.application.response.GetPlaceRankPaginationResponse;
 import ku_rum.backend.domain.rank.application.response.GetPlaceRankResponse;
@@ -37,6 +40,7 @@ public class RankService {
     private final PlaceRankRepository placeRankRepository;
     private final UserService userService;
     private final FriendQueryService friendQueryService;
+    private final AlarmService alarmService;
 
     private static final int MIN_RANK = 1;
     private static final int TOP_3_START = 1;
@@ -187,5 +191,16 @@ public class RankService {
                 .stream()
                 .map(PlaceRankWithRankingProjection -> GetPlaceTopRankResponse.from(PlaceRankWithRankingProjection))
                 .toList();
+    }
+
+    public void checkoutRankChange(RankingChangeDto rankingChangeDto, CustomUserDetails userDetails) {
+        User user = userService.getUser();
+        if (rankingChangeDto.beforeRank() > rankingChangeDto.afterRank()) {
+            if (rankingChangeDto.afterRank() == 1) {
+                alarmService.notifyAlarm(AlarmType.RENEW_TOP_RANK_PLACE, rankingChangeDto, user);
+                return;
+            }
+            alarmService.notifyAlarm(AlarmType.RENEW_RANK_PLACE, rankingChangeDto, user);
+        }
     }
 }

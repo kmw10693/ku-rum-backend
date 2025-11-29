@@ -38,7 +38,7 @@ import org.springframework.test.context.ActiveProfiles;
 
 @WebMvcTest(RankController.class)
 @ActiveProfiles("test")
-public class RankControllerTest extends RestDocsTestSupport {
+class RankControllerTest extends RestDocsTestSupport {
 
     @MockBean
     RankService rankService;
