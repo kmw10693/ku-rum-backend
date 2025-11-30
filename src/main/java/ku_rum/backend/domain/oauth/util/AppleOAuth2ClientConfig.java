@@ -1,0 +1,73 @@
+package ku_rum.backend.domain.oauth.util;
+
+import lombok.RequiredArgsConstructor;
+import org.springframework.boot.autoconfigure.security.oauth2.client.OAuth2ClientProperties;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.security.oauth2.client.registration.ClientRegistration;
+import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
+import org.springframework.security.oauth2.client.registration.InMemoryClientRegistrationRepository;
+import org.springframework.security.oauth2.core.AuthorizationGrantType;
+import org.springframework.security.oauth2.core.ClientAuthenticationMethod;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+
+@Configuration
+@RequiredArgsConstructor
+public class AppleOAuth2ClientConfig {
+
+    private final OAuth2ClientProperties oAuth2ClientProperties;
+    private final AppleClientSecretGenerator appleClientSecretGenerator;
+
+    @Bean
+    public ClientRegistrationRepository clientRegistrationRepository() {
+        List<ClientRegistration> registrations = new ArrayList<>();
+
+        Map<String, OAuth2ClientProperties.Registration> regMap = oAuth2ClientProperties.getRegistration();
+        Map<String, OAuth2ClientProperties.Provider> providerMap = oAuth2ClientProperties.getProvider();
+
+        for (String registrationId : regMap.keySet()) {
+            OAuth2ClientProperties.Registration reg = regMap.get(registrationId);
+            OAuth2ClientProperties.Provider provider = providerMap.get(registrationId);
+
+            ClientRegistration.Builder builder = ClientRegistration
+                    .withRegistrationId(registrationId)
+                    .clientId(reg.getClientId())
+                    .clientSecret(reg.getClientSecret())
+                    .clientAuthenticationMethod(new ClientAuthenticationMethod(reg.getClientAuthenticationMethod()))
+                    .authorizationGrantType(new AuthorizationGrantType(reg.getAuthorizationGrantType()))
+                    .redirectUri(reg.getRedirectUri())
+                    .scope(reg.getScope())
+                    .clientName(reg.getClientName() != null ? reg.getClientName() : registrationId);
+
+            if (provider != null) {
+                builder
+                        .authorizationUri(provider.getAuthorizationUri())
+                        .tokenUri(provider.getTokenUri())
+                        .userInfoUri(provider.getUserInfoUri())
+                        .userNameAttributeName(provider.getUserNameAttribute());
+            } else {
+                // google처럼 provider 설정 생략한 경우: Spring 기본 설정 사용
+                if ("google".equals(registrationId)) {
+                    builder
+                            .authorizationUri("https://accounts.google.com/o/oauth2/v2/auth")
+                            .tokenUri("https://www.googleapis.com/oauth2/v4/token")
+                            .userInfoUri("https://www.googleapis.com/oauth2/v3/userinfo")
+                            .userNameAttributeName("sub");
+                }
+            }
+
+            // ★ apple이면 client-secret을 우리가 생성한 JWT로 교체
+            if ("apple".equals(registrationId)) {
+                String clientSecret = appleClientSecretGenerator.generateClientSecret();
+                builder.clientSecret(clientSecret);
+            }
+
+            registrations.add(builder.build());
+        }
+
+        return new InMemoryClientRegistrationRepository(registrations);
+    }
+}
