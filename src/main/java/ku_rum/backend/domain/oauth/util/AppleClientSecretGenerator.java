@@ -4,6 +4,7 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 
 import java.security.PrivateKey;
@@ -13,6 +14,7 @@ import java.util.Map;
 
 @Component
 @RequiredArgsConstructor
+@Profile("!test")
 public class AppleClientSecretGenerator {
 
     private final AppleProperties appleProperties;
