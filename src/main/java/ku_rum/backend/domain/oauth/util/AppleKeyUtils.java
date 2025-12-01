@@ -1,6 +1,7 @@
 package ku_rum.backend.domain.oauth.util;
 
 import ku_rum.backend.global.exception.global.GlobalException;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.Resource;
@@ -14,6 +15,7 @@ import java.util.Base64;
 
 import static ku_rum.backend.global.support.status.BaseExceptionResponseStatus.OAUTH_INVALID_PRIVATE_KEY;
 
+@Slf4j
 public class AppleKeyUtils {
 
     public static PrivateKey loadPrivateKey(String location) {
@@ -37,6 +39,7 @@ public class AppleKeyUtils {
                 return keyFactory.generatePrivate(keySpec);
             }
         } catch (Exception e) {
+            log.error("Failed to load Apple private key from location: {}", location, e);
             throw new GlobalException(OAUTH_INVALID_PRIVATE_KEY);
         }
     }
