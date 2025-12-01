@@ -36,11 +36,17 @@ public class AppleOAuth2ClientConfig {
                     .withRegistrationId(registrationId)
                     .clientId(reg.getClientId())
                     .clientSecret(reg.getClientSecret())
-                    .clientAuthenticationMethod(new ClientAuthenticationMethod(reg.getClientAuthenticationMethod()))
-                    .authorizationGrantType(new AuthorizationGrantType(reg.getAuthorizationGrantType()))
+                    .clientAuthenticationMethod(
+                            new ClientAuthenticationMethod(reg.getClientAuthenticationMethod())
+                    )
+                    .authorizationGrantType(
+                            new AuthorizationGrantType(reg.getAuthorizationGrantType())
+                    )
                     .redirectUri(reg.getRedirectUri())
                     .scope(reg.getScope())
-                    .clientName(reg.getClientName() != null ? reg.getClientName() : registrationId);
+                    .clientName(
+                            reg.getClientName() != null ? reg.getClientName() : registrationId
+                    );
 
             if (provider != null) {
                 builder
@@ -48,18 +54,8 @@ public class AppleOAuth2ClientConfig {
                         .tokenUri(provider.getTokenUri())
                         .userInfoUri(provider.getUserInfoUri())
                         .userNameAttributeName(provider.getUserNameAttribute());
-            } else {
-                // google처럼 provider 설정 생략한 경우: Spring 기본 설정 사용
-                if ("google".equals(registrationId)) {
-                    builder
-                            .authorizationUri("https://accounts.google.com/o/oauth2/v2/auth")
-                            .tokenUri("https://www.googleapis.com/oauth2/v4/token")
-                            .userInfoUri("https://www.googleapis.com/oauth2/v3/userinfo")
-                            .userNameAttributeName("sub");
-                }
             }
 
-            // ★ apple이면 client-secret을 우리가 생성한 JWT로 교체
             if ("apple".equals(registrationId)) {
                 String clientSecret = appleClientSecretGenerator.generateClientSecret();
                 builder.clientSecret(clientSecret);
