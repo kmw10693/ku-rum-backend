@@ -4,6 +4,7 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 
@@ -15,6 +16,7 @@ import java.util.Map;
 @Component
 @RequiredArgsConstructor
 @Profile("!test")
+@ConditionalOnProperty(prefix = "apple", name = "enabled", havingValue = "true")
 public class AppleClientSecretGenerator {
 
     private final AppleProperties appleProperties;
